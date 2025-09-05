@@ -1,0 +1,29 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tag-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-reusable.yml
+
+  publish:
+    needs: build
+    uses: ./.github/workflows/publish-reusable.yml
+    with:
+      environment: "Nexplore Package Repository"
+    secrets:
+      NUGET_PUBLIC_RELEASE_API_KEY: ${{ secrets.NUGET_PUBLIC_RELEASE_API_KEY }}
+      NUGET_PRE_RELEASE_API_KEY:   ${{ secrets.NUGET_PRE_RELEASE_API_KEY }}
+      NPM_PUBLIC_RELEASE_API_KEY:  ${{ secrets.NPM_PUBLIC_RELEASE_API_KEY }}
+      NPM_PRE_RELEASE_API_KEY:     ${{ secrets.NPM_PRE_RELEASE_API_KEY }}
