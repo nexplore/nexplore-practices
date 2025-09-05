@@ -1,4 +1,4 @@
-name: Build Reusable
+name: Build Template
 on:
   workflow_call:
     inputs: {}
