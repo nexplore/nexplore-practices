@@ -1,0 +1,12 @@
+<puibe-modal [hideCloseButton]="false" class="block min-w-[400px]">
+    <puibe-modal-title>Modal Title</puibe-modal-title>
+    <puibe-modal-subtitle>Modal Subtitle</puibe-modal-subtitle>
+    <div puibeModalContent>
+        Do you want diamonds?<br />
+        {{ data.name }}<br />
+        {{ data.name }}<br />
+        {{ data.name }}<br />
+    </div>
+    <button puibeModalFooterAction [shouldClose]="false" puibeButton variant="primary">OK</button>
+    <button puibeModalFooterAction puibeButton>Cancel</button>
+</puibe-modal>

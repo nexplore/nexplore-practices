@@ -1,0 +1,79 @@
+<div class="flex justify-around">
+    <button type="button" puibeButton variant="primary">PrimaryButton</button>
+    <button type="button" puibeButton>SecondaryButton</button>
+    <button type="button" puibeButton variant="danger">DangerButton</button>
+</div>
+<div class="mt-2 flex justify-around">
+    <a href="https://google.com" target="_blank" puibeButton variant="primary">PrimaryLinkButton</a>
+    <button type="button" puibeButton variant="primary" disabled>DisabledPrimaryButton</button>
+    <button type="button" puibeButton>
+        <puibe-icon-login class="inline-flex" size="s"></puibe-icon-login>
+        ButtonWithIcon
+    </button>
+</div>
+<div class="mt-2 flex justify-around">
+    <button type="button" puibeButton variant="primary" [scaleOnHover]="false">
+        <puibe-button-arrows variant="left-arrow">PrimaryButtonWithLeftArrow</puibe-button-arrows>
+    </button>
+    <button type="button" puibeButton variant="primary" [busy]="true">
+        <puibe-button-spinner>PrimaryButtonBusy</puibe-button-spinner>
+    </button>
+    <button type="button" puibeButton variant="primary" [busy]="true">PrimaryButtonBusyWithoutSpinner</button>
+    <button type="button" puibeButton variant="accept-primary" size="small">✓</button>
+</div>
+
+<div class="mt-8 flex justify-around">
+    <puibe-dropdown-button [options]="options1">Router Links</puibe-dropdown-button>
+    <puibe-dropdown-button [options]="options1" (menuOpen)="menuOpenHandler()" (menuClose)="menuCloseHandler()"
+    >menuOpen/menuClose => Console output
+    </puibe-dropdown-button>
+    <puibe-dropdown-button [options]="options2">
+        <puibe-icon-login class="inline-flex" size="s"></puibe-icon-login>
+        With Icon & onClickHandler auf option => Console output
+    </puibe-dropdown-button>
+    <puibe-dropdown-button
+        hideArrows="true"
+        size="large-round"
+        menuAlignment="right"
+        [options]="[
+            {
+                iconTemplate: customDropdownOptionIcon,
+                onClickHandler: customDropdownOptionHandler,
+                labelContent: 'Login'
+            }
+        ]"
+    >
+        <puibe-icon-login class="inline-flex" size="s"></puibe-icon-login>
+    </puibe-dropdown-button>
+    <ng-template #customDropdownOptionIcon>
+        <puibe-icon-login class="mr-2 inline-flex" size="s"></puibe-icon-login>
+    </ng-template>
+</div>
+
+<div class="mt-2 flex">
+    <puibe-dropdown-button [options]="options3" menuAlignment="right"> Right aligned Menu</puibe-dropdown-button>
+</div>
+
+<div class="mt-2 flex justify-stretch">
+    <button type="button" puibeButton class="flex-grow">
+        <puibe-button-arrows variant="left-arrow">Button with left arrow</puibe-button-arrows>
+    </button>
+    <button type="button" puibeButton class="flex-grow">
+        <puibe-button-arrows variant="right-arrow">Button with right arrow</puibe-button-arrows>
+    </button>
+</div>
+
+<div class="mt-2 flex justify-stretch">
+    <button type="button" puibeButton class="flex-grow" disabled="true">
+        <puibe-button-arrows variant="left-arrow">Disabled button with left arrow</puibe-button-arrows>
+    </button>
+    <button type="button" puibeButton class="flex-grow" disabled="true">
+        <puibe-button-arrows variant="right-arrow">Disabled button with right arrow</puibe-button-arrows>
+    </button>
+</div>
+
+<h4 class="mt-8">Async commands</h4>
+<app-commands/>
+
+<h4 class="mt-8">Async commands (Legacy)</h4>
+<app-legacy-commands/>

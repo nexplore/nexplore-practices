@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Nexplore.Practices.EntityFramework</name>
+    </assembly>
+    <members>
+        <member name="T:Nexplore.Practices.EntityFramework.Security.DataProtectionKeyEncryptionService">
+             <summary>
+             Service to encrypt/decrypt data protection keys. The cration of this class (the decryptor)
+             is not DI enabled, therefore it's not possible to use a custom constructor and use DI there.
+            
+             For more information, see: https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/extensibility/key-management#ixmldecryptor.
+             </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,175 @@
+<div class="container mx-auto mb-5 w-1/2">
+    <puibe-expansion-panel heading="Test Sand" headingLevel="2" [isExpanded]="true" variant="sand">
+        <div>
+            <label>Label</label>
+        </div>
+        <div>
+            <span>Content</span>
+        </div>
+    </puibe-expansion-panel>
+</div>
+
+<div class="container mx-auto mb-5 w-1/2">
+    <puibe-expansion-panel
+        heading="Test White"
+        caption="A small caption here"
+        headingLevel="3"
+        [isExpanded]="false"
+        variant="white"
+    >
+        <div>
+            <label>Label</label>
+        </div>
+        <div>
+            <span>Content</span>
+        </div>
+    </puibe-expansion-panel>
+</div>
+
+<div class="container mx-auto mb-5 w-1/2">
+    <puibe-expansion-panel
+        heading="Test Red"
+        caption="A small caption here"
+        headingLevel="3"
+        [isExpanded]="false"
+        variant="red"
+    >
+        <div>
+            <label>Label</label>
+        </div>
+        <div>
+            <span>Content</span>
+        </div>
+    </puibe-expansion-panel>
+</div>
+
+<div class="container mx-auto mb-5 w-1/2">
+    <puibe-expansion-panel
+        heading="Compact Light Sand"
+        headingLevel="6"
+        [isExpanded]="true"
+        variant="light-sand"
+        [compact]="true"
+    >
+        <div>
+            <span>Content</span>
+        </div>
+    </puibe-expansion-panel>
+</div>
+
+<div class="container mx-auto mb-5 w-1/2">
+    <puibe-expansion-panel
+        heading="Compact NoItemPadding"
+        headingLevel="6"
+        [isExpanded]="true"
+        variant="white"
+        [compact]="true"
+        [addItemPadding]="false"
+    >
+        <div>
+            <span>Content</span>
+        </div>
+    </puibe-expansion-panel>
+</div>
+
+<div class="container mx-auto mb-5 w-1/2">
+    <puibe-teaser title="Go to Tables" teaserLink="/tables">
+        <p>Lorem Ipsum dolor sit amet.</p>
+    </puibe-teaser>
+</div>
+<div class="container mx-auto mb-5 w-1/2">
+    <puibe-teaser variant="red" title="Go to Radio Buttons" teaserLink="/radio-buttons">
+        <p>Lorem Ipsum dolor sit amet.</p>
+    </puibe-teaser>
+</div>
+
+<div class="container mx-auto mb-5 w-1/2">
+    <puibe-teaser title="Don't go anywhere">
+        <p>Lorem Ipsum dolor sit amet.</p>
+    </puibe-teaser>
+</div>
+
+<div class="container mx-auto mb-5 w-1/2">
+    <puibe-teaser variant="red" title="Don't go anywhere">
+        <p>Lorem Ipsum dolor sit amet.</p>
+    </puibe-teaser>
+</div>
+
+<h1 class="my-40">Two Column Nav</h1>
+
+<div class="bg-white">
+    <h1 class="text-gray px-6 py-40 italic">&lt;content&gt;</h1>
+</div>
+
+<puibe-two-column-nav [heading]="'Inhalt'" [headingSelectors]="['h2[id]']">
+    <div below-nav class="mt-4">
+        <button
+            (click)="addSpacerBetweenHeadings()"
+            class="bg-sand hover:bg-light-sand block w-full px-4 py-2 font-light"
+        >
+            Add Spacer Between Headings
+        </button>
+        <button
+            (click)="removeSpacersBetweenHeadings()"
+            class="bg-sand hover:bg-light-sand mt-2 block w-full px-4 py-2 font-light"
+        >
+            Remove All Spacers
+        </button>
+        <p class="mt-4 block font-light">
+            This is to test if scrolling to a heading still works, even if the position of a heading within the DOM has
+            changed.
+        </p>
+    </div>
+
+    <div #twoColumnNavContent class="m-0 bg-white px-3 text-black">
+        <div>
+            <h2 id="heading-1" class="pb-40 pt-3">Heading 1</h2>
+            <p class="pb-40">
+                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et
+                ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            </p>
+            <div class="bg-gray mx-5 block h-px content-['']"></div>
+        </div>
+        <div>
+            <h2 id="heading-2" class="pb-40 pt-3">Heading 2</h2>
+            <p class="pb-40">
+                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et
+                ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            </p>
+            <div class="bg-gray mx-5 block h-px content-['']"></div>
+        </div>
+        <div>
+            <h2 class="pb-40 pt-3">Heading without Id</h2>
+            <p class="pb-40">
+                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et
+                ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            </p>
+            <div class="bg-gray mx-5 block h-px content-['']"></div>
+        </div>
+        <div>
+            <h2 id="heading-3" class="pb-40 pt-3">Heading 3</h2>
+            <p class="pb-40">
+                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et
+                ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            </p>
+            <div class="bg-gray mx-5 block h-px content-['']"></div>
+        </div>
+        <div>
+            <h2 id="heading-4" class="pb-40 pt-3">Heading 4</h2>
+            <p class="pb-40">
+                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et
+                ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            </p>
+            <div class="bg-gray mx-5 block h-px content-['']"></div>
+        </div>
+    </div>
+</puibe-two-column-nav>
+
+<div class="bg-white">
+    <h1 class="text-gray px-6 pb-[40rem] pt-40 italic">&lt;content&gt;</h1>
+</div>

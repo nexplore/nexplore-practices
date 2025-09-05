@@ -1,0 +1,19 @@
+<div class="flex flex-wrap justify-between">
+    <div
+        #left
+        class="basis-full"
+        [ngClass]="_mobileOrderMap[mobileOrder]?.left + ' ' + _horizontalDistributionMap[horizontalDistribution]?.left"
+    >
+        <ng-content select="[left-column]"></ng-content>
+    </div>
+    <div
+        #right
+        class="basis-full"
+        [ngClass]="
+            _mobileOrderMap[mobileOrder]?.right + ' ' + _horizontalDistributionMap[horizontalDistribution]?.right
+        "
+    >
+        <ng-content select="[right-column]"></ng-content>
+        <div></div>
+    </div>
+</div>

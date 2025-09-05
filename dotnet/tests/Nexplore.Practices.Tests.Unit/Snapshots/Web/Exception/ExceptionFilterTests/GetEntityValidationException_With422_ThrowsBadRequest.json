@@ -1,0 +1,21 @@
+{
+  "validationResults": [
+    {
+      "entityName": "Localized TestEntity",
+      "validationErrors": [
+        {
+          "propertyName": null,
+          "errorMessage": "Test validation exception"
+        },
+        {
+          "propertyName": "Localized SampleProperty",
+          "errorMessage": "Test validation exception"
+        }
+      ]
+    }
+  ],
+  "correlationId": null,
+  "errorMessage": "Localized Exceptions_ValidationExecption",
+  "errorDetailMessage": null,
+  "errorDetailStackTrace": null
+}

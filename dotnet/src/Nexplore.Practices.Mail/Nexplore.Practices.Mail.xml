@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Nexplore.Practices.Mail</name>
+    </assembly>
+    <members>
+        <member name="M:Nexplore.Practices.Mail.MailService.SaveToPickupDirectoryAsync(MimeKit.MimeMessage,System.Threading.CancellationToken)">
+            <summary>
+            Sample implementation copied from https://github.com/jstedfast/MailKit/blob/master/FAQ.md#SpecifiedPickupDirectory.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,4 @@
+- Follow Conventional Commits convention
+- Keep the message short and concise
+- Try to refer to features instead of specific file names
+- If a commit contains multiple unrelated changes, summarize with a very short title, but also add a bullet list below for the different changes.

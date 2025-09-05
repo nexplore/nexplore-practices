@@ -1,0 +1,21 @@
+{
+  "title": "Localized ErrorTitle_StatusCode_422",
+  "status": 422,
+  "detail": "Localized Exceptions_ValidationExecption",
+  "instance": "/entity-validation-exception",
+  "validationResults": [
+    {
+      "entityName": "Localized TestEntity",
+      "validationErrors": [
+        {
+          "propertyName": null,
+          "errorMessage": "Test validation exception"
+        },
+        {
+          "propertyName": "Localized SampleProperty",
+          "errorMessage": "Test validation exception"
+        }
+      ]
+    }
+  ]
+}

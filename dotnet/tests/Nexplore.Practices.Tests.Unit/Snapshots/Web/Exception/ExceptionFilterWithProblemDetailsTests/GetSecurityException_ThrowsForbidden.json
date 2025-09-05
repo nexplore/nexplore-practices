@@ -1,0 +1,6 @@
+{
+  "title": "Localized ErrorTitle_StatusCode_403",
+  "status": 403,
+  "detail": "Localized Error_StatusCode_403",
+  "instance": "/security-exception"
+}

@@ -1,0 +1,115 @@
+import {
+    AfterViewInit,
+    Directive,
+    ElementRef,
+    EventEmitter,
+    HostBinding,
+    HostListener,
+    Input,
+    OnInit,
+    Output,
+    Renderer2,
+} from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+
+import { setHostAttr, setHostClassNames } from '../util/utils';
+import { applyLanguageAriaAttributes } from '../util/aria.utils';
+import { PuibeLocale } from '../util/constants';
+
+const className =
+    'font-normal text-small uppercase inline-block h-5 leading-tight mx-1.5 no-underline outline-none last-of-type:mr-0 first-of-type:ml-0';
+const activeClassNames = 'border-b-2 border-red';
+const inactiveClassNames =
+    'border-b-0 after:block after:border-b-2 after:scale-x-0 after:transition-transform after:duration-100 after:ease-in-out hover:after:scale-x-100 focus:after:scale-x-100 active:after:scale-x-100';
+
+@Directive({
+    standalone: true,
+    selector: 'button[puibeHeaderLanguageMenuItem]',
+})
+export class PuibeHeaderLanguageMenuItemDirective implements OnInit, AfterViewInit {
+    @HostListener('click')
+    onClick() {
+        if (!this.isActive) {
+            this.languageChanged.emit(this.language);
+        }
+
+        this.updateStylesAndAriaAttributes();
+    }
+
+    @HostBinding('class')
+    className: string = className;
+
+    private _isActive: boolean;
+    @Input()
+    set isActive(value: boolean) {
+        this._isActive = value;
+        this._elementRef.nativeElement.tabIndex = value ? -1 : 0;
+        this.updateStylesAndAriaAttributes();
+    }
+    get isActive(): boolean {
+        return this._isActive;
+    }
+
+    @Output()
+    languageChanged: EventEmitter<string> = new EventEmitter();
+
+    private _language: PuibeLocale;
+
+    @Input()
+    set language(value: PuibeLocale) {
+        this._elementRef.nativeElement.innerText = value;
+        this._language = value;
+    }
+
+    get language(): PuibeLocale {
+        return this._language;
+    }
+    constructor(
+        private _elementRef: ElementRef<HTMLElement>,
+        private _renderer: Renderer2,
+        private _translateService: TranslateService
+    ) {}
+
+    ngOnInit(): void {
+        this.renderSeparator();
+
+        setHostAttr(
+            'aria-description',
+            this._translateService.instant('Practices.Labels_Navigation_ChooseOtherLanguage'),
+            this._elementRef
+        );
+    }
+
+    ngAfterViewInit(): void {
+        if (!this.language) {
+            this._language = this._elementRef.nativeElement.innerText?.trim() as PuibeLocale;
+        }
+
+        this.updateStylesAndAriaAttributes();
+    }
+
+    private updateStylesAndAriaAttributes(): void {
+        setHostClassNames(
+            {
+                [activeClassNames]: this.isActive,
+                [inactiveClassNames]: !this.isActive,
+            },
+            this._elementRef
+        );
+
+        applyLanguageAriaAttributes(this._elementRef, this.language);
+    }
+
+    private renderSeparator(): void {
+        if (this._elementRef.nativeElement.nextElementSibling) {
+            const span: HTMLSpanElement = this._renderer.createElement('span');
+            span.innerText = '|';
+
+            this._renderer.insertBefore(
+                this._elementRef.nativeElement.parentElement,
+                span,
+                this._elementRef.nativeElement.nextElementSibling
+            );
+        }
+    }
+}

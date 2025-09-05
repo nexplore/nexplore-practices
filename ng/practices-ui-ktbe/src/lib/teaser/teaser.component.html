@@ -1,0 +1,42 @@
+<div
+    class="h-full w-full p-6"
+    [ngClass]="[
+        variant === 'red' ? 'bg-red hover:bg-red-hover text-white' : 'bg-dark-sand hover:bg-sand-hover text-black',
+        teaserLink || navigatable ? 'cursor-pointer' : ''
+    ]"
+    [attr.aria-describedby]="'teaser-title-' + id + ' teaser-subtitle-' + id"
+    [attr.role]="teaserLink || navigatable ? 'link' : undefined"
+    [attr.tabindex]="teaserLink || navigatable ? 0 : undefined"
+    (keyup.enter)="onNavigate()"
+    (click)="onNavigate()"
+>
+    <div class="flex items-center justify-between" [ngClass]="{ 'mb-4': !subtitle && ref.children.length }">
+        <div
+            role="heading"
+            [attr.aria-level]="titleLevel"
+            [attr.id]="'teaser-title-' + id"
+            class="text-h5 font-light not-italic"
+        >
+            <ng-content select="[slot='title']" />{{ title }}
+        </div>
+        <puibe-icon-arrow
+            *ngIf="teaserLink || navigatable"
+            direction="right"
+            class="h-4 w-6"
+            [colorClass]="[variant === 'red' ? 'fill-white' : 'fill-black']"
+        ></puibe-icon-arrow>
+    </div>
+    <div *ngIf="subtitle" [ngClass]="{ 'mb-4': ref.children.length }">
+        <div
+            role="heading"
+            [attr.aria-level]="subtitleLevel"
+            [attr.id]="'teaser-subtitle-' + id"
+            class="text-very-small"
+        >
+            <ng-content select="[slot='subtitle']" />{{ subtitle }}
+        </div>
+    </div>
+    <div #ref>
+        <ng-content></ng-content>
+    </div>
+</div>

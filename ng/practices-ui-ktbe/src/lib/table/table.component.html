@@ -1,0 +1,54 @@
+<thead>
+    <tr>
+        <puibe-table-column
+            *ngIf="beforeColumnTemplate$ | async as tmpl"
+            [ngClass]="headerCellClassName"
+            [noPadding]="tmpl.noPadding"
+        >
+            <ng-container *ngIf="!tmpl.hideInHeader && tmpl.template">
+                <ng-container *ngTemplateOutlet="tmpl.template"></ng-container>
+            </ng-container>
+            <ng-container *ngIf="!tmpl.hideInHeader && tmpl.componentType">
+                <ng-container *ngComponentOutlet="tmpl.componentType"></ng-container>
+            </ng-container>
+        </puibe-table-column>
+        <ng-content select="puibe-table-column"></ng-content>
+    </tr>
+</thead>
+
+<tbody>
+    <ng-content select="puibe-table-row"></ng-content>
+    <tr *ngIf="busyAndNoItems$ | async">
+        <td colspan="100">
+            <puibe-icon-spinner class="m-auto my-6 flex w-6 justify-stretch"></puibe-icon-spinner>
+        </td>
+    </tr>
+    <tr
+        *ngIf="
+            (busy$ | async) === false && (noItems$ | async) === true && (noItemsMessage || noItemsMessage === undefined)
+        "
+    >
+        <td colspan="100" class="p-2 text-center">
+            <i>{{ noItemsMessage ?? ('Practices.Labels_Table_NoEntries' | translate) }}</i>
+        </td>
+    </tr>
+</tbody>
+
+<ng-content select="puibe-table-footer"></ng-content>
+<span class="sr-only" aria-live="polite">
+    <ng-container *ngIf="eventNotificationTranslationKeys$ | async as event">
+        <ng-container *ngIf="busy$ | async">
+            {{ event.key | translate : event }}
+        </ng-container>
+    </ng-container>
+    <ng-container *ngIf="itemsCount$ | async as count">
+        <ng-container *ngIf="(busy$ | async) === false">
+            {{ 'Practices.Labels_Table_NumberOfEntries' | translate : { count } }}
+        </ng-container>
+    </ng-container>
+    <ng-container *ngIf="(noItems$ | async) === true">
+        <ng-container *ngIf="(busy$ | async) === false">
+            {{ noItemsMessage ?? ('Practices.Labels_Table_NoEntries' | translate) }}
+        </ng-container>
+    </ng-container>
+</span>

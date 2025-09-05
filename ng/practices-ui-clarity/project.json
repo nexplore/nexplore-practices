@@ -1,0 +1,36 @@
+{
+    "name": "practices-ui-clarity",
+    "$schema": "../node_modules/nx/schemas/project-schema.json",
+    "projectType": "library",
+    "sourceRoot": "practices-ui-clarity/src",
+    "prefix": "puiclr",
+    "targets": {
+        "build": {
+            "executor": "@nx/angular:package",
+            "options": {
+                "tsConfig": "practices-ui-clarity/tsconfig.lib.json",
+                "project": "practices-ui-clarity/ng-package.json"
+            },
+            "configurations": {
+                "production": {
+                    "tsConfig": "practices-ui-clarity/tsconfig.lib.prod.json"
+                }
+            }
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "options": {
+                "jestConfig": "practices-ui-clarity/jest.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/eslint:lint",
+            "options": {
+                "lintFilePatterns": [
+                    "practices-ui-clarity/**/*.ts",
+                    "practices-ui-clarity/package.json"
+                ]
+            }
+        }
+    }
+}

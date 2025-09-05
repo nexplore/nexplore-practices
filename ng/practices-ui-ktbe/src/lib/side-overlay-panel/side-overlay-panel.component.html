@@ -1,0 +1,23 @@
+@if(isOpenSignal()){
+<div
+    cdkTrapFocus
+    cdkTrapFocusAutoCapture="true"
+    class="relative flex h-full w-full flex-col bg-white shadow-xl"
+    @slideInOut
+    (@slideInOut.done)="onAnimationDone($event)"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="panelTitle"
+>
+    <h2 id="panelTitle" class="m-0 p-6 outline-none" tabindex="-1" cdkFocusInitial>{{ titleSignal() }}</h2>
+    <div class="scrollbar-gutter-stable flex-1 overflow-auto p-6">
+        <ng-template [cdkPortalOutlet]="portal"></ng-template>
+    </div>
+    <button (click)="close()" class="absolute right-6 top-6 h-min w-4" aria-label="">
+        <puibe-icon-close
+            [colorClass]="'fill-black'"
+            [attr.aria-label]="'Practices.Labels_Dialog_Close' | translate"
+        ></puibe-icon-close>
+    </button>
+</div>
+}

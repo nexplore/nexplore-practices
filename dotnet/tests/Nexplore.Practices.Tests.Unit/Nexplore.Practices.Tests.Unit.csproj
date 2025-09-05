@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <NeutralLanguage>de-CH</NeutralLanguage>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+        <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="9.0.7" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+        <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="8.0.14" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Syncfusion.Pdf\Assets\LiberationMono-Bold.ttf" />
+      <None Remove="Syncfusion.Pdf\Assets\LiberationMono-BoldItalic.ttf" />
+      <None Remove="Syncfusion.Pdf\Assets\LiberationMono-Italic.ttf" />
+      <None Remove="Syncfusion.Pdf\Assets\LiberationMono-Regular.ttf" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Nexplore.Practices.Configuration\Nexplore.Practices.Configuration.csproj" />
+        <ProjectReference Include="..\..\src\Nexplore.Practices.Core\Nexplore.Practices.Core.csproj" />
+        <ProjectReference Include="..\..\src\Nexplore.Practices.EntityFramework\Nexplore.Practices.EntityFramework.csproj" />
+        <ProjectReference Include="..\..\src\Nexplore.Practices.File\Nexplore.Practices.File.csproj" />
+        <ProjectReference Include="..\..\src\Nexplore.Practices.Mail\Nexplore.Practices.Mail.csproj" />
+        <ProjectReference Include="..\..\src\Nexplore.Practices.Serilog\Nexplore.Practices.Serilog.csproj" />
+        <ProjectReference Include="..\..\src\Nexplore.Practices.Syncfusion.Excel\Nexplore.Practices.Syncfusion.Excel.csproj" />
+        <ProjectReference Include="..\..\src\Nexplore.Practices.Syncfusion.Pdf\Nexplore.Practices.Syncfusion.Pdf.csproj" />
+        <ProjectReference Include="..\..\src\Nexplore.Practices.Web\Nexplore.Practices.Web.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Web\Localization\TestResource.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>TestResource.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Web\Localization\FallbackResource.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>FallbackResource.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Web\Localization\TestResource.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>TestResource.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Web\Localization\FallbackResource.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>FallbackResource.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Syncfusion.Pdf\Assets\LiberationMono-Bold.ttf" />
+        <EmbeddedResource Include="Syncfusion.Pdf\Assets\LiberationMono-BoldItalic.ttf" />
+        <EmbeddedResource Include="Syncfusion.Pdf\Assets\LiberationMono-Italic.ttf" />
+        <EmbeddedResource Include="Syncfusion.Pdf\Assets\LiberationMono-Regular.ttf" />
+        <EmbeddedResource Include="Syncfusion.Pdf\Components\Assets\test_image.png" />
+    </ItemGroup>
+
+</Project>

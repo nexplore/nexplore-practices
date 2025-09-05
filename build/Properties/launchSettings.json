@@ -1,0 +1,16 @@
+{
+    "profiles": {
+        "BuildPackAll": {
+            "commandName": "Project",
+            "commandLineArgs": "BuildPackAll"
+        },
+        "PackDotNet": {
+            "commandName": "Project",
+            "commandLineArgs": "PackDotNet"
+        },
+        "PackNg": {
+            "commandName": "Project",
+            "commandLineArgs": "PackNg"
+        }
+    }
+}

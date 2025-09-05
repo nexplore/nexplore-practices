@@ -1,0 +1,14 @@
+<span #scrollingAnchor></span>
+<div class="flex justify-center">
+    <ng-container *ngIf="(tableNoItems$ | async) === false">
+        <ng-container *ngIf="(busyCount$ | async) > 0; then busy; else idle"></ng-container>
+        <ng-template #busy>
+            <puibe-icon-spinner #busy class="block h-6 w-6"></puibe-icon-spinner>
+        </ng-template>
+        <ng-template #idle>
+            <p *ngIf="noMoreData$ | async">
+                {{ 'Practices.Labels_Table_NoMoreDataAvailable' | translate }}
+            </p>
+        </ng-template>
+    </ng-container>
+</div>

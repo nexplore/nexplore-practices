@@ -1,0 +1,99 @@
+{
+    "name": "practices-ui-ktbe",
+    "$schema": "../node_modules/nx/schemas/project-schema.json",
+    "projectType": "library",
+    "generators": {
+        "@schematics/angular:component": {
+            "standalone": true
+        }
+    },
+    "sourceRoot": "practices-ui-ktbe/src",
+    "prefix": "puibe",
+    "targets": {
+        "build": {
+            "executor": "@nx/angular:package",
+            "dependsOn": [
+                "^build"
+            ],
+            "options": {
+                "tsConfig": "practices-ui-ktbe/tsconfig.lib.json",
+                "project": "practices-ui-ktbe/ng-package.json"
+            },
+            "configurations": {
+                "production": {
+                    "tsConfig": "practices-ui-ktbe/tsconfig.lib.prod.json"
+                }
+            }
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "options": {
+                "jestConfig": "practices-ui-ktbe/jest.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/eslint:lint",
+            "options": {
+                "lintFilePatterns": [
+                    "practices-ui-ktbe/**/*.ts",
+                    "practices-ui-ktbe/package.json"
+                ]
+            }
+        },
+        "storybook": {
+            "executor": "@storybook/angular:start-storybook",
+            "options": {
+                "configDir": "practices-ui-ktbe/.storybook",
+                "browserTarget": "practices-ui-ktbe:build-storybook",
+                "styles": [
+                    "samples-ktbe/src/styles.css"
+                ],
+                "compodoc": true,
+                "compodocArgs": [
+                    "-e",
+                    "json",
+                    "-d",
+                    "practices-ui-ktbe"
+                ],
+                "port": 6006
+            }
+        },
+        "build-storybook": {
+            "executor": "@storybook/angular:build-storybook",
+            "outputs": [
+                "{options.outputDir}"
+            ],
+            "options": {
+                "configDir": "practices-ui-ktbe/.storybook",
+                "browserTarget": "practices-ui-ktbe:build-storybook",
+                "styles": [
+                    "samples-ktbe/src/styles.css"
+                ],
+                "compodoc": true,
+                "compodocArgs": [
+                    "-e",
+                    "json",
+                    "-d",
+                    "practices-ui-ktbe"
+                ],
+                "outputDir": "dist/storybook/practices-ui-ktbe"
+            }
+        },
+        "static-storybook": {
+            "executor": "@nx/web:file-server",
+            "dependsOn": [
+                "build-storybook"
+            ],
+            "options": {
+                "buildTarget": "practices-ui-ktbe:build-storybook",
+                "staticFilePath": "dist/storybook/practices-ui-ktbe",
+                "spa": true
+            },
+            "configurations": {
+                "ci": {
+                    "buildTarget": "practices-ui-ktbe:build-storybook:ci"
+                }
+            }
+        }
+    }
+}

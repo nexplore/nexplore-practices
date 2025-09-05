@@ -1,0 +1,43 @@
+<div
+    *ngIf="open"
+    @sidePanelAnim
+    class="border-r-gray relative flex min-h-full w-screen min-w-60 flex-col gap-2 border-r bg-white lg:w-[33vw] xl:w-[25vw]"
+>
+    <div class="absolute top-3 w-full min-w-60 px-11">
+        <!-- TODO: Set tabindex to positive value, right now there is a problem with cdkTrapFocus: https://github.com/angular/components/issues/5435 -->
+        <button
+            class="absolute left-10 top-5 lg:hidden"
+            *ngIf="canGoBack"
+            (click)="back()"
+            tabindex="0"
+            [ariaLabel]="'Practices.Labels_Navigation_Back' | translate"
+        >
+            <puibe-icon-arrow direction="left" class="flex h-5 w-5"></puibe-icon-arrow>
+        </button>
+        <ng-content select="puibe-header-logo, [puibeHeader]"></ng-content>
+        <button
+            class="absolute right-5 top-5 max-lg:mr-4 max-lg:block"
+            [ariaLabel]="'Practices.Labels_Navigation_Close' | translate"
+            *ngIf="canClose"
+            (click)="close()"
+            tabindex="0"
+        >
+            <puibe-icon-close class="flex h-5 w-5"></puibe-icon-close>
+        </button>
+    </div>
+
+    <div class="mt-3 pt-10" *ngIf="!noHeader"></div>
+    <h4
+        class="mb-0 mt-10 min-h-7 min-w-60 basis-7 overflow-hidden text-ellipsis whitespace-nowrap px-10"
+        *ngIf="!noHeader"
+    >
+        {{ heading }}
+    </h4>
+    <div class="border-b-dark-gray-50 mx-11 border-b pb-4" *ngIf="!noHeader"></div>
+    <div class="min-w-60 py-4" #contentRef role="list">
+        <ng-content></ng-content>
+    </div>
+    <div class="mt-auto px-10 pb-10" (click)="onClickFooter($event)">
+        <ng-content select="puibe-footer, [puibeFooter]"></ng-content>
+    </div>
+</div>

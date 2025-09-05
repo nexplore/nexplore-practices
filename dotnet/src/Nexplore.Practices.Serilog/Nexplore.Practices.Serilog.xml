@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Nexplore.Practices.Serilog</name>
+    </assembly>
+    <members>
+        <member name="T:Nexplore.Practices.Serilog.CorrelationIdEnricher">
+            <summary>
+            This enricher enables the usage of the {CorrelationId} parameter in the log template.
+            The parameter will be replaced by the value of RequestId in the HttpRequest.
+            </summary>
+        </member>
+        <member name="T:Nexplore.Practices.Serilog.MachineNameEnricher">
+            <summary>
+            This enricher enables the usage of the {MachineName} parameter in the log template.
+            The parameter will be replaced by the name of the machine the application is running on.
+            </summary>
+        </member>
+        <member name="T:Nexplore.Practices.Serilog.UserIdEnricher">
+            <summary>
+            This enricher enables the usage of the {UserId} parameter in the log template.
+            The parameter will be replaced by the value of UserId of the currently logged-in user.
+            </summary>
+        </member>
+    </members>
+</doc>

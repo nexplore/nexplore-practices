@@ -1,0 +1,31 @@
+<puibe-expansion-panel
+    [heading]="heading"
+    [addItemPadding]="false"
+    [headingLevel]="2"
+    [variant]="'white'"
+    [isExpanded]="true"
+    class="relative overflow-hidden"
+>
+    <div *ngIf="navigationHeadings?.length > 0" role="separator" class="bg-gray mx-5 mb-5 block h-px"></div>
+    <nav class="pb-5" role="navigation" [attr.aria-label]="heading">
+        <div
+            #movingBar
+            class="bg-red absolute left-0 w-[6px] transition-all duration-300 ease-[cubic-bezier(0.38,-0.38,0.5,1.28)]"
+        ></div>
+        <ul class="list-none">
+            <li *ngFor="let navHeading of navigationHeadings; index as i" [attr.aria-selected]="activeIndex === i">
+                <a
+                    #navHeading
+                    class="text-h5 block p-4 pl-6 font-light no-underline transition-colors duration-150 ease-in-out hover:text-black"
+                    [ngClass]="{
+                        'text-red bg-light-sand hover:text-red': activeIndex === i,
+                        '[&:hover>span]:text-red': activeIndex !== i
+                    }"
+                    (click)="onHeadingClick(i, $event)"
+                >
+                    <span class="inline-block select-none transition-colors">{{ navHeading }}</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</puibe-expansion-panel>

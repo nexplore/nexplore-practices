@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Nexplore.Practices.Web</name>
+    </assembly>
+    <members>
+        <member name="T:Nexplore.Practices.Web.Filters.BusinessExceptionFilterAttribute">
+            <summary>
+            Handles every BusinessException that is unhandled to this point.
+            </summary>
+        </member>
+        <member name="T:Nexplore.Practices.Web.Filters.DbTransactionalUnitOfWorkAttribute">
+            <summary>
+            Creates a <see cref="T:Nexplore.Practices.Core.Scopes.IUnitOfWorkWithSingleDbTransaction"/> for controller invocation.
+            </summary>
+        </member>
+        <member name="M:Nexplore.Practices.Web.Filters.DbTransactionalUnitOfWorkAttribute.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Nexplore.Practices.Web.Filters.DbTransactionalUnitOfWorkAttribute"/> class.
+            </summary>
+            <param name="commitDbTransactionIfNoException">If set to true, the transaction is committed when the controller response ends.
+            Be aware of in case of streaming responses the transaction is kept open for a long period. In this case it's better to commit the transaction by yourself.</param>
+        </member>
+        <member name="M:Nexplore.Practices.Web.Filters.DbTransactionalUnitOfWorkAttribute.#ctor(System.Int32,System.Int32[])">
+            <summary>
+             Initializes a new instance of the <see cref="T:Nexplore.Practices.Web.Filters.DbTransactionalUnitOfWorkAttribute"/> class.
+            </summary>
+            <param name="commitDbTransactionIfNoExceptionAndStatusCode">The transaction is committed when the controller response ends with the given status code.
+            Be aware of in case of streaming responses the transaction is kept open for a long period. In this case it's better to commit the transaction by yourself.</param>
+            <param name="commitDbTransactionIfNoExceptionAndOneOfStatusCodes">Additional status codes to commit the transaction if response ends with one of the given status codes.</param>
+        </member>
+        <member name="M:Nexplore.Practices.Web.Filters.DbTransactionalUnitOfWorkAttribute.OnResourceExecutionAsync(Microsoft.AspNetCore.Mvc.Filters.ResourceExecutingContext,Microsoft.AspNetCore.Mvc.Filters.ResourceExecutionDelegate)">
+            <summary>
+            When invoked, a new <see cref="T:Nexplore.Practices.Core.Scopes.IUnitOfWorkWithSingleDbTransaction"/> is created.
+            </summary>
+            <param name="context"><see cref="T:Microsoft.AspNetCore.Mvc.Filters.ResourceExecutingContext"/>.</param>
+            <param name="next"><see cref="T:Microsoft.AspNetCore.Mvc.Filters.ResourceExecutionDelegate"/>.</param>
+            <returns><see cref="T:System.Threading.Tasks.Task"/>.</returns>
+        </member>
+        <member name="M:Nexplore.Practices.Web.Filters.DbTransactionalUnitOfWorkAttribute.OnActionExecutionAsync(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext,Microsoft.AspNetCore.Mvc.Filters.ActionExecutionDelegate)">
+            <summary>
+            When invoked, the <see cref="T:Nexplore.Practices.Core.Scopes.IUnitOfWorkWithSingleDbTransaction"/> is committed if specified.
+            </summary>
+            <param name="context"><see cref="T:Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext"/>.</param>
+            <param name="next"><see cref="T:Microsoft.AspNetCore.Mvc.Filters.ActionExecutionDelegate"/>.</param>
+            <returns><see cref="T:System.Threading.Tasks.Task"/>.</returns>
+        </member>
+        <member name="T:Nexplore.Practices.Web.Filters.ExceptionFilterBaseAttribute">
+            <summary>
+            Base class for returning an ErrorDto with the given status code.
+            </summary>
+        </member>
+        <member name="T:Nexplore.Practices.Web.Filters.UnhandledExceptionFilterAttribute">
+            <summary>
+            Handles every exception that is unhandled to this point.
+            </summary>
+        </member>
+        <member name="P:Nexplore.Practices.Web.Localization.StringLocalizerWithFormat.Item(System.String,System.Object[])">
+            <summary>
+            <list type="bullet">
+            <item>Invokes the base indexer to resolve composite formats handled by <c>string.Format()</c> e.g. <c>"Foo {0}"</c>.</item>
+            <item>Interpolates template strings such as <c>"Foo {{ bar }}"</c>, if the provided params (<c>arguments</c>) contains a <c>KeyValuePair&lt;string, string&gt;</c>. with <c>("foo", "replacement")</c> respectively.</item>
+            </list>
+            Can handle mixed composite and template strings such as <c>"Foo {0} {{ bar }} {1}</c>, where the indices correlate exactly with the order in <c>arguments</c> e.g. <c>{ "Value0", ("bar", "ValueBar"), "Value1" }</c>.
+            </summary>
+            <param name="name">Name of the resource.</param>
+            <param name="arguments">Template arguments.</param>
+        </member>
+        <member name="M:Nexplore.Practices.Web.Localization.StringLocalizerWithFormat.TemplateRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>{\\s*(\\w+)\\s*}</code><br/>
+            Options:<br/>
+            <code>RegexOptions.Multiline</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match '{'.<br/>
+            ○ Match a whitespace character atomically any number of times.<br/>
+            ○ 1st capture group.<br/>
+                ○ Match a word character atomically at least once.<br/>
+            ○ Match a whitespace character atomically any number of times.<br/>
+            ○ Match '}'.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="T:Nexplore.Practices.Web.Services.CookieSessionDataProvider">
+            <summary>
+            Stores data in a cookies. Be sure to have data protection api enabled.
+            </summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.TemplateRegex_0">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the TemplateRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.TemplateRegex_0.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.TemplateRegex_0.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.TemplateRegex_0.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.TemplateRegex_0.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.TemplateRegex_0.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.TemplateRegex_0.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.TemplateRegex_0.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.TemplateRegex_0.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.Utilities">
+            <summary>Helper methods used by generated <see cref="T:System.Text.RegularExpressions.Regex"/>-derived implementations.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout">
+            <summary>Default timeout value set in <see cref="T:System.AppContext"/>, or <see cref="F:System.Text.RegularExpressions.Regex.InfiniteMatchTimeout"/> if none was set.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_hasTimeout">
+            <summary>Whether <see cref="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout"/> is non-infinite.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Utilities.IsWordChar(System.Char)">
+            <summary>Determines whether the character is part of the [\w] set.</summary>
+        </member>
+    </members>
+</doc>

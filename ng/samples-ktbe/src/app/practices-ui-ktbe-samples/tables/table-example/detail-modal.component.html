@@ -1,0 +1,43 @@
+<puibe-modal [hideCloseButton]="false" class="block w-[60vw] min-w-[600px]">
+    <h2 puibeModalTitle>
+        {{ data.name }}
+        <puibe-icon-enumeration
+            [color]="data.active ? 'green' : 'red'"
+            size="s"
+            [title]="data.active ? 'Active' : 'Inactive'"
+        ></puibe-icon-enumeration>
+    </h2>
+    <h3 puibeModalSubtitle>{{ data.type }}</h3>
+    <div puibeModalContent>
+        <form [formGroup]="form">
+            <puibe-form-field>
+                <label puibeLabel>Name</label>
+                <input puibeInput type="text" formControlName="name" [placeholder]="'Search'" />
+            </puibe-form-field>
+
+            <puibe-form-field>
+                <label puibeLabel>Active</label>
+                <ng-select
+                    puibeInput
+                    [items]="activeItems"
+                    bindLabel="label"
+                    bindValue="value"
+                    formControlName="active"
+                ></ng-select>
+            </puibe-form-field>
+
+            <puibe-form-field>
+                <label puibeLabel>Type</label>
+                <ng-select
+                    puibeInput
+                    [items]="typeItems"
+                    bindLabel="label"
+                    bindValue="value"
+                    formControlName="type"
+                ></ng-select>
+            </puibe-form-field>
+        </form>
+    </div>
+    <button puibeModalFooterAction puibeButton variant="primary">Save</button>
+    <button puibeModalFooterAction puibeButton>Cancel</button>
+</puibe-modal>

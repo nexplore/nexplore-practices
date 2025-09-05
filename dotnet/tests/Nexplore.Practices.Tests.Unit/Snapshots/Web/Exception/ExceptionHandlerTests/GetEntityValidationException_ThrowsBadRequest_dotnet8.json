@@ -1,0 +1,15 @@
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+  "title": "Localized ErrorTitle_StatusCode_400",
+  "status": 400,
+  "detail": "Localized Exceptions_ValidationExecption",
+  "instance": "/error",
+  "errors": {
+    "Localized TestEntity": [
+      "Test validation exception"
+    ],
+    "Localized TestEntity_SampleProperty": [
+      "Test validation exception"
+    ]
+  }
+}

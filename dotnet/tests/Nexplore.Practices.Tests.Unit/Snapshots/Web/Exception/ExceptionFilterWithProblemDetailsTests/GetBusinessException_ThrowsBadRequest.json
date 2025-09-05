@@ -1,0 +1,6 @@
+{
+  "title": "Localized ErrorTitle_StatusCode_400",
+  "status": 400,
+  "detail": "Test exception occured.",
+  "instance": "/business-exception"
+}

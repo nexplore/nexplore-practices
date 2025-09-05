@@ -1,0 +1,8 @@
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.4",
+  "title": "Localized ErrorTitle_StatusCode_403",
+  "status": 403,
+  "detail": "Localized Error_StatusCode_403",
+  "instance": "/error",
+  "traceId": "00-00000000000000000000000000000000-0000000000000000-00"
+}

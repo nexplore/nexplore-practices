@@ -1,0 +1,33 @@
+<footer class="border-light-gray bg-light-sand border-t">
+    <div
+        puibeContainer
+        class="flex flex-col gap-y-8 px-5 pb-7 pt-9 md:px-8 lg:px-0"
+        [ngClass]="{
+            'md:flex md:flex-initial md:flex-row-reverse md:items-center md:justify-between': flexBreakpoint === 'md',
+            'lg:flex lg:flex-initial lg:flex-row-reverse lg:items-center lg:justify-between': flexBreakpoint === 'lg'
+        }"
+    >
+        <ng-content></ng-content>
+        <nav [attr.aria-label]="'Practices.Labels_Navigation_FooterNavigation' | translate">
+            <ul
+                class="flex list-none flex-wrap gap-x-10"
+                [ngClass]="{
+                    'md:flex-row md:pb-0': flexBreakpoint === 'md',
+                    'lg:flex-row lg:pb-0': flexBreakpoint === 'lg'
+                }"
+            >
+                <ng-content select="[puibeFooterMenuItem], puibe-footer-menu-item"></ng-content>
+            </ul>
+        </nav>
+        <div
+            class="flex"
+            [ngClass]="{
+                'flex-col md:flex-row-reverse md:pt-0': flexBreakpoint === 'md',
+                'flex-col lg:flex-row-reverse lg:pt-0': flexBreakpoint === 'lg',
+            }"
+        >
+            <div #languageMenuContent><ng-content select="[puibeFooterLanguageMenuItem]"></ng-content></div>
+            <ng-content select="[puibeFooterCopyright], puibe-footer-copyright"></ng-content>
+        </div>
+    </div>
+</footer>

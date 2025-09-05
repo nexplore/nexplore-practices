@@ -1,0 +1,14 @@
+<puibe-two-column>
+    <div left-column>
+        <ng-content></ng-content>
+    </div>
+    <div right-column class="sticky top-4 self-start">
+        <ng-content select="[above-nav]"></ng-content>
+        <puibe-nav-expansion-panel
+            [heading]="heading"
+            (headingClicked)="scrollIntoView($event)"
+            (activeIndexChanged)="updateLocationHash($event)"
+        ></puibe-nav-expansion-panel>
+        <ng-content select="[below-nav]"></ng-content>
+    </div>
+</puibe-two-column>

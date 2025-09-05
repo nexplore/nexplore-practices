@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Nexplore.Practices.File</name>
+    </assembly>
+    <members>
+        <member name="T:Nexplore.Practices.File.GZipCompressionService">
+            <summary>
+            Implement file compression using GZip.
+            </summary>
+        </member>
+    </members>
+</doc>

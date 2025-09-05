@@ -1,0 +1,62 @@
+<cdk-accordion class="block">
+    <cdk-accordion-item #accordionItem="cdkAccordionItem" class="block" [ngClass]="{ 'border-gray border': isWhite }">
+        <div role="heading" [attr.aria-level]="headingLevel" class="font-light">
+            <button
+                class="group flex w-full content-center items-center justify-between text-left"
+                type="button"
+                [attr.aria-expanded]="isExpanded"
+                [attr.aria-controls]="'accordion-body-' + id"
+                tabindex="0"
+                [ngClass]="{
+                    'p-6': !compact,
+                    'p-3': compact,
+                    'bg-dark-sand aria-expanded:bg-sand hover:bg-sand-hover focus:bg-sand-hover aria-expanded:hover:bg-sand-hover aria-expanded:focus:bg-sand-hover':
+                        isSand,
+                    'bg-sand aria-expanded:bg-light-sand hover:bg-sand focus:bg-sand aria-expanded:hover:bg-sand aria-expanded:focus:bg-sand': 
+                        isLightSand,
+                    'hover:bg-very-light-gray focus:bg-very-light-gray aria-expanded:hover:bg-very-light-gray aria-expanded:focus:bg-very-light-gray bg-white aria-expanded:bg-white':
+                        isWhite,
+                    'hover:bg-red-hover focus:bg-red-hover aria-expanded:hover:bg-red-hover aria-expanded:focus:bg-red-hover bg-red text-white':
+                        isRed,
+                }"
+                (click)="toggle(accordionItem)"
+            >
+                <span class="sr-only">{{ 'Practices.Labels_ExpansionPanel' | translate }}</span>
+                <div class="mr-6 flex flex-col items-start">
+                    <div class="flex items-center gap-4">
+                        <p *ngIf="heading" [ngClass]="compact ? 'text-base' : 'text-h4'">{{ heading }}</p>
+                        <ng-content select="[slot='heading-after']"></ng-content>
+                    </div>
+                    <p class="mt-1" *ngIf="caption">{{ caption }}</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <ng-content select="[slot='arrow-before']"></ng-content>
+                    <puibe-icon-arrow
+                        direction="down"
+                        [ngClass]="compact ? 'h-3 w-4' : 'h-4 w-6'"
+                        class="rotate-0 transition-all duration-[250ms] ease-in-out group-hover:-rotate-90 group-aria-expanded:-rotate-180 group-aria-expanded:group-hover:-rotate-90"
+                    ></puibe-icon-arrow>
+                </div>
+            </button>
+        </div>
+        <div
+            #content
+            [ngClass]="{
+                'bg-sand': isSand,
+                'bg-light-sand': isLightSand,
+                'bg-white': isWhite,
+                'bg-red text-white': isRed,
+                'p-6': addItemPadding && !compact && !isInitiallyCollapsed,
+                'p-3': addItemPadding && compact,
+                'h-0 overflow-y-hidden p-0': isInitiallyCollapsed,
+                'overflow-x-auto': enableContentScroll
+            }"
+            role="region"
+            [attr.id]="'accordion-body-' + id"
+            [attr.aria-hidden]="!isExpanded"
+            [@bodyExpansion]="_getExpandedState()"
+        >
+            <ng-content></ng-content>
+        </div>
+    </cdk-accordion-item>
+</cdk-accordion>
