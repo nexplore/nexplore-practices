@@ -1,0 +1,24 @@
+<div
+    class="max-sm:text-h6 flex flex-auto items-center justify-center rounded-full leading-loose transition duration-100 ease-in-out"
+    [ngClass]="{
+        'bg-red hover:bg-red-hover text-white': selected === true,
+        'hover:bg-dark-sand': selected === false,
+        'text-dark-gray contrast-more:text-anthrazit-solid font-light hover:text-black': isOtherPeriod,
+        'border-cappuchino border': today,
+        'text-dark-gray-50 hover:text-dark-gray-50  cursor-not-allowed font-light hover:bg-transparent': disabled,
+        'bg-gray': selected === true && disabled,
+        'cursor-pointer': !disabled
+    }"
+    [title]="label"
+    role="button"
+    [attr.tabindex]="isFocusable() ? '0' : '-1'"
+    [ariaSelected]="selected"
+    [ariaLabel]="label"
+    [ariaHidden]="!selected && !focused"
+    [ariaDisabled]="disabled"
+    [attr.data-selected-date]="selected"
+    [attr.data-focused-date]="focused"
+>
+    <span aria-hidden="true">{{ labelShort }}</span>
+    <span class="sr-only">{{ label }}</span>
+</div>

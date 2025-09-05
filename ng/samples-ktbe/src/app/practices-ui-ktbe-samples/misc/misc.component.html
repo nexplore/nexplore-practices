@@ -1,0 +1,29 @@
+<div class="container mx-auto">
+    <h2>Rewrite Resources with Fallback</h2>
+
+    <div class="my-5">
+        <p>{{ 'Base.Sample_Title' | translate }}</p>
+        <p class="text-small">
+            → <b>Base.Sample_Title</b> is rewritten to <b>Other.Sample_Title</b> and fallback to
+            <b>Fallback.Sample_Title</b>. Since there is no <b>Other.Sample_Title</b> nor a
+            <b>Fallback.Sample_Title</b> Resource, it cannot be resolved.
+        </p>
+    </div>
+
+    <div class="my-5">
+        <p>{{ 'Base.Sample_Foo' | translate }}</p>
+        <p class="text-small">
+            → <b>Base.Sample_Foo</b> is rewritten to <b>Other.Sample_Foo</b> and fallback to <b>Fallback.Sample_Foo</b>.
+            Since <b>Other.Sample_Foo</b> is defined, this should display the value of <b>Other.Sample_Foo</b>.
+        </p>
+    </div>
+
+    <div class="my-5">
+        <p>{{ 'Base.Sample_Bar' | translate }}</p>
+        <p class="text-small">
+            → <b>Base.Sample_Bar</b> is rewritten to <b>Other.Sample_Bar</b> and fallback to <b>Fallback.Sample_Bar</b>.
+            Since <b>Other.Sample_Bar</b> is not defined, this should fallback to the value of
+            <b>Fallback.Sample_Bar</b>.
+        </p>
+    </div>
+</div>

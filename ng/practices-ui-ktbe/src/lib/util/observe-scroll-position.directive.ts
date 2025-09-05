@@ -1,0 +1,50 @@
+import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { getScrollParent } from './utils';
+
+export type ScrollPositionChange = { top: number; left: number };
+
+@Directive({
+    standalone: true,
+    selector: '[puibeObserveScrollPosition]',
+})
+export class ObserveScrollPositionDirective implements OnInit, OnDestroy, AfterViewInit {
+    /** Observes the position relative to the scroll parent, whenever scrolled */
+    @Output()
+    puibeObserveScrollPosition = new EventEmitter<ScrollPositionChange>();
+
+    @Input()
+    puibeObserveScrollPositionScrollParent: Element;
+
+    scrollParent: Element | Document;
+
+    constructor(private elementRef: ElementRef<HTMLElement>) {}
+
+    private checkScrollPosition = (): void => {
+        const rect = this.elementRef.nativeElement.getBoundingClientRect();
+        const parentRect =
+            this.scrollParent instanceof Document ? { top: 0, left: 0 } : this.scrollParent.getBoundingClientRect();
+        this.puibeObserveScrollPosition.emit({
+            top: rect.top - parentRect.top,
+            left: rect.left - parentRect.left,
+        });
+    };
+
+    ngOnInit(): void {
+        this.scrollParent =
+            this.puibeObserveScrollPositionScrollParent ?? getScrollParent(this.elementRef.nativeElement);
+        this.scrollParent.addEventListener('scroll', this.checkScrollPosition, { passive: true });
+
+        if (this.scrollParent !== document) {
+            window.addEventListener('scroll', this.checkScrollPosition);
+        }
+    }
+
+    ngAfterViewInit(): void {
+        this.checkScrollPosition();
+    }
+
+    ngOnDestroy(): void {
+        this.scrollParent.removeEventListener('scroll', this.checkScrollPosition);
+        window.removeEventListener('scroll', this.checkScrollPosition);
+    }
+}

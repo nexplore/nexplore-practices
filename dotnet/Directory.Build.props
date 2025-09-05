@@ -1,0 +1,15 @@
+<Project>
+    <PropertyGroup>
+        <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+        <Authors>Nexplore AG</Authors>
+        <Copyright>Copyright Nexplore AG</Copyright>
+        <LangVersion>latest</LangVersion>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <DocumentationFile>$(MSBuildProjectDir)$(MSBuildProjectName).xml</DocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <AnalysisLevel>9.0-recommended</AnalysisLevel>
+    </PropertyGroup>
+</Project>

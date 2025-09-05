@@ -1,0 +1,23 @@
+{
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        "types": [
+            "jest",
+            "node"
+        ],
+        "module": "commonjs",
+        "target": "ES2022",
+        "moduleResolution": "node",
+        "forceConsistentCasingInFileNames": false,
+        "strict": false,
+        "noImplicitOverride": false,
+        "noPropertyAccessFromIndexSignature": false,
+        "noImplicitReturns": false,
+        "noFallthroughCasesInSwitch": false,
+        "noImplicitAny": false
+    },
+    "include": [
+        "**/*.spec.ts",
+        "**/*.d.ts"
+    ]
+}

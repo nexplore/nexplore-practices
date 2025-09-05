@@ -1,0 +1,16 @@
+workflow: GitHubFlow/v1
+mode: ContinuousDelivery
+strategies: ["TaggedCommit"]
+tag-prefix: ""
+branches:
+  feature:
+    label: "alpha-{BranchName}"
+  pull-request:
+    label: "beta"
+  main:
+    label: "rc"
+  support:
+    label: "rc"
+    regex: "^support/"
+    increment: "Patch"
+

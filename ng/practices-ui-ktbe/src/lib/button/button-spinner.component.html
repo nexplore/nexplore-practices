@@ -1,0 +1,10 @@
+<puibe-icon-spinner
+    [fillClassName]="fillClassName$ | async"
+    class="block"
+    [ngClass]="{
+        'h-8 w-8': (buttonSize$ | async) === 'large',
+        'w-full': (buttonSize$ | async) === 'small'
+    }"
+    *ngIf="busy$ | async"
+></puibe-icon-spinner>
+<ng-content *ngIf="!(busy$ | async)"></ng-content>

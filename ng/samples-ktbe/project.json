@@ -1,0 +1,96 @@
+{
+    "name": "samples-ktbe",
+    "$schema": "../node_modules/nx/schemas/project-schema.json",
+    "projectType": "application",
+    "generators": {},
+    "sourceRoot": "samples-ktbe/src",
+    "prefix": "app",
+    "targets": {
+        "build": {
+            "executor": "@angular-devkit/build-angular:browser",
+            "options": {
+                "outputPath": "dist/samples-ktbe",
+                "index": "samples-ktbe/src/index.html",
+                "main": "samples-ktbe/src/main.ts",
+                "polyfills": "samples-ktbe/src/polyfills.ts",
+                "tsConfig": "samples-ktbe/tsconfig.app.json",
+                "assets": [
+                    "samples-ktbe/src/favicon.ico",
+                    "samples-ktbe/src/assets"
+                ],
+                "styles": [
+                    "samples-ktbe/src/styles.css"
+                ],
+                "scripts": [],
+                "vendorChunk": true,
+                "extractLicenses": false,
+                "buildOptimizer": false,
+                "sourceMap": true,
+                "optimization": false,
+                "namedChunks": true
+            },
+            "configurations": {
+                "production": {
+                    "fileReplacements": [
+                        {
+                            "replace": "samples-ktbe/src/environments/environment.ts",
+                            "with": "samples-ktbe/src/environments/environment.prod.ts"
+                        }
+                    ],
+                    "optimization": true,
+                    "outputHashing": "all",
+                    "sourceMap": false,
+                    "namedChunks": false,
+                    "extractLicenses": true,
+                    "vendorChunk": false,
+                    "buildOptimizer": true,
+                    "budgets": [
+                        {
+                            "type": "initial",
+                            "maximumWarning": "2mb",
+                            "maximumError": "5mb"
+                        },
+                        {
+                            "type": "anyComponentStyle",
+                            "maximumWarning": "6kb"
+                        }
+                    ],
+                    "tsConfig": "samples-ktbe/tsconfig.app.prod.json"
+                }
+            },
+            "defaultConfiguration": ""
+        },
+        "serve": {
+            "executor": "@angular-devkit/build-angular:dev-server",
+            "options": {
+                "buildTarget": "samples-ktbe:build"
+            },
+            "configurations": {
+                "production": {
+                    "buildTarget": "samples-ktbe:build:production"
+                }
+            }
+        },
+        "extract-i18n": {
+            "executor": "@angular-devkit/build-angular:extract-i18n",
+            "options": {
+                "buildTarget": "samples-ktbe:build"
+            }
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "options": {
+                "jestConfig": "samples-ktbe/jest.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/eslint:lint",
+            "options": {
+                "lintFilePatterns": [
+                    "samples-ktbe/**/*.ts",
+                    "samples-ktbe/package.json"
+                ]
+            }
+        }
+    }
+}

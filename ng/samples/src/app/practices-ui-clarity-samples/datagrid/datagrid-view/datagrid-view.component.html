@@ -1,0 +1,14 @@
+<clr-tabs>
+    <clr-tab>
+        <button clrTabLink>Without Filter</button>
+        <clr-tab-content *clrIfActive="true">
+            <app-datagrid-without-filter></app-datagrid-without-filter>
+        </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+        <button clrTabLink>With Filter</button>
+        <clr-tab-content *clrIfActive>
+            <app-datagrid-with-filter></app-datagrid-with-filter>
+        </clr-tab-content>
+    </clr-tab>
+</clr-tabs>

@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <GenerateTestingPlatformEntryPoint>false</GenerateTestingPlatformEntryPoint>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="appsettings.*.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Testcontainers.MsSql" Version="4.6.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Nexplore.Practices.Configuration\Nexplore.Practices.Configuration.csproj" />
+        <ProjectReference Include="..\..\src\Nexplore.Practices.Core\Nexplore.Practices.Core.csproj" />
+        <ProjectReference Include="..\..\src\Nexplore.Practices.EntityFramework\Nexplore.Practices.EntityFramework.csproj" />
+        <ProjectReference Include="..\..\src\Nexplore.Practices.File\Nexplore.Practices.File.csproj" />
+        <ProjectReference Include="..\..\src\Nexplore.Practices.Mail\Nexplore.Practices.Mail.csproj" />
+        <ProjectReference Include="..\..\src\Nexplore.Practices.Serilog\Nexplore.Practices.Serilog.csproj" />
+        <ProjectReference Include="..\..\src\Nexplore.Practices.Syncfusion.Excel\Nexplore.Practices.Syncfusion.Excel.csproj" />
+        <ProjectReference Include="..\..\src\Nexplore.Practices.Syncfusion.Pdf\Nexplore.Practices.Syncfusion.Pdf.csproj" />
+        <ProjectReference Include="..\..\src\Nexplore.Practices.Web\Nexplore.Practices.Web.csproj" />
+    </ItemGroup>
+
+</Project>

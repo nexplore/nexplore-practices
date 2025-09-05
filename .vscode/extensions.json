@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "esbenp.prettier-vscode",
+        "rbbit.typescript-hero",
+        "natewallace.angular2-inline",
+        "nrwl.angular-console",
+        "angular.ng-template",
+        "dbaeumer.vscode-eslint"
+    ]
+}

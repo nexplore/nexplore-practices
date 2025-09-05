@@ -1,0 +1,16 @@
+{
+  "type": "https://tools.ietf.org/html/rfc4918#section-11.2",
+  "title": "Localized ErrorTitle_StatusCode_422",
+  "status": 422,
+  "detail": "Localized Exceptions_ValidationExecption",
+  "instance": "/error",
+  "errors": {
+    "Localized TestEntity": [
+      "Test validation exception"
+    ],
+    "Localized TestEntity_SampleProperty": [
+      "Test validation exception"
+    ]
+  },
+  "traceId": "00-00000000000000000000000000000000-0000000000000000-00"
+}

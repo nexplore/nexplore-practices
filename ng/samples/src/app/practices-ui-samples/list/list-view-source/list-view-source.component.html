@@ -1,0 +1,22 @@
+<p><strong>Hint: </strong> While Skip is on 60, the endpoint will produce an exception.</p>
+<br />
+
+<button class="btn btn-primary" (click)="attach()">1. Attach to ListDataView</button>
+
+<p>
+    Last requested api url:
+    <code class="language-html" *ngIf="lastRequestedApiUrl">{{ lastRequestedApiUrl }}</code>
+</p>
+<br />
+
+<button class="btn btn-primary" (click)="toggleSort()">Toggle Firstname Sort</button>
+
+<button class="btn btn-primary" (click)="page()">Page</button>
+
+<button class="btn btn-primary" (click)="fetchAll()">Fetch all data</button>
+
+<button class="btn btn-primary" (click)="refresh()">Refresh</button>
+
+<button class="btn btn-primary" (click)="reset()">Reset</button>
+
+<button class="btn btn-primary" (click)="update()">Update</button>

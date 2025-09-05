@@ -1,0 +1,57 @@
+<p><strong>Hint: </strong> While Skip is on 60, the endpoint will produce an exception.</p>
+<br />
+
+<button class="btn btn-primary" (click)="attach()">1. Attach to ListDataView</button>
+
+<p>
+    Last requested api url:
+    <code class="language-html" *ngIf="lastRequestedApiUrl">{{ lastRequestedApiUrl }}</code>
+</p>
+<br />
+
+<h2>Basic functionality</h2>
+<br />
+<button class="btn btn-primary" (click)="toggleSort()">Toggle Firstname Sort</button>
+
+<button class="btn btn-primary" (click)="page()">Page</button>
+
+<button class="btn btn-primary" (click)="fetchAll()">Fetch all data</button>
+
+<button class="btn btn-primary" (click)="refresh()">Refresh</button>
+
+<button class="btn btn-primary" (click)="reset()">Reset</button>
+
+<button class="btn btn-primary" (click)="update()">Update</button>
+
+<h2>Custom filter</h2>
+<form class="clr-form clr-form-horizontal" (ngSubmit)="applyFilter()">
+    <div class="clr-form-control clr-row">
+        <label class="clr-control-label clr-col-12 clr-col-md-1" for="param1">Param 1 (string)</label>
+        <div class="clr-control-container">
+            <div class="clr-input-wrapper">
+                <input name="param1" class="clr-input" [(ngModel)]="filter.param1" />
+            </div>
+        </div>
+    </div>
+
+    <div class="clr-form-control clr-row">
+        <label class="clr-control-label clr-col-12 clr-col-md-1" for="param2">Param 2 (number)</label>
+        <div class="clr-control-container">
+            <div class="clr-input-wrapper">
+                <input name="param2" class="clr-input" type="number" [(ngModel)]="filter.param2" />
+            </div>
+        </div>
+    </div>
+
+    <div class="clr-form-control clr-row">
+        <label class="clr-control-label clr-col-12 clr-col-md-1">Param 3 (boolean)</label>
+        <div class="clr-control-container">
+            <div class="clr-checkbox-wrapper">
+                <input type="checkbox" name="param3" [(ngModel)]="filter.param3" class="clr-checkbox" />
+                <label for="param3" class="clr-control-label" (click)="toggleCheckbox()">Enabled</label>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Apply filter</button>
+</form>

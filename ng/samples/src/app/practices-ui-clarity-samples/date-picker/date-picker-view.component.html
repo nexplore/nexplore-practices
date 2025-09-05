@@ -1,0 +1,21 @@
+<form clrForm [formGroup]="formGroup">
+    <puiclr-date-picker-input formControlName="birthdate">
+        <label>Birthdate</label>
+    </puiclr-date-picker-input>
+    {{ formGroup.value.birthdate }}
+
+    <puiclr-date-picker-input formControlName="birthdateDisabled">
+        <label>Birthdate (Disabled)</label>
+    </puiclr-date-picker-input>
+
+    <puiclr-date-picker-input formControlName="birthdateRequired">
+        <label>Birthdate (Required)</label>
+        <clr-control-error>Invalid</clr-control-error>
+    </puiclr-date-picker-input>
+    {{ formGroup.value.birthdateRequired }}
+
+    <puiclr-date-picker-input formControlName="withPlaceholder" placeholder="Choose date">
+        <label>Input with Placeholder</label>
+    </puiclr-date-picker-input>
+    {{ formGroup.value.withPlaceholder }}
+</form>

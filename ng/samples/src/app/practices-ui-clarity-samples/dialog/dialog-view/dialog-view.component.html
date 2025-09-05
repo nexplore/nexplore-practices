@@ -1,0 +1,22 @@
+<button class="btn btn-primary" (click)="openAlertDialog()">Alert</button>
+<p></p>
+<br />
+<button class="btn btn-success" (click)="openAlertAsyncDialog()">Alert Async</button>
+<p></p>
+<br />
+<button class="btn btn-primary" (click)="openConfirmDialog()">Confirm</button>
+<p><strong>Response:</strong> {{ confirmDialogResponse }}</p>
+<br />
+<button class="btn btn-primary" (click)="openConfirmAsyncDialog()">Confirm Async</button>
+<p><strong>Response:</strong> {{ confirmAsyncDialogResponse }}</p>
+<br />
+<button class="btn btn-danger" (click)="openDeletionConfirmDialog()">Delete</button>
+<p><strong>Response:</strong> {{ deletionConfirmDialogResponse }}</p>
+<br />
+<button class="btn btn-danger" (click)="openDeletionWithHtmlMessageConfirmDialog()">
+    Delete (with message as HTML)
+</button>
+<p><strong>Response:</strong> {{ deletionWithHtmlMessageConfirmDialogResponse }}</p>
+<br />
+<button class="btn btn-primary" (click)="openChooseLanguageDialog()">Choose language</button>
+<p><strong>Response:</strong> {{ chooseLanguageResponse }}</p>

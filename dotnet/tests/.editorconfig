@@ -1,0 +1,23 @@
+; EditorConfig to support per-solution formatting.
+; Use the EditorConfig VS add-in to make this work.
+; http://editorconfig.org/
+;
+; Here are some resources for what's supported for .NET/C#
+; https://kent-boogaart.com/blog/editorconfig-reference-for-c-developers
+; https://learn.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
+;
+; Be **careful** editing this because some of the rules don't support adding a severity level
+; For instance if you change to `dotnet_sort_system_directives_first = true:warning` (adding `:warning`)
+; then the rule will be silently ignored.
+
+# Nexplore
+[*.cs]
+
+# CA1707: Identifiers should not contain underscores
+dotnet_diagnostic.CA1707.severity = none
+
+# CA2007: Do not directly await a Task
+dotnet_diagnostic.CA2007.severity = none
+
+# Async methods should have "Async" suffix
+dotnet_naming_rule.async_methods_end_in_async.severity = none

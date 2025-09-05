@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Description>This package includes common extensions for file handling.</Description>
+        <PackageTags>Nexplore.Practices Practices File</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="Nexplore.Practices.Tests.Integration" />
+        <InternalsVisibleTo Include="Nexplore.Practices.Tests.Unit" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Nexplore.Practices.Configuration\Nexplore.Practices.Configuration.csproj" />
+        <ProjectReference Include="..\Nexplore.Practices.Core\Nexplore.Practices.Core.csproj" />
+    </ItemGroup>
+
+</Project>

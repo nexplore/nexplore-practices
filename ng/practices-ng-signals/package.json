@@ -1,0 +1,10 @@
+{
+    "name": "@nexplore/practices-ng-signals",
+    "version": "0.0.0-VERSION",
+    "peerDependencies": {
+        "@angular/core": ">=18.0.0 <20.0.0",
+        "@nexplore/practices-ng-logging": "0.0.0-VERSION",
+        "rxjs": ">=7.0.0 <8.0.0"
+    },
+    "sideEffects": false
+}

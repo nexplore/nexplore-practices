@@ -1,0 +1,6 @@
+{
+  "title": "Localized ErrorTitle_StatusCode_404",
+  "status": 404,
+  "detail": "Localized Exceptions_EntityNotFoundException",
+  "instance": "/entity-not-found-exception"
+}

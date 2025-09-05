@@ -1,0 +1,18 @@
+name: $(Rev:r)
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - refs/pull/*/merge
+
+pool:
+  name: ubuntu-22.04
+  demands:
+  - shell
+  - docker
+
+stages:
+  - stage: Build
+    jobs:
+      - template: build.template.yml

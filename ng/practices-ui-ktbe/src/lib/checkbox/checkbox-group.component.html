@@ -1,0 +1,81 @@
+<div *ngIf="!(isReadonly$ | async); else readonly" class="relative mt-5">
+    <div
+        [ngClass]="{
+            'flex justify-between border py-4 pl-7 pr-4': !hideGroupBorder,
+            'border-red': !hideGroupBorder && (displayAsInvalid$ | async),
+            'border-dark-gray-50': !hideGroupBorder && !(displayAsInvalid$ | async)
+        }"
+    >
+        <fieldset>
+            <legend *ngIf="!legendAsLabel" class="my-[0.625rem] block text-base font-medium">
+                <span [ngClass]="{ 'sr-only': isLegendSrOnly }">{{ legend }}</span>
+                <span class="sr-only">{{ hint }}</span>
+            </legend>
+            <legend
+                *ngIf="legendAsLabel"
+                class="text-very-small absolute -top-5 left-6 translate-y-2 rounded-lg bg-white px-1 py-0.5"
+                [class.text-red]="displayAsInvalid$ | async"
+                [class.opacity-0]="hideGroupBorder"
+            >
+                <span [ngClass]="{ 'sr-only': isLegendSrOnly }">{{ legend }}</span>
+            </legend>
+
+            <div
+                class="flex flex-wrap"
+                [ngClass]="{
+                    'flex-col': displayInline === false,
+                    'gap-5': displayInline === false && gapVariant === 'large'
+                }"
+            >
+                <ng-content select="puibe-checkbox"></ng-content>
+                <ng-content></ng-content>
+            </div>
+            <div *ngIf="hint" class="mb-2 mt-4 text-base font-light leading-tight" aria-hidden="true">
+                {{ hint }}
+            </div>
+        </fieldset>
+        <div class="flex gap-2" aria-hidden="true" *ngIf="!hideGroupBorder">
+            <puibe-icon-spinner class="h-8 w-8" *ngIf="pending$ | async"></puibe-icon-spinner>
+            <puibe-icon-invalid class="h-8 w-8" *ngIf="displayAsInvalid$ | async"></puibe-icon-invalid>
+        </div>
+    </div>
+    <span
+        class="text-very-small absolute -top-5 right-3 translate-y-2 rounded-lg bg-white px-1 py-0.5"
+        [class.text-red]="displayAsInvalid$ | async"
+        *ngIf="!hideGroupBorder && (isOptional$ | async)"
+        aria-hidden="true"
+    >
+        {{ 'Practices.Labels_Optional' | translate }}
+    </span>
+    <div
+        [attr.id]="id + '-error'"
+        class="text-red text-very-small min-h-5 font-medium"
+        [attr.aria-live]="(dirty$ | async) ? 'assertive' : 'off'"
+        aria-atomic="true"
+    >
+        <div *ngFor="let error of errors$ | async">
+            {{ error.key | translate : error.param }}
+        </div>
+    </div>
+    <span class="sr-only" aria-live="polite" aria-atomic="true">
+        <span *ngIf="pending$ | async">{{ 'Practices.Labels_Pending' | translate }}</span>
+    </span>
+</div>
+
+<ng-template #readonly>
+    <dl class="my-2">
+        <dt>{{ legend }}</dt>
+        <ng-container *ngIf="selectedCheckboxes$ | async as checkboxes; else noEntry">
+            <dd *ngIf="checkboxes.length > 0; else noEntry">
+                <ul class="my-0 ml-2">
+                    <li *ngFor="let checkbox of checkboxes">{{ checkbox.label }}</li>
+                </ul>
+            </dd>
+        </ng-container>
+    </dl>
+    <ng-template #noEntry>
+        <dd class="font-bold">
+            {{ readonlyEmptyValuePlaceholder ?? ('Practices.Labels_Input_NoInputValue' | translate) }}
+        </dd>
+    </ng-template>
+</ng-template>

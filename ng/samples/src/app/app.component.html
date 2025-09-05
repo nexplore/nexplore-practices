@@ -1,0 +1,24 @@
+<app-status-alert></app-status-alert>
+<clr-main-container>
+    <clr-header class="header-6">
+        <div class="branding">
+            <a class="logo-and-title" routerLink="/"
+                ><span class="clr-icon"><img src="/assets/nexplore.svg" width="30" height="30" /></span
+                ><span class="title">Practices Samples</span></a
+            >
+        </div>
+        <div class="divider"></div>
+        <div class="header-nav clr-nav-level-1">
+            <a class="nav-link" routerLink="/practices-ui-samples" routerLinkActive="active"
+                ><span class="nav-text">Practices.Ui</span></a
+            >
+            <a class="nav-link" routerLink="/practices-ui-clarity-samples" routerLinkActive="active"
+                ><span class="nav-text">Practices.Ui.Clarity</span></a
+            >
+        </div>
+    </clr-header>
+    <router-outlet name="subnav"></router-outlet>
+    <div class="content-container">
+        <div class="content-area"><router-outlet></router-outlet></div>
+    </div>
+</clr-main-container>

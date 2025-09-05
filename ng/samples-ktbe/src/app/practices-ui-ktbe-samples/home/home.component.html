@@ -1,0 +1,56 @@
+<header class="mb-6">
+    <h1>Kanton Bern UI Component Library</h1>
+    <puibe-panel variant="white">
+        <div class="flex flex-col gap-4">
+            <p>
+                Welcome to the <strong>Kanton Bern UI Component Library</strong> sample application. This library
+                provides a comprehensive set of Angular components styled according to the Kanton Bern design system.
+            </p>
+
+            <p>Based on the <a href="https://kantonbern.snowflake.ch/styleguides/1/Kanton-Bern/" target="_blank"
+                    class="text-primary hover:underline">Kanton Bern Design System</a></p>
+
+            <p>
+                Browse through the examples below to see the components in action.
+            </p>
+        </div>
+    </puibe-panel>
+</header>
+
+<div class="mb-6" *ngFor="let category of categories">
+    <div class="flex items-center mb-2">
+
+        <h2>{{ category.name }}</h2>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        <puibe-teaser [teaserLink]="component.route" [title]="component.title" class="h-full"
+            *ngFor="let component of category.components">
+            <p class="text-sm">{{ component.description }}</p>
+        </puibe-teaser>
+    </div>
+</div>
+
+<puibe-panel variant="white" class="my-8">
+    <div class="flex flex-col gap-4">
+        <h2>Installation & Requirements</h2>
+        <div>
+            <p class="">Install with npm:</p>
+            <code
+                class="bg-white px-3 py-2 rounded block mb-3 text-sm font-mono">npm install &#64;nexplore/practices-ui-ktbe</code>
+
+            <p class="mt-4">Requirements:</p>
+            <ul class="list-disc text-sm mt-2">
+                <li>Angular 18+</li>
+                <li>Tailwind CSS 3.x</li>
+            </ul>
+        </div>
+    </div>
+</puibe-panel>
+
+<hr />
+<footer class="my-8 text-center text-gray-500 text-xspt-4">
+    <p>Kanton Bern UI Component Library - Sample Application</p>
+    <p>Based on the <a href="https://kantonbern.snowflake.ch/styleguides/1/Kanton-Bern/" target="_blank"
+            class="text-primary hover:underline">Kanton Bern Design System</a></p>
+</footer>
