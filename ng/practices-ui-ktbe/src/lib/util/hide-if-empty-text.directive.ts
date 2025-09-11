@@ -28,19 +28,39 @@ export class PuibeHideIfEmptyTextDirective {
         destroyRef.onDestroy(() => mutationObserver.disconnect());
     }
 
-    hideIfEmpty(): void {
+    /**
+     * Hides the element if it has no visible text content.
+     */
+    public hideIfEmpty(): void {
         if (!this._elementRef.nativeElement.innerText) {
             if (this._elementRef.nativeElement.style.display !== 'none') {
                 this._elementRef.nativeElement.style.display = 'none';
                 this.emptyTextChange.emit(true);
+                this._parent?.hideIfEmpty(); // propagate to parent directive
             }
         } else {
             if (this._elementRef.nativeElement.style.display === 'none') {
                 this._elementRef.nativeElement.style.removeProperty('display');
                 this.emptyTextChange.emit(false);
+                this._parent?.overrideEmpty(false); // Force parent to show if it was hidden
             }
         }
+    }
 
-        this._parent?.hideIfEmpty();
+    /**
+     * @internal
+     *
+     * Overrides the empty state manually.
+     *
+     * If `true`, the element will be hidden regardless of its content, otherwise it will be shown.
+     */
+    public overrideEmpty(empty: boolean): void {
+        if (empty) {
+            this._elementRef.nativeElement.style.display = 'none';
+            this.emptyTextChange.emit(true);
+        } else {
+            this._elementRef.nativeElement.style.removeProperty('display');
+            this.emptyTextChange.emit(false);
+        }
     }
 }

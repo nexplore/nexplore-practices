@@ -95,9 +95,9 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                 NEVER.pipe(
                     takeUntilDestroyed(destroyRef),
                     catchError(() => EMPTY),
-                    defaultIfEmpty(null)
-                )
-            )
+                    defaultIfEmpty(null),
+                ),
+            ),
         );
     }
 
@@ -124,10 +124,17 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
 
                 if (instance.getValueAccessorEntityDtoSignal) {
                     const signal = instance.getValueAccessorEntityDtoSignal();
+                    let isInitial = true;
                     effect(() => {
                         const dto = signal();
-                        trace('WrapperFormControlAccessor', 'writeValue from dto signal', instance, dto);
-                        writeEntityToForm(dto);
+                        if (isInitial && (dto === null || dto === undefined)) {
+                            // initially, we do not want to write the value if the dto is not available (The form might already have a initial value)
+                            return;
+                        } else {
+                            isInitial = false;
+                            trace('WrapperFormControlAccessor', 'writeValue from dto signal', instance, dto);
+                            writeEntityToForm(dto);
+                        }
                     });
                 }
 
@@ -138,7 +145,7 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                             'writeValue',
                             instance,
                             obj,
-                            instance.getValueAccessorWrapperFormControl()
+                            instance.getValueAccessorWrapperFormControl(),
                         );
                         writeEntityToForm(obj);
                     },
@@ -183,7 +190,7 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                         formControl.events
                             .pipe(
                                 filter((ev) => ev instanceof TouchedChangeEvent && ev.touched),
-                                safeTakeUntilDestroyed(destroyRef)
+                                safeTakeUntilDestroyed(destroyRef),
                             )
                             .subscribe(() => {
                                 trace('WrapperFormControlAccessor', 'on touched', instance);
@@ -211,7 +218,7 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                 const isValidChange$ = instance.valueAccessorWrapperFormStateChange$
                     ? instance.valueAccessorWrapperFormStateChange$.pipe(
                           map((state) => state.valid),
-                          distinctUntilChanged()
+                          distinctUntilChanged(),
                       )
                     : defer(
                           () =>
@@ -219,8 +226,8 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                                   debounceTime(1),
                                   distinctUntilChanged(),
                                   map((status) => status === 'VALID'),
-                                  safeTakeUntilDestroyed(destroyRef)
-                              ) ?? EMPTY
+                                  safeTakeUntilDestroyed(destroyRef),
+                              ) ?? EMPTY,
                       );
 
                 const isValidSignal = toSignal(isValidChange$);
