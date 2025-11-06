@@ -10,10 +10,6 @@ jobs:
         with:
           fetch-depth: 0
           fetch-tags: true
-      - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v4.2.0
-        with:
-          versionSpec: "6.4.x"
       - uses: actions/setup-dotnet@v4
         with:
           global-json-file: dotnet/global.json
