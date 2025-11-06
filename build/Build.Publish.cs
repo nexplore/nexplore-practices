@@ -86,7 +86,7 @@ partial class Build
 
                 package.UnZipTo(projectDir);
 
-                // Set .npmrc per project according to the configuration
+                // Set .npmrc per project according to configuration
                 var npmrc = $@"
                    registry={registryUrl}
                    //{new Uri(registryUrl).Host}/:_authToken={apiKey}
