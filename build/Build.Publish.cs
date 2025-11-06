@@ -15,12 +15,12 @@ partial class Build
     [Parameter("API Key for public release NuGet feed")] readonly string NuGetPublicReleaseApiKey;
     [Parameter("Public release NuGet source")] readonly string NuGetPublicReleaseSource = "https://api.nuget.org/v3/index.json";
     [Parameter("API Key for pre-release NuGet source")] readonly string NuGetPreReleaseApiKey;
-    [Parameter("Pre-release NuGet source")] readonly string NuGetPreReleaseSource;
+    [Parameter("Pre-release NuGet source")] readonly string NuGetPreReleaseSource = "https://nuget.pkg.github.com/nexplore/index.json";
 
     [Parameter("API key for public release NPM registry")] readonly string NpmPublicReleaseApiKey;
     [Parameter("Public release NPM registry")] readonly string NpmPublicReleaseRegistry = "https://registry.npmjs.org";
     [Parameter("API key for pre-release NPM registry")] readonly string NpmPreReleaseApiKey;
-    [Parameter("Pre-release NPM registry")] readonly string NpmPreReleaseRegistry;
+    [Parameter("Pre-release NPM registry")] readonly string NpmPreReleaseRegistry = "https://npm.pkg.github.com";
 
     Target PublishNuGet => _ => _
         .Requires(() => PublishArtifactsDirectory)

@@ -2,3 +2,5 @@
 - Keep the message short and concise
 - Try to refer to features instead of specific file names
 - If a commit contains multiple unrelated changes, summarize with a very short title, but also add a bullet list below for the different changes.
+- Use changes in CHANGELOG.md to figure out the commit message.
+- DO NOT include CHANGELOG.md in the commit message, unless it is the only file changed.

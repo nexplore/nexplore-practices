@@ -30,7 +30,13 @@
             }
         },
         "lint": {
-            "executor": "@nx/eslint:lint"
+            "executor": "@nx/eslint:lint",
+            "options": {
+                "lintFilePatterns": [
+                    "practices-ui/**/*.ts",
+                    "practices-ui/package.json"
+                ]
+            }
         }
     }
 }

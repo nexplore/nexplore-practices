@@ -26,6 +26,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
       # Prepare .NET like ADO UseDotNet (global.json + explicit 8.x)
       - name: Setup .NET from global.json
@@ -36,21 +39,21 @@ jobs:
       - name: Setup .NET 8.x
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.x'
+          dotnet-version: "8.x"
 
       # Prepare Node.js like ADO UseNode@1
       - name: Setup Node 22.14.0
         uses: actions/setup-node@v4
         with:
-          node-version: '22.14.0'
+          node-version: "22.14.0"
           check-latest: true
 
-      # Download the build artifact named 'drop' from the prior job
+      # Download the build artifact named 'build-output' from the prior job
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: drop
-          path: ${{ runner.temp }}/drop
+          name: build-output
+          path: ${{ runner.temp }}/build-output
 
       - name: Make build.sh executable
         run: chmod +x ./build.sh
@@ -59,8 +62,8 @@ jobs:
         env:
           # Same NUKE env variables as in ADO publish.template.yml
           NUKE_NUGET_PUBLIC_RELEASE_API_KEY: ${{ secrets.NUGET_PUBLIC_RELEASE_API_KEY }}
-          NUKE_NUGET_PRE_RELEASE_API_KEY:   ${{ secrets.NUGET_PRE_RELEASE_API_KEY }}
-          NUKE_NPM_PUBLIC_RELEASE_API_KEY:  ${{ secrets.NPM_PUBLIC_RELEASE_API_KEY }}
-          NUKE_NPM_PRE_RELEASE_API_KEY:     ${{ secrets.NPM_PRE_RELEASE_API_KEY }}
+          NUKE_NUGET_PRE_RELEASE_API_KEY: ${{ secrets.NUGET_PRE_RELEASE_API_KEY }}
+          NUKE_NPM_PUBLIC_RELEASE_API_KEY: ${{ secrets.NPM_PUBLIC_RELEASE_API_KEY }}
+          NUKE_NPM_PRE_RELEASE_API_KEY: ${{ secrets.NPM_PRE_RELEASE_API_KEY }}
         run: |
-          ./build.sh PublishAll --publish-artifacts-directory "${{ runner.temp }}/drop"
+          ./build.sh PublishAll --publish-artifacts-directory "${{ runner.temp }}/build-output"

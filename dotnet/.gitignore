@@ -61,7 +61,8 @@ Thumbs.db
 *.user
 *.userosscache
 *.sln.docstates
-appsettings.override.json
+# appsettings.override.json
+# Commented out due to error thrown in github.
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

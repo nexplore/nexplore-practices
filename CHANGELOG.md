@@ -56,6 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - _BREAKING_ [Nexplore.Practices.EntityFramework] Align signature of `Apply` and `ApplyWithMap` in `AsyncQueryParamsApplier` and `SyncQueryParamsApplier` to naming conventions.
 - _BREAKING_ [Practices.Ui] Switched to `RewriteMissingTranslationHandler` (replacing `RewriteTranslateParser`) due to ngx-translate update. Config now uses rewriteResourceConfig with rewriteTypeConfig and optional missingKeyTransformFn.
 - [Practices.Ui.KtBe] Adjust `PuibeSelectDirective` styles, so that the `ng-value-container` is not triggering a flex-wrap on the `PuibeTwoColumnComponent` layout.
+- [Practices.Ui] Improve `toSignalLazy` by adding options and fixing bug regarding hidden signals.
 
 ### Fixed
 
@@ -64,6 +65,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Practices.Ui.KtBe] Fixed `PuibeCheckboxComponent` touched not resetting.
 - [Practices.Ui.KtBe] Fixed `PuibeTeaserComponent` not using its full height.
 - [Practices.Ui.KtBe] Fixed `PuibeSelectableDirective` not working on tables.
+- [Practices.Ui.KtBe] Fixed `PuibeHideIfEmptyTextDirective` not showing with nested directives and entrance animations.
+- [Practices.Ui] Fixed `provideWrappedFormControlAccessors` initial form value for `getValueAccessorEntityDtoSignal`.
 
 ## [10.0.2](https://tfs.nexplore.ch/Nexplore/Framework/_git/Practices?version=GT10.0.2) - 2024-11-22
 
