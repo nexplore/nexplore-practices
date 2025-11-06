@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Nexplore.Practices.Build.Helpers;
 using Nuke.Common;
-using Nuke.Common.CI.AzurePipelines;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
@@ -48,7 +48,7 @@ partial class Build : NukeBuild
         .Unlisted()
         .Executes(() =>
         {
-            AzurePipelines.Instance?.UpdateBuildNumber(GitVersion.PracticesPackageVersion());
+            GitHubActions.Instance?.UpdateBuildNumber(GitVersion.PracticesPackageVersion());
         });
 
     Target Clean => _ => _
@@ -130,9 +130,9 @@ partial class Build : NukeBuild
             finally
             {
                 var testResultFiles = TestResultDirectory.GlobFiles("*.trx").Select(filePath => filePath.ToString());
-                AzurePipelines.Instance?.PublishTestResults(
+                GitHubActions.Instance?.PublishTestResults(
                     "DotNet Tests",
-                    AzurePipelinesTestResultsType.VSTest,
+                    GitHubActionsTestResultsType.VSTest,
                     testResultFiles);
             }
         });
@@ -156,9 +156,9 @@ partial class Build : NukeBuild
                 var testResultFiles = TestResultDirectory.GlobFiles("*.xml").Select(filePath => filePath.ToString()).ToArray();
                 if (testResultFiles.Length > 0)
                 {
-                    AzurePipelines.Instance?.PublishTestResults(
+                    GitHubActions.Instance?.PublishTestResults(
                         "Ng Tests",
-                        AzurePipelinesTestResultsType.JUnit,
+                        GitHubActionsTestResultsType.JUnit,
                         testResultFiles);
                 }
             }
