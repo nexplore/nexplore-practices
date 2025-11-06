@@ -15,11 +15,11 @@ concurrency:
 
 jobs:
   build:
-    uses: ./.github/workflows/build-template.yml
+    uses: ./.github/workflows/build.template.yml
 
   publish:
     needs: build
-    uses: ./.github/workflows/publish-template.yml
+    uses: ./.github/workflows/publish.template.yml
     with:
       environment: "Nexplore Package Repository"
     secrets:
