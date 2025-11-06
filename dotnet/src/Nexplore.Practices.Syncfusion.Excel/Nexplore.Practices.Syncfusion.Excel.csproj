@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Description>This package includes common extensions to handle excel files with the Syncfusion library</Description>
+        <PackageTags>Nexplore.Practices Practices Syncfusion Excel</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Syncfusion.XlsIO.Net.Core" Version="30.1.42" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Nexplore.Practices.Core\Nexplore.Practices.Core.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,96 @@
+<!-- Fields -->
+<div class="container mx-auto">
+    <form puibeForm [formGroup]="mainForm">
+        <puibe-form-field class="w-1/4">
+            <label puibeLabel>Required Date-Input</label>
+            <input puibeInput type="date" placeholder="Required Date-Input" formControlName="requiredDate" />
+        </puibe-form-field>
+        <puibe-form-field class="w-1/2">
+            <label puibeLabel>Required Combobox</label>
+            <ng-select
+                puibeInput
+                [items]="foods"
+                bindLabel="name"
+                bindValue="id"
+                formControlName="requiredCombobox"
+                placeholder="Required Combobox"
+            ></ng-select>
+        </puibe-form-field>
+        <puibe-form-field class="w-1/2">
+            <label puibeLabel>Required Async Combobox</label>
+            <ng-select
+                puibeInput
+                [puibeSelectViewSource]="foodSource"
+                formControlName="requiredAsyncCombobox"
+                placeholder="Required Async Combobox"
+            ></ng-select>
+        </puibe-form-field>
+        <puibe-form-field class="w-1/2">
+            <label puibeLabel>Required Text-Input</label>
+            <input puibeInput type="text" placeholder="Required Text-Input" formControlName="requiredText" />
+        </puibe-form-field>
+        <puibe-form-field class="w-1/4">
+            <label [alwaysVisible]="true" puibeLabel>This label is always visible</label>
+            <input puibeInput type="number" placeholder="Required Number-Input" formControlName="requiredNumber" />
+        </puibe-form-field>
+        <puibe-form-field class="w-1/2">
+            <label puibeLabel>Required input with initial value</label>
+            <input
+                puibeInput
+                type="text"
+                placeholder="Required input with initial value"
+                formControlName="requiredInputWithInitialValue"
+            />
+        </puibe-form-field>
+        <puibe-form-field class="w-1/2">
+            <label puibeLabel>Async Validator</label>
+            <input puibeInput type="text" placeholder="Async Validator" formControlName="asyncValidator" />
+        </puibe-form-field>
+
+        <puibe-checkbox
+            class="w-1/2"
+            label="Required Checkbox Standalone"
+            formControlName="requiredCheckbox"
+        ></puibe-checkbox>
+        <puibe-form-field class="w-1/2">
+            <label puibeLabel>Required FileInput</label>
+            <input puibeInput type="file" formControlName="requiredFileInput" />
+        </puibe-form-field>
+    </form>
+</div>
+
+<!-- Radio Buttons -->
+<div class="container mx-auto mt-5">
+    <form puibeForm [formGroup]="mainForm">
+        <puibe-radio-button-group
+            legend="Required Radio Button Group"
+            [displayInline]="false"
+            formControlName="requiredRadioButtonGroup"
+            class="w-1/2"
+        >
+            <puibe-radio-button value="1" label="Option 1"></puibe-radio-button>
+            <puibe-radio-button value="2" label="Option 2"></puibe-radio-button>
+            <puibe-radio-button value="3" label="Option 3"></puibe-radio-button>
+            <puibe-radio-button value="4" label="Option 4"></puibe-radio-button>
+            <puibe-radio-button value="5" label="Option 5"></puibe-radio-button>
+            <puibe-radio-button value="6" label="Option 6"></puibe-radio-button>
+        </puibe-radio-button-group>
+    </form>
+</div>
+
+<div class="container mx-auto">
+    <button puibeButton (click)="fakeSubmit()" class="my-10">Trigger Submit</button>
+</div>
+
+<!-- Checkboxes -->
+<div class="container mx-auto">
+    <form [formGroup]="cbForm">
+        <puibe-checkbox-group legend="Checkboxes" [displayInline]="false" class="w-1/2">
+            <puibe-checkbox label="Checkbox 1" formControlName="checkbox1"></puibe-checkbox>
+            <puibe-checkbox label="Checkbox 2" formControlName="checkbox2"></puibe-checkbox>
+            <puibe-checkbox label="Checkbox 3" formControlName="checkbox3"></puibe-checkbox>
+            <puibe-checkbox label="Required Checkbox 4" formControlName="requiredCheckbox4"></puibe-checkbox>
+            <puibe-checkbox label="Checkbox 5" formControlName="checkbox5"></puibe-checkbox>
+        </puibe-checkbox-group>
+    </form>
+</div>

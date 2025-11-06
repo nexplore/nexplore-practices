@@ -1,0 +1,73 @@
+<h4>Using StatusService</h4>
+<div class="mb-8 flex flex-wrap gap-2">
+    <button puibeButton (click)="genError()">create error</button>
+    <button puibeButton (click)="genSuccess()">create success</button>
+    <button puibeButton (click)="toggleBusy()">toggle busy</button>
+    <button puibeButton (click)="toggleBusyWithMessage()">toggle busy (with message)</button>
+    <button puibeButton (click)="toggleBusyBlocking()">block ui</button>
+</div>
+
+<div class="flex flex-wrap items-center justify-stretch gap-4">
+    <button puibeButton (click)="registerQuery()">register query or action</button>
+    <puibe-form-field class="max-w-80 flex-auto">
+        <label puibeLabel>Status Category</label>
+        <ng-select
+            puibeInput
+            [(ngModel)]="statusCategory"
+            [items]="categories"
+            placeholder="Status Category"
+        ></ng-select>
+    </puibe-form-field>
+</div>
+<div class="mb-8">
+    <puibe-toast
+        ><p>Specifying <code>statusCategory</code> changes the default progress message.</p>
+        <p>
+            This works with <code>registerQuery</code>, <code>registerCommand</code> and all other
+            <code>statusService</code> methods (See options parameter).
+        </p>
+    </puibe-toast>
+</div>
+
+<h4>Commands</h4>
+<div class="mb-4 flex flex-wrap gap-2">
+    <button type="button" puibeButton [clickCommand]="simpleCommand">Simple Progress</button>
+    <button type="button" puibeButton [clickCommand]="successCommand">Success Message</button>
+    <button type="button" puibeButton [clickCommand]="blockingCommand">Block ui</button>
+    <button type="button" puibeButton [clickCommand]="msgCommand">Progress Message</button>
+    <button type="button" puibeButton [clickCommand]="blockingMsgCommand">Progress Message (blocking)</button>
+    <button type="button" puibeButton [clickCommand]="errorAsyncCommand">Throw Error Async</button>
+    <button type="button" puibeButton [clickCommand]="errorCommand">Throw Error</button>
+    <button type="button" puibeButton [clickCommand]="saveCommand" [commandOptions]="{ statusCategory: 'action-save' }">
+        Save
+    </button>
+    <button
+        type="button"
+        puibeButton
+        [clickCommand]="deleteCommand"
+        [commandOptions]="{ statusCategory: 'action-save' }"
+    >
+        Delete
+    </button>
+</div>
+
+<h4>Navigation</h4>
+<div class="mb-12 flex flex-wrap gap-2">
+    <a [routerLink]="'long-loading-route'">Open a route that takes a while to load</a>
+</div>
+
+<puibe-status-hub>
+    <ng-container *puibeIfErrorStatus="let status">
+        Etwas ist schief gelaufen!
+        <puibe-expansion-panel
+            *ngIf="status.error?.stack ?? status.error?.message"
+            caption="Details"
+            class="flex-grow-0 text-black"
+            [enableContentScroll]="true"
+        >
+            <code *ngIf="status.error.stack" class="whitespace-pre">{{
+                status?.error.stack ?? status.error?.message
+            }}</code>
+        </puibe-expansion-panel>
+    </ng-container>
+</puibe-status-hub>

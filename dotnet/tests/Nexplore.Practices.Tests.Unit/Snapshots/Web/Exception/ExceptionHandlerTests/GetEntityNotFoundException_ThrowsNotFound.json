@@ -1,0 +1,8 @@
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.5",
+  "title": "Localized ErrorTitle_StatusCode_404",
+  "status": 404,
+  "detail": "Localized Exceptions_EntityNotFoundException",
+  "instance": "/error",
+  "traceId": "00-00000000000000000000000000000000-0000000000000000-00"
+}

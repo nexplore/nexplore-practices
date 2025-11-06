@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Description>This package provides a powerful entity framework extension api.</Description>
+        <PackageTags>Nexplore.Practices Practices Entity Framework</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="Nexplore.Practices.Tests.Integration" />
+        <InternalsVisibleTo Include="Nexplore.Practices.Tests.Unit" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="Migrations\CleanupScript.sql" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+        <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="9.0.7" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.7" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.7" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+        <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="8.0.14" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.14" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.14" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="..\Nexplore.Practices.Configuration\Nexplore.Practices.Configuration.csproj" />
+        <ProjectReference Include="..\Nexplore.Practices.Core\Nexplore.Practices.Core.csproj" />
+    </ItemGroup>
+
+</Project>

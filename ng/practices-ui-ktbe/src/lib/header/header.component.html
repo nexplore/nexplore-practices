@@ -1,0 +1,100 @@
+<div class="border-gray min-h-40 border-b bg-white pt-2 lg:pt-3" #container>
+    <div class="flex min-h-[inherit] justify-between">
+        <div class="flex flex-col justify-end pb-[25px]" #headerLogoWrapper>
+            <!-- TODO #147455 Check pixel values and try to replace with rem -->
+            <div
+                #headerLogoContent
+                class="flex flex-col justify-end"
+                (puibeObserveSize)="container.style.setProperty('--logoWidth', $event.width + 'px')"
+            >
+                <ng-content select="puibe-header-logo"></ng-content>
+            </div>
+            <ng-container *ngIf="headerLogoContent.children.length === 0">
+                <puibe-header-logo
+                    [link]="logoLink"
+                    [image]="logoImage"
+                    [alt]="logoAltTitle"
+                    [caption]="logoCaption"
+                    (clickLink)="onClickLogoLink()"
+                ></puibe-header-logo>
+            </ng-container>
+        </div>
+        <div *ngIf="openSideNav" #headerLogoPlaceholder style="width: var(--logoWidth)">
+            <!-- Placeholder retaining the logo-width, for when the logo moved to the sidenav using cdkPortal-->
+        </div>
+        <div class="flex flex-col justify-between">
+            <div class="hidden lg:flex lg:justify-end lg:gap-x-10">
+                <nav
+                    class="inline-block"
+                    [attr.aria-label]="'Practices.Labels_Navigation_ServiceNavigation' | translate"
+                    #puibeHeaderServiceMenuItems
+                >
+                    <ul
+                        class="flex list-none"
+                        [ngClass]="{
+                            'flex-col gap-y-[1.875rem]': (isMobileBreakpoint$ | async),
+                            'flex-row gap-x-10': false === (isMobileBreakpoint$ | async)
+                        }"
+                    >
+                        <ng-content select="[puibeHeaderServiceMenuItem]"></ng-content>
+                    </ul>
+                </nav>
+                <div class="flex items-baseline max-lg:mt-8" #puibeHeaderLanguageMenuItems>
+                    <ng-content select="[puibeHeaderLanguageMenuItem]"></ng-content>
+                </div>
+            </div>
+            <nav
+                class="mt-3 block sm:mt-7 lg:hidden"
+                [attr.aria-label]="'Practices.Labels_Navigation_MainNavigation' | translate"
+            >
+                <ul class="flex list-none gap-x-6">
+                    <ng-content select="[puibeHeaderMobileMenuItem]"></ng-content>
+
+                    <button
+                        type="button"
+                        puibeHeaderMobileMenuItem
+                        class="h-8 w-8"
+                        [attr.aria-expanded]="openSideNav ? 'true' : 'false'"
+                        (click)="onClickHamburgerMenu()"
+                    >
+                        <puibe-icon-hamburger></puibe-icon-hamburger>
+                    </button>
+                </ul>
+            </nav>
+            <div class="mb-5 flex justify-end">
+                <nav
+                    class="hidden lg:inline-block"
+                    [attr.aria-label]="'Practices.Labels_Navigation_MainNavigation' | translate"
+                >
+                    <ul
+                        class="inline-block"
+                        class="flex list-none flex-wrap items-center"
+                        [ngClass]="narrowMainMenu ? ' gap-x-9' : 'gap-x-14'"
+                    >
+                        <ng-content select="[puibeHeaderMainMenuItem]"></ng-content>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<puibe-side-navigation
+    [open]="openSideNav"
+    (openChange)="onOpenSideNavChange($event)"
+    (itemClick)="sideNavItemClick.emit($event)"
+    [useRouterConfig]="routerConfig"
+    [routeComparableFn]="routeComparableFn"
+    [itemAfterTemplate]="sidemenuItemAfterTemplate"
+    [sidemenuFooterTemplate]="sidemenuFooterTemplate"
+>
+    <ng-container ngProjectAs="puibe-header-logo">
+        <div>
+            <ng-container *ngIf="openSideNav">
+                <ng-container *cdkPortalOutlet="headerLogoWrapperPortal"></ng-container>
+            </ng-container>
+        </div>
+    </ng-container>
+
+    <ng-content select="puibe-side-navigation-pane"></ng-content>
+</puibe-side-navigation>

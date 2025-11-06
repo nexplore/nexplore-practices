@@ -1,0 +1,100 @@
+<div class="container mx-auto">
+    <form [formGroup]="mainForm">
+        <puibe-checkbox class="w-1/2" label="Checkbox" formControlName="basicWithoutGroup"></puibe-checkbox>
+        <puibe-checkbox class="w-1/2" label="Checkbox" formControlName="basicWithoutGroupRequired"></puibe-checkbox>
+        <puibe-checkbox
+            class="w-1/2"
+            label="Checkbox"
+            formControlName="basicWithoutGroupAsyncValidator"
+        ></puibe-checkbox>
+    </form>
+</div>
+
+<div class="container mx-auto">
+    <form [formGroup]="mainForm">
+        <puibe-checkbox-group legend="Checkboxes" [displayInline]="false" class="w-1/2">
+            <puibe-checkbox label="Checkbox" formControlName="basic1"></puibe-checkbox>
+            <puibe-checkbox label="Checkbox" formControlName="basic2"></puibe-checkbox>
+            <puibe-checkbox label="Checkbox" formControlName="basic3"></puibe-checkbox>
+            <puibe-checkbox label="Checkbox" formControlName="basic4"></puibe-checkbox>
+            <puibe-checkbox label="Checkbox" formControlName="basic5"></puibe-checkbox>
+        </puibe-checkbox-group>
+    </form>
+</div>
+
+<div class="container mx-auto">
+    <form [formGroup]="mainForm">
+        <puibe-checkbox-group legend="Checkboxes" [displayInline]="true" class="w-1/2">
+            <puibe-checkbox label="Checkbox" formControlName="basicInline1"></puibe-checkbox>
+            <puibe-checkbox label="Checkbox" formControlName="basicInline2"></puibe-checkbox>
+            <puibe-checkbox label="Checkbox" formControlName="basicInline3"></puibe-checkbox>
+            <puibe-checkbox label="Checkbox" formControlName="basicInline4"></puibe-checkbox>
+            <puibe-checkbox label="Checkbox" formControlName="basicInline5"></puibe-checkbox>
+        </puibe-checkbox-group>
+    </form>
+</div>
+
+<div class="container mx-auto mt-5">
+    <form [formGroup]="mainForm">
+        <puibe-checkbox-group
+            legend="Checkboxes"
+            hint="Das ist hier ein weiterer optionaler Hinweistext!"
+            [displayInline]="false"
+            class="w-1/2"
+        >
+            <puibe-checkbox label="Checkbox" formControlName="basicWithHint"></puibe-checkbox>
+        </puibe-checkbox-group>
+    </form>
+</div>
+
+<div class="container mx-auto mt-5">
+    <form [formGroup]="mainForm">
+        <puibe-checkbox-group
+            legend="Checkboxes"
+            hint="Das ist hier ein weiterer optionaler Hinweistext!"
+            [displayInline]="false"
+            class="w-1/2"
+        >
+            <puibe-checkbox label="Checkbox" formControlName="required"></puibe-checkbox>
+        </puibe-checkbox-group>
+    </form>
+</div>
+
+<div class="container mx-auto mt-5">
+    <form [formGroup]="mainForm">
+        <puibe-checkbox-group
+            legend="Checkboxes"
+            hint="Das ist hier ein weiterer optionaler Hinweistext!"
+            [displayInline]="false"
+            class="w-1/2"
+        >
+            <puibe-checkbox label="Checkbox" formControlName="requiredInputWithInitialValue"></puibe-checkbox>
+        </puibe-checkbox-group>
+    </form>
+</div>
+
+<div class="container mx-auto mt-5">
+    <form [formGroup]="mainForm">
+        <puibe-checkbox-group
+            legend="Checkboxes"
+            hint="Das ist hier ein weiterer optionaler Hinweistext!"
+            [displayInline]="false"
+            class="w-1/2"
+        >
+            <puibe-checkbox label="Checkbox" formControlName="asyncValidator"></puibe-checkbox>
+        </puibe-checkbox-group>
+    </form>
+</div>
+
+<div class="container mx-auto mt-5">
+    <form [formGroup]="mainForm">
+        <puibe-checkbox-group
+            legend="Checkboxes"
+            hint="Das ist hier ein weiterer optionaler Hinweistext!"
+            [displayInline]="false"
+            class="w-1/2"
+        >
+            <puibe-checkbox label="Checkbox" formControlName="disabled"></puibe-checkbox>
+        </puibe-checkbox-group>
+    </form>
+</div>

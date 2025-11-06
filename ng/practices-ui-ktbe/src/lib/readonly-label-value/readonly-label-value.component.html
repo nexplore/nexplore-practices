@@ -1,0 +1,8 @@
+<dl class="my-2">
+    <dt [ngClass]="useSmallLabel ?? useSmallLabelFallback ? 'text-very-small font-normal' : 'text-base font-light'">
+        {{ label }}
+    </dt>
+    <dd class="text-base font-medium">
+        <ng-content></ng-content>
+    </dd>
+</dl>

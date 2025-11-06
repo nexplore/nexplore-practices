@@ -1,0 +1,9 @@
+{
+  "title": "Localized ErrorTitle_StatusCode_500",
+  "status": 500,
+  "detail": "Localized Exceptions_UnhandledException",
+  "instance": "/unhandled-exception",
+  "originalMessage": "Operation is not valid due to the current state of the object.",
+  "stackTrace": "   at Nexplore.Practices.Tests.Unit.Web.Exception.ExceptionTestController.GetUnhandledException()",
+  "correlationId": "2b802405-cdb0-42b2-9005-0823bc5cf320"
+}

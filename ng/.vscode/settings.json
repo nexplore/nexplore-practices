@@ -1,0 +1,25 @@
+{
+    "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+    "github.copilot.chat.codeGeneration.instructions": [
+        {
+            "file": "/.github/copilot-instructions.md"
+        },
+        {
+            "file": "/.github/copilot-test-instructions.md"
+        }
+    ],
+    "github.copilot.chat.testGeneration.instructions": [
+        {
+            "file": "/.github/copilot-test-instructions.md"
+        }
+    ],
+    "github.copilot.chat.pullRequestDescriptionGeneration.instructions": [
+        {
+            "file": "/.github/copilot-pr-description-instructions.md"
+        }
+    ],
+    "github.copilot.chat.codesearch.enabled": true,
+    "github.copilot.chat.newWorkspaceCreation.enabled": true,
+    "github.copilot.chat.languageContext.typescript.enabled": true,
+    "github.copilot.chat.agent.runTasks": true
+}

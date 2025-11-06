@@ -1,0 +1,57 @@
+<div
+    [ngClass]="{
+        'bg-dark-sand': variant === 'default',
+        'bg-red': variant === 'error',
+        'bg-anthrazit': variant === 'info',
+        'bg-success-green': variant === 'success',
+        'text-black': variant === 'default' || variant === 'success',
+        'text-white': variant === 'error' || variant === 'info',
+    }"
+    class="flex min-w-0 flex-auto flex-row flex-wrap items-baseline justify-between p-6 sm:flex-row sm:flex-nowrap"
+    *ngIf="currentShowState"
+    @displayToastAnimation
+>
+    <span *ngIf="!hideScreenReaderHint" class="sr-only">
+        {{ screenReaderHint ?? ( 'Practices.Labels_Hint' | translate )}}
+    </span>
+    <div class="max-w-11/12 relative order-1 flex min-w-0 basis-full justify-stretch sm:max-w-none sm:pr-6">
+        <div class="flex min-w-0 flex-auto justify-stretch">
+            <div *ngIf="showAlertIcon">
+                <puibe-icon-explanation-mark
+                    class="ml-8 mr-14 mt-1 block w-4 shrink-0"
+                    [fillClassName]="{
+                        'fill-black': variant === 'default' || variant === 'success',
+                        'fill-white': variant === 'error' || variant === 'info'
+                    }"
+                ></puibe-icon-explanation-mark>
+            </div>
+            <div class="min-w flex min-w-0 flex-auto flex-col">
+                <ng-content></ng-content>
+            </div>
+        </div>
+    </div>
+    <div
+        class="order-3 mt-2 flex min-w-fit grow flex-col space-y-1 self-start empty:hidden sm:order-2 sm:mt-0 sm:items-end"
+        [ngClass]="{
+            '[&>a:hover]:text-black': variant === 'default' || variant === 'success',
+            '[&>a:hover]:text-white': variant === 'error' || variant === 'info'
+        }"
+    >
+        <ng-content select="[puibeToastAction]"></ng-content>
+    </div>
+    <button
+        type="button"
+        *ngIf="closeable"
+        class="hover:animate-pop order-1 mt-1 cursor-pointer self-start sm:order-3 sm:ml-4"
+        [attr.aria-label]="'Practices.Labels_Toast_Close' | translate"
+        (click)="close()"
+    >
+        <puibe-icon-close
+            class="block w-4"
+            [colorClass]="{
+                'fill-black': variant === 'default' || variant === 'success',
+                'fill-white': variant === 'error' || variant === 'info'
+            }"
+        ></puibe-icon-close>
+    </button>
+</div>

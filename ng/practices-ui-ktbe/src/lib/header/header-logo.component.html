@@ -1,0 +1,10 @@
+<a [routerLink]="link" class="no-underline hover:text-black">
+    <img *ngIf="image" [src]="image" [alt]="alt" class="w-[150px]" />
+    <puibe-icon-ktbe-logo class="block w-[150px]" [title]="alt" *ngIf="!image"></puibe-icon-ktbe-logo>
+    <span
+        *ngIf="caption"
+        class="text-extra-small lg:text-logo-caption lg:leading-ktbe-logo-caption mt-[25px] block max-w-52 text-ellipsis break-words font-normal leading-3 lg:max-w-80"
+        >{{ caption }}<ng-content select="[caption]"></ng-content
+    ></span>
+</a>
+<ng-content></ng-content>

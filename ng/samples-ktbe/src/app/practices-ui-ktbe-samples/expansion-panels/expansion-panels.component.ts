@@ -1,0 +1,44 @@
+import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import {
+    PuibeExpansionPanelComponent,
+    PuibeTeaserComponent,
+    PuibeTwoColumnNavComponent,
+} from '@nexplore/practices-ui-ktbe';
+
+@Component({
+    standalone: true,
+    selector: 'app-expansion-panels',
+    templateUrl: './expansion-panels.component.html',
+    imports: [PuibeExpansionPanelComponent, PuibeTwoColumnNavComponent, PuibeTeaserComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class ExpansionPanelsComponent {
+    @ViewChild('twoColumnNavContent', { static: true }) twoColumnNavContent: ElementRef<HTMLDivElement>;
+
+    constructor(private readonly renderer: Renderer2) {}
+
+    public addSpacerBetweenHeadings() {
+        const addClasses =
+            (element: HTMLElement) =>
+            (...classes: string[]) => {
+                classes.forEach((c) => this.renderer.addClass(element, c));
+            };
+
+        Array.from(this.twoColumnNavContent.nativeElement.children).forEach((child) => {
+            if (child.tagName === 'DIV') {
+                const spacer = this.renderer.createElement('span');
+                addClasses(spacer)('bg-light-gray', 'block', 'font-light', 'p-10', 'my-1');
+                this.renderer.setProperty(spacer, 'innerText', 'Spacer');
+                this.renderer.insertBefore(this.twoColumnNavContent.nativeElement, spacer, child);
+            }
+        });
+    }
+
+    public removeSpacersBetweenHeadings() {
+        Array.from(this.twoColumnNavContent.nativeElement.children)
+            .filter((child) => child.tagName === 'SPAN')
+            .forEach((spacer) => {
+                this.twoColumnNavContent.nativeElement.removeChild(spacer);
+            });
+    }
+}

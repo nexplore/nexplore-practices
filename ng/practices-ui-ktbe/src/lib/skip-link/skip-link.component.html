@@ -1,0 +1,10 @@
+<a
+    class="focus:bg-sand focus:text-red sr-only scale-0 transition-all focus:not-sr-only focus:absolute focus:scale-100 focus:p-4 focus:font-medium"
+    [href]="href"
+    (click)="onClick($event)"
+    (keyup.enter)="onClick($event)"
+    (keyup.space)="onClick($event)"
+>
+    <ng-content></ng-content>
+    <puibe-icon-go-next class="ml-3 inline-block h-5 w-6 align-middle"></puibe-icon-go-next
+></a>

@@ -1,0 +1,42 @@
+{
+    "name": "practices-ng-common-util",
+    "$schema": "../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "practices-ng-common-util/src",
+    "prefix": "pui",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "build": {
+            "executor": "@nx/angular:package",
+            "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+            "options": {
+                "project": "practices-ng-common-util/ng-package.json"
+            },
+            "configurations": {
+                "production": {
+                    "tsConfig": "practices-ng-common-util/tsconfig.lib.prod.json"
+                },
+                "development": {
+                    "tsConfig": "practices-ng-common-util/tsconfig.lib.json"
+                }
+            },
+            "defaultConfiguration": "production"
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+            "options": {
+                "jestConfig": "practices-ng-common-util/jest.config.ts"
+            }
+        },
+        "lint": {
+            "executor": "@nx/eslint:lint",
+            "options": {
+                "lintFilePatterns": [
+                    "practices-ui/**/*.ts",
+                    "practices-ui/package.json"
+                ]
+            }
+        }
+    }
+}

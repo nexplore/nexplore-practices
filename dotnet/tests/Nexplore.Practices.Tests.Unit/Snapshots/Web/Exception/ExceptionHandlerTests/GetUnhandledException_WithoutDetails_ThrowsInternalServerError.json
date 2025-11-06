@@ -1,0 +1,9 @@
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.6.1",
+  "title": "Localized ErrorTitle_StatusCode_500",
+  "status": 500,
+  "detail": "Localized Exceptions_UnhandledException",
+  "instance": "/error",
+  "correlationId": "2b802405-cdb0-42b2-9005-0823bc5cf320",
+  "traceId": "00-00000000000000000000000000000000-0000000000000000-00"
+}

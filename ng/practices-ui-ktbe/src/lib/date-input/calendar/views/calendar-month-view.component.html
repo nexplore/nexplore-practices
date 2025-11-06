@@ -1,0 +1,32 @@
+<span class="sr-only" data-current-month tabindex="-1" aria-live="polite">
+    {{ periodLabelSignal() }}
+</span>
+<puibe-calendar-grid-layout>
+    <button
+        slot="left"
+        puibeCalendarToolbarItem
+        class="px-2"
+        [clickable]="canClickPeriodHeader"
+        [disabled]="!canClickPeriodHeader"
+        (click)="clickPeriodHeader.emit()"
+        [title]="'Practices.Labels_DatePicker_ChangeViewYear' | translate"
+        [attr.aria-label]="periodLabelSignal() + ' - ' + ('Practices.Labels_DatePicker_ChangeViewYear' | translate)"
+    >
+        {{ periodLabelSignal() }} <puibe-icon-arrow direction="down" class="ml-1 h-3 w-4"></puibe-icon-arrow>
+    </button>
+
+    <ng-content select="[slot='left']" ngProjectAs="[slot='left-after']"></ng-content>
+    <ng-content select="[slot='right']" ngProjectAs="[slot='right']"></ng-content>
+
+    <div class="flex shrink-0 grow basis-0 gap-1" *ngFor="let row of dateRowsSignal(); trackBy: trackByIndex">
+        <puibe-calendar-item
+            *ngFor="let item of row.items; trackBy: trackByShortLabel"
+            [periodItem]="item"
+            [selected]="item === selectedItemSignal()"
+            [focused]="item === focusedItemSignal()"
+            [today]="item === todayItemSignal()"
+            [disabled]="isItemDisabled(item)"
+            (click)="clickItem.emit(item)"
+        ></puibe-calendar-item>
+    </div>
+</puibe-calendar-grid-layout>

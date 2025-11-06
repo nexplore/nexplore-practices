@@ -1,0 +1,76 @@
+<form [formGroup]="form" class="grid grid-cols-3 gap-4">
+    <puibe-form-field [hideOptional]="true">
+        <label puibeLabel>Search</label>
+        <input puibeInput type="text" formControlName="name" [placeholder]="'Search'" />
+    </puibe-form-field>
+
+    <puibe-form-field [hideOptional]="true">
+        <label puibeLabel>Active only</label>
+        <ng-select
+            puibeInput
+            [items]="activeOnlyFilterItems"
+            bindLabel="label"
+            bindValue="value"
+            formControlName="active"
+        ></ng-select>
+    </puibe-form-field>
+
+    <puibe-form-field [hideOptional]="true">
+        <label puibeLabel>Type</label>
+        <ng-select
+            puibeInput
+            [items]="sampleTypeFilterItems"
+            bindLabel="label"
+            bindValue="value"
+            formControlName="type"
+        ></ng-select>
+    </puibe-form-field>
+</form>
+
+<puibe-table
+    [tableViewSource]="itemSource"
+    columnTranslationPrefix="Labels.ColumnHeader"
+    class="w-full"
+    [noItemsMessage]="'Keine Einträge vorhanden'"
+>
+    <puibe-table-column
+        [field]="itemSource.columns.name"
+        [columnLabel]="'Name'"
+        [sortable]="true"
+        class="w-1/4"
+    ></puibe-table-column>
+    <puibe-table-column
+        [field]="itemSource.columns.type"
+        [columnLabel]="'Type'"
+        [sortable]="true"
+        class="w-1/4"
+    ></puibe-table-column>
+    <puibe-table-column
+        [field]="itemSource.columns.active"
+        [columnLabel]="'Active'"
+        [sortable]="true"
+        class="w-1/4"
+    ></puibe-table-column>
+
+    <puibe-table-row puibeTableRowActionTrigger *ngFor="let item of itemSource.pageData$ | async">
+        <puibe-table-cell>
+            <button puibeTableRowAction (click)="openModal(item)">
+                {{ item.name }}
+                <span class="sr-only">'Navigate to detail'</span>
+            </button>
+        </puibe-table-cell>
+        <puibe-table-cell>{{ item.type }}</puibe-table-cell>
+        <puibe-table-cell
+            ><puibe-icon-enumeration
+                [color]="item.active ? 'green' : 'red'"
+                [size]="'xs'"
+                [title]="item.active ? 'Active' : 'Inactive'"
+            ></puibe-icon-enumeration
+        ></puibe-table-cell>
+    </puibe-table-row>
+    <puibe-table-footer>
+        <puibe-table-pagination [pageSize]="5">
+            <puibe-table-page-size [pageSizeOptions]="[5, 15, 30]">Items per page </puibe-table-page-size>
+        </puibe-table-pagination>
+    </puibe-table-footer>
+</puibe-table>

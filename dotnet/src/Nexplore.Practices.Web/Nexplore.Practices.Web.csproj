@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Description>This package includes common tools and services for web projects</Description>
+        <PackageTags>Nexplore.Practices Practices Web</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="Nexplore.Practices.Tests.Integration" />
+        <InternalsVisibleTo Include="Nexplore.Practices.Tests.Unit" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Nexplore.Practices.Configuration\Nexplore.Practices.Configuration.csproj" />
+        <ProjectReference Include="..\Nexplore.Practices.Core\Nexplore.Practices.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>Nexplore.Practices.Tests.Unit</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+</Project>

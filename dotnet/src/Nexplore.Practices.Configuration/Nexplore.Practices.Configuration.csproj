@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Description>This package includes common extensions for application configuration.</Description>
+        <PackageTags>Nexplore.Practices Practices Configuration</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="Nexplore.Practices.Tests.Integration" />
+        <InternalsVisibleTo Include="Nexplore.Practices.Tests.Unit" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.7" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.7" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.7" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.7" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.7" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Nexplore.Practices.Core\Nexplore.Practices.Core.csproj" />
+    </ItemGroup>
+
+</Project>
