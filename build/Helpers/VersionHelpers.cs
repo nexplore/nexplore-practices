@@ -35,7 +35,7 @@ public static class VersionHelpers
 
     private static long EvaluateBuildId()
     {
-        var buildId = GitHubActions.Instance?.BuildId ?? 0;
+        var buildId = GitHubActions.Instance?.RunNumber ?? 0;
 
         // ushort.MaxValue is the maximum number the 4th position can be in an Assembly version. We likely "never" exeed this
         return buildId % ushort.MaxValue;
