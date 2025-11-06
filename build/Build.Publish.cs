@@ -65,13 +65,9 @@ partial class Build
         {
             var isPublicRelease = GitVersion.IsPublicRelease();
 
-            var registryUrl = isPublicRelease
-                ? NpmPublicReleaseRegistry
-                : NpmPreReleaseRegistry;
-
-            var apiKey = isPublicRelease
-                ? NpmPublicReleaseApiKey
-                : NpmPreReleaseApiKey;
+            var registryUrl = isPublicRelease? NpmPublicReleaseRegistry : NpmPreReleaseRegistry;
+            var apiKey = isPublicRelease? NpmPublicReleaseApiKey : NpmPreReleaseApiKey;
+            var distTag = isPublicRelease ? "latest" : "next";
 
             var npmPackageDirectory = AbsolutePath.Create(PublishArtifactsDirectory) / "npm";
             var npmPackages = npmPackageDirectory.GlobFiles("*.zip");
@@ -82,18 +78,25 @@ partial class Build
             {
                 var zipName = Path.GetFileName(package);
                 var projectName = zipName[..zipName.IndexOf('.')];
-                var projectDir = npmPackageDirectory / projectName;
+                var projectDir  = npmPackageDirectory / projectName;
 
                 package.UnZipTo(projectDir);
 
-                // Set .npmrc per project according to configuration
+                // Write a per-project .npmrc for auth to GH Packages
                 var npmrc = $@"
-                   registry={registryUrl}
-                   //{new Uri(registryUrl).Host}/:_authToken={apiKey}
-                   ";
+    registry={registryUrl}
+    //{new Uri(registryUrl).Host}/:_authToken={apiKey}
+    ";
                 File.WriteAllText(projectDir / ".npmrc", npmrc);
 
-                NpmTasks.Npm("publish", workingDirectory: projectDir);
+                // Publish with the chosen dist-tag
+                NpmTasks.Npm(s => s
+                    .SetCommand("publish")
+                    .SetWorkingDirectory(projectDir)
+                    .SetProcessArgumentConfigurator(args => args
+                        .Add("--tag {0}", distTag)
+                    )
+                );
             }
         });
 
