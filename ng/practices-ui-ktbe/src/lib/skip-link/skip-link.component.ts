@@ -12,11 +12,12 @@ import { PuibeIconGoNextComponent } from '../icons/icon-go-next.component';
 export class PuibeSkipLinkComponent {
     @Input() href: string;
 
-    onClick() {
+    onClick(ev: Event) {
         if (this.href?.startsWith('#')) {
             setTimeout(() => {
                 document.querySelector<HTMLElement>(this.href)?.focus();
             });
+            ev.preventDefault();
         }
     }
 }

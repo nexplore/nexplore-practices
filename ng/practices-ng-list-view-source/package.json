@@ -2,9 +2,9 @@
     "name": "@nexplore/practices-ng-list-view-source",
     "version": "0.0.0-VERSION",
     "peerDependencies": {
-        "@angular/core": ">=18.0.0 <20.0.0",
-        "@angular/forms": ">=18.0.0 <20.0.0",
-        "@angular/router": ">=18.0.0 <20.0.0",
+        "@angular/core": ">=18.0.0 <21.0.0",
+        "@angular/forms": ">=18.0.0 <21.0.0",
+        "@angular/router": ">=18.0.0 <21.0.0",
         "@nexplore/practices-ng-commands": "0.0.0-VERSION",
         "@nexplore/practices-ng-common-util": "0.0.0-VERSION",
         "@nexplore/practices-ng-forms": "0.0.0-VERSION",
