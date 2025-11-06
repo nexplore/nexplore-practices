@@ -3,8 +3,6 @@ using System.IO;
 using System.Linq;
 using Nexplore.Practices.Build.Helpers;
 using Nuke.Common;
-using Nuke.Common.CI.GitHubActions;
-using Nuke.Common.CI.AzurePipelines;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
@@ -110,24 +108,13 @@ partial class Build : NukeBuild
         .After(AnalyzeNg)
         .Executes(() =>
         {
-            try
-            {
-                DotNetTasks.DotNetTest(settings => settings
-                    .SetProjectFile(DotNetSolution)
-                    .SetNoRestore(true)
-                    .SetNoBuild(true)
-                    .SetConfiguration(Configuration.Release)
-                    .SetResultsDirectory(TestResultDirectory)
-                    .SetLoggers("trx"));
-            }
-            finally
-            {
-                //var testResultFiles = TestResultDirectory.GlobFiles("*.trx").Select(filePath => filePath.ToString());
-                //GitHubActions.Instance?.PublishTestResults(
-                //    "DotNet Tests",
-                //    GitHubActionsTestResultsType.VSTest,
-                //    testResultFiles);
-            }
+            DotNetTasks.DotNetTest(settings => settings
+                .SetProjectFile(DotNetSolution)
+                .SetNoRestore(true)
+                .SetNoBuild(true)
+                .SetConfiguration(Configuration.Release)
+                .SetResultsDirectory(TestResultDirectory)
+                .SetLoggers("trx"));
         });
 
     Target TestNg => _ => _
@@ -137,24 +124,10 @@ partial class Build : NukeBuild
         {
             Environment.SetEnvironmentVariable("JEST_JUNIT_OUTPUT_DIR", TestResultDirectory);
 
-            try
-            {
-                NpmTasks.NpmRun(settings => settings
-                    .SetCommand("test-ci")
-                    .SetProcessLogger(LogHelpers.OverrideNpmLogger)
-                    .SetProcessWorkingDirectory(NgDirectory));
-            }
-            finally
-            {
-                var testResultFiles = TestResultDirectory.GlobFiles("*.xml").Select(filePath => filePath.ToString()).ToArray();
-                if (testResultFiles.Length > 0)
-                {
-                    //GitHubActions.Instance?.PublishTestResults(
-                    //    "Ng Tests",
-                    //    GitHubActionsTestResultsType.JUnit,
-                    //    testResultFiles);
-                }
-            }
+            NpmTasks.NpmRun(settings => settings
+                .SetCommand("test-ci")
+                .SetProcessLogger(LogHelpers.OverrideNpmLogger)
+                .SetProcessWorkingDirectory(NgDirectory));
         });
 
     Target BuildKtBeStorybook => _ => _
