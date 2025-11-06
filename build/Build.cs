@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Nexplore.Practices.Build.Helpers;
 using Nuke.Common;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.CI.AzurePipelines;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
@@ -44,15 +45,7 @@ partial class Build : NukeBuild
 
     private readonly string[] NgAppProjects = ["samples", "samples-ktbe"];
 
-    Target UpdateBuildNumber => _ => _
-        .Unlisted()
-        .Executes(() =>
-        {
-            AzurePipelines.Instance?.UpdateBuildNumber(GitVersion.PracticesPackageVersion());
-        });
-
     Target Clean => _ => _
-        .DependsOn(UpdateBuildNumber)
         .Executes(() =>
         {
             OutputDirectory.DeleteDirectory();
@@ -129,11 +122,11 @@ partial class Build : NukeBuild
             }
             finally
             {
-                var testResultFiles = TestResultDirectory.GlobFiles("*.trx").Select(filePath => filePath.ToString());
-                AzurePipelines.Instance?.PublishTestResults(
-                    "DotNet Tests",
-                    AzurePipelinesTestResultsType.VSTest,
-                    testResultFiles);
+                //var testResultFiles = TestResultDirectory.GlobFiles("*.trx").Select(filePath => filePath.ToString());
+                //GitHubActions.Instance?.PublishTestResults(
+                //    "DotNet Tests",
+                //    GitHubActionsTestResultsType.VSTest,
+                //    testResultFiles);
             }
         });
 
@@ -156,10 +149,10 @@ partial class Build : NukeBuild
                 var testResultFiles = TestResultDirectory.GlobFiles("*.xml").Select(filePath => filePath.ToString()).ToArray();
                 if (testResultFiles.Length > 0)
                 {
-                    AzurePipelines.Instance?.PublishTestResults(
-                        "Ng Tests",
-                        AzurePipelinesTestResultsType.JUnit,
-                        testResultFiles);
+                    //GitHubActions.Instance?.PublishTestResults(
+                    //    "Ng Tests",
+                    //    GitHubActionsTestResultsType.JUnit,
+                    //    testResultFiles);
                 }
             }
         });
