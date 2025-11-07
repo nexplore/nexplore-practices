@@ -9,8 +9,8 @@ trigger:
 pool:
   name: ubuntu-22.04
   demands:
-  - shell
-  - docker
+    - shell
+    - docker
 
 stages:
   - stage: Build
