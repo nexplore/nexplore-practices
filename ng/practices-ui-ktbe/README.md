@@ -17,7 +17,7 @@ This library provides a comprehensive set of Angular components, directives, and
 -   **Standalone components** for easy integration with Angular applications
 -   **Responsive design** supporting various screen sizes
 -   **Accessibility support** for inclusive user experiences
--   **Tailwind CSS integration** for consistent styling (Based on Version 3, note that version 4 is not yet supported)
+-   **Tailwind CSS integration** for consistent styling (Based on version 3, note that version 4 is not yet supported)
 -   **Type-safe interfaces** for improved developer experience
 
 ## Core Components
