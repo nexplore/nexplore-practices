@@ -222,9 +222,9 @@ export class CommandImpl<TArgs, TResult, TOptions extends CommandOptions<TArgs> 
     };
 
     cancel = () => {
-        if (this._subscription) {
+        if (this._subscription || this.busy) {
             if (this.options.isCancellable) {
-                this._subscription.unsubscribe();
+                this._subscription?.unsubscribe();
                 this._abortController?.abort();
             }
             this._subscription = undefined;
