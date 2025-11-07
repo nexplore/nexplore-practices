@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, inject, Input, ViewEncapsulation } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PuibeIconCloseComponent } from '../icons/icon-close.component';
@@ -9,7 +9,7 @@ import { PUIBE_MODAL_CONFIG, PuibeModalConfig } from './types';
     standalone: true,
     selector: 'puibe-modal',
     templateUrl: 'modal.component.html',
-    imports: [NgIf, NgClass, TranslateModule, PuibeIconCloseComponent],
+    imports: [NgClass, TranslateModule, PuibeIconCloseComponent],
     encapsulation: ViewEncapsulation.None,
     styles: [
         // The following rule uses the :where() pseudo-class to match attribute selector, but keeping the low specificity, so it can be easily overriden.
@@ -31,6 +31,8 @@ import { PUIBE_MODAL_CONFIG, PuibeModalConfig } from './types';
     ],
 })
 export class PuibeModalComponent {
+    private readonly _puibeDialogService = inject(PuibeModalService);
+
     private readonly config = inject<PuibeModalConfig>(PUIBE_MODAL_CONFIG, { optional: true });
 
     @Input() hideCloseButton = false;
@@ -38,8 +40,6 @@ export class PuibeModalComponent {
     @Input() hideDoubleDividerLine = false;
 
     @Input() buttonsAlignment: 'start' | 'end' = this.config?.buttonsAlignment ?? 'start';
-
-    constructor(private readonly _puibeDialogService: PuibeModalService) {}
 
     closeModal(): void {
         this._puibeDialogService.closeRef();

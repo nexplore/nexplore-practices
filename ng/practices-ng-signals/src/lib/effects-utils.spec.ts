@@ -1,5 +1,6 @@
 import { effect, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { beforeAll, describe, expect, it, jest } from '@jest/globals';
 import { withEffects } from './effects-utils';
 
 describe('withEffects', () => {
@@ -34,10 +35,10 @@ describe('withEffects', () => {
             jest.runAllTimers();
 
             mySignal.set(true);
-            TestBed.flushEffects();
+            TestBed.tick();
 
             mySignal.set(false);
-            TestBed.flushEffects();
+            TestBed.tick();
         });
 
         expect(result).toEqual([false, true, false]);
@@ -58,12 +59,13 @@ describe('withEffects', () => {
             jest.runAllTimers();
 
             mySignal.set(true);
-            TestBed.flushEffects();
+            TestBed.tick();
 
             mySignal.set(false);
-            TestBed.flushEffects();
+            TestBed.tick();
         });
 
         expect(result).toEqual([false, true, false]);
     });
 });
+

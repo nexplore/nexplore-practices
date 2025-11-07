@@ -1,9 +1,11 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { IsActiveMatchOptions, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, filter, map, Observable, startWith } from 'rxjs';
 
 @Injectable()
 export class MenuItemService implements OnDestroy {
+    private _router = inject(Router);
+
     private _routerLinkSubject = new BehaviorSubject<string>(null);
     private _routerLinkActiveOptionsSubject = new BehaviorSubject<IsActiveMatchOptions>({
         paths: 'subset',
@@ -29,8 +31,6 @@ export class MenuItemService implements OnDestroy {
                 isActive ?? (routerLink ? this._router.isActive(routerLink, routerLinkActiveOptions) : false)
         )
     );
-
-    constructor(private _router: Router) {}
 
     get routerLink$() {
         return this._routerLinkSubject.asObservable();

@@ -1,12 +1,16 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Validators } from '@angular/forms';
+import { describe, expect, it } from '@jest/globals';
 import { formGroup } from './api';
 
 describe('formGroup', () => {
     it('Works as expected when signal reset and validation are combined', () => {
         class TestDto {
-            constructor(public name: string, public nickname: string | null = null) {}
+            constructor(
+                public name: string,
+                public nickname: string | null = null,
+            ) {}
         }
 
         TestBed.runInInjectionContext(() => {
@@ -36,42 +40,42 @@ describe('formGroup', () => {
                     Validators.maxLength(4),
                     dependent(
                         ({ name, nickname }) =>
-                            name && nickname && !name.includes(nickname) && { nicknameMustBeShortVersionOfName: true }
+                            name && nickname && !name.includes(nickname) && { nicknameMustBeShortVersionOfName: true },
                     ),
                 ],
             }));
             const fg = fg3;
 
-            TestBed.flushEffects();
+            TestBed.tick();
             pushResults();
 
             isRequiredSignal.set(true);
-            TestBed.flushEffects();
+            TestBed.tick();
             pushResults();
 
             sourceSignal.set(new TestDto('John Doe'));
 
-            TestBed.flushEffects();
+            TestBed.tick();
             pushResults();
 
             fg.patchValue({ nickname: 'John' });
 
-            TestBed.flushEffects();
+            TestBed.tick();
             pushResults();
 
             fg.patchValue({ nickname: 'Lisa' });
 
-            TestBed.flushEffects();
+            TestBed.tick();
             pushResults();
 
             fg.patchValue({ nickname: 'Johnny' });
 
-            TestBed.flushEffects();
+            TestBed.tick();
             pushResults();
 
             fg.patchValue({ nickname: 'Jo' });
 
-            TestBed.flushEffects();
+            TestBed.tick();
             pushResults();
 
             expect(results).toEqual([
@@ -86,3 +90,4 @@ describe('formGroup', () => {
         });
     });
 });
+

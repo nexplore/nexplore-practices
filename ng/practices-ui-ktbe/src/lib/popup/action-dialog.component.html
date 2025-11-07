@@ -1,31 +1,40 @@
 <puibe-modal
-    [hideCloseButton]="!!dialogRef.disableClose || !!busy || !!hideCloseButton"
-    [hideDoubleDividerLine]="!content || isContentEmpty"
->
-    <span *ngIf="title" puibeModalTitle class="flex items-center justify-center">
-        <h1 class="h4 mb-0 ml-1">
-            <puibe-dialog-template-content [content]="title" [contentInputs]="contentInputs ?? data"/>
-        </h1>
+  [hideCloseButton]="!!dialogRef.disableClose || !!busy || !!hideCloseButton"
+  [hideDoubleDividerLine]="!content || isContentEmpty"
+  >
+  @if (title) {
+    <span puibeModalTitle class="flex items-center justify-center">
+      <h1 class="h4 mb-0 ml-1">
+        <puibe-dialog-template-content [content]="title" [contentInputs]="contentInputs ?? data"/>
+      </h1>
     </span>
-    <div *ngIf="subtitle" class="mt-1" puibeModalSubtitle>
-        <puibe-dialog-template-content [content]="subtitle" [contentInputs]="contentInputs ?? data"/>
+  }
+  @if (subtitle) {
+    <div class="mt-1" puibeModalSubtitle>
+      <puibe-dialog-template-content [content]="subtitle" [contentInputs]="contentInputs ?? data"/>
     </div>
-    <div *ngIf="content" puibeModalContent puibeHideIfEmptyText (emptyTextChange)="isContentEmpty = $event">
-        <puibe-dialog-template-content [content]="content" [contentInputs]="contentInputs ?? data"/>
+  }
+  @if (content) {
+    <div puibeModalContent puibeHideIfEmptyText (emptyTextChange)="isContentEmpty = $event">
+      <puibe-dialog-template-content [content]="content" [contentInputs]="contentInputs ?? data"/>
     </div>
+  }
+  @for (action of actions; track action) {
     <button
-        puibeButton
-        *ngFor="let action of actions"
-        [variant]="action.variant ?? (action.primary ? 'primary' : 'secondary')"
-        [clickCommand]="action.command ?? command"
-        [commandOptions]="{ status: {silent: isActionSilent(action) } }"
-        [commandArgs]="action.command ? data : action"
-        [disabled]="busy"
-        puibeModalFooterAction
-        [shouldClose]="false"
-    >
-        {{ action.label ?? (action.labelKey | translate) }}
+      puibeButton
+      [variant]="action.variant ?? (action.primary ? 'primary' : 'secondary')"
+      [clickCommand]="action.command ?? command"
+      [commandOptions]="{ status: {silent: isActionSilent(action) } }"
+      [commandArgs]="action.command ? data : action"
+      [disabled]="busy"
+      puibeModalFooterAction
+      [shouldClose]="false"
+      >
+      {{ action.label ?? (action.labelKey | translate) }}
     </button>
+  }
 
-    <puibe-icon-spinner size="m" puibeModalFooterStatus *ngIf="busy"></puibe-icon-spinner>
+  @if (busy) {
+    <puibe-icon-spinner size="m" puibeModalFooterStatus></puibe-icon-spinner>
+  }
 </puibe-modal>

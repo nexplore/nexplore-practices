@@ -1,0 +1,39 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "$id": "UpdateComponentsSchema",
+    "title": "Update component sources",
+    "type": "object",
+    "properties": {
+        "dest": {
+            "type": "string",
+            "description": "Destination root folder for component sources",
+            "default": "src/app/components"
+        },
+        "names": {
+            "type": "string",
+            "description": "Comma separated component names to update"
+        },
+        "all": {
+            "type": "boolean",
+            "description": "Include all components"
+        },
+        "moduleExports": {
+            "type": "string",
+            "description": "Comma separated Angular Module export group names"
+        },
+        "apply": {
+            "type": "string",
+            "enum": ["auto", "conflicts", "all"],
+            "default": "auto",
+            "description": "Update policy"
+        },
+        "rewriteImports": {
+            "type": "boolean",
+            "description": "Rewrite library imports to relative paths",
+            "default": true
+        }
+    },
+    "oneOf": [{ "required": ["all"] }, { "required": ["names"] }, { "required": ["moduleExports"] }],
+    "additionalProperties": false
+}
+

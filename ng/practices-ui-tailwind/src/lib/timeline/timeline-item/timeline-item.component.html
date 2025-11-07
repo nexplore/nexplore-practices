@@ -1,0 +1,11 @@
+<div class="flex w-full flex-row gap-x-6" [ngClass]="{ 'flex-row-reverse': alignment === 'right' }">
+    <div class="relative min-w-[25px]">
+        <div
+            class="connecting-line bg-dark-highlight absolute left-[11px] top-[24px] h-full w-[3px] transition duration-300"
+        ></div>
+        <div class="bg-dark-highlight absolute left-0 top-0 h-[25px] w-[25px] rounded-full transition duration-300"></div>
+    </div>
+    <div class="w-full">
+        <ng-content></ng-content>
+    </div>
+</div>

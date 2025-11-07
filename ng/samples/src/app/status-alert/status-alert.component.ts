@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { AggregatedStatusInfo, StatusError, StatusHubService, StatusSuccess } from '@nexplore/practices-ui';
 import { Subscription } from 'rxjs';
 
@@ -7,6 +7,8 @@ import { Subscription } from 'rxjs';
     templateUrl: './status-alert.component.html',
 })
 export class StatusAlertComponent implements OnInit, OnDestroy {
+    private statusHub = inject(StatusHubService);
+
     private subscription: Subscription;
     busy: boolean;
 
@@ -15,8 +17,6 @@ export class StatusAlertComponent implements OnInit, OnDestroy {
 
     successDismissFn: () => void;
     errorDismissFn: () => void;
-
-    constructor(private statusHub: StatusHubService) {}
 
     ngOnInit() {
         this.subscription = this.statusHub.status$.subscribe((status) => this.setStatus(status));

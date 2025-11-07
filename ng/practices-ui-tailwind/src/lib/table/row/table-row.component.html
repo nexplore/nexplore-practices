@@ -1,0 +1,11 @@
+@if (beforeColumnTemplate$ | async; as tmpl) {
+  <pui-table-cell [noPadding]="tmpl.noPadding">
+    @if (!tmpl.hideInRow && tmpl.template) {
+      <ng-container *ngTemplateOutlet="tmpl.template"></ng-container>
+    }
+    @if (!tmpl.hideInRow && tmpl.componentType) {
+      <ng-container *ngComponentOutlet="tmpl.componentType"></ng-container>
+    }
+  </pui-table-cell>
+}
+<ng-content></ng-content>

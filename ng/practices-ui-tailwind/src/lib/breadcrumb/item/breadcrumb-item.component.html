@@ -1,0 +1,71 @@
+
+@switch (renderType) {
+  @case ('sideNav') {
+    <a
+      (click)="openSidenav()"
+      [class]="classNamesAnchor"
+      [ngClass]="active ? [classNamesActive] : []"
+      [ariaLabel]="isHome ? ('Practices.Labels_Navigation_Home' | translate) : undefined"
+      tabindex="0"
+      >
+      <ng-container *ngTemplateOutlet="homeIcon"></ng-container>
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </a>
+  }
+  @case ('routerLink') {
+    <a
+      [routerLink]="routerLink || '/'"
+      [routerLinkActive]="classNamesActive"
+        [routerLinkActiveOptions]="{
+            paths: 'exact',
+            queryParams: 'ignored',
+            fragment: 'ignored',
+            matrixParams: 'ignored'
+        }"
+      [class]="classNamesAnchor"
+      [ariaLabel]="isHome ? ('Practices.Labels_Navigation_Home' | translate) : undefined"
+      tabindex="0"
+      >
+      <ng-container *ngTemplateOutlet="homeIcon"></ng-container>
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </a>
+  }
+  @case ('anchor') {
+    <a
+      [attr.href]="href"
+      [attr.target]="target"
+      [ngClass]="active ? [classNamesActive] : []"
+      [attr.rel]="rel"
+      [class]="classNamesAnchor"
+      [ariaLabel]="isHome ? ('Practices.Labels_Navigation_Home' | translate) : undefined"
+      tabindex="0"
+      >
+      @if (isHome) {
+        <pui-icon-home [class]="classNamesHomeIcon"></pui-icon-home>
+      }
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </a>
+  }
+  @case ('default') {
+    <span [class]="classNamesFallback" [ngClass]="active ? [classNamesActive] : []">
+      <ng-container *ngTemplateOutlet="homeIcon"></ng-container>
+      <ng-container *ngTemplateOutlet="content"></ng-container
+      ></span>
+    }
+  }
+
+  <ng-template #content>
+    <ng-content></ng-content>
+  </ng-template>
+
+  <ng-template #homeIcon>
+    @if (isHome) {
+      <pui-icon-home
+        [title]="'Practices.Labels_Navigation_Home' | translate"
+        [attr.aria-label]="'Practices.Labels_Navigation_Home' | translate"
+        [class]="classNamesHomeIcon"
+      ></pui-icon-home>
+    }
+  </ng-template>
+
+  <pui-icon-arrow-breadcrumb direction="right" class="h-3 w-4 group-last-of-type:hidden"></pui-icon-arrow-breadcrumb>

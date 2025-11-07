@@ -1,20 +1,4 @@
-import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    Directive,
-    ElementRef,
-    HostBinding,
-    HostListener,
-    Inject,
-    Input,
-    OnInit,
-    Optional,
-    Self,
-    ViewContainerRef,
-    ViewEncapsulation,
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Directive, ElementRef, HostBinding, HostListener, Input, OnInit, ViewContainerRef, ViewEncapsulation, inject } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { DestroyService } from '@nexplore/practices-ui';
 import { NgSelectComponent } from '@ng-select/ng-select';
@@ -49,6 +33,16 @@ export class PuibeSelectDeepStyleComponent {
     providers: [DestroyService],
 })
 export class PuibeSelectDirective implements OnInit, AfterViewInit {
+    private _elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+    private _viewContainerRef = inject(ViewContainerRef);
+    private _ngControl = inject(NgControl, { self: true });
+    private _ngSelectComponent = inject(NgSelectComponent, { self: true });
+    private _formFieldService = inject(FormFieldService);
+    private _destroy$ = inject(DestroyService);
+    private _cdr = inject(ChangeDetectorRef);
+    private _translate = inject(TranslateService);
+    private readonly _config = inject<FormConfig>(FORM_CONFIG, { optional: true });
+
     @HostListener('blur')
     onBlur() {
         this._formFieldService.markAsTouched();
@@ -87,18 +81,6 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
 
     @Input()
     useSearchIconIfSearchable: boolean = this._config?.useSearchIconIfSelectSearchable ?? false;
-
-    constructor(
-        private _elementRef: ElementRef<HTMLElement>,
-        private _viewContainerRef: ViewContainerRef,
-        @Self() private _ngControl: NgControl,
-        @Self() private _ngSelectComponent: NgSelectComponent,
-        private _formFieldService: FormFieldService,
-        private _destroy$: DestroyService,
-        private _cdr: ChangeDetectorRef,
-        private _translate: TranslateService,
-        @Optional() @Inject(FORM_CONFIG) private readonly _config: FormConfig
-    ) {}
 
     ngOnInit() {
         this._viewContainerRef.createComponent(PuibeSelectDeepStyleComponent);

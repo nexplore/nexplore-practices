@@ -1,0 +1,58 @@
+<thead>
+  <tr>
+    @if (beforeColumnTemplate$ | async; as tmpl) {
+      <pui-table-column
+        [ngClass]="headerCellClassName"
+        [noPadding]="tmpl.noPadding"
+        >
+        @if (!tmpl.hideInHeader && tmpl.template) {
+          <ng-container *ngTemplateOutlet="tmpl.template"></ng-container>
+        }
+        @if (!tmpl.hideInHeader && tmpl.componentType) {
+          <ng-container *ngComponentOutlet="tmpl.componentType"></ng-container>
+        }
+      </pui-table-column>
+    }
+    <ng-content select="pui-table-column"></ng-content>
+  </tr>
+</thead>
+
+<tbody>
+  <ng-content select="pui-table-row"></ng-content>
+  @if (busyAndNoItems$ | async) {
+    <tr>
+      <td colspan="100">
+        <pui-icon-spinner class="m-auto my-6 flex w-6 justify-stretch"></pui-icon-spinner>
+      </td>
+    </tr>
+  }
+  @if (
+    (busy$ | async) === false && (noItems$ | async) === true && (noItemsMessage || noItemsMessage === undefined)
+    ) {
+    <tr
+      >
+      <td colspan="100" class="p-2 text-center">
+        <i>{{ noItemsMessage ?? ('Practices.Labels_Table_NoEntries' | translate) }}</i>
+      </td>
+    </tr>
+  }
+</tbody>
+
+<ng-content select="pui-table-footer"></ng-content>
+<span class="sr-only" aria-live="polite">
+  @if (eventNotificationTranslationKeys$ | async; as event) {
+    @if (busy$ | async) {
+      {{ event.key | translate : event }}
+    }
+  }
+  @if (itemsCount$ | async; as count) {
+    @if ((busy$ | async) === false) {
+      {{ 'Practices.Labels_Table_NumberOfEntries' | translate : { count } }}
+    }
+  }
+  @if ((noItems$ | async) === true) {
+    @if ((busy$ | async) === false) {
+      {{ noItemsMessage ?? ('Practices.Labels_Table_NoEntries' | translate) }}
+    }
+  }
+</span>

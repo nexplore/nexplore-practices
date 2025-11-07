@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, QueryList, ViewChildren, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IQueryParamsWithFilter } from '@nexplore/practices-ui';
 import {
@@ -53,6 +53,8 @@ const formConfig: FormConfig = {
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormWithHideInvalidComponent {
+    private _fb = inject(FormBuilder);
+
     @ViewChildren(PuibeFormDirective) forms: QueryList<PuibeFormDirective>;
 
     foods = items;
@@ -93,8 +95,6 @@ export class FormWithHideInvalidComponent {
     });
 
     myCoolModel: number;
-
-    constructor(private _fb: FormBuilder) {}
 
     fakeSubmit() {
         this.forms.forEach((partialForm) => partialForm.markAsTouched());

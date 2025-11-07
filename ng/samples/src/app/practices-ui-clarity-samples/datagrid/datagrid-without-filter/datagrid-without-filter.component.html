@@ -1,19 +1,21 @@
 <clr-datagrid [puiclrListViewSource]="userSource">
-    <clr-dg-column>User ID</clr-dg-column>
-    <clr-dg-column [clrDgSortBy]="'firstname'">Firstname</clr-dg-column>
-    <clr-dg-column [clrDgSortBy]="'lastname'">Lastname</clr-dg-column>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column [clrDgSortBy]="'firstname'">Firstname</clr-dg-column>
+  <clr-dg-column [clrDgSortBy]="'lastname'">Lastname</clr-dg-column>
 
-    <clr-dg-row *ngFor="let user of userSource.pageData$ | async; trackBy: trackById">
-        <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-        <clr-dg-cell>{{ user.firstname }}</clr-dg-cell>
-        <clr-dg-cell>{{ user.lastname }}</clr-dg-cell>
+  @for (user of userSource.pageData$ | async; track trackById($index, user)) {
+    <clr-dg-row>
+      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.firstname }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.lastname }}</clr-dg-cell>
     </clr-dg-row>
+  }
 
-    <clr-dg-footer>
-        <clr-dg-pagination #pagination puiclrPagination
-            ><clr-dg-page-size [clrPageSizeOptions]="[15, 30, 50, 100]">Users per page</clr-dg-page-size>
-            {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
-            {{ pagination.totalItems }} users</clr-dg-pagination
-        >
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination puiclrPagination
+      ><clr-dg-page-size [clrPageSizeOptions]="[15, 30, 50, 100]">Users per page</clr-dg-page-size>
+      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+      {{ pagination.totalItems }} users</clr-dg-pagination
+      >
     </clr-dg-footer>
-</clr-datagrid>
+  </clr-datagrid>

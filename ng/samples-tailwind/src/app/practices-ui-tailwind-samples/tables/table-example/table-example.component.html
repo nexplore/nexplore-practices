@@ -1,0 +1,78 @@
+<form [formGroup]="form" class="grid grid-cols-3 gap-4">
+  <pui-form-field [hideOptional]="true">
+    <label puiLabel>Search</label>
+    <input puiInput type="text" formControlName="name" [placeholder]="'Search'" />
+  </pui-form-field>
+
+  <pui-form-field [hideOptional]="true">
+    <label puiLabel>Active only</label>
+    <ng-select
+      puiInput
+      [items]="activeOnlyFilterItems"
+      bindLabel="label"
+      bindValue="value"
+      formControlName="active"
+    ></ng-select>
+  </pui-form-field>
+
+  <pui-form-field [hideOptional]="true">
+    <label puiLabel>Type</label>
+    <ng-select
+      puiInput
+      [items]="sampleTypeFilterItems"
+      bindLabel="label"
+      bindValue="value"
+      formControlName="type"
+    ></ng-select>
+  </pui-form-field>
+</form>
+
+<pui-table
+  [tableViewSource]="itemSource"
+  columnTranslationPrefix="Labels.ColumnHeader"
+  class="w-full"
+  [noItemsMessage]="'Keine Einträge vorhanden'"
+  >
+  <pui-table-column
+    [field]="itemSource.columns.name"
+    [columnLabel]="'Name'"
+    [sortable]="true"
+    class="w-1/4"
+  ></pui-table-column>
+  <pui-table-column
+    [field]="itemSource.columns.type"
+    [columnLabel]="'Type'"
+    [sortable]="true"
+    class="w-1/4"
+  ></pui-table-column>
+  <pui-table-column
+    [field]="itemSource.columns.active"
+    [columnLabel]="'Active'"
+    [sortable]="true"
+    class="w-1/4"
+  ></pui-table-column>
+
+  @for (item of itemSource.pageData$ | async; track item) {
+    <pui-table-row puiTableRowActionTrigger>
+      <pui-table-cell>
+        <button puiTableRowAction (click)="openModal(item)">
+          {{ item.name }}
+          <span class="sr-only">'Navigate to detail'</span>
+        </button>
+      </pui-table-cell>
+      <pui-table-cell>{{ item.type }}</pui-table-cell>
+      <pui-table-cell
+        ><pui-icon-enumeration
+        [color]="item.active ? 'green' : 'red'"
+        [size]="'xs'"
+        [title]="item.active ? 'Active' : 'Inactive'"
+        ></pui-icon-enumeration
+      ></pui-table-cell>
+    </pui-table-row>
+  }
+  <pui-table-footer>
+    <pui-table-pagination [pageSize]="5">
+      <pui-table-page-size [pageSizeOptions]="[5, 15, 30]">Items per page </pui-table-page-size>
+    </pui-table-pagination>
+  </pui-table-footer>
+</pui-table>

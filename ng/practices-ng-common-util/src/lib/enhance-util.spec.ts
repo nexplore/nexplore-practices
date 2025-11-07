@@ -1,4 +1,4 @@
-import { describe, expect, it } from '@jest/globals';
+import { describe, expect, it, jest } from '@jest/globals';
 import { enhance } from './enhance-util';
 import { signal } from '@angular/core';
 import { of, Subject } from 'rxjs';

@@ -1,9 +1,11 @@
-<puibe-table-cell *ngIf="beforeColumnTemplate$ | async as tmpl" [noPadding]="tmpl.noPadding">
-    <ng-container *ngIf="!tmpl.hideInRow && tmpl.template">
-        <ng-container *ngTemplateOutlet="tmpl.template"></ng-container>
-    </ng-container>
-    <ng-container *ngIf="!tmpl.hideInRow && tmpl.componentType">
-        <ng-container *ngComponentOutlet="tmpl.componentType"></ng-container>
-    </ng-container>
-</puibe-table-cell>
+@if (beforeColumnTemplate$ | async; as tmpl) {
+  <puibe-table-cell [noPadding]="tmpl.noPadding">
+    @if (!tmpl.hideInRow && tmpl.template) {
+      <ng-container *ngTemplateOutlet="tmpl.template"></ng-container>
+    }
+    @if (!tmpl.hideInRow && tmpl.componentType) {
+      <ng-container *ngComponentOutlet="tmpl.componentType"></ng-container>
+    }
+  </puibe-table-cell>
+}
 <ng-content></ng-content>

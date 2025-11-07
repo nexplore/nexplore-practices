@@ -1,5 +1,5 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AsyncPipe, NgClass } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { map } from 'rxjs';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
 import { PuibeButtonDirective, Variant } from './button.directive';
@@ -9,14 +9,14 @@ import { PuibeButtonDirective, Variant } from './button.directive';
     selector: 'puibe-button-spinner',
     templateUrl: './button-spinner.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [PuibeIconSpinnerComponent, NgIf, NgClass, AsyncPipe],
+    imports: [PuibeIconSpinnerComponent, NgClass, AsyncPipe],
 })
 export class PuibeButtonSpinnerComponent {
+    private _parentButtonDirective = inject(PuibeButtonDirective);
+
     readonly busy$ = this._parentButtonDirective.busy$;
     readonly buttonSize$ = this._parentButtonDirective.size$;
     readonly fillClassName$ = this._parentButtonDirective.variant$.pipe(map((variant) => this.fillClassName(variant)));
-
-    constructor(private _parentButtonDirective: PuibeButtonDirective) {}
 
     private fillClassName(variant: Variant) {
         switch (variant) {

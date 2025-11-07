@@ -1,19 +1,24 @@
 <clr-modal [(clrModalOpen)]="opened" [clrModalClosable]="!currentlyRunningAction">
-    <h3 class="modal-title">{{ title }}</h3>
-    <div class="modal-body">
-        <p *ngIf="!treatMessageAsHtml">{{ message }}</p>
-        <div *ngIf="treatMessageAsHtml" [innerHTML]="message"></div>
-    </div>
-    <div class="modal-footer">
-        <button
-            *ngFor="let action of actions"
-            type="button"
-            class="btn {{ action.class ? action.class : 'btn-outline' }}"
-            (click)="onClick(action)"
-            [clrLoading]="isBusy(action)"
-            [disabled]="currentlyRunningAction"
+  <h3 class="modal-title">{{ title }}</h3>
+  <div class="modal-body">
+    @if (!treatMessageAsHtml) {
+      <p>{{ message }}</p>
+    }
+    @if (treatMessageAsHtml) {
+      <div [innerHTML]="message"></div>
+    }
+  </div>
+  <div class="modal-footer">
+    @for (action of actions; track action) {
+      <button
+        type="button"
+        class="btn {{ action.class ? action.class : 'btn-outline' }}"
+        (click)="onClick(action)"
+        [clrLoading]="isBusy(action)"
+        [disabled]="currentlyRunningAction"
         >
-            {{ action.label }}
-        </button>
-    </div>
+        {{ action.label }}
+      </button>
+    }
+  </div>
 </clr-modal>

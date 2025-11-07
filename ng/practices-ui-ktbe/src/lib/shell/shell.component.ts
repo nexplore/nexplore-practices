@@ -1,6 +1,6 @@
-import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
-import { Component, ElementRef, Input, Optional, ViewChild } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet, Routes } from '@angular/router';
+import { NgClass } from '@angular/common';
+import { Component, ElementRef, Input, ViewChild, inject } from '@angular/core';
+import { NavigationEnd, Router, Routes } from '@angular/router';
 import { PuibeBreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 
 import { DestroyService } from '@nexplore/practices-ui';
@@ -43,19 +43,18 @@ export type AutofocusContentOnRouterNavigationConfig = {
     selector: 'puibe-shell',
     templateUrl: './shell.component.html',
     imports: [
-        RouterOutlet,
-        PuibeContainerDirective,
-        AsyncPipe,
-        NgIf,
-        NgClass,
-        NgForOf,
-        PuibeBreadcrumbComponent,
-        PuibeIconSpinnerComponent,
-        PuibeStickyDirective,
-    ],
+    PuibeContainerDirective,
+    NgClass,
+    PuibeBreadcrumbComponent,
+    PuibeIconSpinnerComponent,
+    PuibeStickyDirective
+],
     providers: [DestroyService],
 })
 export class PuibeShellComponent {
+    readonly shellService = inject(PuibeShellService);
+    private _router = inject(Router, { optional: true });
+
     @Input() hideBreadcrumbs = false;
 
     @Input()
@@ -91,11 +90,9 @@ export class PuibeShellComponent {
 
     @ViewChild('content') contentRef: ElementRef<HTMLElement>;
 
-    constructor(
-        readonly shellService: PuibeShellService,
-        destroy$: DestroyService,
-        @Optional() private _router: Router
-    ) {
+    constructor() {
+        const destroy$ = inject(DestroyService);
+
         this._router.events
             .pipe(
                 debounceTime(10),

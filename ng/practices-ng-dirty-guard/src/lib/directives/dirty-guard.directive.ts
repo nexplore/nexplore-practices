@@ -1,4 +1,4 @@
-import { Directive, Input, OnDestroy, OnInit } from '@angular/core';
+import { Directive, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 import { trace } from '@nexplore/practices-ng-logging';
@@ -12,6 +12,8 @@ import { PuiDirtyGuardHandler } from '../types';
     standalone: true,
 })
 export class PuiGlobalDirtyGuardDirective implements OnInit, OnDestroy {
+    readonly routeGuardService = inject(PuiDirtyGuardService);
+
     // eslint-disable-next-line @angular-eslint/no-input-rename
     @Input('puiGlobalDirtyGuardDisabled')
     set disabled(disabled: boolean) {
@@ -35,7 +37,10 @@ export class PuiGlobalDirtyGuardDirective implements OnInit, OnDestroy {
         this.routeGuardService.setDirtyGuardHandler(value);
     }
 
-    constructor(readonly routeGuardService: PuiDirtyGuardService, r: RouterOutlet) {
+    constructor() {
+        const routeGuardService = this.routeGuardService;
+        const r = inject(RouterOutlet);
+
         r.activateEvents.pipe(takeUntilDestroyed()).subscribe((compInstance) => {
             routeGuardService.activateComponent(compInstance);
             trace('puiGlobalDirtyGuard', 'component-activated', compInstance, this);

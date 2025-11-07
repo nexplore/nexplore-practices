@@ -1,17 +1,5 @@
-import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
-import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    Component,
-    ContentChildren,
-    ElementRef,
-    forwardRef,
-    Injector,
-    Input,
-    Optional,
-    QueryList,
-    ViewEncapsulation,
-} from '@angular/core';
+import { AsyncPipe, NgClass } from '@angular/common';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChildren, ElementRef, forwardRef, Injector, Input, QueryList, ViewEncapsulation, inject } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { PuiFormFieldDirective, PuiFormFieldService } from '@nexplore/practices-ng-forms';
 import { DestroyService } from '@nexplore/practices-ui';
@@ -31,15 +19,13 @@ import { PuibeRadioButtonComponent } from './radio-button.component';
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        NgFor,
-        NgClass,
-        PuibeIconInvalidComponent,
-        AsyncPipe,
-        TranslateModule,
-        PuibeIconSpinnerComponent,
-        NgIf,
-        PuibeReadonyLabelValueComponent,
-    ],
+    NgClass,
+    PuibeIconInvalidComponent,
+    AsyncPipe,
+    TranslateModule,
+    PuibeIconSpinnerComponent,
+    PuibeReadonyLabelValueComponent
+],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -59,6 +45,13 @@ import { PuibeRadioButtonComponent } from './radio-button.component';
     ],
 })
 export class PuibeRadioButtonGroupComponent implements ControlValueAccessor, AfterViewInit {
+    private _radioButtonGroupService = inject(RadioButtonGroupService);
+    private _formFieldService = inject(PuiFormFieldService);
+    private _destroy$ = inject(DestroyService);
+    private _injector = inject(Injector);
+    private _elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+    private readonly _readonlyDirective = inject(PuibeReadonlyDirective, { optional: true });
+
     private _touched = false;
 
     @Input()
@@ -136,15 +129,6 @@ export class PuibeRadioButtonGroupComponent implements ControlValueAccessor, Aft
                 }));
         })
     );
-
-    constructor(
-        private _radioButtonGroupService: RadioButtonGroupService,
-        private _formFieldService: PuiFormFieldService,
-        private _destroy$: DestroyService,
-        private _injector: Injector,
-        private _elementRef: ElementRef<HTMLElement>,
-        @Optional() private readonly _readonlyDirective: PuibeReadonlyDirective
-    ) {}
 
     ngAfterViewInit(): void {
         const ngControl = this._injector.get(NgControl);

@@ -1,0 +1,59 @@
+<span class="sr-only" data-current-month tabindex="-1" aria-live="polite">
+    {{ periodLabelSignal() }}
+</span>
+<pui-calendar-grid-layout>
+    <button
+        class="-ml-2 px-2"
+        slot="left"
+        puiCalendarToolbarItem
+        [clickable]="canClickPeriodHeader"
+        [disabled]="!canClickPeriodHeader"
+        (click)="clickPeriodHeader.emit()"
+        [title]="'Practices.Labels_DatePicker_ChangeViewYear' | translate"
+        [attr.aria-label]="periodLabelSignal() + ' - ' + ('Practices.Labels_DatePicker_ChangeViewYear' | translate)"
+    >
+        {{ periodLabelSignal() }} <pui-icon-arrow direction="down" class="ml-1 h-3 w-4"></pui-icon-arrow>
+    </button>
+    <ng-content select="[slot='left']" ngProjectAs="[slot='left-after']"></ng-content>
+    <ng-content select="[slot='right']" ngProjectAs="[slot='right']"></ng-content>
+
+    <div class="mb-1 flex gap-1">
+        <pui-calendar-row-label
+            [useFontLight]="true"
+            [label]="'Practices.Labels_DatePicker_Calendarweek' | translate"
+            [labelShort]="'Practices.Labels_DatePicker_CalendarweekShort' | translate"
+            [restrictSizeToCircle]="true"
+        ></pui-calendar-row-label>
+        @for (day of headers; track day) {
+            <div
+                class="flex min-w-8 flex-1 items-center justify-center"
+                [attr.aria-label]="day.long"
+                [title]="day.long"
+                role="columnheader"
+            >
+                <div class="text-center font-medium">{{ day.short }}</div>
+            </div>
+        }
+    </div>
+    @for (row of dateRowsSignal(); track $index) {
+        <div class="flex shrink-0 grow basis-0 gap-1">
+            <pui-calendar-row-label
+                [label]="row.rowLabelLong"
+                [labelShort]="row.rowLabel"
+                [restrictSizeToCircle]="true"
+            ></pui-calendar-row-label>
+            @for (item of row.items; track trackByShortLabel($index, item)) {
+                <pui-calendar-item
+                    [periodItem]="item"
+                    [selected]="item === selectedItemSignal()"
+                    [focused]="item === focusedItemSignal()"
+                    [today]="item === todayItemSignal()"
+                    [restrictSizeToCircle]="true"
+                    [disabled]="isItemDisabled(item)"
+                    (click)="clickItem.emit(item)"
+                ></pui-calendar-item>
+            }
+        </div>
+    }
+</pui-calendar-grid-layout>
+

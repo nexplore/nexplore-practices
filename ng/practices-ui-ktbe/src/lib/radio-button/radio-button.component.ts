@@ -1,5 +1,5 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { AsyncPipe, NgClass } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PuiFormFieldService } from '@nexplore/practices-ng-forms';
 import { map } from 'rxjs';
@@ -12,9 +12,12 @@ let nextUniqueId = 0;
     selector: 'puibe-radio-button',
     templateUrl: './radio-button.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, ReactiveFormsModule, AsyncPipe, NgIf],
+    imports: [NgClass, ReactiveFormsModule, AsyncPipe],
 })
 export class PuibeRadioButtonComponent {
+    private _radioButtonGroupService = inject(RadioButtonGroupService);
+    private _formFieldService = inject(PuiFormFieldService);
+
     @Input()
     value: any;
 
@@ -36,11 +39,6 @@ export class PuibeRadioButtonComponent {
     invalid$ = this._formFieldService.invalid$;
     displayAsInvalid$ = this._formFieldService.displayAsInvalid$;
     disabled$ = this._formFieldService.disabled$;
-
-    constructor(
-        private _radioButtonGroupService: RadioButtonGroupService,
-        private _formFieldService: PuiFormFieldService
-    ) {}
 
     markAsTouched() {
         this._formFieldService.markAsTouched();

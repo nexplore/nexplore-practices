@@ -1,5 +1,5 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { AsyncPipe, NgClass } from '@angular/common';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { PuibeIconGoBackComponent } from '../icons/icon-go-back.component';
 import { PuibeIconGoNextComponent } from '../icons/icon-go-next.component';
@@ -16,9 +16,12 @@ const rightArrowClassNames = '-ml-10 -mr-3';
     selector: 'puibe-button-arrows',
     templateUrl: './button-arrows.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [PuibeIconGoBackComponent, PuibeIconGoNextComponent, NgIf, NgClass, AsyncPipe],
+    imports: [PuibeIconGoBackComponent, PuibeIconGoNextComponent, NgClass, AsyncPipe],
 })
 export class PuibeButtonArrowsComponent implements OnInit, OnDestroy {
+    private _parentButtonDirective = inject(PuibeButtonDirective);
+    private _elementRef = inject(ElementRef);
+
     private _variantSubject = new BehaviorSubject<Variant>('right-arrow');
 
     readonly fillClassName$ = this._parentButtonDirective.variant$.pipe(map((variant) => this.fillClassName(variant)));
@@ -31,8 +34,6 @@ export class PuibeButtonArrowsComponent implements OnInit, OnDestroy {
     get variant() {
         return this._variantSubject.getValue();
     }
-
-    constructor(private _parentButtonDirective: PuibeButtonDirective, private _elementRef: ElementRef) {}
 
     ngOnInit() {
         this._variantSubject.subscribe((variant) =>

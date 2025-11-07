@@ -1,40 +1,45 @@
 <button
-    class="flex w-full items-center justify-items-stretch"
+  class="flex w-full items-center justify-items-stretch"
     [ngClass]="{ 
         'flex-row-reverse': this.align === 'right', 
         'justify-center': this.align === 'center',
         'justify-start': this.align === 'right' || this.align === 'left',
         'cursor-pointer': field.sortable,
      }"
-    [disabled]="!field.sortable"
-    (click)="toggleDir()"
-    [ariaDescription]="clickToSortLabel$ | async"
->
-    <span #contentWrapper>
-        <span #content><ng-content></ng-content></span>
-        <span
-            *ngIf="content.children.length === 0"
+  [disabled]="!field.sortable"
+  (click)="toggleDir()"
+  [ariaDescription]="clickToSortLabel$ | async"
+  >
+  <span #contentWrapper>
+    <span #content><ng-content></ng-content></span>
+    @if (content.children.length === 0) {
+      <span
             [ngClass]="{ 
                 'text-center': this.align === 'center',
                 'text-right': this.align === 'right',
                 'text-left': this.align === 'left',
             }"
         >
-            {{ label$ | async }}</span
+        {{ label$ | async }}</span
         >
+      }
     </span>
-    <div *ngIf="field.sortable" class="relative flex h-5 w-7">
-        <puibe-icon-arrow
+    @if (field.sortable) {
+      <div class="relative flex h-5 w-7">
+        @if (!(busy$ | async)) {
+          <puibe-icon-arrow
             class="group-hover:bg-sand-hover absolute ml-1 mr-1 flex h-5 w-5 items-center rounded-full p-1 transition-all duration-150 hover:!opacity-100"
             [ngClass]="
                 field.sortDir != null ? 'opacity-100 group-hover:opacity-100' : 'opacity-0 group-hover:opacity-50'
             "
-            *ngIf="!(busy$ | async)"
             [direction]="iconDir$ | async"
-        ></puibe-icon-arrow>
-        <puibe-icon-spinner
+          ></puibe-icon-arrow>
+        }
+        @if (field.sortDir != null && (busy$ | async)) {
+          <puibe-icon-spinner
             class="absolute ml-1 mr-1 h-5 w-5 items-center rounded-full p-1 transition-all duration-150 group-hover:flex"
-            *ngIf="field.sortDir != null && (busy$ | async)"
-        ></puibe-icon-spinner>
-    </div>
-</button>
+          ></puibe-icon-spinner>
+        }
+      </div>
+    }
+  </button>

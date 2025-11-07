@@ -1,0 +1,120 @@
+@if ((isReadonly$ | async) === false) {
+    <div class="relative mt-5">
+        <ng-content select="label[puiLabel]"></ng-content>
+        @if (overlayTextValue$ | async; as overlayTextValue) {
+            <div [ngClass]="overlayTextClassName$ | async" aria-hidden="true">
+                {{ overlayTextValue }}
+            </div>
+        }
+        <ng-content select="[puiInput]"></ng-content>
+        <ng-content select="[puiNotice]"></ng-content>
+        <div
+            [ngClass]="iconContainerClassName$ | async"
+            [attr.aria-hidden]="(customIconClickable$ | async) ? 'false' : 'true'"
+        >
+            @if (displayAsInvalid$ | async) {
+                <div [ngClass]="iconClassName">
+                    <pui-icon-invalid class="h-full w-full"></pui-icon-invalid>
+                </div>
+            }
+            @if (pending$ | async) {
+                <div [ngClass]="iconClassName">
+                    <pui-icon-spinner class="h-full w-full"></pui-icon-spinner>
+                </div>
+            }
+            @if (isClearable$ | async) {
+                <button
+                    type="button"
+                    [attr.title]="'Practices.Labels_FormField_Clear_Title' | translate"
+                    [attr.aria-label]="'Practices.Labels_FormField_Clear_AriaLabel' | translate"
+                    [ngClass]="iconClassName"
+                    class="pointer-events-auto scale-50 cursor-pointer"
+                    (click)="onClear()"
+                >
+                    <pui-icon-close class="h-full w-full"></pui-icon-close>
+                </button>
+            }
+            @if (showCustomIcon$ | async) {
+                @if (customIconClassName$ | async; as iconClassName) {
+                    @if (customIconClickable$ | async) {
+                        <button
+                            type="button"
+                            [attr.title]="customIconTitle$ | async"
+                            [attr.aria-label]="customIconTitle$ | async"
+                            [ngClass]="iconClassName"
+                            data-form-field-icon-btn
+                            (click)="onIconClick($event)"
+                        >
+                            <ng-container
+                                *ngComponentOutlet="iconComponent$ | async; inputs: { size: 'fit' }"
+                            ></ng-container>
+                        </button>
+                    }
+                    @if ((customIconClickable$ | async) === false) {
+                        <div
+                            [ngClass]="iconClassName"
+                            [attr.title]="customIconTitle$ | async"
+                            [attr.aria-label]="customIconTitle$ | async"
+                        >
+                            <ng-container *ngComponentOutlet="iconComponent$ | async"></ng-container>
+                        </div>
+                    }
+                }
+            }
+        </div>
+        @if (
+            {
+                isCustomIconFilled: isCustomIconFilled$ | async,
+                displayAsInvalid: displayAsInvalid$ | async,
+                isOptional: isOptional$ | async,
+            };
+            as context
+        ) {
+            @if (context.isOptional) {
+                <span
+                    class="text-very-small absolute -top-5 z-10 translate-y-2 rounded-lg bg-white px-1 py-0.5"
+                    [ngClass]="{ 'right-[75px]': context.isCustomIconFilled, 'right-3': !context.isCustomIconFilled }"
+                    [class.text-red]="context.displayAsInvalid"
+                    aria-hidden="true"
+                >
+                    {{ 'Practices.Labels_Optional' | translate }}
+                </span>
+            }
+        }
+        <ng-content select="[slot='below-input']" />
+        <div
+            [attr.id]="(id$ | async) + '-error'"
+            class="text-red text-very-small min-h-5 pt-[3px] font-medium"
+            [attr.aria-live]="(dirty$ | async) ? 'assertive' : 'off'"
+            aria-atomic="true"
+        >
+            @for (error of errors$ | async; track error) {
+                <div>
+                    {{ error.key | translate: error.param }}
+                </div>
+            }
+        </div>
+        <span [attr.id]="(id$ | async) + '-description'" class="sr-only">{{ ariaDescription$ | async }}</span>
+        <span class="sr-only" aria-live="polite" aria-atomic="true">
+            @if (pending$ | async) {
+                <span>{{ 'Practices.Labels_Pending' | translate }}</span>
+            }
+        </span>
+        <ng-content></ng-content>
+    </div>
+} @else {
+    <pui-readonly-label-value [label]="labelString" [useSmallLabel]="useSmallTextForReadonlyLabel">
+        @if (ngControlValueSignal(); as value) {
+            @if (hasValueSignal()) {
+                <ng-content select="[slot='readonly-prefix']" />
+                {{ value }}
+                <ng-content select="[slot='readonly-postfix']" />
+            } @else {
+                {{ readonlyEmptyValuePlaceholder ?? ('Practices.Labels_Input_NoInputValue' | translate) }}
+            }
+        } @else {
+            {{ readonlyEmptyValuePlaceholder ?? ('Practices.Labels_Input_NoInputValue' | translate) }}
+        }
+    </pui-readonly-label-value>
+}
+

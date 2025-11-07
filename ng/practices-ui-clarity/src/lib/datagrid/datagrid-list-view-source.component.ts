@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Directive, HostListener, Input, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Directive, HostListener, Input, OnDestroy, inject } from '@angular/core';
 import {
     ClrDatagrid,
     ClrDatagridComparatorInterface,
@@ -24,6 +24,9 @@ import { distinctUntilChanged, map, observeOn, skip, startWith, switchMap, tap }
     standalone: true,
 })
 export class DatagridListViewSourceDirective implements AfterViewInit, OnDestroy {
+    private datagrid = inject(ClrDatagrid);
+    private cdr = inject(ChangeDetectorRef);
+
     @HostListener('clrDgRefresh', ['$event'])
     onDatagridRefresh(state: ClrDatagridStateInterface) {
         this.datagridStateSubject.next(state);
@@ -48,8 +51,6 @@ export class DatagridListViewSourceDirective implements AfterViewInit, OnDestroy
 
     @Input()
     filterConverter: (filter: {}[]) => {};
-
-    constructor(private datagrid: ClrDatagrid, private cdr: ChangeDetectorRef) {}
 
     ngAfterViewInit() {
         this.subscription = this.listViewSourceSubject

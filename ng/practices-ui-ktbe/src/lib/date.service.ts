@@ -1,4 +1,4 @@
-import { Injectable, Optional } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { add } from 'date-fns/add';
 import { format } from 'date-fns/format';
@@ -79,8 +79,10 @@ export enum DateFormat {
 
 @Injectable({ providedIn: 'root' })
 export class DateService {
+    private translateService = inject(TranslateService, { optional: true });
+
     locale: Locale;
-    constructor(@Optional() private translateService?: TranslateService) {
+    constructor() {
         this.translateService?.onLangChange
             .pipe(
                 startWith({ lang: this.translateService.currentLang }),

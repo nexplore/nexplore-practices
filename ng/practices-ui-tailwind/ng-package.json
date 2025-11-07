@@ -1,0 +1,10 @@
+{
+    "$schema": "../node_modules/ng-packagr/ng-package.schema.json",
+    "dest": "../dist/practices-ui-tailwind",
+    "assets": [],
+    "lib": {
+        "entryFile": "src/index.ts"
+    },
+    "allowedNonPeerDependencies": ["minimatch", "ts-morph", "typescript", "fast-glob", "prettier"]
+}
+

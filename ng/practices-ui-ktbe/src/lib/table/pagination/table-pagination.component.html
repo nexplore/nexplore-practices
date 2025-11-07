@@ -1,33 +1,37 @@
-<div class="pagination-size" *ngIf="_pageSizeComponent">
+@if (_pageSizeComponent) {
+  <div class="pagination-size">
     <ng-content select="puibe-table-page-size"></ng-content>
-</div>
+  </div>
+}
 <div class="pagination-description">
-    <ng-content></ng-content>
+  <ng-content></ng-content>
 </div>
-<div class="pagination-list flex justify-end gap-1" *ngIf="page.last > 1">
-    <button
-        *ngIf="showFirstAndLastPageButton"
+@if (page.last > 1) {
+  <div class="pagination-list flex justify-end gap-1">
+    @if (showFirstAndLastPageButton) {
+      <button
         type="button"
         class="pagination-first disabled:text-dark-gray-50 cursor-pointer transition-all duration-150 hover:scale-125 disabled:scale-100 disabled:cursor-default disabled:transition-none"
         [disabled]="page.current <= 1"
         (click)="page.current = 1"
         [attr.aria-label]="commonStringsKeys.firstPage | translate"
-    >
+        >
         <span class="sr-only">{{ commonStringsKeys.firstPage | translate }}</span>
         <puibe-icon-arrow-end direction="left" class="flex h-4 w-4"></puibe-icon-arrow-end>
-    </button>
+      </button>
+    }
     <button
-        type="button"
-        class="pagination-previous disabled:text-dark-gray-50 cursor-pointer transition-all duration-150 hover:scale-125 disabled:scale-100 disabled:cursor-default disabled:transition-none"
-        [disabled]="page.current <= 1"
-        (click)="page.current = page.current - 1"
-        [attr.aria-label]="commonStringsKeys.previousPage | translate"
-    >
-        <span class="sr-only">{{ commonStringsKeys.previousPage | translate }}</span>
-        <puibe-icon-arrow-sliding direction="left" class="flex h-4 w-6"></puibe-icon-arrow-sliding>
+      type="button"
+      class="pagination-previous disabled:text-dark-gray-50 cursor-pointer transition-all duration-150 hover:scale-125 disabled:scale-100 disabled:cursor-default disabled:transition-none"
+      [disabled]="page.current <= 1"
+      (click)="page.current = page.current - 1"
+      [attr.aria-label]="commonStringsKeys.previousPage | translate"
+      >
+      <span class="sr-only">{{ commonStringsKeys.previousPage | translate }}</span>
+      <puibe-icon-arrow-sliding direction="left" class="flex h-4 w-6"></puibe-icon-arrow-sliding>
     </button>
-    <input
-        *ngIf="!disableCurrentPageInput; else readOnly"
+    @if (!disableCurrentPageInput) {
+      <input
         #currentPageInput
         type="text"
         class="pagination-current w-8 border text-center"
@@ -36,33 +40,35 @@
         (keydown.enter)="updateCurrentPage($event)"
         (blur)="updateCurrentPage($event)"
         [attr.aria-label]="commonStringsKeys.currentPage | translate"
-    />
-    <ng-template #readOnly>
-        <span class="min-w-8 text-right" [attr.aria-label]="commonStringsKeys.currentPage | translate">
-            {{ page.current }}
-        </span>
-    </ng-template>
+        />
+    } @else {
+      <span class="min-w-8 text-right" [attr.aria-label]="commonStringsKeys.currentPage | translate">
+        {{ page.current }}
+      </span>
+    }
     <span class="mx-1">{{ commonStringsKeys.of | translate }}</span>
     <span class="min-w-8" [attr.aria-label]="commonStringsKeys.totalPages | translate">{{ page.last }}</span>
     <button
-        type="button"
-        class="pagination-next disabled:text-dark-gray-50 cursor-pointer transition-all duration-150 hover:scale-125 disabled:scale-100 disabled:cursor-default disabled:transition-none"
-        [disabled]="page.current >= page.last"
-        (click)="page.current = page.current + 1"
-        [attr.aria-label]="commonStringsKeys.nextPage | translate"
-    >
-        <span class="sr-only">{{ commonStringsKeys.nextPage | translate }}</span>
-        <puibe-icon-arrow-sliding direction="right" class="flex h-4 w-6"></puibe-icon-arrow-sliding>
+      type="button"
+      class="pagination-next disabled:text-dark-gray-50 cursor-pointer transition-all duration-150 hover:scale-125 disabled:scale-100 disabled:cursor-default disabled:transition-none"
+      [disabled]="page.current >= page.last"
+      (click)="page.current = page.current + 1"
+      [attr.aria-label]="commonStringsKeys.nextPage | translate"
+      >
+      <span class="sr-only">{{ commonStringsKeys.nextPage | translate }}</span>
+      <puibe-icon-arrow-sliding direction="right" class="flex h-4 w-6"></puibe-icon-arrow-sliding>
     </button>
-    <button
-        *ngIf="showFirstAndLastPageButton"
+    @if (showFirstAndLastPageButton) {
+      <button
         type="button"
         class="pagination-last disabled:text-dark-gray-50 cursor-pointer transition-all duration-150 hover:scale-125 disabled:scale-100 disabled:cursor-default disabled:transition-none"
         [disabled]="page.current >= page.last"
         (click)="page.current = page.last"
         [attr.aria-label]="commonStringsKeys.lastPage | translate"
-    >
+        >
         <span class="sr-only">{{ commonStringsKeys.lastPage | translate }}</span>
         <puibe-icon-arrow-end direction="right" class="flex h-4 w-4"></puibe-icon-arrow-end>
-    </button>
-</div>
+      </button>
+    }
+  </div>
+}

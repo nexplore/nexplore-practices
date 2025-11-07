@@ -1,0 +1,51 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "$id": "NgAddSchema",
+    "title": "@nexplore/practices-ui-tailwind ng-add Schema",
+    "type": "object",
+    "properties": {
+        "theme": {
+            "type": "string",
+            "description": "Theme filename to use (theme.css or theme-*.css)",
+            "default": "theme.css",
+            "x-prompt": "Which theme file do you want to use?"
+        },
+        "features": {
+            "type": "array",
+            "description": "List of features to add",
+            "items": {
+                "type": "string"
+            },
+            "x-prompt": {
+                "message": "Which features do you want to add?",
+                "type": "list",
+                "multiselect": true,
+                "items": [
+                    { "value": "shell", "label": "Add shell component and host it in the app." },
+                    { "value": "providers", "label": "Add `providePracticesTailwind()` to app config." }
+                    /* <Generate-Features-List> */
+                ],
+                "default": ["shell", "providers"]
+            }
+        },
+        "skipShell": {
+            "type": "boolean",
+            "description": "Skip creation of shell component",
+            "default": false
+        },
+        "skipProvider": {
+            "type": "boolean",
+            "description": "Skip provider injection",
+            "default": false
+        },
+        "dest": {
+            "type": "string",
+            "description": "Destination root for generated library files (propagated to add-component)",
+            "default": "src/practices-ui-tailwind",
+            "x-prompt": "Where should the library files be created?"
+        }
+    },
+    "required": [],
+    "additionalProperties": false
+}
+

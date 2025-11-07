@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PuibeCheckboxComponent, PuibeCheckboxGroupComponent } from '@nexplore/practices-ui-ktbe';
 import { delay, map, of } from 'rxjs';
@@ -11,6 +11,8 @@ import { delay, map, of } from 'rxjs';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckboxesComponent {
+    private fb = inject(FormBuilder);
+
     mainForm = this.fb.group({
         basicWithoutGroup: this.fb.control<boolean>(null),
         basicWithoutGroupRequired: this.fb.control<boolean>(null, Validators.requiredTrue),
@@ -49,6 +51,4 @@ export class CheckboxesComponent {
     });
 
     myCoolModel: number;
-
-    constructor(private fb: FormBuilder) {}
 }

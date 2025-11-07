@@ -1,15 +1,6 @@
 import { CdkMenuModule, CdkMenuTrigger } from '@angular/cdk/menu';
-import { NgIf, NgTemplateOutlet } from '@angular/common';
-import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    Component,
-    HostBinding,
-    Input,
-    TemplateRef,
-    ViewChild,
-    ViewContainerRef,
-} from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import { AfterViewInit, ChangeDetectionStrategy, Component, HostBinding, Input, TemplateRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
 import { startWith, takeUntil } from 'rxjs';
 import { PuibeIconOptionsComponent } from '../../icons/icon-options.component';
@@ -19,9 +10,11 @@ import { PuibeIconOptionsComponent } from '../../icons/icon-options.component';
     selector: 'puibe-table-col-actions',
     templateUrl: 'table-col-actions.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgIf, NgTemplateOutlet, PuibeIconOptionsComponent, CdkMenuModule],
+    imports: [NgTemplateOutlet, PuibeIconOptionsComponent, CdkMenuModule],
 })
 export class PuibeTableColActionsComponent implements AfterViewInit {
+    private readonly _destroyService = inject(DestroyService);
+
     @HostBinding('class')
     className = 'flex gap-1';
 
@@ -31,8 +24,6 @@ export class PuibeTableColActionsComponent implements AfterViewInit {
     @ViewChild(CdkMenuTrigger) cdkMenuTriggerFor: CdkMenuTrigger;
     @ViewChild('contentTemplate') contentTemplate: TemplateRef<unknown>;
     @ViewChild('menuItemsSlot', { read: ViewContainerRef }) menuItemsSlot: ViewContainerRef;
-
-    constructor(private readonly _destroyService: DestroyService) {}
 
     ngAfterViewInit(): void {
         if (this.showOptionsMenu) {

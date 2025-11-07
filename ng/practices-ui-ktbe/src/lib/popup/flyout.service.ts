@@ -6,7 +6,7 @@ import {
     Overlay,
     PositionStrategy,
 } from '@angular/cdk/overlay';
-import { Injectable, TemplateRef } from '@angular/core';
+import { Injectable, TemplateRef, inject } from '@angular/core';
 import { setHostClassNames } from '../util/utils';
 import { takeUntil } from 'rxjs';
 
@@ -48,9 +48,10 @@ const DEFAULT_CONFIG: PuibeFlyoutConfig = {
 
 @Injectable()
 export class PuibeFlyoutService {
-    private _dialogRef: DialogRef;
+    private readonly _dialog = inject(Dialog);
+    private readonly _overlay = inject(Overlay);
 
-    constructor(private readonly _dialog: Dialog, private readonly _overlay: Overlay) {}
+    private _dialogRef: DialogRef;
 
     open<R = unknown>(
         componentOrTemplateRef: ComponentType<unknown> | TemplateRef<unknown>,

@@ -1,0 +1,212 @@
+<div class="container mx-auto">
+    <div class="flex gap-2">
+        <button
+            puiButton
+            [clickCommand]="saveCommand"
+            [commandOptions]="{ statusCategory: 'action-save' }"
+            variant="primary"
+        >
+            Save
+        </button>
+        <button
+            puiButton
+            [clickCommand]="saveCommand"
+            [commandArgs]="{ navigateBackToList: true }"
+            [commandOptions]="{ statusCategory: 'action-save' }"
+        >
+            Save and close
+        </button>
+
+        <button puiButton (click)="logFormFields()">Log all values</button>
+    </div>
+    <pui-inpage-search
+        class="max-w-3/4 mt-4 block"
+        (searchTermChange)="search()"
+        [pending]="searchPending$ | async"
+        [label]="'Seite durchsuchen'"
+    ></pui-inpage-search>
+    <button puiButton (click)="toggleReadonly()" class="my-2">Toggle ReadOnly</button>
+    <form [formGroup]="mainForm" puiForm [enableDirtyFormNavigationGuard]="true" [puiReadonly]="readonly">
+        <pui-checkbox-group legend="Checkboxes" [displayInline]="false" class="w-1/2">
+            <pui-checkbox label="Checkbox 1" formControlName="basic1"></pui-checkbox>
+            <pui-checkbox label="Checkbox 2" formControlName="basic2"></pui-checkbox>
+            <pui-checkbox label="Checkbox 3" formControlName="basic3"></pui-checkbox>
+        </pui-checkbox-group>
+        <div>
+            <pui-checkbox label="Checkbox" formControlName="basic4"></pui-checkbox>
+        </div>
+        <div>
+            <pui-checkbox
+                [puiReadonly]="false"
+                label="Always Active Checkbox"
+                formControlName="basic5"
+            ></pui-checkbox>
+        </div>
+        <pui-radio-button-group legend="Radio Buttons" formControlName="radio" class="w-1/2">
+            <pui-radio-button value="1" label="Option 1"></pui-radio-button>
+            <pui-radio-button value="2" label="Option 2"></pui-radio-button>
+            <pui-radio-button value="3" label="Option 3"></pui-radio-button>
+        </pui-radio-button-group>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Basic Text-Input</label>
+            <input puiInput type="text" placeholder="Basic Text-Input" formControlName="basicText"/>
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Basic Text-Input with notice</label>
+            <input puiInput type="text" placeholder="Basic Text-Input" formControlName="basicTextWithNotice"/>
+            <p puiNotice>Hinweis-Text zu diesem Input</p>
+        </pui-form-field>
+        <pui-form-field class="w-1/4">
+            <label puiLabel>Basic Number-Input</label>
+            <input puiInput type="number" placeholder="Basic Number-Input" formControlName="basicNumber"/>
+        </pui-form-field>
+        <pui-form-field class="w-1/4">
+            <label puiLabel>Basic Date-Input</label>
+            <input puiInput type="date" placeholder="Basic Date-Input" formControlName="basicDate"/>
+        </pui-form-field>
+        <pui-form-field class="w-1/4">
+            <label puiLabel>Birthdate-Input</label>
+            <input puiInput type="date" calendarViewMode="year" formControlName="birthDate"/>
+        </pui-form-field>
+        <pui-form-field class="w-1/4">
+            <label puiLabel>Month-Input</label>
+            <input puiInput type="month" formControlName="monthDate"/>
+        </pui-form-field>
+        <pui-form-field class="w-1/4">
+            <label puiLabel>Year-Input</label>
+            <input puiInput type="year" formControlName="year"/>
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Basic Combobox</label>
+            <ng-select
+                puiInput
+                [items]="foods"
+                bindLabel="name"
+                bindValue="id"
+                formControlName="basicCombobox"
+                placeholder="Basic Combobox"
+                [multiple]="true"
+            >
+                <ng-template ng-option-tmp let-item="item">
+                    <pui-select-option [item]="item" bindMetadata="category" bindLabel="name"></pui-select-option>
+                </ng-template>
+            </ng-select>
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Required Combobox</label>
+            <ng-select
+                puiInput
+                [items]="foods"
+                bindLabel="name"
+                bindValue="id"
+                formControlName="requiredCombobox"
+                placeholder="Required Combobox"
+            ></ng-select>
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Async Combobox</label>
+            <ng-select
+                puiInput
+                [puiSelectViewSource]="foodSource"
+                formControlName="asyncCombobox"
+                placeholder="Async Combobox"
+            ></ng-select>
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Non Searchable Combobox</label>
+            <ng-select
+                puiInput
+                [puiSelectViewSource]="foodSource"
+                formControlName="nonSearchableCombobox"
+                placeholder="Non Searchable Combobox"
+                [searchable]="false"
+            ></ng-select>
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Required Text-Input</label>
+            <input puiInput type="text" placeholder="Required Text-Input" formControlName="requiredText"/>
+        </pui-form-field>
+        <pui-form-field class="w-1/4">
+            <label puiLabel>Required Number-Input</label>
+            <input puiInput type="number" placeholder="Required Number-Input" formControlName="requiredNumber"/>
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel [alwaysVisible]="true">Input with always visible label</label>
+            <input
+                puiInput
+                type="text"
+                placeholder="E.g. Pizza, Hamburger, ..."
+                formControlName="inputWithPlaceholder"
+            />
+        </pui-form-field>
+        <pui-form-field [hideOptional]="true" class="w-1/2">
+            <label puiLabel>Input with hidden optional label</label>
+            <input
+                puiInput
+                type="text"
+                placeholder="Optional, but you can't see that it is optional"
+                formControlName="inputWithHiddenOptionalLabel"
+            />
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Required input with initial value</label>
+            <input
+                puiInput
+                type="text"
+                placeholder="Required input with initial value"
+                formControlName="requiredInputWithInitialValue"
+            />
+        </pui-form-field>
+        <pui-form-field class="w-1/4">
+            <label puiLabel>Validator with parameter</label>
+            <input
+                puiInput
+                type="number"
+                placeholder="Validator with parameter"
+                formControlName="validatorWithParameter"
+            />
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Async Validator</label>
+            <input puiInput type="text" placeholder="Async Validator" formControlName="asyncValidator"/>
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Disabled</label>
+            <input puiInput type="text" placeholder="Disabled" formControlName="disabled"/>
+        </pui-form-field>
+
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Basic Text-Input with custom id</label>
+            <input
+                puiInput
+                id="ownid"
+                type="text"
+                placeholder="Basic Text-Input with custom id"
+                formControlName="basicTextWithCustomId"
+            />
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>SV Nummer</label>
+            <input
+                puiInput
+                type="text"
+                placeholder="SV Nummer"
+                formControlName="svnumber"
+                [valueFormatter]="svNrFormatter"
+            />
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel [alwaysVisible]="true">Basic file input</label>
+            <input puiInput type="file" formControlName="file"/>
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Required file input</label>
+            <input puiInput type="file" formControlName="requiredFile"/>
+        </pui-form-field>
+    </form>
+
+    <pui-form-field class="w-1/4">
+        <label puiLabel>Using NgModel</label>
+        <input puiInput type="number" placeholder="Using NgModel" [(ngModel)]="myCoolModel"/>
+    </pui-form-field>
+</div>

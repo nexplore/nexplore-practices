@@ -14,7 +14,9 @@ export class PuibeHideIfEmptyTextDirective {
     @Output()
     emptyTextChange = new EventEmitter<boolean>();
 
-    constructor(destroyRef: DestroyRef) {
+    constructor() {
+        const destroyRef = inject(DestroyRef);
+
         const mutationObserver = new MutationObserver(() => {
             this.hideIfEmpty();
         });

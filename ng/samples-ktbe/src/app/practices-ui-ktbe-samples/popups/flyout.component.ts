@@ -1,5 +1,5 @@
 import { DIALOG_DATA, DialogModule, DialogRef } from '@angular/cdk/dialog';
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
     PuibeButtonDirective,
     PuibeFlyoutComponent,
@@ -26,5 +26,6 @@ interface Data {
     ],
 })
 export class AppFlyoutComponent {
-    constructor(public dialogRef: DialogRef, @Inject(DIALOG_DATA) public data: Data) {}
+    dialogRef = inject(DialogRef);
+    data = inject<Data>(DIALOG_DATA);
 }

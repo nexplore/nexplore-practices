@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { effect } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { describe, expect, it, jest } from '@jest/globals';
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { StatusEvent, StatusHubService } from '@nexplore/practices-ng-status';
 import { distinctUntilChanged, Observable, Subject, Subscription, timer } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
@@ -360,11 +360,11 @@ describe('createCommandWithSignalsAndStatus', () => {
                 results.push(cmd.errorSignal());
             });
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             cmd.trigger();
 
-            TestBed.flushEffects();
+            TestBed.tick();
         });
         expect(results).toEqual([undefined, new Error('error')]);
     });
@@ -381,11 +381,11 @@ describe('createCommandWithSignalsAndStatus', () => {
                 results.push(result);
             });
 
-            TestBed.flushEffects();
+            TestBed.tick();
             cmd.trigger();
-            TestBed.flushEffects();
+            TestBed.tick();
             subject.complete();
-            TestBed.flushEffects();
+            TestBed.tick();
         });
 
         expect(results).toEqual([false, true, false]);
@@ -403,7 +403,7 @@ describe('createCommandWithSignalsAndStatus', () => {
             });
 
             cmd.trigger();
-            TestBed.flushEffects();
+            TestBed.tick();
         });
 
         expect(results).toEqual([1]);
@@ -419,7 +419,7 @@ describe('createCommandWithSignalsAndStatus', () => {
                         .pipe(
                             finalize(() => results.push('completed')),
                             map((ev) => ev.busy),
-                            distinctUntilChanged()
+                            distinctUntilChanged(),
                         )
                         .subscribe((busy) => results.push(busy)),
             },
@@ -450,7 +450,7 @@ describe('createCommandWithSignalsAndStatus', () => {
                         .pipe(
                             finalize(() => results.push('completed')),
                             map((ev) => ev.error),
-                            distinctUntilChanged()
+                            distinctUntilChanged(),
                         )
                         .subscribe((err) => results.push(err)),
             },
@@ -469,3 +469,4 @@ describe('createCommandWithSignalsAndStatus', () => {
         expect(results).toEqual([undefined, new Error('error'), 'completed']);
     });
 });
+

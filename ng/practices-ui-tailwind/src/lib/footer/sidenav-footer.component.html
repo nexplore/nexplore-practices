@@ -1,0 +1,23 @@
+<footer class="border-light-gray bg-highlight border-t">
+    <div puiContainer class="flex flex-col gap-y-16 p-6">
+        <ng-content></ng-content>
+        <nav [attr.aria-label]="'Practices.Labels_Navigation_FooterNavigation' | translate">
+            <ul class="flex list-none flex-col flex-wrap gap-x-10 gap-y-8">
+                <ng-content
+                    select="[puiHeaderServiceMenuItem], [puiFooterMenuItem], pui-footer-menu-item"
+                ></ng-content>
+            </ul>
+        </nav>
+        <div
+            class="flex flex-row flex-wrap items-baseline justify-between gap-y-8"
+            [ngClass]="{
+                'flex-row-reverse': languageMenuContent.children.length === 0
+            }"
+        >
+            <div #languageMenuContent>
+                <ng-content select="[puiFooterLanguageMenuItem], [puiHeaderLanguageMenuItem]"></ng-content>
+            </div>
+            <ng-content select="[puiFooterCopyright], pui-footer-copyright"></ng-content>
+        </div>
+    </div>
+</footer>

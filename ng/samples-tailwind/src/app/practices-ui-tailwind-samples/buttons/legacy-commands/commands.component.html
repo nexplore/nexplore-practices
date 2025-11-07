@@ -1,0 +1,22 @@
+<div class="mb-8 flex flex-wrap gap-2">
+    <button type="button" puiButton [clickCommand]="simpleCommand">Basic command</button>
+    <button type="button" puiButton [clickCommand]="saveCommand"
+            [commandOptions]="{  statusCategory: 'action-save' }">
+        Save command
+    </button>
+    <button
+        type="button"
+        puiButton
+        [clickCommand]="deleteCommand"
+    >
+        Delete command
+    </button>
+    <button
+        type="button"
+        puiButton
+        [clickCommand]="blockingCommand"
+        [commandOptions]="{ progressMessage: 'Bitte warten, das könnte dauern...' }"
+    >
+        Ui-blocking command
+    </button>
+</div>

@@ -1,6 +1,7 @@
 import { effect, inject, Injector, runInInjectionContext, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TestBed } from '@angular/core/testing';
+import { describe, expect, it } from '@jest/globals';
 import { tryDestroyInjector } from '@nexplore/practices-ng-common-util';
 import { Observable, Subject } from 'rxjs';
 import { toSignalLazy } from './to-signal-lazy';
@@ -37,7 +38,7 @@ describe('toSignalLazy', () => {
 
             // Emit value and read again
             subject.next(10);
-            TestBed.flushEffects();
+            TestBed.tick();
             results.push('value:' + signal());
 
             // Check subscriptions
@@ -74,7 +75,7 @@ describe('toSignalLazy', () => {
 
                 // Read to trigger subscription
                 signal();
-                TestBed.flushEffects();
+                TestBed.tick();
                 results.push('in-context:' + subscriptions.join(','));
             });
 
@@ -98,18 +99,18 @@ describe('toSignalLazy', () => {
 
             // Not read yet, so no subscription
             subject.next(5);
-            TestBed.flushEffects();
+            TestBed.tick();
 
             // First read - undefined because we missed the first emission
             results.push(signal());
 
             // Emit more values after subscription
             subject.next(10);
-            TestBed.flushEffects();
+            TestBed.tick();
             results.push(signal());
 
             subject.next(20);
-            TestBed.flushEffects();
+            TestBed.tick();
             results.push(signal());
 
             // Assert
@@ -135,10 +136,10 @@ describe('toSignalLazy', () => {
                 results.push('effect:' + mySignal());
             });
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             hiddenDependencySignal.set('hidden'); // Change the hidden dependency
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results).toEqual(['effect:expected']);
         });
@@ -161,14 +162,14 @@ describe('toSignalLazy', () => {
                 effect(() => lazyResults.push(lazySignal()));
                 effect(() => regularResults.push(regularSignal()));
 
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 // Act - emit values
                 subject.next(100);
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 subject.next(200);
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 // Assert - should have identical behavior except lazy signal starts later
                 expect(lazyResults).toEqual([initialValue, 100, 200]);
@@ -230,17 +231,17 @@ describe('toSignalLazy', () => {
                 effect(() => lazyResults.push(lazySignal()));
                 effect(() => regularResults.push(regularSignal()));
 
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 // Act - emit objects with same id but different values
                 subject.next({ id: 1, value: 'first' });
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 subject.next({ id: 1, value: 'second' }); // Same id, should not trigger
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 subject.next({ id: 2, value: 'third' }); // Different id, should trigger
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 // Assert - both should filter based on custom equality
                 expect(lazyResults).toHaveLength(3); // undefined, first, third
@@ -278,11 +279,11 @@ describe('toSignalLazy', () => {
                 // Act
                 const lazySignal = toSignalLazy(lazyObservable, { injector: customInjector });
                 const regularSignal = toSignal(regularObservable, { injector: customInjector });
-                
+
                 // Trigger lazy subscription
                 lazySignal();
                 regularSignal();
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 // Assert - regular signal should be subscribed, lazy signal should be subscribed after first read
                 expect(regularSubscriptions).toEqual(['subscribed']);
@@ -312,17 +313,17 @@ describe('toSignalLazy', () => {
                 effect(() => lazyResults.push(lazySignal()));
                 effect(() => regularResults.push(regularSignal()));
 
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 // Act
                 subject.next('Hello');
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 subject.next('HELLO'); // Should be considered equal
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 subject.next('World');
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 // Assert - should have identical behavior
                 expect(lazyResults).toEqual(['initial', 'Hello', 'World']);
@@ -367,3 +368,4 @@ describe('toSignalLazy', () => {
         });
     });
 });
+

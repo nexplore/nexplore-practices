@@ -1,87 +1,91 @@
 <puibe-skip-link href="#nav">Direkt zur Navigation</puibe-skip-link>
 <puibe-skip-link href="#main">Direkt zum Inhalt</puibe-skip-link>
 <puibe-shell [stickyBreadcrumbs]="true" [autofocusContentOnRouterNavigation]="true">
-    <puibe-header
-        puibeHeader
-        [(openSideNav)]="openSideNav"
-        logoLink="/"
-        logoImage="/assets/Kanton-Bern.svg"
-        logoCaption="Practices Samples on two rows because it's a very long title"
-        [sidemenuFooterTemplate]="sideNavFooterTemplate"
+  <puibe-header
+    puibeHeader
+    [(openSideNav)]="openSideNav"
+    logoLink="/"
+    logoImage="/assets/Kanton-Bern.svg"
+    logoCaption="Practices Samples on two rows because it's a very long title"
+    [sidemenuFooterTemplate]="sideNavFooterTemplate"
     >
-        <a puibeHeaderServiceMenuItem>
-            <puibe-icon-login class="mr-1 inline-block w-5"></puibe-icon-login>
-            Login
-        </a>
+    <a puibeHeaderServiceMenuItem>
+      <puibe-icon-login class="mr-1 inline-block w-5"></puibe-icon-login>
+      Login
+    </a>
 
-        <div puibeHeaderServiceMenuItem [withAnimation]="false">
-            <span>Mandat:</span>
-            <select class="cursor-pointer bg-transparent font-bold">
-                <option>Mandat 1</option>
-                <option>Mandat 2</option>
-            </select>
-        </div>
+    <div puibeHeaderServiceMenuItem [withAnimation]="false">
+      <span>Mandat:</span>
+      <select class="cursor-pointer bg-transparent font-bold">
+        <option>Mandat 1</option>
+        <option>Mandat 2</option>
+      </select>
+    </div>
 
-        <button
-            type="button"
-            puibeHeaderLanguageMenuItem
-            *ngFor="let language of availableLanguages"
-            (languageChanged)="onLanguageChange($event)"
-            [isActive]="isLanguageActive(language)"
+    @for (language of availableLanguages; track language) {
+      <button
+        type="button"
+        puibeHeaderLanguageMenuItem
+        (languageChanged)="onLanguageChange($event)"
+        [isActive]="isLanguageActive(language)"
         >
-            {{ language }}
-        </button>
+        {{ language }}
+      </button>
+    }
 
-        <button id="nav" type="button" puibeHeaderMainMenuItem [isSmall]="false" (click)="onClickMainMenu()">
-            Components
-        </button>
-        <a puibeHeaderMainMenuItem [isIcon]="true" [isSmall]="false" [withAnimation]="false">
-            <puibe-icon-search></puibe-icon-search>
-        </a>
+    <button id="nav" type="button" puibeHeaderMainMenuItem [isSmall]="false" (click)="onClickMainMenu()">
+      Components
+    </button>
+    <a puibeHeaderMainMenuItem [isIcon]="true" [isSmall]="false" [withAnimation]="false">
+      <puibe-icon-search></puibe-icon-search>
+    </a>
 
-        <button type="button" puibeHeaderMobileMenuItem class="h-8 w-8">
-            <puibe-icon-search-mobile></puibe-icon-search-mobile>
-        </button>
-    </puibe-header>
+    <button type="button" puibeHeaderMobileMenuItem class="h-8 w-8">
+      <puibe-icon-search-mobile></puibe-icon-search-mobile>
+    </button>
+  </puibe-header>
 
-    <main id="main" class="mt-10 focus:outline-none" tabindex="-1">
-        <h1 class="sr-only">{{ title$ | async }}</h1>
-        <router-outlet puibeGlobalDirtyGuard></router-outlet>
-    </main>
-    <puibe-footer puibeFooter>
-        <span puibeFooterCopyright>© 2019 - Kanton Bern</span>
-        <a puibeFooterMenuItem routerLink="/form-elements">Form Elements</a>
-        <a puibeFooterMenuItem routerLink="/expansion-panels">Expansion Panels</a>
-    </puibe-footer>
+  <main id="main" class="mt-10 focus:outline-none" tabindex="-1">
+    <h1 class="sr-only">{{ title$ | async }}</h1>
+    <router-outlet puibeGlobalDirtyGuard></router-outlet>
+  </main>
+  <puibe-footer puibeFooter>
+    <span puibeFooterCopyright>© 2019 - Kanton Bern</span>
+    <a puibeFooterMenuItem routerLink="/form-elements">Form Elements</a>
+    <a puibeFooterMenuItem routerLink="/expansion-panels">Expansion Panels</a>
+  </puibe-footer>
 </puibe-shell>
 
 <ng-template #sideNavFooterTemplate>
-    <puibe-sidenav-footer>
-        <a puibeFooterMenuItem>
-            <puibe-icon-login class="mr-1 inline-block w-5"></puibe-icon-login>
-            Login
-        </a>
+  <puibe-sidenav-footer>
+    <a puibeFooterMenuItem>
+      <puibe-icon-login class="mr-1 inline-block w-5"></puibe-icon-login>
+      Login
+    </a>
 
-        <div puibeFooterMenuItem>
-            <span>Mandat:</span>
-            <select class="cursor-pointer font-bold">
-                <option>Mandat 1</option>
-                <option>Mandat 2</option>
-            </select>
-        </div>
+    <div puibeFooterMenuItem>
+      <span>Mandat:</span>
+      <select class="cursor-pointer font-bold">
+        <option>Mandat 1</option>
+        <option>Mandat 2</option>
+      </select>
+    </div>
 
-        <button
-            type="button"
-            puibeFooterLanguageMenuItem
-            *ngFor="let language of availableLanguages"
-            (languageChanged)="onLanguageChange($event)"
-            [isActive]="isLanguageActive(language)"
+    @for (language of availableLanguages; track language) {
+      <button
+        type="button"
+        puibeFooterLanguageMenuItem
+        (languageChanged)="onLanguageChange($event)"
+        [isActive]="isLanguageActive(language)"
         >
-            {{ language }}
-        </button>
+        {{ language }}
+      </button>
+    }
 
-        <span puibeFooterCopyright>© 2019 - Kanton Bern</span>
-    </puibe-sidenav-footer>
+    <span puibeFooterCopyright>© 2019 - Kanton Bern</span>
+  </puibe-sidenav-footer>
 </ng-template>
 
-<puibe-status-hub *ngIf="!overrideStatusHub"></puibe-status-hub>
+@if (!overrideStatusHub) {
+  <puibe-status-hub></puibe-status-hub>
+}

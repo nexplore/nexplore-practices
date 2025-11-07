@@ -1,7 +1,8 @@
-# Typescript Unit-tests 
+# Typescript Unit-tests
+
 - File name should end with `.spec.ts`.
 - When using angular features, use `TestBed.runInInjectionContext(fn)` (import from `@angular/core/testing`).
-- When testing `signal` or `effect` (from `@angular/core`) related code, call `TestBed.flushEffects()` between changing state, and before the first time reading out any result, such as signal values.
+- When testing `signal` or `effect` (from `@angular/core`) related code, call `TestBed.tick()` between changing state, and before the first time reading out any result, such as signal values.
 - Avoid complex Angular component fixtures, unless actually testing components
 - Avoid multiple `expect` statements in the middle of the test, instead, store the results in an array and use one `expect(results).toEqual([...])` at the end.
 - When working with observables or times, use `jest.useFakeTimers()` and call `await jest.runAllTimersAsync()` or `jest.advanceTimersByTime` to advance virtual time.

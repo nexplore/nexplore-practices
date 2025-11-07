@@ -1,0 +1,43 @@
+<button
+  [id]="uniqueIdTrigger"
+  #triggerButton
+  class="group"
+  puiButton
+  [size]="size"
+  [scaleOnHover]="false"
+  [cdkMenuPosition]="getMenuPositions()"
+  [cdkMenuTriggerFor]="dropdownMenu"
+  (cdkMenuOpened)="handleOpen()"
+  (cdkMenuClosed)="handleClose()"
+  [attr.aria-expanded]="isExpanded"
+  >
+  <ng-content></ng-content>
+  @if (!hideArrows) {
+    <pui-icon-arrow
+      direction="down"
+      class="ml-1 h-3 w-4 rotate-0 transition-all duration-[250ms] ease-in-out group-hover:-rotate-90 group-aria-expanded:-rotate-180 group-aria-expanded:group-hover:-rotate-90"
+    ></pui-icon-arrow>
+  }
+</button>
+
+<ng-template #dropdownMenu>
+  <div [ngStyle]="{ minWidth: menuMinWidth$ | async }" class="inline-flex flex-col bg-white drop-shadow-lg" cdkMenu>
+    @for (option of options; track option) {
+      <button
+        cdkMenuItem
+        class="hover:bg-very-light-gray active:bg-light-gray flex h-12 min-w-[64px] flex-1 select-none items-center border-none py-3"
+        [style.padding-left.px]="buttonPaddingLeftPx$ | async"
+        [style.padding-right.px]="buttonPaddingRightPx$ | async"
+        (cdkMenuItemTriggered)="handleMenuItemTriggered(option)"
+        >
+        <ng-container *ngTemplateOutlet="option.iconTemplate"></ng-container>
+        @if (option.labelTranslationKey) {
+          {{ option.labelTranslationKey | translate }}
+        }
+        @if (option.labelContent) {
+          {{ option.labelContent }}
+        }
+      </button>
+    }
+  </div>
+</ng-template>

@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.lib.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "target": "ES2022",
+    "types": ["node"],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": false
+  },
+  "include": [
+    "tools/generate-manifest.ts"
+  ]
+}

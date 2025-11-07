@@ -1,5 +1,5 @@
-import { NgClass, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostBinding, Input, Optional } from '@angular/core';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { PuibeIconArrowBreadcrumbComponent } from '../../icons/icon-arrow-breadcrumb.component';
@@ -14,21 +14,20 @@ import { A11yModule } from '@angular/cdk/a11y';
     templateUrl: './breadcrumb-item.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        NgClass,
-        NgIf,
-        NgSwitch,
-        NgSwitchCase,
-        NgSwitchDefault,
-        TranslateModule,
-        PuibeIconHomeComponent,
-        PuibeIconArrowBreadcrumbComponent,
-        RouterLink,
-        RouterLinkActive,
-        NgTemplateOutlet,
-        A11yModule,
-    ],
+    NgClass,
+    TranslateModule,
+    PuibeIconHomeComponent,
+    PuibeIconArrowBreadcrumbComponent,
+    RouterLink,
+    RouterLinkActive,
+    NgTemplateOutlet,
+    A11yModule
+],
 })
 export class PuibeBreadcrumbItemComponent {
+    private router = inject(Router, { optional: true });
+    readonly shellService = inject(PuibeShellService, { optional: true });
+
     @HostBinding('role')
     readonly role = 'listitem';
 
@@ -82,8 +81,6 @@ export class PuibeBreadcrumbItemComponent {
         }
         return 'default';
     }
-
-    constructor(@Optional() private router: Router, @Optional() readonly shellService: PuibeShellService) {}
 
     get isHome() {
         if (this.hasHomeIcon !== undefined) {

@@ -1,0 +1,104 @@
+@if (!(isReadonly$ | async)) {
+  <div class="relative mt-5">
+    <div
+        [ngClass]="{
+            'flex justify-between border py-4 pl-7 pr-4': !hideGroupBorder,
+            'border-red': !hideGroupBorder && (displayAsInvalid$ | async),
+            'border-dark-gray-50': !hideGroupBorder && !(displayAsInvalid$ | async)
+        }"
+      >
+      <fieldset>
+        @if (!legendAsLabel) {
+          <legend class="my-[0.625rem] block text-base font-medium">
+            <span [ngClass]="{ 'sr-only': isLegendSrOnly }">{{ legend }}</span>
+            <span class="sr-only">{{ hint }}</span>
+          </legend>
+        }
+        @if (legendAsLabel) {
+          <legend
+            class="text-very-small absolute -top-5 left-6 translate-y-2 rounded-lg bg-white px-1 py-0.5"
+            [class.text-red]="displayAsInvalid$ | async"
+            [class.opacity-0]="hideGroupBorder"
+            >
+            <span [ngClass]="{ 'sr-only': isLegendSrOnly }">{{ legend }}</span>
+          </legend>
+        }
+        <div
+          class="flex flex-wrap"
+                [ngClass]="{
+                    'flex-col': displayInline === false,
+                    'gap-5': displayInline === false && gapVariant === 'large'
+                }"
+          >
+          <ng-content select="pui-checkbox"></ng-content>
+          <ng-content></ng-content>
+        </div>
+        @if (hint) {
+          <div class="mb-2 mt-4 text-base font-light leading-tight" aria-hidden="true">
+            {{ hint }}
+          </div>
+        }
+      </fieldset>
+      @if (!hideGroupBorder) {
+        <div class="flex gap-2" aria-hidden="true">
+          @if (pending$ | async) {
+            <pui-icon-spinner class="h-8 w-8"></pui-icon-spinner>
+          }
+          @if (displayAsInvalid$ | async) {
+            <pui-icon-invalid class="h-8 w-8"></pui-icon-invalid>
+          }
+        </div>
+      }
+    </div>
+    @if (!hideGroupBorder && (isOptional$ | async)) {
+      <span
+        class="text-very-small absolute -top-5 right-3 translate-y-2 rounded-lg bg-white px-1 py-0.5"
+        [class.text-red]="displayAsInvalid$ | async"
+        aria-hidden="true"
+        >
+        {{ 'Practices.Labels_Optional' | translate }}
+      </span>
+    }
+    <div
+      [attr.id]="id + '-error'"
+      class="text-red text-very-small min-h-5 font-medium"
+      [attr.aria-live]="(dirty$ | async) ? 'assertive' : 'off'"
+      aria-atomic="true"
+      >
+      @for (error of errors$ | async; track error) {
+        <div>
+          {{ error.key | translate : error.param }}
+        </div>
+      }
+    </div>
+    <span class="sr-only" aria-live="polite" aria-atomic="true">
+      @if (pending$ | async) {
+        <span>{{ 'Practices.Labels_Pending' | translate }}</span>
+      }
+    </span>
+  </div>
+} @else {
+  <dl class="my-2">
+    <dt>{{ legend }}</dt>
+    @if (selectedCheckboxes$ | async; as checkboxes) {
+      @if (checkboxes.length > 0) {
+        <dd>
+          <ul class="my-0 ml-2">
+            @for (checkbox of checkboxes; track checkbox) {
+              <li>{{ checkbox.label }}</li>
+            }
+          </ul>
+        </dd>
+      } @else {
+        <dd class="font-bold">
+          {{ readonlyEmptyValuePlaceholder ?? ('Practices.Labels_Input_NoInputValue' | translate) }}
+        </dd>
+      }
+    } @else {
+      <dd class="font-bold">
+        {{ readonlyEmptyValuePlaceholder ?? ('Practices.Labels_Input_NoInputValue' | translate) }}
+      </dd>
+    }
+  </dl>
+}
+

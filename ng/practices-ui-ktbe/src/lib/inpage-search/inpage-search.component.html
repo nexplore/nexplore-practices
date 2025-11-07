@@ -1,14 +1,18 @@
 <div class="bg-sand block p-4">
-    <div class="relative" aria-hidden="true">
-        <puibe-icon-search *ngIf="!pending" class="absolute right-0 block h-10 w-10 p-0.5"></puibe-icon-search>
-        <puibe-icon-spinner *ngIf="pending" class="absolute right-0 block h-10 w-10 p-2"></puibe-icon-spinner>
-    </div>
-    <input
-        [attr.aria-label]="label ?? ('Practices.Labels_Search' | translate)"
-        class="pr-ktbe-15 placeholder:text-dark-gray placeholder-shown:text-dark-gray h-10 w-full bg-white pl-6 text-black"
-        type="text"
-        [placeholder]="placeholder ?? ('Practices.Labels_Search' | translate)"
-        [ngModel]="searchTerm$ | async"
-        (ngModelChange)="onSearchTermChange($event)"
+  <div class="relative" aria-hidden="true">
+    @if (!pending) {
+      <puibe-icon-search class="absolute right-0 block h-10 w-10 p-0.5"></puibe-icon-search>
+    }
+    @if (pending) {
+      <puibe-icon-spinner class="absolute right-0 block h-10 w-10 p-2"></puibe-icon-spinner>
+    }
+  </div>
+  <input
+    [attr.aria-label]="label ?? ('Practices.Labels_Search' | translate)"
+    class="pr-ktbe-15 placeholder:text-dark-gray placeholder-shown:text-dark-gray h-10 w-full bg-white pl-6 text-black"
+    type="text"
+    [placeholder]="placeholder ?? ('Practices.Labels_Search' | translate)"
+    [ngModel]="searchTerm$ | async"
+    (ngModelChange)="onSearchTermChange($event)"
     />
 </div>

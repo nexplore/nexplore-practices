@@ -1,4 +1,4 @@
-import { Directive, Self } from '@angular/core';
+import { Directive, inject } from '@angular/core';
 
 import { PuibeCalendarPickerAnchorDirective } from './calendar-picker-anchor.directive';
 import { PuibeCalendarPickerInputDirective } from './calendar-picker-input.directive';
@@ -9,7 +9,9 @@ import { PuibeCalendarPickerInputDirective } from './calendar-picker-input.direc
     hostDirectives: [PuibeCalendarPickerAnchorDirective.HOST_DIRECTIVE_FOR_INPUT, PuibeCalendarPickerInputDirective],
 })
 export class PuibeYearInputDirective {
-    constructor(@Self() picker: PuibeCalendarPickerInputDirective) {
+    constructor() {
+        const picker = inject(PuibeCalendarPickerInputDirective, { self: true });
+
         picker.configure({
             type: 'year',
             helpDescriptionKey: 'Labels_DatePicker_HelpDescription_Year',

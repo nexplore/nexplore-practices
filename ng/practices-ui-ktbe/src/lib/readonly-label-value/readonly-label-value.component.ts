@@ -1,4 +1,4 @@
-import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 
 import { TranslateModule } from '@ngx-translate/core';
@@ -9,7 +9,7 @@ import { FORM_CONFIG } from '../form/form.config';
     selector: 'puibe-readonly-label-value',
     templateUrl: './readonly-label-value.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, NgIf, NgTemplateOutlet, TranslateModule],
+    imports: [NgClass, TranslateModule],
 })
 export class PuibeReadonyLabelValueComponent {
     readonly themeConfig = inject(FORM_CONFIG, { optional: true });

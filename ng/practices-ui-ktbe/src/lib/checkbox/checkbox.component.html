@@ -1,69 +1,77 @@
-<ng-container *ngIf="!(isReadonly$ | async); else readonly">
-    <label
-        class="mr-9 inline-flex align-middle antialiased"
-        [for]="id"
+@if (!(isReadonly$ | async)) {
+  <label
+    class="mr-9 inline-flex align-middle antialiased"
+    [for]="id"
         [ngClass]="
             ((disabled$ | async) ? 'cursor-default' : 'cursor-pointer') +
             ' ' +
             (alignLabelStart ? 'items-start' : 'items-center')
         "
     >
-        <div class="relative -ml-[0.625rem] box-content inline-block h-7 w-7 p-[0.625rem]">
-            <input
-                class="peer absolute bottom-0 left-0 right-0 top-0 m-0 h-12 w-12 p-0 opacity-0"
-                type="checkbox"
-                [id]="id"
-                [name]="id"
-                [required]="isRequired$ | async"
-                [disabled]="disabled$ | async"
-                [checked]="checked$ | async"
-                (change)="onChange()"
-                [attr.aria-describedby]="!isInGroup ? id + '-error' : groupId + '-error'"
-            />
-            <div
-                class="relative box-border inline-block h-7 w-7 peer-focus:outline peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-[-webkit-focus-ring-color] peer-checked:[&_.check-target]:opacity-100"
-            >
-                <div
-                    class="absolute left-0 top-0 box-border h-full w-full border"
+    <div class="relative -ml-[0.625rem] box-content inline-block h-7 w-7 p-[0.625rem]">
+      <input
+        class="peer absolute bottom-0 left-0 right-0 top-0 m-0 h-12 w-12 p-0 opacity-0"
+        type="checkbox"
+        [id]="id"
+        [name]="id"
+        [required]="isRequired$ | async"
+        [disabled]="disabled$ | async"
+        [checked]="checked$ | async"
+        (change)="onChange()"
+        [attr.aria-describedby]="!isInGroup ? id + '-error' : groupId + '-error'"
+        />
+      <div
+        class="relative box-border inline-block h-7 w-7 peer-focus:outline peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-[-webkit-focus-ring-color] peer-checked:[&_.check-target]:opacity-100"
+        >
+        <div
+          class="absolute left-0 top-0 box-border h-full w-full border"
                     [ngClass]="{
                         'border-red': (displayAsInvalid$ | async),
                         'border-dark-gray': !(displayAsInvalid$ | async),
                         'bg-light-gray opacity-50': (disabled$ | async)
                     }"
-                ></div>
-                <div
-                    class="check-target absolute left-2 top-2 box-border h-3 w-3 bg-black opacity-0 transition-all duration-150 ease-in-out"
-                    [ngClass]="{ '!opacity-50': (disabled$ | async) && (checked$ | async) }"
-                ></div>
-            </div>
-        </div>
-        <div class="flex flex-col">
-            {{ label }}<ng-content></ng-content>
-            <span class="text-very-small" *ngIf="description">{{ description }}</span>
-        </div>
-    </label>
-    <ng-container *ngIf="!isInGroup">
+        ></div>
         <div
-            [attr.id]="id + '-error'"
-            class="text-red text-very-small min-h-5 font-medium"
-            [attr.aria-live]="(dirty$ | async) ? 'assertive' : 'off'"
-            aria-atomic="true"
-        >
-            <div *ngFor="let error of errors$ | async">
-                {{ error.key | translate : error.param }}
-            </div>
+          class="check-target absolute left-2 top-2 box-border h-3 w-3 bg-black opacity-0 transition-all duration-150 ease-in-out"
+          [ngClass]="{ '!opacity-50': (disabled$ | async) && (checked$ | async) }"
+        ></div>
+      </div>
+    </div>
+    <div class="flex flex-col">
+      {{ label }}<ng-content></ng-content>
+      @if (description) {
+        <span class="text-very-small">{{ description }}</span>
+      }
+    </div>
+  </label>
+  @if (!isInGroup) {
+    <div
+      [attr.id]="id + '-error'"
+      class="text-red text-very-small min-h-5 font-medium"
+      [attr.aria-live]="(dirty$ | async) ? 'assertive' : 'off'"
+      aria-atomic="true"
+      >
+      @for (error of errors$ | async; track error) {
+        <div>
+          {{ error.key | translate : error.param }}
         </div>
-        <span class="sr-only" aria-live="polite" aria-atomic="true">
-            <span *ngIf="pending$ | async">{{ 'Practices.Labels_Pending' | translate }}</span>
-        </span>
-    </ng-container>
-</ng-container>
+      }
+    </div>
+    <span class="sr-only" aria-live="polite" aria-atomic="true">
+      @if (pending$ | async) {
+        <span>{{ 'Practices.Labels_Pending' | translate }}</span>
+      }
+    </span>
+  }
+} @else {
+  <puibe-readonly-label-value [label]="label" [useSmallLabel]="useSmallTextForReadonlyLabel">
+    @if (checked$ | async) {
+      {{
+      'Practices.Labels_Input_CheckboxYes' | translate
+      }}
+    } @else {
+      {{ 'Practices.Labels_Input_CheckboxNo' | translate }}
+    }
+  </puibe-readonly-label-value>
+}
 
-<ng-template #readonly>
-    <puibe-readonly-label-value [label]="label" [useSmallLabel]="useSmallTextForReadonlyLabel">
-        <ng-container *ngIf="checked$ | async; else chechboxNo">{{
-            'Practices.Labels_Input_CheckboxYes' | translate
-        }}</ng-container>
-        <ng-template #chechboxNo>{{ 'Practices.Labels_Input_CheckboxNo' | translate }}</ng-template>
-    </puibe-readonly-label-value>
-</ng-template>

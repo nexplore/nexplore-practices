@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DialogAction, DialogService } from '@nexplore/practices-ui-clarity';
 import { TranslateService } from '@ngx-translate/core';
 import { timer } from 'rxjs';
@@ -9,13 +9,14 @@ import { map } from 'rxjs/operators';
     templateUrl: './dialog-view.component.html',
 })
 export class DialogViewComponent {
+    private dialogService = inject(DialogService);
+    private translateService = inject(TranslateService);
+
     confirmDialogResponse: boolean | undefined;
     confirmAsyncDialogResponse: boolean | undefined;
     deletionConfirmDialogResponse: boolean | undefined;
     deletionWithHtmlMessageConfirmDialogResponse: boolean | undefined;
     chooseLanguageResponse: string | undefined;
-
-    constructor(private dialogService: DialogService, private translateService: TranslateService) {}
 
     openAlertDialog() {
         this.dialogService

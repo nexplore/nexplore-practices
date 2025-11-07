@@ -1,6 +1,6 @@
-import { NgFor, NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+
 import { PuibePanelComponent, PuibeTeaserComponent } from '@nexplore/practices-ui-ktbe';
 
 interface ComponentExample {
@@ -20,7 +20,7 @@ interface ComponentCategory {
     standalone: true,
     selector: 'app-tables',
     templateUrl: './home.component.html',
-    imports: [PuibePanelComponent, PuibeTeaserComponent, NgFor, NgIf, RouterLink],
+    imports: [PuibePanelComponent, PuibeTeaserComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {

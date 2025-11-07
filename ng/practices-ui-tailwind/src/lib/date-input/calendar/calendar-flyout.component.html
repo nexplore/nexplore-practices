@@ -1,0 +1,21 @@
+<pui-calendar
+    class="shadow-dark-gray-50 rounded-lg bg-white shadow-lg"
+    cdkTrapFocus
+    [cdkTrapFocusAutoCapture]="true"
+    [toolbarAdditionalItemsTemplate]="toolbarTmpl"
+    [ariaAdditionalDescription]="'Practices.Labels_DatePicker_KeyboardSubmit' | translate"
+>
+    <ng-template #toolbarTmpl>
+        <button
+            puiCalendarToolbarItem
+            slot="right"
+            (click)="cancelClick.emit()"
+            [clickable]="true"
+            [title]="'Practices.Labels_Cancel' | translate"
+            [attr.aria-label]="'Practices.Labels_Cancel' | translate"
+            [roundedFull]="true"
+        >
+            <pui-icon-close class="inline-flex h-5 w-5 max-sm:h-7 max-sm:w-7"></pui-icon-close>
+        </button>
+    </ng-template>
+</pui-calendar>

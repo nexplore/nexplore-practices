@@ -1,12 +1,12 @@
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { A11yModule } from '@angular/cdk/a11y';
 import { PuibeIconCloseComponent } from '../icons/icon-close.component';
 import { PuibeIconExplanationMarkComponent } from '../icons/icon-explanation-mark.component';
-import { PuibeToastActionDirective } from './toast-action.directive';
+
 
 export const toastAnimation = trigger('displayToastAnimation', [
     transition(':leave', [
@@ -52,14 +52,12 @@ export const toastAnimation = trigger('displayToastAnimation', [
     selector: 'puibe-toast',
     templateUrl: './toast.component.html',
     imports: [
-        NgIf,
-        NgClass,
-        PuibeIconCloseComponent,
-        PuibeToastActionDirective,
-        PuibeIconExplanationMarkComponent,
-        TranslateModule,
-        A11yModule,
-    ],
+    NgClass,
+    PuibeIconCloseComponent,
+    PuibeIconExplanationMarkComponent,
+    TranslateModule,
+    A11yModule
+],
     animations: [toastAnimation],
 })
 export class PuibeToastComponent {

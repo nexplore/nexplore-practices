@@ -1,0 +1,21 @@
+<div
+  [ngClass]="{ 'border-gray border bg-white': variant === 'white', 'bg-highlight': variant === 'highlight' }"
+  class="rounded-surface-md"
+  >
+  @if (heading || caption) {
+    <div class="p-6" role="heading" [attr.aria-level]="headingLevel">
+      <div class="text-h4 font-light">{{ heading }}</div>
+      @if (caption) {
+        <div class="mt-1 font-light">{{ caption }}</div>
+      }
+    </div>
+  }
+  <div
+        [ngClass]="{
+            'p-6': addItemPadding,
+        }"
+    >
+    <ng-content></ng-content>
+  </div>
+</div>
+

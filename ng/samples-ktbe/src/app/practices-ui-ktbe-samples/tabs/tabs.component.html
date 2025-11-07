@@ -1,14 +1,16 @@
 <div puibeDetailPage>
-    <h1>This is a DetailPage for Tabs</h1>
-    <div class="block">
-        <puibe-tabs
-            [items]="items"
-            (selectedItemChange)="onChange($event)"
-            ariaLabel="Auswahl'"
-            selectedItemId="3"
-        ></puibe-tabs>
+  <h1>This is a DetailPage for Tabs</h1>
+  <div class="block">
+    <puibe-tabs
+      [items]="items"
+      (selectedItemChange)="onChange($event)"
+      ariaLabel="Auswahl'"
+      selectedItemId="3"
+    ></puibe-tabs>
+  </div>
+  @if (selectedElement$ | async; as item) {
+    <div class="mt-8 block">
+      <p>{{ item | json }}</p>
     </div>
-    <div class="mt-8 block" *ngIf="selectedElement$ | async as item">
-        <p>{{ item | json }}</p>
-    </div>
+  }
 </div>

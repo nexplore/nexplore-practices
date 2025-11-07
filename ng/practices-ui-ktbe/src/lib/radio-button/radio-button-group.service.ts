@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnDestroy, Optional } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { NgControl, Validators } from '@angular/forms';
 import { BehaviorSubject, combineLatest, delay, filter, map, merge, shareReplay, startWith, switchMap } from 'rxjs';
 import { FORM_CONFIG, FormConfig } from '../form/form.config';
@@ -11,6 +11,8 @@ export type Status = 'VALID' | 'INVALID' | 'DISABLED' | 'PENDING' | 'NONE';
 // TODO: Should probybly be replaced completely by PuiFormFieldService
 @Injectable()
 export class RadioButtonGroupService implements OnDestroy {
+    private readonly _config = inject<FormConfig>(FORM_CONFIG, { optional: true });
+
     private readonly _hideOptionalSubject = new BehaviorSubject<boolean>(false);
     private readonly _nameSubject = new BehaviorSubject<string>(`puibe-radio-button-group-${nextUniqueId++}`);
     private readonly _ngControlSubject = new BehaviorSubject<NgControl>(null);
@@ -60,8 +62,6 @@ export class RadioButtonGroupService implements OnDestroy {
         switchMap((el) => getElementFormStates$(el)),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
-
-    public constructor(@Optional() @Inject(FORM_CONFIG) private readonly _config: FormConfig) {}
 
     registerNgControl(ngControl: NgControl, element: HTMLElement) {
         this._ngControlSubject.next(ngControl);

@@ -1,3 +1,4 @@
+import { describe, expect, it, jest } from '@jest/globals';
 import { TestBed } from '@angular/core/testing';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';

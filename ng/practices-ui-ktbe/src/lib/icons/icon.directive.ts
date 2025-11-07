@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, HostBinding, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostBinding, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { applyIconDirection } from './util';
 import { puibeIconDefaults } from './defaults';
 import { IconDirection, IconSize } from './icon.interface';
@@ -11,6 +11,8 @@ import { setHostClassNames } from '../util/utils';
     standalone: true,
 })
 export class PuibeIconDirectiveBase implements OnChanges, AfterViewInit {
+    protected _elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+
     protected baseDirection = IconDirection.DOWN;
 
     @HostBinding('class')
@@ -27,8 +29,6 @@ export class PuibeIconDirectiveBase implements OnChanges, AfterViewInit {
      */
     @Input()
     size: IconSize = IconSize.NONE;
-
-    constructor(protected _elementRef: ElementRef<HTMLElement>) {}
 
     ngOnChanges(_changes: SimpleChanges): void {
         this.applyChanges();

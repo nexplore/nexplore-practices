@@ -1,26 +1,25 @@
-<ng-container *ngIf="!showOptionsMenu">
-    <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
-</ng-container>
+@if (!showOptionsMenu) {
+  <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+}
 
-<ng-container *ngIf="showOptionsMenu">
-    <div class="hidden">
-        <ng-container #menuItemsSlot></ng-container>
+@if (showOptionsMenu) {
+  <div class="hidden">
+    <ng-container #menuItemsSlot></ng-container>
+  </div>
+  <div [cdkMenuTriggerFor]="actionsMenu" class="w-full">
+    <button>
+      <puibe-icon-options class="block h-4 w-4"></puibe-icon-options>
+    </button>
+  </div>
+  <ng-template #actionsMenu>
+    <div class="bg-white py-3 drop-shadow-lg" cdkMenu>
+      <div class="[&>*:hover]:bg-light-sand flex w-full flex-col [&>*]:px-6 [&>*]:py-4 [&>*]:text-left">
+        <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+      </div>
     </div>
-
-    <div [cdkMenuTriggerFor]="actionsMenu" class="w-full">
-        <button>
-            <puibe-icon-options class="block h-4 w-4"></puibe-icon-options>
-        </button>
-    </div>
-    <ng-template #actionsMenu>
-        <div class="bg-white py-3 drop-shadow-lg" cdkMenu>
-            <div class="[&>*:hover]:bg-light-sand flex w-full flex-col [&>*]:px-6 [&>*]:py-4 [&>*]:text-left">
-                <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
-            </div>
-        </div>
-    </ng-template>
-</ng-container>
+  </ng-template>
+}
 
 <ng-template #contentTemplate>
-    <ng-content></ng-content>
+  <ng-content></ng-content>
 </ng-template>

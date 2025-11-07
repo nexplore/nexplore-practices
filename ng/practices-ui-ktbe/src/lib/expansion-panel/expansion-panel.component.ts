@@ -1,7 +1,7 @@
 import { animate, AnimationTriggerMetadata, state, style, transition, trigger } from '@angular/animations';
 import { CdkAccordionItem, CdkAccordionModule } from '@angular/cdk/accordion';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PuibeIconArrowComponent } from '../icons/icon-arrow.component';
 import { isElementVisibleInVerticalScrollView } from '../util/utils';
@@ -39,6 +39,8 @@ const bodyExpansionAnimation: AnimationTriggerMetadata = trigger('bodyExpansion'
     animations: [bodyExpansionAnimation],
 })
 export class PuibeExpansionPanelComponent implements OnInit {
+    private elRef = inject<ElementRef<HTMLElement>>(ElementRef);
+
     @HostBinding('class')
     className = 'block';
 
@@ -115,8 +117,6 @@ export class PuibeExpansionPanelComponent implements OnInit {
     // The idea of this property:
     // `isInitiallyCollapsed` is only true, if `isExpanded` is initially false. As soon `isExpanded` gets changed, `isInitiallyCollapsed` gets reset to false.
     isInitiallyCollapsed?: boolean = undefined;
-
-    constructor(private elRef: ElementRef<HTMLElement>) {}
 
     ngOnInit(): void {
         this.isInitiallyCollapsed = !this.isExpanded;

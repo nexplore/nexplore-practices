@@ -1,0 +1,516 @@
+/* practices-ui-tailwind: utilities & base additions (Tailwind framework must be imported by consumer before this file) */
+/* @reference "./theme.css"; */
+
+/* ---------------------------------------------
+	 Base Typography & Element Defaults
+	 --------------------------------------------- */
+@layer base {
+    body {
+        fill: currentColor;
+    }
+    a {
+        font-size: var(--text-base);
+        line-height: var(--leading-pui-base);
+        font-weight: 300;
+        text-decoration: underline;
+    }
+    a:hover {
+        color: var(--color-brand);
+        cursor: pointer;
+    }
+    p {
+        font-size: var(--text-base);
+        line-height: var(--leading-pui-base);
+        font-weight: 300;
+    }
+    small {
+        font-size: var(--text-small);
+        line-height: var(--leading-pui-small);
+        font-weight: 400;
+    }
+    ul {
+        list-style-type: square;
+        line-height: var(--leading-pui-base);
+        margin: 2.25rem 0 2.25rem 1.25rem;
+        font-weight: 300;
+    }
+    li {
+        margin: 0 0 0 0.75rem;
+    }
+    li::marker {
+        color: var(--color-brand);
+    }
+    ul.list-none,
+    ul.list-none > li {
+        margin: 0;
+        list-style: none;
+    }
+}
+
+/* ---------------------------------------------
+	 Headings: semantic elements + optional utility classes
+	 Approach: style h1..h6 in base; provide .h1..h6 for non-semantic usage.
+	 --------------------------------------------- */
+@layer base {
+    h1 {
+        font-size: var(--text-h1);
+        line-height: var(--leading-pui-h1);
+        font-weight: 100;
+        margin: 0 0 var(--heading-margin-bottom-h1);
+    }
+    h2 {
+        font-size: var(--text-h2);
+        line-height: var(--leading-pui-h2);
+        font-weight: 300;
+        margin: 0 0 var(--heading-margin-bottom);
+    }
+    h3 {
+        font-size: var(--text-h3);
+        line-height: var(--leading-pui-h3);
+        font-weight: 300;
+        font-style: italic;
+        margin: 0 0 var(--heading-margin-bottom);
+    }
+    h4 {
+        font-size: var(--text-h4);
+        line-height: var(--leading-pui-h4);
+        font-weight: 300;
+        margin: 0 0 var(--heading-margin-bottom);
+    }
+    h5 {
+        font-size: var(--text-h5);
+        line-height: var(--leading-pui-h5);
+        font-weight: 300;
+        font-style: italic;
+        margin: 0 0 var(--heading-margin-bottom);
+    }
+    h6 {
+        font-size: var(--text-h6);
+        line-height: var(--leading-pui-h6);
+        font-weight: 300;
+        margin: 0 0 var(--heading-margin-bottom);
+    }
+}
+
+/* Heading utility classes (.h1..h6) for non-semantic usage (elements already covered in base) */
+@utility h1 {
+    font-size: var(--text-h1);
+    line-height: var(--leading-pui-h1);
+    font-weight: 100;
+    margin-bottom: var(--heading-margin-bottom-h1);
+}
+@utility h2 {
+    font-size: var(--text-h2);
+    line-height: var(--leading-pui-h2);
+    font-weight: 300;
+    margin-bottom: var(--heading-margin-bottom);
+}
+@utility h3 {
+    font-size: var(--text-h3);
+    line-height: var(--leading-pui-h3);
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: var(--heading-margin-bottom);
+}
+@utility h4 {
+    font-size: var(--text-h4);
+    line-height: var(--leading-pui-h4);
+    font-weight: 300;
+    margin-bottom: var(--heading-margin-bottom);
+}
+@utility h5 {
+    font-size: var(--text-h5);
+    line-height: var(--leading-pui-h5);
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: var(--heading-margin-bottom);
+}
+@utility h6 {
+    font-size: var(--text-h6);
+    line-height: var(--leading-pui-h6);
+    font-weight: 300;
+    margin-bottom: var(--heading-margin-bottom);
+}
+
+/* ---------------------------------------------
+	 Scrollbar Utilities (custom) - uses theme tokens
+	 --------------------------------------------- */
+@utility scrollbar-thin {
+    &::-webkit-scrollbar {
+        width: var(--scrollbar-width);
+        cursor: default;
+    }
+    &::-webkit-scrollbar-track {
+        background: var(--scrollbar-track);
+    }
+    &::-webkit-scrollbar-thumb {
+        background: var(--scrollbar-thumb);
+        transition: var(--scrollbar-thumb-transition);
+        border: var(--scrollbar-thumb-border);
+        border-left-width: 0;
+        border-radius: var(--scrollbar-thumb-border-radius);
+        background-clip: padding-box;
+        clip-path: circle(40%);
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: var(--scrollbar-thumb-hover);
+        background-clip: padding-box;
+    }
+}
+@utility scrollbar-gutter-stable {
+    scrollbar-gutter: stable;
+}
+@utility scrollbar-gutter-stable-both {
+    scrollbar-gutter: stable both-edges;
+}
+
+/* ---------------------------------------------
+	 Arrowtip Utilities - directional variants using tokens
+	 Pattern: .arrowtip(-start|-center|-end)?-(top|right|bottom|left)
+	 --------------------------------------------- */
+@utility arrowtip {
+    position: relative;
+}
+@utility arrowtip-start {
+    position: relative;
+}
+@utility arrowtip-center {
+    position: relative;
+}
+@utility arrowtip-end {
+    position: relative;
+}
+
+@utility arrowtip-top {
+    position: relative;
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        left: var(--arrowtip-offset);
+        top: calc(var(--arrowtip-distance) * -1);
+        border: var(--arrowtip-size) solid transparent;
+    }
+    &::before {
+        border-bottom-color: var(--arrowtip-border);
+    }
+    &::after {
+        top: calc(var(--arrowtip-distance) * -1 + 1px);
+        border-bottom-color: var(--arrowtip-surface);
+    }
+}
+@utility arrowtip-start-top {
+    position: relative;
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        left: var(--arrowtip-offset);
+        top: calc(var(--arrowtip-distance) * -1);
+        border: var(--arrowtip-size) solid transparent;
+    }
+    &::before {
+        border-bottom-color: var(--arrowtip-border);
+    }
+    &::after {
+        top: calc(var(--arrowtip-distance) * -1 + 1px);
+        border-bottom-color: var(--arrowtip-surface);
+    }
+}
+@utility arrowtip-center-top {
+    position: relative;
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        left: var(--arrowtip-offset);
+        top: calc(var(--arrowtip-distance) * -1);
+        border: var(--arrowtip-size) solid transparent;
+    }
+    &::before {
+        border-bottom-color: var(--arrowtip-border);
+    }
+    &::after {
+        top: calc(var(--arrowtip-distance) * -1 + 1px);
+        border-bottom-color: var(--arrowtip-surface);
+    }
+}
+@utility arrowtip-end-top {
+    position: relative;
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        left: var(--arrowtip-offset);
+        top: calc(var(--arrowtip-distance) * -1);
+        border: var(--arrowtip-size) solid transparent;
+    }
+    &::before {
+        border-bottom-color: var(--arrowtip-border);
+    }
+    &::after {
+        top: calc(var(--arrowtip-distance) * -1 + 1px);
+        border-bottom-color: var(--arrowtip-surface);
+    }
+}
+@utility arrowtip-right {
+    position: relative;
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: var(--arrowtip-offset);
+        right: calc(var(--arrowtip-distance) * -1);
+        border: var(--arrowtip-size) solid transparent;
+    }
+    &::before {
+        border-left-color: var(--arrowtip-border);
+    }
+    &::after {
+        right: calc(var(--arrowtip-distance) * -1 + 1px);
+        border-left-color: var(--arrowtip-surface);
+    }
+}
+@utility arrowtip-start-right {
+    position: relative;
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: var(--arrowtip-offset);
+        right: calc(var(--arrowtip-distance) * -1);
+        border: var(--arrowtip-size) solid transparent;
+    }
+    &::before {
+        border-left-color: var(--arrowtip-border);
+    }
+    &::after {
+        right: calc(var(--arrowtip-distance) * -1 + 1px);
+        border-left-color: var(--arrowtip-surface);
+    }
+}
+@utility arrowtip-center-right {
+    position: relative;
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: var(--arrowtip-offset);
+        right: calc(var(--arrowtip-distance) * -1);
+        border: var(--arrowtip-size) solid transparent;
+    }
+    &::before {
+        border-left-color: var(--arrowtip-border);
+    }
+    &::after {
+        right: calc(var(--arrowtip-distance) * -1 + 1px);
+        border-left-color: var(--arrowtip-surface);
+    }
+}
+@utility arrowtip-end-right {
+    position: relative;
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: var(--arrowtip-offset);
+        right: calc(var(--arrowtip-distance) * -1);
+        border: var(--arrowtip-size) solid transparent;
+    }
+    &::before {
+        border-left-color: var(--arrowtip-border);
+    }
+    &::after {
+        right: calc(var(--arrowtip-distance) * -1 + 1px);
+        border-left-color: var(--arrowtip-surface);
+    }
+}
+@utility arrowtip-bottom {
+    position: relative;
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        left: var(--arrowtip-offset);
+        bottom: calc(var(--arrowtip-distance) * -1);
+        border: var(--arrowtip-size) solid transparent;
+    }
+    &::before {
+        border-top-color: var(--arrowtip-border);
+    }
+    &::after {
+        bottom: calc(var(--arrowtip-distance) * -1 + 1px);
+        border-top-color: var(--arrowtip-surface);
+    }
+}
+@utility arrowtip-start-bottom {
+    position: relative;
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        left: var(--arrowtip-offset);
+        bottom: calc(var(--arrowtip-distance) * -1);
+        border: var(--arrowtip-size) solid transparent;
+    }
+    &::before {
+        border-top-color: var(--arrowtip-border);
+    }
+    &::after {
+        bottom: calc(var(--arrowtip-distance) * -1 + 1px);
+        border-top-color: var(--arrowtip-surface);
+    }
+}
+@utility arrowtip-center-bottom {
+    position: relative;
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        left: var(--arrowtip-offset);
+        bottom: calc(var(--arrowtip-distance) * -1);
+        border: var(--arrowtip-size) solid transparent;
+    }
+    &::before {
+        border-top-color: var(--arrowtip-border);
+    }
+    &::after {
+        bottom: calc(var(--arrowtip-distance) * -1 + 1px);
+        border-top-color: var(--arrowtip-surface);
+    }
+}
+@utility arrowtip-end-bottom {
+    position: relative;
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        left: var(--arrowtip-offset);
+        bottom: calc(var(--arrowtip-distance) * -1);
+        border: var(--arrowtip-size) solid transparent;
+    }
+    &::before {
+        border-top-color: var(--arrowtip-border);
+    }
+    &::after {
+        bottom: calc(var(--arrowtip-distance) * -1 + 1px);
+        border-top-color: var(--arrowtip-surface);
+    }
+}
+@utility arrowtip-left {
+    position: relative;
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: var(--arrowtip-offset);
+        left: calc(var(--arrowtip-distance) * -1);
+        border: var(--arrowtip-size) solid transparent;
+    }
+    &::before {
+        border-right-color: var(--arrowtip-border);
+    }
+    &::after {
+        left: calc(var(--arrowtip-distance) * -1 + 1px);
+        border-right-color: var(--arrowtip-surface);
+    }
+}
+@utility arrowtip-start-left {
+    position: relative;
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: var(--arrowtip-offset);
+        left: calc(var(--arrowtip-distance) * -1);
+        border: var(--arrowtip-size) solid transparent;
+    }
+    &::before {
+        border-right-color: var(--arrowtip-border);
+    }
+    &::after {
+        left: calc(var(--arrowtip-distance) * -1 + 1px);
+        border-right-color: var(--arrowtip-surface);
+    }
+}
+@utility arrowtip-center-left {
+    position: relative;
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: var(--arrowtip-offset);
+        left: calc(var(--arrowtip-distance) * -1);
+        border: var(--arrowtip-size) solid transparent;
+    }
+    &::before {
+        border-right-color: var(--arrowtip-border);
+    }
+    &::after {
+        left: calc(var(--arrowtip-distance) * -1 + 1px);
+        border-right-color: var(--arrowtip-surface);
+    }
+}
+@utility arrowtip-end-left {
+    position: relative;
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: var(--arrowtip-offset);
+        left: calc(var(--arrowtip-distance) * -1);
+        border: var(--arrowtip-size) solid transparent;
+    }
+    &::before {
+        border-right-color: var(--arrowtip-border);
+    }
+    &::after {
+        left: calc(var(--arrowtip-distance) * -1 + 1px);
+        border-right-color: var(--arrowtip-surface);
+    }
+}
+
+/* ---------------------------------------------
+	 Animation Utility
+	 --------------------------------------------- */
+@utility animate-pop {
+    animation: var(--animate-pop);
+}
+
+/* ---------------------------------------------
+	 Tailwind Token-based Utilities (manual mappings until functional utilities added)
+	 --------------------------------------------- */
+@utility border-l-pui-controlinvalidbordersize {
+    border-left-width: var(--border-pui-controlinvalidbordersize);
+}
+@utility min-h-pui-controlsize {
+    min-height: var(--spacing-pui-controlsize);
+}
+@utility h-pui-controlsize {
+    height: var(--spacing-pui-controlsize);
+}
+@utility p-pui-controlsize {
+    padding: var(--spacing-pui-controlsize);
+}
+@utility py-pui-controlsize {
+    padding-top: var(--spacing-pui-controlsize);
+    padding-bottom: var(--spacing-pui-controlsize);
+}
+@utility pt-pui-controlsize {
+    padding-top: var(--spacing-pui-controlsize);
+}
+@utility pb-pui-controlsize {
+    padding-bottom: var(--spacing-pui-controlsize);
+}
+@utility mt-pui-controlsize {
+    margin-top: var(--spacing-pui-controlsize);
+}
+@utility mb-pui-controlsize {
+    margin-bottom: var(--spacing-pui-controlsize);
+}
+@utility gap-pui-controlsize {
+    gap: var(--spacing-pui-controlsize);
+}
+
+/* End custom base & utilities */
+

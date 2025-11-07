@@ -1,6 +1,6 @@
 import { DIALOG_DATA, DialogModule, DialogRef } from '@angular/cdk/dialog';
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { CommonModule } from '@angular/common';
+
 import { Component, Inject, Input } from '@angular/core';
 import { Meta, StoryObj, moduleMetadata } from '@storybook/angular';
 import { MODAL_PROVIDERS, PracticesKtbeDefaultModule } from '../../index';
@@ -42,14 +42,13 @@ type Args = {
         </puibe-flyout>
     `,
     imports: [
-        DialogModule,
-        PuibeFlyoutComponent,
-        PuibeFlyoutContentDirective,
-        PuibeFlyoutTitleDirective,
-        PuibeFlyoutFooterActionDirective,
-        PuibeButtonDirective,
-        CommonModule,
-    ],
+    DialogModule,
+    PuibeFlyoutComponent,
+    PuibeFlyoutContentDirective,
+    PuibeFlyoutTitleDirective,
+    PuibeFlyoutFooterActionDirective,
+    PuibeButtonDirective
+],
 })
 class AppFlyoutComponent {
     constructor(public dialogRef: DialogRef, @Inject(DIALOG_DATA) public data: Args) {}
@@ -91,13 +90,12 @@ class AppModalComponent {
     </div>`,
     providers: [...FLYOUT_PROVIDERS, ...MODAL_PROVIDERS],
     imports: [
-        CommonModule,
-        PuibeButtonDirective,
-        DialogModule,
-        AppFlyoutComponent,
-        AppModalComponent,
-        PracticesKtbeDefaultModule,
-    ],
+    PuibeButtonDirective,
+    DialogModule,
+    AppFlyoutComponent,
+    AppModalComponent,
+    PracticesKtbeDefaultModule
+],
 })
 class LaunchComponent {
     @Input() public args: Args;

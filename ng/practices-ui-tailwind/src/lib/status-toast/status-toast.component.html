@@ -1,0 +1,43 @@
+@if (status?.error) {
+  <pui-toast
+    variant="error"
+    [closeable]="true"
+    (dismissed)="onDismiss()"
+    class="min-w-screen max-w-screen flex overflow-hidden md:min-w-96 md:max-w-[660px]"
+    role="status"
+    >
+    <div part="error-content" class="flex min-w-0 flex-col items-stretch gap-2 text-ellipsis whitespace-pre-wrap pl-2">
+      @if (isFormularInvalidError(status.error)) {
+        <p translate>Practices.Labels_FormularInvalid</p>
+      } @else {
+        <ng-container *ngTemplateOutlet="errorTemplate; context: { $implicit: status }"></ng-container>
+        @if (!errorTemplate) {
+          {{ status.error?.message ?? status.error }}
+          @if (status.error?.stack) {
+            <pui-expansion-panel
+              caption="Details"
+              class="flex-grow-0 text-black"
+              [enableContentScroll]="true"
+              >
+              @if (status.error.stack) {
+                <code class="whitespace-pre">{{ status?.error.stack }}</code>
+              }
+            </pui-expansion-panel>
+          }
+        }
+      }
+    </div>
+  </pui-toast>
+}
+@if (status?.success) {
+  @if (getSuccessMessage(status); as successMessage) {
+    <pui-toast
+      variant="success"
+      [closeable]="true"
+      class="min-w-screen max-w-screen flex overflow-hidden md:min-w-40 lg:max-w-[660px]"
+      role="status"
+      >
+      {{ successMessage }}
+    </pui-toast>
+  }
+}

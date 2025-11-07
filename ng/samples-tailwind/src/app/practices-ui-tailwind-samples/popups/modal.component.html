@@ -1,0 +1,12 @@
+<pui-modal [hideCloseButton]="false" class="block min-w-[400px]">
+    <pui-modal-title>Modal Title</pui-modal-title>
+    <pui-modal-subtitle>Modal Subtitle</pui-modal-subtitle>
+    <div puiModalContent>
+        Do you want diamonds?<br />
+        {{ data.name }}<br />
+        {{ data.name }}<br />
+        {{ data.name }}<br />
+    </div>
+    <button puiModalFooterAction [shouldClose]="false" puiButton variant="primary">OK</button>
+    <button puiModalFooterAction puiButton>Cancel</button>
+</pui-modal>

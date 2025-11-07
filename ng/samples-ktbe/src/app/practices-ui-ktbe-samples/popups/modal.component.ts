@@ -1,5 +1,5 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { PracticesKtbeDialogModule, PuibeButtonDirective } from '@nexplore/practices-ui-ktbe';
 
 interface Data {
@@ -13,5 +13,6 @@ interface Data {
     imports: [PracticesKtbeDialogModule, PuibeButtonDirective],
 })
 export class AppModalComponent {
-    constructor(public dialogRef: DialogRef, @Inject(DIALOG_DATA) public data: Data) {}
+    dialogRef = inject(DialogRef);
+    data = inject<Data>(DIALOG_DATA);
 }

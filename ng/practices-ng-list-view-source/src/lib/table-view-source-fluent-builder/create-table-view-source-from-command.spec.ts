@@ -1,10 +1,14 @@
 import { TestBed } from '@angular/core/testing';
+import { beforeAll, describe, expect, it, jest } from '@jest/globals';
 import { command } from '@nexplore/practices-ng-commands';
 import { createTableViewSourceFromCommand } from './create-table-view-source-from-command';
 
 describe('fromCommand', () => {
     class TestDto {
-        constructor(public name: string, public age: number) {}
+        constructor(
+            public name: string,
+            public age: number,
+        ) {}
     }
 
     beforeAll(() => {
@@ -14,7 +18,10 @@ describe('fromCommand', () => {
     it('should create table view source from command', () => {
         TestBed.runInInjectionContext(() => {
             class TestDto {
-                constructor(public name: string, public age: number) {}
+                constructor(
+                    public name: string,
+                    public age: number,
+                ) {}
             }
 
             const cmd = command.action(() => [new TestDto('Test', 22)]);
@@ -33,7 +40,7 @@ describe('fromCommand', () => {
             const results: any[] = [];
 
             const cmd = command.action((count: number) =>
-                Array.from({ length: count }, (_, i) => new TestDto(`Test ${i}`, i))
+                Array.from({ length: count }, (_, i) => new TestDto(`Test ${i}`, i)),
             );
 
             const vs = createTableViewSourceFromCommand(cmd, {
@@ -43,15 +50,15 @@ describe('fromCommand', () => {
 
             vs.pageData$.subscribe((data) => results.at(-1)?.length !== data?.length && results.push(data));
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             cmd.trigger(1);
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             cmd.trigger(3);
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results.map((r) => r.length)).toEqual([0, 1, 3]);
         });
@@ -62,7 +69,7 @@ describe('fromCommand', () => {
             const results: any[] = [];
 
             const cmd = command.action((count: number) =>
-                Array.from({ length: count }, (_, i) => new TestDto(`Test ${i}`, i))
+                Array.from({ length: count }, (_, i) => new TestDto(`Test ${i}`, i)),
             );
             cmd.triggered$.subscribe(() => results.push('triggered'));
 
@@ -72,7 +79,7 @@ describe('fromCommand', () => {
             });
 
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results).toEqual([]);
         });
@@ -83,7 +90,7 @@ describe('fromCommand', () => {
             const results: any[] = [];
 
             const cmd = command.action((count: number) =>
-                Array.from({ length: count }, (_, i) => new TestDto(`Test ${i}`, i))
+                Array.from({ length: count }, (_, i) => new TestDto(`Test ${i}`, i)),
             );
             cmd.triggered$.subscribe(() => results.push('triggered'));
 
@@ -94,7 +101,7 @@ describe('fromCommand', () => {
 
             vs.refresh();
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results).toEqual([]);
         });
@@ -105,7 +112,7 @@ describe('fromCommand', () => {
             const results: any[] = [];
 
             const cmd = command.action((count: number) =>
-                Array.from({ length: count }, (_, i) => new TestDto(`Test ${i}`, i))
+                Array.from({ length: count }, (_, i) => new TestDto(`Test ${i}`, i)),
             );
             cmd.triggered$.subscribe(() => results.push('triggered'));
 
@@ -118,7 +125,7 @@ describe('fromCommand', () => {
             vs.filter(3);
 
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results).toEqual(['triggered']);
         });
@@ -130,7 +137,7 @@ describe('fromCommand', () => {
 
             const cmd = command.query
                 .withManualTrigger((count: number) =>
-                    Array.from({ length: count }, (_, i) => new TestDto(`Test ${i}`, i))
+                    Array.from({ length: count }, (_, i) => new TestDto(`Test ${i}`, i)),
                 )
                 .withMutableResult();
 
@@ -141,17 +148,18 @@ describe('fromCommand', () => {
 
             vs.pageData$.subscribe((data) => results.at(-1)?.length !== data?.length && results.push(data));
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             cmd.trigger(1);
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             cmd.resultSignal.set([new TestDto('Test 1', 1), new TestDto('Test 2', 2), new TestDto('Test 3', 3)]);
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results.map((r) => r.length)).toEqual([0, 1, 3]);
         });
     });
 });
+

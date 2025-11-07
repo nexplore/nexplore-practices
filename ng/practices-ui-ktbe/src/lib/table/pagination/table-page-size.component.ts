@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of https://github.com/vmware-clarity/ng-clarity.
  */
 
-import { NgFor } from '@angular/common';
+
 import { Component, ElementRef, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DEFAULT_PAGE_SIZE_OPTIONS } from './config';
@@ -18,7 +18,7 @@ let nextUniqueId = 0;
     standalone: true,
     selector: 'puibe-table-page-size',
     templateUrl: './table-page-size.component.html',
-    imports: [FormsModule, NgFor, A11yModule],
+    imports: [FormsModule, A11yModule],
 })
 export class PuibeTablePageSizeComponent implements OnInit {
     readonly page = inject(PageService);

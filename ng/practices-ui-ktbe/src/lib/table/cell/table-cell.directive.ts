@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, HostBinding, Input, OnInit, Optional } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostBinding, Input, OnInit, inject } from '@angular/core';
 import { PuibeTableRowComponent } from '../row/table-row.component';
 import { PuibeTableFooterComponent } from '../footer/table-footer.component';
 import { ClassNames } from '../constants';
@@ -9,18 +9,14 @@ import { setHostClassNames } from '../../util/utils';
     selector: '[puibeTableCell]',
 })
 export class PuibeTableCellDirective implements OnInit, AfterViewInit {
+    parentRow = inject(PuibeTableRowComponent, { optional: true });
+    parentFooter = inject(PuibeTableFooterComponent, { optional: true });
+    private _elementRef = inject(ElementRef);
+
     @HostBinding('class')
     className = ClassNames.TABLE_CELL;
 
     @Input() noPadding = false;
-
-    constructor(
-        @Optional()
-        public parentRow: PuibeTableRowComponent,
-        @Optional()
-        public parentFooter: PuibeTableFooterComponent,
-        private _elementRef: ElementRef
-    ) {}
 
     ngOnInit() {
         setHostClassNames(

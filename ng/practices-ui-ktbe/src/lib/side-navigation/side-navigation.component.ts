@@ -1,21 +1,7 @@
 import { A11yModule } from '@angular/cdk/a11y';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { AsyncPipe, NgClass, NgFor, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
-import {
-    ChangeDetectionStrategy,
-    Component,
-    ElementRef,
-    EventEmitter,
-    Input,
-    OnChanges,
-    Optional,
-    Output,
-    QueryList,
-    SimpleChanges,
-    TemplateRef,
-    ViewChild,
-    ViewChildren,
-} from '@angular/core';
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnChanges, Output, QueryList, SimpleChanges, TemplateRef, ViewChild, ViewChildren, inject } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { DestroyService, TitleService } from '@nexplore/practices-ui';
 import { TranslateModule } from '@ngx-translate/core';
@@ -35,14 +21,14 @@ import {
     take,
     takeUntil,
 } from 'rxjs';
-import { PuibeFooterComponent } from '../footer/footer.component';
-import { PuibeHeaderLogoComponent } from '../header/header-logo.component';
+
+
 import { RouterUtilService } from '../router-util.service';
 import { PuibeShellService } from '../shell/shell.service';
 import { PUIBE_BREAKPOINT_MAX_W_LG } from '../util/constants';
-import { ObserveScreenPositionDirective } from '../util/observe-screen-position.directive';
-import { ObserveScrollPositionDirective } from '../util/observe-scroll-position.directive';
-import { PuibeObserveSizeDirective } from '../util/observe-size.directive';
+
+
+
 import {
     applyUrlParams,
     collectRouteParams,
@@ -87,25 +73,25 @@ type NavPane = { route: PuibeMetaRouteExt; parents: PuibeMetaRoute[]; comparable
     ],
     animations: [panelExpansionAnimation],
     imports: [
-        NgClass,
-        NgIf,
-        NgFor,
-        NgForOf,
-        NgTemplateOutlet,
-        AsyncPipe,
-        TranslateModule,
-        PuibeSideNavigationPaneComponent,
-        PuibeSideNavigationItemComponent,
-        PuibeHeaderLogoComponent,
-        PuibeFooterComponent,
-        A11yModule,
-        PuibeObserveSizeDirective,
-        ObserveScreenPositionDirective,
-        ObserveScrollPositionDirective,
-    ],
+    NgClass,
+    NgTemplateOutlet,
+    AsyncPipe,
+    TranslateModule,
+    PuibeSideNavigationPaneComponent,
+    PuibeSideNavigationItemComponent,
+    A11yModule
+],
     providers: [DestroyService],
 })
 export class PuibeSideNavigationComponent implements OnChanges {
+    readonly title = inject(TitleService, { optional: true });
+    private _router = inject(Router, { optional: true });
+    private _activatedRoute = inject(ActivatedRoute, { optional: true });
+    private _shellService = inject(PuibeShellService, { optional: true });
+    private _breakpointObserver = inject(BreakpointObserver);
+    private _routerUtilService = inject(RouterUtilService);
+    private _destroy$ = inject(DestroyService);
+
     get className() {
         return `${className} ${
             !this.noOverlay ? 'fixed top-0 bottom-0 left-0 overflow-x-auto w-screen h-screen z-50' : 'h-full'
@@ -213,15 +199,9 @@ export class PuibeSideNavigationComponent implements OnChanges {
         shareReplay({ refCount: true, bufferSize: 1 })
     );
 
-    constructor(
-        @Optional() readonly title: TitleService,
-        @Optional() private _router: Router,
-        @Optional() private _activatedRoute: ActivatedRoute,
-        @Optional() private _shellService: PuibeShellService,
-        private _breakpointObserver: BreakpointObserver,
-        private _routerUtilService: RouterUtilService,
-        private _destroy$: DestroyService
-    ) {
+    constructor() {
+        const title = this.title;
+
         if (!title) {
             console.warn('<puibe-side-navigation> requested TitleService is not provided.');
         }

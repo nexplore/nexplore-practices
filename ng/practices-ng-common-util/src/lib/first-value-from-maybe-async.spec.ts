@@ -1,4 +1,4 @@
-import { describe, expect, it } from '@jest/globals';
+import { describe, expect, it, jest } from '@jest/globals';
 import { firstValueFromMaybeAsync } from './first-value-from-maybe-async';
 import { of, Subject } from 'rxjs';
 

@@ -1,4 +1,4 @@
-import { Inject, Injectable, InjectionToken, Injector } from '@angular/core';
+import { Injectable, InjectionToken, Injector, inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Route, Router, RouterStateSnapshot, TitleStrategy } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -30,20 +30,16 @@ export const TITLE_SERVICE_CONFIG = new InjectionToken<TitleServiceConfig>('Titl
 
 @Injectable()
 export class TitleService extends TitleStrategy {
+    private readonly _config = inject<TitleServiceConfig>(TITLE_SERVICE_CONFIG);
+    private readonly _injector = inject(Injector);
+    private readonly _angularTitleService = inject(Title);
+    private readonly _translateService = inject(TranslateService);
+
     private _titleSubject: Subject<string> = new BehaviorSubject<string>('');
     private _breadcrumbTitlesSubject = new BehaviorSubject<BreadcrumbTitle[]>([]);
 
     readonly title$: Observable<string> = this._titleSubject.asObservable();
     readonly breadcrumbTitles$: Observable<BreadcrumbTitle[]> = this._breadcrumbTitlesSubject.asObservable();
-
-    constructor(
-        @Inject(TITLE_SERVICE_CONFIG) private readonly _config: TitleServiceConfig,
-        private readonly _injector: Injector,
-        private readonly _angularTitleService: Title,
-        private readonly _translateService: TranslateService
-    ) {
-        super();
-    }
 
     /**
      * Get an observable of the localized title of the specified route

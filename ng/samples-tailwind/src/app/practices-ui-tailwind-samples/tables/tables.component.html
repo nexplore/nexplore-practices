@@ -1,0 +1,378 @@
+<pui-two-column-nav [heading]="'Inhalt'" [headingSelectors]="['h2[id]']">
+  <div>
+    <h2 id="complete-example" class="mb-4">Table with filters</h2>
+    <pui-table-example></pui-table-example>
+
+    <h2 id="static-table" class="mb-4 mt-12">Static table</h2>
+
+    <div class="flex gap-10">
+      <pui-table>
+        <pui-table-column>H1</pui-table-column>
+        <pui-table-column>H2</pui-table-column>
+        <pui-table-column>H3</pui-table-column>
+        <pui-table-column>H4</pui-table-column>
+
+        <pui-table-row>
+          <pui-table-cell>A1</pui-table-cell>
+          <pui-table-cell>A2</pui-table-cell>
+          <pui-table-cell>A3</pui-table-cell>
+          <pui-table-cell>A4</pui-table-cell>
+        </pui-table-row>
+
+        <pui-table-row>
+          <pui-table-cell>B1</pui-table-cell>
+          <pui-table-cell>B2</pui-table-cell>
+          <pui-table-cell>B3</pui-table-cell>
+          <pui-table-cell>B4</pui-table-cell>
+        </pui-table-row>
+      </pui-table>
+
+      <pui-table>
+        <pui-table-column>H1</pui-table-column>
+        <pui-table-column class="border-l">H2</pui-table-column>
+        <pui-table-column class="border-l">H3</pui-table-column>
+        <pui-table-column class="border-l">H4</pui-table-column>
+
+        <pui-table-row>
+          <pui-table-cell>A1</pui-table-cell>
+          <pui-table-cell class="border-l">A2</pui-table-cell>
+          <pui-table-cell class="border-l">A3</pui-table-cell>
+          <pui-table-cell class="border-l">A4</pui-table-cell>
+        </pui-table-row>
+
+        <pui-table-row>
+          <pui-table-cell>B1</pui-table-cell>
+          <pui-table-cell class="border-l">B2</pui-table-cell>
+          <pui-table-cell class="border-l">B3</pui-table-cell>
+          <pui-table-cell class="border-l">B4</pui-table-cell>
+        </pui-table-row>
+      </pui-table>
+    </div>
+
+    <h2 id="table-with-viewsource" class="mb-4 mt-12">Table with ViewSource and options menu</h2>
+
+    <pui-table [tableViewSource]="tableSource1" class="w-full">
+      <pui-table-column [fieldName]="tableSource1.columns.id"></pui-table-column>
+      <pui-table-column
+        [fieldName]="tableSource1.columns.name"
+        [sortable]="true"
+        class="w-full"
+      ></pui-table-column>
+      <pui-table-column
+        [fieldName]="tableSource1.columns.created"
+        [sortable]="true"
+        class="min-w-32"
+      ></pui-table-column>
+      <pui-table-column>Actions</pui-table-column>
+
+      @for (item of tableSource1.pageData$ | async; track item) {
+        <pui-table-row puiTableRowActionTrigger>
+          <pui-table-cell>{{ item.id }}</pui-table-cell>
+          <pui-table-cell>{{ item.name }}</pui-table-cell>
+          <pui-table-cell>{{ item.created | date }}</pui-table-cell>
+          <pui-table-cell>
+            <pui-table-col-actions [showOptionsMenu]="true">
+              <a puiTableRowAction href="https://be.ch" target="_blank" class="flex items-center"
+                ><pui-icon-arrow class="mr-2 block h-3 w-3" [direction]="'right'"></pui-icon-arrow>
+                be.ch</a
+                >
+                <a href="https://google.com" target="_blank" class="flex items-center"
+                  ><pui-icon-arrow class="mr-2 block h-3 w-3" [direction]="'right'"></pui-icon-arrow>
+                  google.com</a
+                  >
+                </pui-table-col-actions></pui-table-cell
+                >
+              </pui-table-row>
+            }
+          </pui-table>
+
+          <h2 id="table-selectable" class="mb-4 mt-12">Selectable Table</h2>
+
+          <pui-table
+            [tableViewSource]="tableSource2"
+            class="w-full"
+            [selectionMode]="'single'"
+            [(selectedItem)]="selectedItem2"
+            >
+            <pui-table-column [fieldName]="tableSource2.columns.id"></pui-table-column>
+            <pui-table-column
+              [fieldName]="tableSource2.columns.name"
+              [sortable]="true"
+              class="w-full"
+            ></pui-table-column>
+            <pui-table-column
+              [fieldName]="tableSource2.columns.created"
+              [sortable]="true"
+              class="min-w-32"
+            ></pui-table-column>
+            <pui-table-column>Actions</pui-table-column>
+
+            @for (item of tableSource2.pageData$ | async; track item) {
+              <pui-table-row [selectable]="item">
+                <pui-table-cell>{{ item.id }}</pui-table-cell>
+                <pui-table-cell>{{ item.name }}</pui-table-cell>
+                <pui-table-cell>{{ item.created | date }}</pui-table-cell>
+                <pui-table-cell></pui-table-cell>
+              </pui-table-row>
+            }
+
+            <pui-table-footer>
+              <h3>Selected: {{ selectedItem2?.name ?? 'None' }}</h3>
+            </pui-table-footer>
+          </pui-table>
+
+          <h2 id="table-with-multiselect" class="mb-4 mt-12">Multi-Select Table</h2>
+
+          <pui-table
+            [tableViewSource]="tableSource3"
+            class="w-full"
+            [selectionMode]="'multi'"
+            [(selectedItems)]="selectedItems3"
+            >
+            <pui-table-column [fieldName]="tableSource3.columns.id"></pui-table-column>
+            <pui-table-column
+              [fieldName]="tableSource3.columns.name"
+              [sortable]="true"
+              class="w-full"
+            ></pui-table-column>
+            <pui-table-column
+              [fieldName]="tableSource3.columns.created"
+              [sortable]="true"
+              class="min-w-32"
+            ></pui-table-column>
+            <pui-table-column>Actions</pui-table-column>
+
+            @for (item of tableSource3.pageData$ | async; track item) {
+              <pui-table-row [selectable]="item">
+                <pui-table-cell>{{ item.id }}</pui-table-cell>
+                <pui-table-cell>{{ item.name }}</pui-table-cell>
+                <pui-table-cell>{{ item.created | date }}</pui-table-cell>
+                <pui-table-cell></pui-table-cell>
+              </pui-table-row>
+            }
+
+            <pui-table-footer>
+              <h3>{{ selectedItems3?.length }} items selected</h3>
+            </pui-table-footer>
+          </pui-table>
+
+          <h2 id="table-with-paging" class="mb-4 mt-12">Table with Paging</h2>
+
+          <pui-table [tableViewSource]="tableSource4" class="w-full">
+            <pui-table-column [fieldName]="tableSource4.columns.id"></pui-table-column>
+            <pui-table-column
+              [fieldName]="tableSource4.columns.name"
+              [sortable]="true"
+              class="w-full"
+            ></pui-table-column>
+            <pui-table-column
+              [fieldName]="tableSource4.columns.created"
+              [sortable]="true"
+              class="min-w-32"
+            ></pui-table-column>
+            <pui-table-column>Actions</pui-table-column>
+
+            @for (item of tableSource4.pageData$ | async; track item) {
+              <pui-table-row>
+                <pui-table-cell>{{ item.id }}</pui-table-cell>
+                <pui-table-cell>{{ item.name }}</pui-table-cell>
+                <pui-table-cell>{{ item.created | date }}</pui-table-cell>
+                <pui-table-cell></pui-table-cell>
+              </pui-table-row>
+            }
+
+            <pui-table-footer>
+              <pui-table-pagination [showFirstAndLastPageButton]="true">
+                <pui-table-page-size>Items per page </pui-table-page-size>
+              </pui-table-pagination>
+            </pui-table-footer>
+          </pui-table>
+
+          <h2 id="table-with-auto-col-config" class="mb-4 mt-12">Table with Automatic Column Config</h2>
+
+          <pui-table [tableViewSource]="tableSource5" class="w-full">
+            <pui-table-column [field]="tableSource5.columns.id"></pui-table-column>
+            <pui-table-column [field]="tableSource5.columns.name" class="w-full"></pui-table-column>
+            <pui-table-column [field]="tableSource5.columns.created" class="min-w-32"></pui-table-column>
+            <pui-table-column>Actions</pui-table-column>
+
+            @for (item of tableSource5.pageData$ | async; track item) {
+              <pui-table-row>
+                <pui-table-cell>{{ item.id }}</pui-table-cell>
+                <pui-table-cell>{{ item.name }}</pui-table-cell>
+                <pui-table-cell>{{ item.created | date }}</pui-table-cell>
+                <pui-table-cell></pui-table-cell>
+              </pui-table-row>
+            }
+          </pui-table>
+
+          <h2 id="table-with-viewsource-array" class="mb-4 mt-12">Table with ViewSource Array</h2>
+
+          <pui-table [tableViewSource]="tableSource6" class="w-full">
+            @for (columnDef of tableSource6.columnsArray$ | async; track columnDef) {
+              <pui-table-column
+                [field]="columnDef"
+              ></pui-table-column>
+            }
+
+            @for (item of tableSource6.pageData$ | async; track item) {
+              <pui-table-row>
+                <pui-table-cell>{{ item.id }}</pui-table-cell>
+                <pui-table-cell class="w-full">{{ item.name }}</pui-table-cell>
+                <pui-table-cell class="min-w-32">{{ item.created | date }}</pui-table-cell>
+                <pui-table-cell></pui-table-cell>
+              </pui-table-row>
+            }
+          </pui-table>
+
+          <h2 id="table-with-viewsource-label-prefix" class="mb-4 mt-12">Table with ViewSource LabelPrefix</h2>
+
+          <pui-table [tableViewSource]="tableSource7" columnTranslationPrefix="Labels_SampleTable_" class="w-full">
+            @for (columnDef of tableSource7.columnsArray$ | async; track columnDef) {
+              <pui-table-column
+                [field]="columnDef"
+              ></pui-table-column>
+            }
+
+            @for (item of tableSource7.pageData$ | async; track item) {
+              <pui-table-row>
+                <pui-table-cell>{{ item.id }}</pui-table-cell>
+                <pui-table-cell>{{ item.name }}</pui-table-cell>
+                <pui-table-cell>{{ item.created | date }}</pui-table-cell>
+                <pui-table-cell></pui-table-cell>
+              </pui-table-row>
+            }
+          </pui-table>
+
+          <h2 id="table-with-directive-td" class="mb-4 mt-12">Table with puiTableCell Directive</h2>
+
+          <pui-table [tableViewSource]="tableSource9" class="w-full" [showBusyAnimation]="false">
+            <pui-table-column [fieldName]="tableSource9.columns.id"></pui-table-column>
+            <pui-table-column [fieldName]="tableSource9.columns.name" [sortable]="true"></pui-table-column>
+            <pui-table-column
+              align="right"
+              [fieldName]="tableSource9.columns.created"
+              [sortable]="true"
+            ></pui-table-column>
+
+            @for (item of tableSource9.pageData$ | async; track item) {
+              <pui-table-row puiTableRowActionTrigger>
+                <td puiTableCell>{{ item.id }}</td>
+                <td puiTableCell>{{ item.name }}</td>
+                <td puiTableCell align="right">{{ item.created | date }}</td>
+              </pui-table-row>
+            }
+          </pui-table>
+
+          <h2 id="table-with-colspan2" class="mb-4 mt-12">Table with colspan 2</h2>
+
+          <pui-table class="w-full">
+            <pui-table-column>T1</pui-table-column>
+            <pui-table-column>T2</pui-table-column>
+            <pui-table-column>T3</pui-table-column>
+
+            <pui-table-row>
+              <pui-table-cell>A1</pui-table-cell>
+              <pui-table-cell>A2</pui-table-cell>
+              <pui-table-cell>A3</pui-table-cell>
+            </pui-table-row>
+
+            <pui-table-row>
+              <td puiTableCell colspan="2">B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1</td>
+              <td puiTableCell>B3</td>
+            </pui-table-row>
+          </pui-table>
+
+          <h2 id="table-with-rowinfooter" class="mb-4 mt-12">Table with row in footer</h2>
+
+          <pui-table [tableViewSource]="tableSource10" class="w-full" [showBusyAnimation]="false">
+            <pui-table-column [fieldName]="tableSource10.columns.id"></pui-table-column>
+            <pui-table-column [fieldName]="tableSource10.columns.name"></pui-table-column>
+            <pui-table-column align="right" [fieldName]="tableSource10.columns.created"></pui-table-column>
+
+            @for (item of tableSource10.pageData$ | async; track item) {
+              <pui-table-row puiTableRowActionTrigger>
+                <pui-table-cell>{{ item.id }}</pui-table-cell>
+                <pui-table-cell>{{ item.name }}</pui-table-cell>
+                <pui-table-cell align="right">{{ item.created | date }}</pui-table-cell>
+              </pui-table-row>
+            }
+
+            <pui-table-footer>
+              <pui-table-row [borderBottom]="false" class="bg-highlight">
+                <pui-table-cell>Total</pui-table-cell>
+                <pui-table-cell>Hallo</pui-table-cell>
+                <pui-table-cell align="right">Welt</pui-table-cell>
+              </pui-table-row>
+            </pui-table-footer>
+          </pui-table>
+
+          <h2 id="table-with-custom-cell-border" class="mb-4 mt-12">Table with custom cell border</h2>
+
+          <pui-table class="w-full">
+            <pui-table-column>T1</pui-table-column>
+            <pui-table-column>T2</pui-table-column>
+            <pui-table-column align="right">T3</pui-table-column>
+
+            <pui-table-row [borderBottom]="false">
+              <pui-table-cell>A1</pui-table-cell>
+              <pui-table-cell>A2</pui-table-cell>
+              <pui-table-cell align="right">A3</pui-table-cell>
+            </pui-table-row>
+
+            <pui-table-row [borderBottom]="false">
+              <pui-table-cell>B1</pui-table-cell>
+              <pui-table-cell>B2</pui-table-cell>
+              <pui-table-cell align="center">B3</pui-table-cell>
+            </pui-table-row>
+
+            <pui-table-row [borderTop]="true">
+              <pui-table-cell>C1</pui-table-cell>
+              <pui-table-cell>C2</pui-table-cell>
+              <pui-table-cell align="left">C3</pui-table-cell>
+            </pui-table-row>
+
+            <pui-table-row [borderBottom]="false">
+              <pui-table-cell>D1</pui-table-cell>
+              <pui-table-cell>D2</pui-table-cell>
+              <pui-table-cell align="center">D3</pui-table-cell>
+            </pui-table-row>
+
+            <pui-table-row>
+              <pui-table-cell>E1</pui-table-cell>
+              <pui-table-cell>E2</pui-table-cell>
+              <pui-table-cell align="right">E3</pui-table-cell>
+            </pui-table-row>
+          </pui-table>
+
+          <h2 id="table-with-infinite-scroll" class="mb-4 mt-12">Table with Infinite Scroll</h2>
+
+          <pui-table [tableViewSource]="tableSource8" class="w-full" [showBusyAnimation]="false">
+            <pui-table-column [fieldName]="tableSource8.columns.id"></pui-table-column>
+            <pui-table-column
+              [fieldName]="tableSource8.columns.name"
+              [sortable]="true"
+              class="w-full"
+            ></pui-table-column>
+            <pui-table-column
+              [fieldName]="tableSource8.columns.created"
+              [sortable]="true"
+              class="min-w-32"
+            ></pui-table-column>
+            <pui-table-column>Actions</pui-table-column>
+
+            @for (item of tableSource8.pageData$ | async; track item) {
+              <pui-table-row puiTableRowActionTrigger>
+                <pui-table-cell>{{ item.id }}</pui-table-cell>
+                <pui-table-cell [hoverEmphasis]="true">{{ item.name }}</pui-table-cell>
+                <pui-table-cell>{{ item.created | date }}</pui-table-cell>
+                <pui-table-cell></pui-table-cell>
+              </pui-table-row>
+            }
+
+            <pui-table-footer>
+              <pui-table-pagination-infinite-scroll [pageSize]="10"></pui-table-pagination-infinite-scroll>
+            </pui-table-footer>
+          </pui-table>
+        </div>
+      </pui-two-column-nav>

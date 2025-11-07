@@ -1,0 +1,16 @@
+<div puiDetailPage>
+  <h1>This is a DetailPage for Tabs</h1>
+  <div class="block">
+    <pui-tabs
+      [items]="items"
+      (selectedItemChange)="onChange($event)"
+      ariaLabel="Auswahl'"
+      selectedItemId="3"
+    ></pui-tabs>
+  </div>
+  @if (selectedElement$ | async; as item) {
+    <div class="mt-8 block">
+      <p>{{ item | json }}</p>
+    </div>
+  }
+</div>

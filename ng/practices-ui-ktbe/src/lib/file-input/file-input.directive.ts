@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Input, OnInit, forwardRef } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, OnInit, forwardRef, inject } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DestroyService } from '@nexplore/practices-ui';
 import { TranslateService } from '@ngx-translate/core';
@@ -22,6 +22,11 @@ const MARK_TOUCHED_DELAY = 100;
     ],
 })
 export class PuibeFileInputDirective implements OnInit, ControlValueAccessor {
+    private _elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
+    private _formFieldService = inject(FormFieldService);
+    private _destroy$ = inject(DestroyService);
+    private _translate = inject(TranslateService);
+
     @HostListener('change')
     emitFiles() {
         const file = this.inputElement.files[0];
@@ -65,12 +70,7 @@ export class PuibeFileInputDirective implements OnInit, ControlValueAccessor {
 
     private inputElement: HTMLInputElement;
 
-    constructor(
-        private _elementRef: ElementRef<HTMLInputElement>,
-        private _formFieldService: FormFieldService,
-        private _destroy$: DestroyService,
-        private _translate: TranslateService
-    ) {
+    constructor() {
         this.inputElement = this._elementRef.nativeElement;
     }
 

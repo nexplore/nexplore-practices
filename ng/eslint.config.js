@@ -8,7 +8,7 @@ module.exports = [
     ...nx.configs['flat/angular'],
     ...nx.configs['flat/angular-template'],
     {
-        ignores: ['**/dist', '**/*.stories.ts', '**/stories', '**/.storybook'],
+        ignores: ['**/dist', '**/*.stories.ts', '**/stories', '**/.storybook', '**/*.spec.ts'],
     },
     {
         languageOptions: {
@@ -95,3 +95,4 @@ module.exports = [
         },
     },
 ];
+

@@ -1,0 +1,52 @@
+<div
+  class="h-full w-full p-6 rounded-surface-md"
+    [ngClass]="[
+        variant === 'red'
+            ? 'bg-red hover:bg-red-hover text-white'
+            : variant === 'brand'
+              ? 'bg-brand hover:bg-brand-hover text-white'
+              : variant === 'highlight-dark'
+                ? 'bg-dark-highlight hover:bg-surface-hover text-black'
+                : 'bg-highlight hover:bg-surface-hover text-black',
+        teaserLink || navigatable ? 'cursor-pointer' : '',
+    ]"
+  [attr.aria-describedby]="'teaser-title-' + id + ' teaser-subtitle-' + id"
+  [attr.role]="teaserLink || navigatable ? 'link' : undefined"
+  [attr.tabindex]="teaserLink || navigatable ? 0 : undefined"
+  (keyup.enter)="onNavigate()"
+  (click)="onNavigate()"
+  >
+  <div class="flex items-center justify-between" [ngClass]="{ 'mb-4': !subtitle && ref.children.length }">
+    <div
+      role="heading"
+      [attr.aria-level]="titleLevel"
+      [attr.id]="'teaser-title-' + id"
+      class="text-h5 font-light not-italic"
+      >
+      <ng-content select="[slot='title']" />{{ title }}
+    </div>
+    @if (teaserLink || navigatable) {
+      <pui-icon-arrow
+        direction="right"
+        class="h-4 w-6"
+        [colorClass]="[variant === 'red' || variant === 'brand' ? 'fill-white' : 'fill-action-icon']"
+      ></pui-icon-arrow>
+    }
+  </div>
+  @if (subtitle) {
+    <div [ngClass]="{ 'mb-4': ref.children.length }">
+      <div
+        role="heading"
+        [attr.aria-level]="subtitleLevel"
+        [attr.id]="'teaser-subtitle-' + id"
+        class="text-very-small"
+        >
+        <ng-content select="[slot='subtitle']" />{{ subtitle }}
+      </div>
+    </div>
+  }
+  <div #ref>
+    <ng-content></ng-content>
+  </div>
+</div>
+

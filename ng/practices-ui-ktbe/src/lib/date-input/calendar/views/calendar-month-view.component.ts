@@ -1,5 +1,5 @@
 import { A11yModule } from '@angular/cdk/a11y';
-import { NgIf, NgFor, NgClass } from '@angular/common';
+
 import {
     ChangeDetectionStrategy,
     Component,
@@ -12,13 +12,13 @@ import {
     signal,
 } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { PuibeCalendarItemComponent } from '../presentation/calendar-item.component';
-import { CalendarPeriodItem, CalendarPeriodRow } from '../../services/calendar-period.service';
 import { DateFormat, DateService } from '../../../date.service';
-import { PuibeCalendarRowLabelComponent } from '../presentation/calendar-row-label.component';
-import { PuibeCalendarToolbarItemDirective } from '../presentation/calendar-toolbar-item.directive';
+import { CalendarPeriodItem, CalendarPeriodRow } from '../../services/calendar-period.service';
+import { PuibeCalendarItemComponent } from '../presentation/calendar-item.component';
+
 import { PuibeIconArrowComponent } from '../../../icons/icon-arrow.component';
 import { PuibeCalendarGridLayoutComponent } from '../presentation/calendar-grid-layout.component';
+import { PuibeCalendarToolbarItemDirective } from '../presentation/calendar-toolbar-item.directive';
 
 @Component({
     selector: 'puibe-calendar-month-view',
@@ -27,13 +27,9 @@ import { PuibeCalendarGridLayoutComponent } from '../presentation/calendar-grid-
     standalone: true,
     imports: [
         PuibeCalendarItemComponent,
-        PuibeCalendarRowLabelComponent,
         PuibeCalendarGridLayoutComponent,
         PuibeCalendarToolbarItemDirective,
         PuibeIconArrowComponent,
-        NgIf,
-        NgFor,
-        NgClass,
         TranslateModule,
         A11yModule,
     ],
@@ -95,7 +91,6 @@ export class PuibeCalendarMonthViewComponent {
     @Output()
     readonly clickPeriodHeader = new EventEmitter<void>();
 
-    trackByIndex = (i: number) => i;
     trackByShortLabel = (_: number, item: CalendarPeriodItem) => item.labelShort;
 
     isItemDisabled(item: CalendarPeriodItem) {
@@ -156,3 +151,4 @@ export class PuibeCalendarMonthViewComponent {
         return null;
     }
 }
+

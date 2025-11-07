@@ -1,0 +1,43 @@
+<pui-modal [hideCloseButton]="false" class="block w-[60vw] min-w-[600px]">
+    <h2 puiModalTitle>
+        {{ data.name }}
+        <pui-icon-enumeration
+            [color]="data.active ? 'green' : 'red'"
+            size="s"
+            [title]="data.active ? 'Active' : 'Inactive'"
+        ></pui-icon-enumeration>
+    </h2>
+    <h3 puiModalSubtitle>{{ data.type }}</h3>
+    <div puiModalContent>
+        <form [formGroup]="form">
+            <pui-form-field>
+                <label puiLabel>Name</label>
+                <input puiInput type="text" formControlName="name" [placeholder]="'Search'" />
+            </pui-form-field>
+
+            <pui-form-field>
+                <label puiLabel>Active</label>
+                <ng-select
+                    puiInput
+                    [items]="activeItems"
+                    bindLabel="label"
+                    bindValue="value"
+                    formControlName="active"
+                ></ng-select>
+            </pui-form-field>
+
+            <pui-form-field>
+                <label puiLabel>Type</label>
+                <ng-select
+                    puiInput
+                    [items]="typeItems"
+                    bindLabel="label"
+                    bindValue="value"
+                    formControlName="type"
+                ></ng-select>
+            </pui-form-field>
+        </form>
+    </div>
+    <button puiModalFooterAction puiButton variant="primary">Save</button>
+    <button puiModalFooterAction puiButton>Cancel</button>
+</pui-modal>

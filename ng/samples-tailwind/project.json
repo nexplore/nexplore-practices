@@ -1,0 +1,84 @@
+{
+    "name": "samples-tailwind",
+    "$schema": "../node_modules/nx/schemas/project-schema.json",
+    "projectType": "application",
+    "sourceRoot": "samples-tailwind/src",
+    "prefix": "app",
+    "generators": {},
+    "targets": {
+        "build": {
+            "executor": "@angular/build:application",
+            "options": {
+                "outputPath": "dist/samples-tailwind",
+                "index": "samples-tailwind/src/index.html",
+                "polyfills": ["samples-tailwind/src/polyfills.ts"],
+                "tsConfig": "samples-tailwind/tsconfig.app.json",
+                "assets": ["samples-tailwind/src/favicon.ico", "samples-tailwind/src/assets"],
+                "styles": ["samples-tailwind/src/styles.css"],
+                "scripts": [],
+                "extractLicenses": false,
+                "sourceMap": true,
+                "optimization": false,
+                "namedChunks": true,
+                "browser": "samples-tailwind/src/main.ts"
+            },
+            "configurations": {
+                "production": {
+                    "fileReplacements": [
+                        {
+                            "replace": "samples-tailwind/src/environments/environment.ts",
+                            "with": "samples-tailwind/src/environments/environment.prod.ts"
+                        }
+                    ],
+                    "optimization": true,
+                    "outputHashing": "all",
+                    "sourceMap": false,
+                    "namedChunks": false,
+                    "extractLicenses": true,
+                    "budgets": [
+                        {
+                            "type": "initial",
+                            "maximumWarning": "2mb",
+                            "maximumError": "5mb"
+                        },
+                        {
+                            "type": "anyComponentStyle",
+                            "maximumWarning": "6kb"
+                        }
+                    ],
+                    "tsConfig": "samples-tailwind/tsconfig.app.prod.json"
+                }
+            },
+            "defaultConfiguration": ""
+        },
+        "serve": {
+            "executor": "@angular/build:dev-server",
+            "options": {
+                "buildTarget": "samples-tailwind:build"
+            },
+            "configurations": {
+                "production": {
+                    "buildTarget": "samples-tailwind:build:production"
+                }
+            }
+        },
+        "extract-i18n": {
+            "executor": "@angular/build:extract-i18n",
+            "options": {
+                "buildTarget": "samples-tailwind:build"
+            }
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "options": {
+                "jestConfig": "samples-tailwind/jest.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/eslint:lint",
+            "options": {
+                "lintFilePatterns": ["samples-tailwind/**/*.ts", "samples-tailwind/package.json"]
+            }
+        }
+    }
+}

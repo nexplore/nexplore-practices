@@ -1,6 +1,7 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Validators } from '@angular/forms';
+import { describe, expect, it } from '@jest/globals';
 import { formGroup } from './api';
 import { createFormGroupWithResetFromSignal } from './create-form-group-with-reset-from-signal';
 
@@ -18,12 +19,12 @@ describe('withResetFromSignal', () => {
             formGroup.value.lastNameSignal();
             results.push(formGroup.value.firstName);
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(formGroup.value.firstName);
 
             sourceSignal.set({ firstName: 'Indiana', lastName: 'Jones', unneeded: 3 });
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(formGroup.value.firstName);
 
@@ -39,12 +40,12 @@ describe('withResetFromSignal', () => {
 
             results.push(fg.value.name);
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(fg.value.name);
 
             sourceSignal.set({ name: 'Indiana Jones' });
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(fg.value.name);
 
@@ -56,7 +57,7 @@ describe('withResetFromSignal', () => {
         TestBed.runInInjectionContext(() => {
             const sourceSignal = signal({ name: 'Lara Croft' });
             const fg = formGroup.withResetFromSignal(sourceSignal, { name: { nullable: false } });
-            TestBed.flushEffects();
+            TestBed.tick();
 
             const name: string = fg.value.name;
             expect(name).toEqual('Lara Croft');
@@ -67,7 +68,7 @@ describe('withResetFromSignal', () => {
         TestBed.runInInjectionContext(() => {
             const sourceSignal = signal({ name: 'Lara Croft' });
             const fg = formGroup.withResetFromSignal(sourceSignal, { name: { nullable: true } });
-            TestBed.flushEffects();
+            TestBed.tick();
 
             const name: string | null = fg.value.name;
             expect(name).toEqual('Lara Croft');
@@ -78,7 +79,7 @@ describe('withResetFromSignal', () => {
         TestBed.runInInjectionContext(() => {
             const sourceSignal = signal<{ name?: string }>({ name: 'Lara Croft' });
             const fg = formGroup.withResetFromSignal(sourceSignal, { name: { nullable: true } });
-            TestBed.flushEffects();
+            TestBed.tick();
 
             const name: string | null | undefined = fg.value.name;
             expect(name).toEqual('Lara Croft');
@@ -91,9 +92,10 @@ describe('withResetFromSignal', () => {
             const fg = formGroup
                 .withResetFromSignal(sourceSignal, { name: '' })
                 .withValidation({ name: [Validators.required] });
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(fg.value.name).toEqual('Lara Croft');
         });
     });
 });
+

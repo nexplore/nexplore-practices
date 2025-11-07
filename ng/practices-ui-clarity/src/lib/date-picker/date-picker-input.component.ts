@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, forwardRef, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import {
     AbstractControl,
@@ -14,7 +14,7 @@ import { ClarityModule, ClrDateInput } from '@clr/angular';
 
 @Component({
     selector: 'puiclr-date-picker-input',
-    imports: [CommonModule, ClarityModule, ReactiveFormsModule],
+    imports: [ClarityModule, ReactiveFormsModule],
     standalone: true,
     template: `
         <div [formGroup]="form">

@@ -35,6 +35,8 @@ import { AppComponent } from '../../app.component';
     ],
 })
 export class StatusHubComponent implements OnDestroy {
+    private appComponent = inject(AppComponent);
+
     Error = Error;
 
     statusService = inject(StatusService);
@@ -94,7 +96,9 @@ export class StatusHubComponent implements OnDestroy {
         );
     });
 
-    constructor(private appComponent: AppComponent) {
+    constructor() {
+        const appComponent = this.appComponent;
+
         appComponent.overrideStatusHub = true;
     }
 

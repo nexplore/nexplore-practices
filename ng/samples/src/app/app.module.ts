@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, inject } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -23,7 +23,9 @@ import { translations } from './translations';
     bootstrap: [AppComponent],
 })
 export class AppModule {
-    constructor(private translateService: TranslateService) {
+    private translateService = inject(TranslateService);
+
+    constructor() {
         this.translateService.use('en').subscribe();
         this.translateService.setTranslation('en', translations);
     }

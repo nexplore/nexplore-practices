@@ -1,35 +1,38 @@
 <div class="border-dark-gray-50 hidden w-full sm:inline-block" [class.border-b]="showBorder">
+  @for (item of items; track item) {
     <button
-        *ngFor="let item of items"
-        type="button"
-        [ngClass]="item.id === selectedItemId ? activeClassNames : ''"
-        (click)="onChange(item.id)"
-        class="mb-3 mr-5 h-12 items-center justify-center overflow-hidden rounded-full px-5 py-3 font-medium transition-all duration-200 ease-linear last:mr-0 hover:scale-105 focus:scale-105 disabled:scale-100"
-    >
-        {{ item.label }}
+      type="button"
+      [ngClass]="item.id === selectedItemId ? activeClassNames : ''"
+      (click)="onChange(item.id)"
+      class="mb-3 mr-5 h-12 items-center justify-center overflow-hidden rounded-full px-5 py-3 font-medium transition-all duration-200 ease-linear last:mr-0 hover:scale-105 focus:scale-105 disabled:scale-100"
+      >
+      {{ item.label }}
     </button>
+  }
 </div>
 
 <div class="tabs-component inline-block w-full sm:hidden">
-    <div class="pointer-events-none relative">
-        <div
-            #arrow
-            aria-hidden="true"
-            class="absolute right-0 top-0 z-10 mr-6 mt-5 flex h-4 w-4 flex-col justify-center transition-all duration-300 ease-in-out"
-        >
-            <puibe-icon-arrow></puibe-icon-arrow>
-        </div>
+  <div class="pointer-events-none relative">
+    <div
+      #arrow
+      aria-hidden="true"
+      class="absolute right-0 top-0 z-10 mr-6 mt-5 flex h-4 w-4 flex-col justify-center transition-all duration-300 ease-in-out"
+      >
+      <puibe-icon-arrow></puibe-icon-arrow>
     </div>
-    <span *ngIf="ariaLabel" class="sr-only" id="ngselect-arialabel">{{ ariaLabel }}</span>
-    <ng-select
-        [attr.aria-labelledby]="ariaLabel ? 'ngselect-arialabel' : ''"
-        [items]="items"
-        [searchable]="false"
-        bindLabel="label"
-        bindValue="id"
-        (open)="onOpen()"
-        (close)="onClose()"
-        [(ngModel)]="selectedItemId"
-        (ngModelChange)="onChange($event)"
-    ></ng-select>
+  </div>
+  @if (ariaLabel) {
+    <span class="sr-only" id="ngselect-arialabel">{{ ariaLabel }}</span>
+  }
+  <ng-select
+    [attr.aria-labelledby]="ariaLabel ? 'ngselect-arialabel' : ''"
+    [items]="items"
+    [searchable]="false"
+    bindLabel="label"
+    bindValue="id"
+    (open)="onOpen()"
+    (close)="onClose()"
+    [(ngModel)]="selectedItemId"
+    (ngModelChange)="onChange($event)"
+  ></ng-select>
 </div>

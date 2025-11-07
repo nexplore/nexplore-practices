@@ -1,13 +1,5 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    HostBinding,
-    Input,
-    OnInit,
-    Optional,
-} from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, Input, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { DestroyService, TitleService } from '@nexplore/practices-ui';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -23,10 +15,18 @@ import { PuibeBreadcrumbItemComponent } from './item/breadcrumb-item.component';
     selector: 'puibe-breadcrumb',
     templateUrl: './breadcrumb.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [AsyncPipe, NgIf, NgFor, TranslateModule, PuibeBreadcrumbItemComponent],
+    imports: [AsyncPipe, TranslateModule, PuibeBreadcrumbItemComponent],
     providers: [DestroyService],
 })
 export class PuibeBreadcrumbComponent implements OnInit {
+    private router = inject(Router, { optional: true });
+    private activatedRoute = inject(ActivatedRoute, { optional: true });
+    readonly titleService = inject(TitleService, { optional: true });
+    readonly translate = inject(TranslateService, { optional: true });
+    private _cdr = inject(ChangeDetectorRef);
+    private _destroy$ = inject(DestroyService);
+    private routerUtilService = inject(RouterUtilService);
+
     @HostBinding('role')
     readonly role = 'navigation';
 
@@ -62,16 +62,6 @@ export class PuibeBreadcrumbComponent implements OnInit {
               filter((routes) => !!routes.length)
           )
         : EMPTY;
-
-    constructor(
-        @Optional() private router: Router,
-        @Optional() private activatedRoute: ActivatedRoute,
-        @Optional() readonly titleService: TitleService,
-        @Optional() readonly translate: TranslateService,
-        private _cdr: ChangeDetectorRef,
-        private _destroy$: DestroyService,
-        private routerUtilService: RouterUtilService
-    ) {}
 
     ngOnInit(): void {
         this.titleService.breadcrumbTitles$.pipe(takeUntil(this._destroy$)).subscribe(() => this._cdr.markForCheck());

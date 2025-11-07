@@ -1,0 +1,36 @@
+<pui-toast variant="error" [closeable]="true" class="my-4 block" (dismissed)="close()">
+  <div>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+    magna aliqua.
+  </div>
+  <a puiToastAction href="/">zur Startseite</a>
+</pui-toast>
+
+<pui-toast variant="default" [closeable]="false" class="my-4 block">
+  <p class="text-h4">Some Error occured...</p>
+  @if (visible) {
+    <div>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</p>
+      <p>elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    </div>
+  }
+  <a puiToastAction href="/">zur Startseite</a>
+  <button puiToastAction (click)="toggleDetails()">Weitere Details...</button>
+</pui-toast>
+
+<pui-toast [closeable]="true" class="my-4 block">
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+    magna aliqua.
+  </p>
+  <a puiToastAction>
+    <span class="flex items-center"><pui-icon-login class="w-5 pr-1"></pui-icon-login>Login</span>
+  </a>
+</pui-toast>
+
+<pui-toast variant="success" [closeable]="true" class="my-4 block">
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+    magna aliqua.
+  </p>
+</pui-toast>

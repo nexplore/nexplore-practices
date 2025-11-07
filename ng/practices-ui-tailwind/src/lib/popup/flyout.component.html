@@ -1,0 +1,13 @@
+<ng-content select="[puiFlyoutTitle], pui-flyout-title"></ng-content>
+<ng-content select="[puiFlyoutContent]"></ng-content>
+@if (!hideFooter) {
+  <div
+    class="m-6 flex flex-col items-stretch justify-end gap-4 sm:flex-row sm:items-center"
+    [ngClass]="{
+        'sm:justify-start': buttonsAlignment === 'start',
+        'sm:justify-end': buttonsAlignment === 'end'
+    }"
+    >
+    <ng-content select="[puiFlyoutFooterAction]"></ng-content>
+  </div>
+}

@@ -1,4 +1,4 @@
-import { Directive } from '@angular/core';
+import { Directive, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 import { trace } from '@nexplore/practices-ng-logging';
@@ -11,7 +11,10 @@ import { PuiDirtyGuardService } from '../services/dirty-guard.service';
     standalone: true,
 })
 export class PuiNestedDirtyGuardDirective {
-    constructor(routeGuardService: PuiDirtyGuardService, r: RouterOutlet) {
+    constructor() {
+        const routeGuardService = inject(PuiDirtyGuardService);
+        const r = inject(RouterOutlet);
+
         r.activateEvents.pipe(takeUntilDestroyed()).subscribe((compInstance) => {
             routeGuardService.activateComponent(compInstance);
             trace('puiNestedDirtyGuard', 'component-activated', compInstance, this);

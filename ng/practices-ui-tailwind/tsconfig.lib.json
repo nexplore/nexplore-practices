@@ -1,0 +1,31 @@
+{
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "outDir": "../dist/out-tsc",
+        "declarationMap": true,
+        "target": "es2020",
+        "declaration": true,
+        "inlineSources": true,
+        "strict": false,
+        "types": [],
+        "lib": [
+            "dom",
+            "es2020"
+        ]
+    },
+    "angularCompilerOptions": {
+        "skipTemplateCodegen": true,
+        "strictMetadataEmit": true,
+        "fullTemplateTypeCheck": true,
+        "strictInjectionParameters": true,
+        "enableResourceInlining": true
+    },
+    "exclude": [
+        "src/test.ts",
+        "**/*.spec.ts",
+        "**/*.stories.ts"
+    ],
+    "include": [
+        "**/*.ts"
+    ]
+}

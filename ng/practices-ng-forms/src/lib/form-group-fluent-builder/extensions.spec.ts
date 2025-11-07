@@ -1,6 +1,7 @@
 import { effect, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Validators } from '@angular/forms';
+import { describe, expect, it } from '@jest/globals';
 import { createExtendedFormGroup } from './extensions';
 
 describe('formGroup', () => {
@@ -22,12 +23,12 @@ describe('formGroup', () => {
 
             results.push(formGroup.value.name);
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(formGroup.value.name);
 
             sourceSignal.set({ name: 'Indiana Jones' });
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(formGroup.value.name);
 
@@ -68,11 +69,11 @@ describe('formGroup', () => {
                 results.push(status);
             });
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             formGroup.setValue({ name: '' });
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results).toEqual(['VALID', 'INVALID']);
         });
@@ -89,11 +90,11 @@ describe('formGroup', () => {
                 results.push(dirty);
             });
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             formGroup.markAsDirty();
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results).toEqual([false, true]);
         });
@@ -111,11 +112,11 @@ describe('formGroup', () => {
             });
 
             formGroup.markAsDirty();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             formGroup.markAsPristine();
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results).toEqual([false, true]);
         });
@@ -132,11 +133,11 @@ describe('formGroup', () => {
                 results.push(touched);
             });
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             formGroup.markAsTouched();
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results).toEqual([false, true]);
         });
@@ -155,11 +156,11 @@ describe('formGroup', () => {
 
             formGroup.markAsTouched();
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             formGroup.markAsUntouched();
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results).toEqual([false, true]);
         });
@@ -176,11 +177,11 @@ describe('formGroup', () => {
                 results.push(valid);
             });
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             formGroup.setValue({ name: '' });
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results).toEqual([true, false]);
         });
@@ -197,11 +198,11 @@ describe('formGroup', () => {
                 results.push(invalid);
             });
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             formGroup.setValue({ name: '' });
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results).toEqual([false, true]);
         });
@@ -218,11 +219,11 @@ describe('formGroup', () => {
                 results.push(name);
             });
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             formGroup.patchValue({ name: 'Jane Doe' });
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results).toEqual(['John Doe', 'Jane Doe']);
         });
@@ -231,7 +232,7 @@ describe('formGroup', () => {
     it('should return a value whose keys are not including the signal properties', () => {
         TestBed.runInInjectionContext(() => {
             const formGroup = createExtendedFormGroup({ name: 'John Doe' });
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(Object.keys(formGroup.value)).toEqual(['name']);
         });
@@ -240,7 +241,7 @@ describe('formGroup', () => {
     it('should return a value which can be used in Object.assign without the signal properties', () => {
         TestBed.runInInjectionContext(() => {
             const formGroup = createExtendedFormGroup({ name: 'John Doe' });
-            TestBed.flushEffects();
+            TestBed.tick();
 
             const obj = Object.assign({}, formGroup.value);
 
@@ -258,7 +259,7 @@ describe('formGroup', () => {
 
             results.push(formGroup.valid);
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(formGroup.valid);
 
@@ -274,3 +275,4 @@ describe('formGroup', () => {
         });
     });
 });
+

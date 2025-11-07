@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 import { A11yModule } from '@angular/cdk/a11y';
 import { BlockScrollStrategy, ViewportRuler } from '@angular/cdk/overlay';
-import { AsyncPipe, NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { Component, ContentChild, EventEmitter, Input, Output, inject } from '@angular/core';
 import {
     AggregatedStatusInfo,
@@ -27,18 +27,15 @@ type ToastPosition = 'top-left' | 'top' | 'top-right' | 'bottom-left' | 'bottom'
     standalone: true,
     templateUrl: './status-hub.component.html',
     imports: [
-        PuibeStatusToastComponent,
-        PuibeToastComponent,
-        PuibeIconSpinnerComponent,
-        NgIf,
-        NgFor,
-        NgClass,
-        NgTemplateOutlet,
-        AsyncPipe,
-        TranslateModule,
-        PuibeErrorStatusDirective,
-        A11yModule,
-    ],
+    PuibeStatusToastComponent,
+    PuibeToastComponent,
+    PuibeIconSpinnerComponent,
+    NgClass,
+    NgTemplateOutlet,
+    AsyncPipe,
+    TranslateModule,
+    A11yModule
+],
     animations: [listEntryAnimation, scaleAnimation, slowFadeAnimation],
 })
 export class PuibeStatusHubComponent {

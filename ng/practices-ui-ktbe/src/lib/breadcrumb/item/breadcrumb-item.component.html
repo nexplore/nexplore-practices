@@ -1,64 +1,71 @@
-<ng-container [ngSwitch]="renderType">
+
+@switch (renderType) {
+  @case ('sideNav') {
     <a
-        *ngSwitchCase="'sideNav'"
-        (click)="openSidenav()"
-        [class]="classNamesAnchor"
-        [ngClass]="active ? [classNamesActive] : []"
-        [ariaLabel]="isHome ? ('Practices.Labels_Navigation_Home' | translate) : undefined"
-        tabindex="0"
-    >
-        <ng-container *ngTemplateOutlet="homeIcon"></ng-container>
-        <ng-container *ngTemplateOutlet="content"></ng-container>
+      (click)="openSidenav()"
+      [class]="classNamesAnchor"
+      [ngClass]="active ? [classNamesActive] : []"
+      [ariaLabel]="isHome ? ('Practices.Labels_Navigation_Home' | translate) : undefined"
+      tabindex="0"
+      >
+      <ng-container *ngTemplateOutlet="homeIcon"></ng-container>
+      <ng-container *ngTemplateOutlet="content"></ng-container>
     </a>
+  }
+  @case ('routerLink') {
     <a
-        *ngSwitchCase="'routerLink'"
-        [routerLink]="routerLink || '/'"
-        [routerLinkActive]="classNamesActive"
+      [routerLink]="routerLink || '/'"
+      [routerLinkActive]="classNamesActive"
         [routerLinkActiveOptions]="{
             paths: 'exact',
             queryParams: 'ignored',
             fragment: 'ignored',
             matrixParams: 'ignored'
         }"
-        [class]="classNamesAnchor"
-        [ariaLabel]="isHome ? ('Practices.Labels_Navigation_Home' | translate) : undefined"
-        tabindex="0"
-    >
-        <ng-container *ngTemplateOutlet="homeIcon"></ng-container>
-        <ng-container *ngTemplateOutlet="content"></ng-container>
+      [class]="classNamesAnchor"
+      [ariaLabel]="isHome ? ('Practices.Labels_Navigation_Home' | translate) : undefined"
+      tabindex="0"
+      >
+      <ng-container *ngTemplateOutlet="homeIcon"></ng-container>
+      <ng-container *ngTemplateOutlet="content"></ng-container>
     </a>
-
+  }
+  @case ('anchor') {
     <a
-        *ngSwitchCase="'anchor'"
-        [attr.href]="href"
-        [attr.target]="target"
-        [ngClass]="active ? [classNamesActive] : []"
-        [attr.rel]="rel"
-        [class]="classNamesAnchor"
-        [ariaLabel]="isHome ? ('Practices.Labels_Navigation_Home' | translate) : undefined"
-        tabindex="0"
-    >
-        <puibe-icon-home *ngIf="isHome" [class]="classNamesHomeIcon"></puibe-icon-home>
-        <ng-container *ngTemplateOutlet="content"></ng-container>
+      [attr.href]="href"
+      [attr.target]="target"
+      [ngClass]="active ? [classNamesActive] : []"
+      [attr.rel]="rel"
+      [class]="classNamesAnchor"
+      [ariaLabel]="isHome ? ('Practices.Labels_Navigation_Home' | translate) : undefined"
+      tabindex="0"
+      >
+      @if (isHome) {
+        <puibe-icon-home [class]="classNamesHomeIcon"></puibe-icon-home>
+      }
+      <ng-container *ngTemplateOutlet="content"></ng-container>
     </a>
+  }
+  @case ('default') {
+    <span [class]="classNamesFallback" [ngClass]="active ? [classNamesActive] : []">
+      <ng-container *ngTemplateOutlet="homeIcon"></ng-container>
+      <ng-container *ngTemplateOutlet="content"></ng-container
+      ></span>
+    }
+  }
 
-    <span *ngSwitchCase="'default'" [class]="classNamesFallback" [ngClass]="active ? [classNamesActive] : []">
-        <ng-container *ngTemplateOutlet="homeIcon"></ng-container>
-        <ng-container *ngTemplateOutlet="content"></ng-container
-    ></span>
-</ng-container>
-
-<ng-template #content>
+  <ng-template #content>
     <ng-content></ng-content>
-</ng-template>
+  </ng-template>
 
-<ng-template #homeIcon>
-    <puibe-icon-home
-        *ngIf="isHome"
+  <ng-template #homeIcon>
+    @if (isHome) {
+      <puibe-icon-home
         [title]="'Practices.Labels_Navigation_Home' | translate"
         [attr.aria-label]="'Practices.Labels_Navigation_Home' | translate"
         [class]="classNamesHomeIcon"
-    ></puibe-icon-home>
-</ng-template>
+      ></puibe-icon-home>
+    }
+  </ng-template>
 
-<puibe-icon-arrow-breadcrumb direction="right" class="h-3 w-4 group-last-of-type:hidden"></puibe-icon-arrow-breadcrumb>
+  <puibe-icon-arrow-breadcrumb direction="right" class="h-3 w-4 group-last-of-type:hidden"></puibe-icon-arrow-breadcrumb>

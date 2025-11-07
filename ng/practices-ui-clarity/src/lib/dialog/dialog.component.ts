@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Inject, InjectionToken, Input, Optional, Output } from '@angular/core';
+import { Component, EventEmitter, InjectionToken, Input, Output, inject } from '@angular/core';
 import { isObservable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { DialogAction, DialogOptions } from '.';
-import { CommonModule } from '@angular/common';
+
 import { ClarityModule } from '@clr/angular';
 import { PortalModule } from '@angular/cdk/portal';
 import { TranslateModule } from '@ngx-translate/core';
@@ -12,7 +12,7 @@ export const DIALOG_OPTIONS = new InjectionToken<{}>('DialogOptions');
 
 @Component({
     selector: 'puiclr-dialog',
-    imports: [CommonModule, ClarityModule, PortalModule, TranslateModule],
+    imports: [ClarityModule, PortalModule, TranslateModule],
     templateUrl: './dialog.component.html',
     standalone: true,
 })
@@ -50,7 +50,9 @@ export class DialogComponent {
 
     private isOpened = true;
 
-    constructor(@Optional() @Inject(DIALOG_OPTIONS) options?: DialogOptions) {
+    constructor() {
+        const options = inject<DialogOptions>(DIALOG_OPTIONS, { optional: true });
+
         if (options) {
             this.title = options.title;
             this.message = options.message;

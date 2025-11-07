@@ -1,34 +1,29 @@
-import { AsyncPipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
-import { Component, Injector } from '@angular/core';
-import { NavigationStart, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { AsyncPipe } from '@angular/common';
+import { Component, Injector, inject } from '@angular/core';
+import { NavigationStart, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { TitleService } from '@nexplore/practices-ui';
 import {
-    PuibeFooterComponent,
-    PuibeFooterCopyrightDirective,
-    PuibeFooterDirective,
-    PuibeFooterLanguageMenuItemDirective,
-    PuibeFooterMenuItemDirective,
-    PuibeGlobalDirtyGuardDirective,
-    PuibeHeaderComponent,
-    PuibeHeaderDirective,
-    PuibeHeaderLanguageMenuItemDirective,
-    PuibeHeaderLogoComponent,
-    PuibeHeaderMainMenuItemDirective,
-    PuibeHeaderMobileMenuItemDirective,
-    PuibeHeaderServiceMenuItemDirective,
-    PuibeIconHamburgerComponent,
-    PuibeIconLoginComponent,
-    PuibeIconSearchComponent,
-    PuibeIconSearchMobileComponent,
-    PuibeShellComponent,
-    PuibeShellService,
-    PuibeSidenavFooterComponent,
-    PuibeSideNavigationComponent,
-    PuibeSideNavigationItemComponent,
-    PuibeSideNavigationPaneComponent,
-    PuibeSkipLinkComponent,
-    PuibeStatusHubComponent,
-    RouterUtilService,
+  PuibeFooterComponent,
+  PuibeFooterCopyrightDirective,
+  PuibeFooterDirective,
+  PuibeFooterLanguageMenuItemDirective,
+  PuibeFooterMenuItemDirective,
+  PuibeGlobalDirtyGuardDirective,
+  PuibeHeaderComponent,
+  PuibeHeaderDirective,
+  PuibeHeaderLanguageMenuItemDirective,
+  PuibeHeaderMainMenuItemDirective,
+  PuibeHeaderMobileMenuItemDirective,
+  PuibeHeaderServiceMenuItemDirective,
+  PuibeIconLoginComponent,
+  PuibeIconSearchComponent,
+  PuibeIconSearchMobileComponent,
+  PuibeShellComponent,
+  PuibeShellService,
+  PuibeSidenavFooterComponent,
+  PuibeSkipLinkComponent,
+  PuibeStatusHubComponent,
+  RouterUtilService
 } from '@nexplore/practices-ui-ktbe';
 import { TranslateService } from '@ngx-translate/core';
 import { debounceTime, map, startWith } from 'rxjs';
@@ -40,40 +35,35 @@ import { translations } from './translations';
     selector: 'app-root',
     templateUrl: './app.component.html',
     imports: [
-        RouterLink,
-        RouterLinkActive,
-        PuibeShellComponent,
-        PuibeHeaderDirective,
-        PuibeHeaderComponent,
-        PuibeHeaderLanguageMenuItemDirective,
-        PuibeHeaderServiceMenuItemDirective,
-        PuibeHeaderMainMenuItemDirective,
-        PuibeHeaderMobileMenuItemDirective,
-        PuibeHeaderLogoComponent,
-        PuibeIconSearchComponent,
-        PuibeIconHamburgerComponent,
-        PuibeIconSearchMobileComponent,
-        PuibeIconLoginComponent,
-        PuibeFooterDirective,
-        PuibeFooterComponent,
-        PuibeSidenavFooterComponent,
-        PuibeFooterCopyrightDirective,
-        PuibeFooterMenuItemDirective,
-        PuibeFooterLanguageMenuItemDirective,
-        PuibeSideNavigationComponent,
-        PuibeSideNavigationItemComponent,
-        PuibeSideNavigationPaneComponent,
-        PuibeSkipLinkComponent,
-        AsyncPipe,
-        NgFor,
-        NgIf,
-        RouterOutlet,
-        NgTemplateOutlet,
-        PuibeGlobalDirtyGuardDirective,
-        PuibeStatusHubComponent,
-    ],
+    RouterLink,
+    PuibeShellComponent,
+    PuibeHeaderDirective,
+    PuibeHeaderComponent,
+    PuibeHeaderLanguageMenuItemDirective,
+    PuibeHeaderServiceMenuItemDirective,
+    PuibeHeaderMainMenuItemDirective,
+    PuibeHeaderMobileMenuItemDirective,
+    PuibeIconSearchComponent,
+    PuibeIconSearchMobileComponent,
+    PuibeIconLoginComponent,
+    PuibeFooterDirective,
+    PuibeFooterComponent,
+    PuibeSidenavFooterComponent,
+    PuibeFooterCopyrightDirective,
+    PuibeFooterMenuItemDirective,
+    PuibeFooterLanguageMenuItemDirective,
+    PuibeSkipLinkComponent,
+    AsyncPipe,
+    RouterOutlet,
+    PuibeGlobalDirtyGuardDirective,
+    PuibeStatusHubComponent
+],
 })
 export class AppComponent {
+    private _translateService = inject(TranslateService);
+    private _titleService = inject(TitleService);
+    private _shellService = inject(PuibeShellService);
+
     private readonly languageKeys = { de: 'de-ch', fr: 'fr-ch', en: 'en-us' };
     readonly availableLanguages = ['de', 'fr', 'en'];
 
@@ -89,14 +79,11 @@ export class AppComponent {
 
     overrideStatusHub = false;
 
-    constructor(
-        private _translateService: TranslateService,
-        private _titleService: TitleService,
-        private _shellService: PuibeShellService,
-        router: Router,
-        routerUtil: RouterUtilService,
-        injector: Injector
-    ) {
+    constructor() {
+        const router = inject(Router);
+        const routerUtil = inject(RouterUtilService);
+        const injector = inject(Injector);
+
         this._translateService.use(this.languageKeys.en).subscribe();
         this._translateService.setDefaultLang(this.languageKeys.en);
         this._translateService.setTranslation(this.languageKeys.en, translations);

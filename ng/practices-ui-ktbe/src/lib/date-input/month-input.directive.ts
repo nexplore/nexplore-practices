@@ -1,4 +1,4 @@
-import { Directive, Input, Self } from '@angular/core';
+import { Directive, Input, inject } from '@angular/core';
 import { endOfDay } from 'date-fns/endOfDay';
 import { lastDayOfMonth } from 'date-fns/lastDayOfMonth';
 
@@ -15,7 +15,9 @@ export class PuibeMonthInputDirective {
     @Input()
     endOfMonth = false;
 
-    constructor(@Self() picker: PuibeCalendarPickerInputDirective) {
+    constructor() {
+        const picker = inject(PuibeCalendarPickerInputDirective, { self: true });
+
         picker.configure({
             type: 'month',
             calendarAllowedViewModes: ['month', 'year'],

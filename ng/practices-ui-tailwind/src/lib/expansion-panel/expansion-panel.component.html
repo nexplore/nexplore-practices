@@ -1,0 +1,76 @@
+<cdk-accordion class="block">
+  <cdk-accordion-item
+    #accordionItem="cdkAccordionItem"
+    class="block"
+    [ngClass]="{ 'border-gray border rounded-surface-md': isWhite }"
+    >
+    <div role="heading" [attr.aria-level]="headingLevel" class="font-light">
+      <button
+        class="group rounded-t-surface-md flex w-full content-center items-center justify-between text-left"
+        type="button"
+        [attr.aria-expanded]="isExpanded"
+        [attr.aria-controls]="'accordion-body-' + id"
+        tabindex="0"
+                [ngClass]="{
+                    'p-6': !compact,
+                    'p-3': compact,
+                    'bg-dark-highlight aria-expanded:bg-highlight hover:bg-surface-hover focus:bg-surface-hover aria-expanded:hover:bg-surface-hover aria-expanded:focus:bg-surface-hover':
+                        isHighlight,
+                    'bg-light-secondary aria-expanded:bg-light-secondary hover:bg-surface-hover focus:bg-surface-hover aria-expanded:hover:bg-surface-hover aria-expanded:focus:bg-surface-hover':
+                        isLightHighlight,
+                    'hover:bg-very-light-gray focus:bg-very-light-gray aria-expanded:hover:bg-very-light-gray aria-expanded:focus:bg-very-light-gray bg-white aria-expanded:bg-white':
+                        isWhite,
+                    'hover:bg-brand-hover focus:bg-brand-hover aria-expanded:hover:bg-brand-hover aria-expanded:focus:bg-brand-hover bg-brand text-white':
+                        isRed,
+                    'bg-brand text-white hover:bg-brand-hover focus:bg-brand-hover aria-expanded:hover:bg-brand-hover aria-expanded:focus:bg-brand-hover':
+                        isBrand,
+                    'rounded-b-surface-md': !isExpanded,
+                }"
+        (click)="toggle(accordionItem)"
+        >
+        <span class="sr-only">{{ 'Practices.Labels_ExpansionPanel' | translate }}</span>
+        <div class="mr-6 flex flex-col items-start">
+          <div class="flex items-center gap-4">
+            @if (heading) {
+              <p [ngClass]="compact ? 'text-base' : 'text-h4'">{{ heading }}</p>
+            }
+            <ng-content select="[slot='heading-after']"></ng-content>
+          </div>
+          @if (caption) {
+            <p class="mt-1">{{ caption }}</p>
+          }
+        </div>
+        <div class="flex items-center gap-4">
+          <ng-content select="[slot='arrow-before']"></ng-content>
+          <pui-icon-arrow
+            direction="down"
+            [ngClass]="compact ? 'h-3 w-4' : 'h-4 w-6'"
+            class="rotate-0 transition-all duration-[250ms] ease-in-out group-hover:-rotate-90 group-aria-expanded:-rotate-180 group-aria-expanded:group-hover:-rotate-90"
+          ></pui-icon-arrow>
+        </div>
+      </button>
+    </div>
+    <div
+      #content
+      class="rounded-b-surface-md"
+            [ngClass]="{
+                'bg-highlight': isHighlight,
+                'bg-light-secondary': isLightHighlight,
+                'bg-white': isWhite,
+                'bg-red text-white': isRed,
+                'bg-brand text-white': isBrand,
+                'p-6': addItemPadding && !compact && !isInitiallyCollapsed,
+                'p-3': addItemPadding && compact,
+                'h-0 overflow-y-hidden p-0': isInitiallyCollapsed,
+                'overflow-x-auto': enableContentScroll,
+            }"
+      role="region"
+      [attr.id]="'accordion-body-' + id"
+      [attr.aria-hidden]="!isExpanded"
+      [@bodyExpansion]="_getExpandedState()"
+      >
+      <ng-content></ng-content>
+    </div>
+  </cdk-accordion-item>
+</cdk-accordion>
+

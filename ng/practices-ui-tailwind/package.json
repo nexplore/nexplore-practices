@@ -1,0 +1,45 @@
+{
+    "name": "@nexplore/practices-ui-tailwind",
+    "version": "0.0.0-VERSION",
+    "schematics": "./schematics/collection.json",
+    "scripts": {
+        "prepack:snapshot": "node ./schematics/tools/copy-snapshot.cjs",
+        "gen:manifest": "ts-node --project schematics/tsconfig.manifest.json schematics/tools/generate-manifest.ts",
+        "build:schematics": "npm run prepack:snapshot && npm run gen:manifest && tsc -p tsconfig.schematics.json",
+        "postbuild:schematics": "node ./schematics/tools/postbuild-generate-features-list.cjs && echo Schematics build complete",
+        "postbuild": "npm run build:schematics"
+    },
+    "peerDependencies": {
+        "@angular/animations": ">=20.0.0 <21.0.0",
+        "@angular/cdk": ">=20.0.0 <21.0.0",
+        "@angular/common": ">=20.0.0 <21.0.0",
+        "@angular/core": ">=20.0.0 <21.0.0",
+        "@angular/forms": ">=20.0.0 <21.0.0",
+        "@angular/router": ">=20.0.0 <21.0.0",
+        "@angular-devkit/core": ">=20 <21",
+        "@angular-devkit/schematics": "20.3.1",
+        "@nexplore/practices-ng-commands": "0.0.0-VERSION",
+        "@nexplore/practices-ng-dirty-guard": "0.0.0-VERSION",
+        "@nexplore/practices-ng-forms": "0.0.0-VERSION",
+        "@nexplore/practices-ng-list-view-source": "0.0.0-VERSION",
+        "@nexplore/practices-ng-logging": "0.0.0-VERSION",
+        "@nexplore/practices-ng-status": "0.0.0-VERSION",
+        "@nexplore/practices-ui": "0.0.0-VERSION",
+        "@ng-select/ng-select": ">=13.0.0 <20.2.0",
+        "@ngx-translate/core": ">=15.0.0 <18.0.0",
+        "date-fns": ">=4.0.0 <5.0.0",
+        "rxjs": ">=7.0.0 <8.0.0",
+        "tailwindcss": ">=4 <5"
+    },
+    "dependencies": {
+        "minimatch": "^9.0.3",
+        "ts-morph": "^27.0.0",
+        "typescript": "5.9.2",
+        "fast-glob": "^3.3.3",
+        "prettier": "^3.6.2"
+    },
+    "imports": {
+        "#base-styles": "./src/styles.css"
+    }
+}
+

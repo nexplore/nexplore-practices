@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import {
     FilterableListViewSource,
     IFilterableListViewSource,
@@ -22,13 +22,15 @@ interface ISampleFilter {
     templateUrl: './filterable-list-view-source.component.html',
 })
 export class FilterableListViewSourceComponent implements OnDestroy {
+    private statusService = inject(StatusService);
+
     lastRequestedApiUrl: string;
     listViewSource: IFilterableListViewSource<string, ISampleFilter>;
     filter: ISampleFilter = { param1: undefined, param2: undefined, param3: false };
 
     private destroy$ = new Subject<void>();
 
-    constructor(private statusService: StatusService) {
+    constructor() {
         this.listViewSource = this.statusService.registerFilterableListViewSource(
             new FilterableListViewSource(
                 (params: IQueryParamsWithFilter<ISampleFilter>) => {

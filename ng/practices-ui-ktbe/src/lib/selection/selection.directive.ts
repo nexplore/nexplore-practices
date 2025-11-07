@@ -1,4 +1,4 @@
-import { Directive, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Directive, EventEmitter, Input, OnDestroy, Output, inject } from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
 import { BehaviorSubject, distinctUntilChanged, map, skip, takeUntil } from 'rxjs';
 import { PuibeSelectionMode } from './types';
@@ -110,6 +110,9 @@ export class PuibeSelectionDirective implements OnDestroy {
     providers: [DestroyService],
 })
 export class PuibeSelectableDirective {
+    private _selection = inject(PuibeSelectionDirective);
+    private _destroy$ = inject(DestroyService);
+
     private _selectableSubject = new BehaviorSubject<boolean | any>(false);
     @Input()
     set puibeSelectable(val: boolean | any) {
@@ -142,7 +145,7 @@ export class PuibeSelectableDirective {
         return this._selection.selectionMode;
     }
 
-    constructor(private _selection: PuibeSelectionDirective, private _destroy$: DestroyService) {
+    constructor() {
         this._selection.selectAll.pipe(takeUntil(this._destroy$)).subscribe((selectAll) => {
             this.toggle(selectAll);
         });

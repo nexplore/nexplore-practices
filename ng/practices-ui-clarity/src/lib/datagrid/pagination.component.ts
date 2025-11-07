@@ -1,4 +1,4 @@
-import { Directive, Optional } from '@angular/core';
+import { Directive, inject } from '@angular/core';
 import { ClrDatagridPagination } from '@clr/angular';
 
 import { DatagridListViewSourceDirective } from './datagrid-list-view-source.component';
@@ -8,10 +8,10 @@ import { DatagridListViewSourceDirective } from './datagrid-list-view-source.com
     standalone: true,
 })
 export class PaginationDirective {
-    constructor(
-        private pagination: ClrDatagridPagination,
-        @Optional() private datagridListViewSourceDirective: DatagridListViewSourceDirective
-    ) {
+    private pagination = inject(ClrDatagridPagination);
+    private datagridListViewSourceDirective = inject(DatagridListViewSourceDirective, { optional: true });
+
+    constructor() {
         if (this.datagridListViewSourceDirective === null) {
             throw new Error('The puiclrListViewSource directive is missing on the parent ClrDatagrid');
         }

@@ -1,4 +1,4 @@
-import { Injectable, Injector, OnDestroy, Optional, runInInjectionContext, SkipSelf } from '@angular/core';
+import { Injectable, Injector, OnDestroy, runInInjectionContext, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, GuardsCheckStart, Route, Router } from '@angular/router';
 import { firstValueFromMaybeAsync } from '@nexplore/practices-ng-common-util';
@@ -16,6 +16,11 @@ import { DirtyGuardComponentState, DirtyGuardSupportedComponent } from './types-
     providedIn: null,
 })
 export class PuiDirtyGuardService implements OnDestroy {
+    private _router = inject(Router);
+    private globalRouteGuardService = inject(PuiGlobalRouteGuardService);
+    private injector = inject(Injector);
+    private parent = inject(PuiDirtyGuardService, { skipSelf: true, optional: true });
+
     private _activeComponentInstanceStates = new Array<DirtyGuardComponentState>();
     private _disabled = false;
 
@@ -33,12 +38,7 @@ export class PuiDirtyGuardService implements OnDestroy {
         }
     }
 
-    constructor(
-        private _router: Router,
-        private globalRouteGuardService: PuiGlobalRouteGuardService,
-        private injector: Injector,
-        @SkipSelf() @Optional() private parent: PuiDirtyGuardService
-    ) {
+    constructor() {
         this._ensureGlobalGuards();
 
         this.globalRouteGuardService.requestUnsavedChangesDialog$.pipe(takeUntilDestroyed()).subscribe((handler) => {

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Directive, Input, OnDestroy, OnInit, Optional, Self } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Directive, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { DestroyService, StatusProgressOptions, StatusService } from '@nexplore/practices-ui';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { BehaviorSubject, combineLatest, filter, map, startWith, Subject, switchMap, takeUntil } from 'rxjs';
@@ -12,6 +12,13 @@ import { PuibeSelectDirective } from './select.directive';
     providers: [DestroyService],
 })
 export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterViewInit {
+    private _ngSelectComponent = inject(NgSelectComponent, { self: true });
+    private _selectDirective = inject(PuibeSelectDirective, { self: true, optional: true });
+    private _formFieldService = inject(FormFieldService);
+    private _changeDetectorRef = inject(ChangeDetectorRef);
+    private _destroy$ = inject(DestroyService);
+    private _statusService = inject(StatusService);
+
     private _selectViewSourceSubject = new BehaviorSubject<SelectViewSource<any>>(null);
     private _selectViewSource$ = this._selectViewSourceSubject.pipe(filter((s) => s != null));
     private _busy$ = this._selectViewSource$.pipe(switchMap((viewSource) => viewSource.busy$));
@@ -57,14 +64,7 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
         }
     }
 
-    constructor(
-        @Self() private _ngSelectComponent: NgSelectComponent,
-        @Self() @Optional() private _selectDirective: PuibeSelectDirective,
-        private _formFieldService: FormFieldService,
-        private _changeDetectorRef: ChangeDetectorRef,
-        private _destroy$: DestroyService,
-        private _statusService: StatusService
-    ) {
+    constructor() {
         this._ngSelectComponent.items = []; // force ng-select to use items instead of ngOptions
     }
 

@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.lib.json",
+  "compilerOptions": {
+    "outDir": "../dist/practices-ui-tailwind/schematics",
+    "rootDir": "./schematics",
+    "types": ["node"],
+    "declaration": true,
+    "composite": false,
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "target": "ES2022",
+    "strict": false
+  },
+  "include": ["schematics/**/*.ts", "schematics/tools/**/*.ts"],
+  "exclude": [
+    "**/*.spec.ts",
+    "schematics/add-component/files/**",
+    "schematics/tools/generate-manifest.ts"
+  ]
+}

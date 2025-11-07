@@ -1,32 +1,36 @@
 <div class="flex justify-between" part="title-bar">
-    <ng-content select="[puibeModalTitle], puibe-modal-title"></ng-content>
-    <button *ngIf="!hideCloseButton" class="hover:animate-pop focus:animate-pop mr-6 mt-6 w-4">
-        <puibe-icon-close
-            [colorClass]="'fill-black'"
-            (click)="closeModal()"
-            [attr.aria-label]="'Practices.Labels_Modal_Close' | translate"
-        ></puibe-icon-close>
+  <ng-content select="[puibeModalTitle], puibe-modal-title"></ng-content>
+  @if (!hideCloseButton) {
+    <button class="hover:animate-pop focus:animate-pop mr-6 mt-6 w-4">
+      <puibe-icon-close
+        [colorClass]="'fill-black'"
+        (click)="closeModal()"
+        [attr.aria-label]="'Practices.Labels_Modal_Close' | translate"
+      ></puibe-icon-close>
     </button>
+  }
 </div>
 <ng-content select="[puibeModalSubtitle], puibe-modal-subtitle"></ng-content>
 <hr class="text-gray my-6" />
 <ng-content select="[puibeModalContent]"></ng-content>
-<hr *ngIf="!hideDoubleDividerLine" class="text-gray mt-6" />
+@if (!hideDoubleDividerLine) {
+  <hr class="text-gray mt-6" />
+}
 
 <div
-    class="m-6 flex flex-col items-stretch justify-end gap-4 sm:flex-row sm:items-center"
+  class="m-6 flex flex-col items-stretch justify-end gap-4 sm:flex-row sm:items-center"
     [ngClass]="{
         'sm:justify-start': buttonsAlignment === 'start',
         'sm:justify-end': buttonsAlignment === 'end'
     }"
->
-    <ng-content select="[puibeModalFooterAction]"></ng-content>
-    <div
+  >
+  <ng-content select="[puibeModalFooterAction]"></ng-content>
+  <div
         [ngClass]="{
         '-order-1 mr-auto': buttonsAlignment === 'end',
         'ml-auto': buttonsAlignment === 'start',
     }"
     >
-        <ng-content select="[puibeModalFooterStatus]"></ng-content>
-    </div>
+    <ng-content select="[puibeModalFooterStatus]"></ng-content>
+  </div>
 </div>

@@ -1,4 +1,4 @@
-import { Directive, HostListener, Input } from '@angular/core';
+import { Directive, HostListener, Input, inject } from '@angular/core';
 
 import { PuibeModalService } from './modal.service';
 
@@ -7,6 +7,8 @@ import { PuibeModalService } from './modal.service';
     selector: 'button[puibeModalFooterAction], a[puibeModalFooterAction]',
 })
 export class PuibeModalFooterActionDirective {
+    private readonly _puibeModalService = inject(PuibeModalService);
+
     @HostListener('click')
     onClick() {
         if (this.shouldClose) {
@@ -16,6 +18,4 @@ export class PuibeModalFooterActionDirective {
 
     @Input()
     shouldClose = true;
-
-    constructor(private readonly _puibeModalService: PuibeModalService) {}
 }
