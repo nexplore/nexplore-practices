@@ -140,10 +140,20 @@ export function extendWithPersistedParams<TTableViewSource extends TableViewSour
                 const latestPersistedParams: IQueryParams | null = await firstValueFromMaybeAsync(
                     config.persistParams.load()
                 );
-                trace('tableViewSourceWithPersistedParams', 'loaded initial query params', latestPersistedParams);
+                trace(
+                    'ListViewSource',
+                    'tableViewSourceWithPersistedParams',
+                    'loading initial query params',
+                    latestPersistedParams,
+                    this
+                );
                 if (latestPersistedParams) {
                     await firstValueFrom(timer(0)); // First timer is needed so that the ui notices the change
                     this.update(latestPersistedParams);
+                    trace('ListViewSource', 'tableViewSourceWithPersistedParams', 'apply loaded query params', {
+                        latestPersistedParams,
+                        current: this.getQueryParams(),
+                    });
                     await firstValueFrom(timer(0)); // Second timer is needed so the queryParams$ subscription below doesn't get triggered unnecessarily.
                 }
 
@@ -156,7 +166,7 @@ export function extendWithPersistedParams<TTableViewSource extends TableViewSour
                         debounceTime(100),
                         switchMap((queryParams) => {
                             if (!isObjDeepEqual(queryParams, latestPersistedParams, { maximumDepth: 3 })) {
-                                trace('tableViewSourceWithPersistedParams', 'persist query params', {
+                                trace('ListViewSource', 'tableViewSourceWithPersistedParams', 'persist query params', {
                                     queryParams,
                                     latestPersistedParams,
                                 });
@@ -174,4 +184,3 @@ export function extendWithPersistedParams<TTableViewSource extends TableViewSour
 
     return this;
 }
-

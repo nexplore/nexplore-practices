@@ -153,6 +153,23 @@ export class TableViewSource<TData, TFilter = TData>
         return updatedField;
     }
 
+    override update(params: Partial<IQueryParamsWithFilter<TFilter>>): void {
+        super.update(params);
+
+        // If orderings were updated, we need to patch the columns accordingly
+        if (params.orderings) {
+            params.orderings.forEach((ordering) => {
+                const fieldNameNormalized = firstCharToLower(ordering.field);
+                const existingColumn =
+                    this.columnsArray.find((c) => c.orderingFieldName === ordering.field) ?? // Try to find the field by the orderingFieldName
+                    this.columnsArray.find((c) => firstCharToLower(c.fieldName as string) === fieldNameNormalized); // Fallback is to find the field by the fieldName
+                if (existingColumn != null) {
+                    this.patchColumn(existingColumn, { sortDir: ordering.direction });
+                }
+            });
+        }
+    }
+
     private patchSortableColumnWithDefaultOrdering(defaults: Partial<IQueryParamsWithFilter<TFilter>>) {
         if (defaults && defaults.orderings && defaults.orderings.length === 1) {
             const ordering = defaults.orderings[0];
