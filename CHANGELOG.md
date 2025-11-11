@@ -8,17 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [UNRELEASED]
 
 ### Added
+
 - [Practices.Ui] Added `provideWrappedFormControlAccessors` ability to override `setDisabledState`.
 - [Practices.Ui] Added support for filtering status events via a configurable `filter` property in `StatusHubConfig` (ignored by default: AbortError DOMExceptions).
 
 ### Changed
 
 ### Fixed
+
 - [Practices.Ui.*] Fixed `command.fromInput` to properly handle legacy commands when `mapArguments` is configured.
 - [Practices.Ui.Ktbe] Fixed `PuibeCheckboxComponent` touched initial value not emitting.
 - [Practices.Ui.Ktbe] Fixed `PuibeReadonlyLabelValueComponent` styling, to break long words when they are overflowing.
 - [Practices.Ui.*] Fixed `Command.cancel()` to abort even when the handler was returning a promise instead of an observable.
 - [Practices.Ui.*] Fixed `command.query.withSignalTrigger()` typing to reflect null/undefined args behavior.
+- [Practices.Ui.*] Fixed table view source column `sortDir` not synchronizing with persisted ordering parameters.
 
 ## [11.0.0](https://github.com/nexplore/nexplore-practices/releases/tag/11.0.0) - 2025-11-06
 
