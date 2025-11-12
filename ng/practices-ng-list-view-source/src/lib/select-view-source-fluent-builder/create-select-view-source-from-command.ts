@@ -47,7 +47,7 @@ export function createSelectViewSourceFromCommand<
     TFilter extends Pick<TData, TLabelKey> = Pick<TData, TLabelKey>
 >(
     command: ValueOrGetter<AbstractCommand<TArgs, TData[] | null | undefined>>,
-    config: AdditionalConfig & Omit<TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams>, 'loadFn'>
+    config: AdditionalConfig & Omit<TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams>, 'loadFn'> = {}
 ): SelectViewSourceWithSignals<TData, TFilter> {
     const isBeingTriggerredByListViewSourceSignal = signal(false);
     const selectViewSource = createSelectViewSourceInternal<TData, TLabelKey, TQueryParams, TFilter>({

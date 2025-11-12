@@ -86,9 +86,13 @@ export class PuibeCheckboxComponent implements ControlValueAccessor, AfterViewIn
     readonly isRequired$ = this._formFieldService.isRequired$;
 
     readonly touched$ = this._ngControl$.pipe(
-        switchMap((ngControl) => ngControl.control.events),
-        filter((event) => event instanceof TouchedChangeEvent),
-        map((event) => event.touched)
+        switchMap((ngControl) =>
+            ngControl.control.events.pipe(
+                filter((event) => event instanceof TouchedChangeEvent),
+                map((event) => event.touched),
+                startWith(ngControl.touched)
+            )
+        )
     );
 
     readonly isReadonly$ = this._readonlyDirective?.isReadonly$ ?? of(false);

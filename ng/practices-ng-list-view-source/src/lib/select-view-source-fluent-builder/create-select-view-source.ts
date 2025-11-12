@@ -10,15 +10,21 @@ export function createSelectViewSource<
     TData,
     TLabelKey extends StringKeyOf<TData> = StringKeyOf<TData>,
     TQueryParams = TData,
-    TFilter extends Pick<TData, TLabelKey> = Pick<TData, TLabelKey>
->(config: TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams>): SelectViewSourceWithSignals<TData, TFilter> {
-    return createSelectViewSourceInternal<TData, TLabelKey, TQueryParams>(config) as any;
+    TFilter extends Pick<TData, TLabelKey> = Pick<TData, TLabelKey>,
+    TOrdering = Pick<TData, TLabelKey>
+>(
+    config: TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams, TOrdering>
+): SelectViewSourceWithSignals<TData, TFilter> {
+    return createSelectViewSourceInternal<TData, TLabelKey, TQueryParams, TFilter, TOrdering>(config) as any;
 }
 
 export function createTypedFactory<TData>() {
-    return <TLabelKey extends StringKeyOf<TData> = StringKeyOf<TData>,
+    return <
+        TLabelKey extends StringKeyOf<TData> = StringKeyOf<TData>,
         TQueryParams = TData,
-        TFilter extends Pick<TData, TLabelKey> = Pick<TData, TLabelKey>
-    >(config: TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams>): SelectViewSourceWithSignals<TData, TFilter> =>
-        createSelectViewSource(config)
+        TFilter extends Pick<TData, TLabelKey> = Pick<TData, TLabelKey>,
+        TOrdering = Pick<TData, TLabelKey>
+    >(
+        config: TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams, TOrdering>
+    ): SelectViewSourceWithSignals<TData, TFilter> => createSelectViewSource(config);
 }
