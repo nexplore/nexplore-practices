@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Practices.Ui.Ktbe] Fixed `PuibeReadonlyLabelValueComponent` styling, to break long words when they are overflowing.
 - [Practices.Ui.*] Fixed `Command.cancel()` to abort even when the handler was returning a promise instead of an observable.
 - [Practices.Ui.*] Fixed `command.query.withSignalTrigger()` typing to reflect null/undefined args behavior.
-- [Practices.Ui.*] Fixed table view source column `sortDir` not synchronizing with persisted ordering parameters.
+- [Practices.Ui.*] Fixed table view source column `sortDir` not synchronizing with persisted ordering parameters, plus improved typing of fluent api.
 
 ## [11.0.0](https://github.com/nexplore/nexplore-practices/releases/tag/11.0.0) - 2025-11-06
 

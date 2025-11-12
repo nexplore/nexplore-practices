@@ -8,7 +8,8 @@ import { HasTypedQueryParams } from '../types-internal';
 export type TypedSelectViewSourceConfig<
     TData,
     TLabelKey extends NoInfer<StringKeyOf<TData>>,
-    TQueryParams = TData
+    TQueryParams = TData,
+    TOrdering = Pick<TData, TLabelKey>
 > = SelectViewSourceConfig<TData> & {
     /** Type is used solely for type inference. Unfortunately, typescript cannot properly infer the type without it */
     type?: Type<TData>;
@@ -22,6 +23,6 @@ export type TypedSelectViewSourceConfig<
     queryParamsType?: Type<TQueryParams>;
 
     loadFn: (params: IQueryParamsWithFilter<Pick<TData, TLabelKey>>) => MaybeAsync<Partial<IListResult<TData>>>;
-} & HasTypedQueryParams<TQueryParams, Pick<TData, TLabelKey>>;
+} & HasTypedQueryParams<TQueryParams, TOrdering>;
 
 export type SelectViewSourceWithSignals<TData, TFilter> = EnhancedListViewSource<SelectViewSource<TData, TFilter>>;
