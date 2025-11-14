@@ -37,7 +37,7 @@ type TypedTableViewSourceConfigCore<TData, TResult extends Partial<IListResult<T
     /**
      * The column configuration for the table.
      */
-    columns: NoInfer<Array<keyof TData> | Array<TableColumnItem<TData>> | TableColumnDefinitions<Partial<TData>>>;
+    columns?: NoInfer<Array<keyof TData> | Array<TableColumnItem<TData>> | TableColumnDefinitions<Partial<TData>>>;
 
     /**
      * The function to load the data.

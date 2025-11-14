@@ -334,6 +334,102 @@ describe('tableViewSource', () => {
             expect(source).toBeDefined();
         });
     });
+
+    describe('optional columns', () => {
+        it('should accept config without columns property', () => {
+            TestBed.runInInjectionContext(() => {
+                const vs = tableViewSource.withConfig({
+                    loadFn: (_params) =>
+                        of({
+                            data: [
+                                { name: 'John', department: 'IT', salary: 50000, id: 1 },
+                                { name: 'Jane', department: 'HR', salary: 45000, id: 2 },
+                            ],
+                            total: 2,
+                        }),
+                    orderBy: 'name',
+                });
+
+                expect(vs).toBeDefined();
+            });
+        });
+
+        it('should fallback to empty array when columns not provided', () => {
+            TestBed.runInInjectionContext(() => {
+                const vs = tableViewSource.withConfig({
+                    loadFn: (_params) =>
+                        of({
+                            data: [
+                                { name: 'John', department: 'IT', salary: 50000, id: 1 },
+                                { name: 'Jane', department: 'HR', salary: 45000, id: 2 },
+                            ],
+                            total: 2,
+                        }),
+                    orderBy: 'name',
+                });
+
+                expect(vs.columnsArray).toEqual([]);
+            });
+        });
+
+        it('should not break when filtering with no columns', () => {
+            TestBed.runInInjectionContext(() => {
+                const vs = tableViewSource.withConfig({
+                    loadFn: (_params) =>
+                        of({
+                            data: [
+                                { name: 'John', department: 'IT', salary: 50000, id: 1 },
+                                { name: 'Jane', department: 'HR', salary: 45000, id: 2 },
+                            ],
+                            total: 2,
+                        }),
+                    orderBy: 'name',
+                });
+
+                expect(() => {
+                    vs.filter({ name: 'John' });
+                }).not.toThrow();
+            });
+        });
+
+        it('should not break when sorting with no columns', () => {
+            TestBed.runInInjectionContext(() => {
+                const vs = tableViewSource.withConfig({
+                    loadFn: (_params) =>
+                        of({
+                            data: [
+                                { name: 'John', department: 'IT', salary: 50000, id: 1 },
+                                { name: 'Jane', department: 'HR', salary: 45000, id: 2 },
+                            ],
+                            total: 2,
+                        }),
+                    orderBy: 'name',
+                });
+
+                expect(() => {
+                    vs.update({ orderings: [{ field: 'name', direction: 0 }] });
+                }).not.toThrow();
+            });
+        });
+
+        it('should work with fromData when columns not provided', () => {
+            TestBed.runInInjectionContext(() => {
+                const testData = [
+                    { name: 'John', department: 'IT', salary: 50000, id: 1 },
+                    { name: 'Jane', department: 'HR', salary: 45000, id: 2 },
+                ];
+
+                const vs = tableViewSource
+                    .fromData((_params) => of({ data: testData, total: testData.length }))
+                    .withConfig({
+                        orderBy: 'name',
+                    });
+
+                expect(vs).toBeDefined();
+                expect(vs.columnsArray).toEqual([]);
+            });
+        });
+    });
 });
 
 describe('selectViewSource', () => {
