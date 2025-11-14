@@ -110,14 +110,14 @@ export class TableViewSource<TData, TFilter = TData>
 
     constructor(
         config: Omit<TableViewSourceConfig<TData>, 'columns'> & {
-            columns: Array<keyof TData> | Array<TableColumnItem<TData>> | TableColumnDefinitions<Partial<TData>>;
+            columns?: Array<keyof TData> | Array<TableColumnItem<TData>> | TableColumnDefinitions<Partial<TData>>;
         },
         loadFn: (params: IQueryParamsWithFilter<TFilter>) => Observable<IListResult<TData>>,
         public readonly defaults: Partial<IQueryParamsWithFilter<TFilter>> = {}
     ) {
         super(loadFn, { filter: {} as TFilter, ...defaults });
         Object.assign(this, config);
-        this.columns = config.columns;
+        this.columns = config.columns ?? [];
         this.patchSortableColumnWithDefaultOrdering(defaults);
     }
 
@@ -208,3 +208,4 @@ export class TableViewSource<TData, TFilter = TData>
         return { field, direction: columnDefinition.sortDir! };
     };
 }
+

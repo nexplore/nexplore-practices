@@ -76,7 +76,7 @@ export type TypedTableViewSourceConfigWithoutLoadFn<
     /**
      * The column configuration for the table.
      */
-    columns: NoInfer<Array<keyof TData> | Array<TableColumnItem<TData>> | TableColumnDefinitions<Partial<TData>>>;
+    columns?: NoInfer<Array<keyof TData> | Array<TableColumnItem<TData>> | TableColumnDefinitions<Partial<TData>>>;
 } & HasTypedQueryParams<TFilter, TOrdering>;
 
 export type TableViewSourceWithSignals<TData, TFilter> = EnhancedListViewSource<TableViewSource<TData, TFilter>>;
