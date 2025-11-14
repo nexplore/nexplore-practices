@@ -1,4 +1,4 @@
-import { signal } from '@angular/core';
+import { effect, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
@@ -199,16 +199,18 @@ describe('createTableViewSourceFromData', () => {
                     orderBy: 'name',
                 });
 
+                effect(() => {
+                    results.push(vs.pageDataSignal().length);
+                });
+
                 jest.runAllTimers();
                 TestBed.flushEffects();
-                results.push(vs.pageDataSignal().length); // Capture initial state
 
                 dataSignal.set({ data: updatedData, total: 2 });
                 jest.runAllTimers();
                 TestBed.flushEffects();
-                results.push(vs.pageDataSignal().length); // Capture updated state
 
-                expect(results).toEqual([1, 2]);
+                expect(results).toEqual([0, 1, 2]);
             });
         });
 
@@ -224,16 +226,17 @@ describe('createTableViewSourceFromData', () => {
                     orderBy: 'name',
                 });
 
+                effect(() => {
+                    results.push(vs.pageDataSignal().length);
+                });
+
                 jest.runAllTimers();
                 TestBed.flushEffects();
-                results.push(vs.pageDataSignal().length); // Capture initial state
 
                 dataSignal.set(updatedData);
                 jest.runAllTimers();
                 TestBed.flushEffects();
-                results.push(vs.pageDataSignal().length); // Capture updated state
-
-                expect(results).toEqual([1, 2]);
+                expect(results).toEqual([0, 1, 2]);
             });
         });
 
