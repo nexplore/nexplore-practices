@@ -66,3 +66,4 @@ export function createSelectViewSourceFromCommand<
 
     return selectViewSource;
 }
+

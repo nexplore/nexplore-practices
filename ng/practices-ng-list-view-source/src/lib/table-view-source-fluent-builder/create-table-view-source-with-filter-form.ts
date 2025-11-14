@@ -1,27 +1,27 @@
-import { effect, Signal } from '@angular/core';
+import { effect, isSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup } from '@angular/forms';
-import { isObjDeepEqual, isObjShallowEqual, unwrapSignalLike } from '@nexplore/practices-ng-common-util';
-import { formGroupCurrentValueSignal, TypedPartialFormGroup } from '@nexplore/practices-ng-forms';
+import { AbstractControl, FormGroup, UntypedFormGroup } from '@angular/forms';
+import { isObjDeepEqual, isObjShallowEqual, unwrapSignalLike, ValueOrSignal } from '@nexplore/practices-ng-common-util';
+import { formGroupCurrentValueSignal, TypedFormGroup } from '@nexplore/practices-ng-forms';
 import { trace } from '@nexplore/practices-ng-logging';
 import { debounceTime } from 'rxjs/operators';
 import { TableViewSource } from '../implementation/table-view-source';
 import { IListResult } from '../types';
 import { HasTypedQueryParams } from '../types-internal';
 import { getDefaultQueryParams } from '../utils/internal-util';
+import { createExtendableTableViewSource, Extensions, ExtractFilterTypeFrom } from './extensions';
 import {
-    createExtendableTableViewSource,
-    Extensions,
-    ExtractFilterTypeFrom,
-    ExtractResultTypeFrom,
-} from './extensions';
-import { TableViewSourceWithSignals, TypedTableViewSourceConfig, TypedTableViewSourceFilter } from './types';
+    TableViewSourceWithSignals,
+    TypedTableViewSourceConfig,
+    TypedTableViewSourceConfigPartial,
+    TypedTableViewSourceFilter,
+} from './types';
 
 type AdditionalConfig<TForm extends FormGroup> = {
     /**
      * The filter form, whose value changes will update the filter params of the TableViewSource.
      */
-    filterForm?: TForm | Signal<TForm>;
+    filterForm: ValueOrSignal<TForm>;
 };
 
 /**
@@ -70,32 +70,48 @@ export function createTableViewSourceWithFilterForm<
     return tableViewSource;
 }
 
-export function createTypedWithFilterFormFactory<TData>() {
+export function createTypedWithFilterFormFactory<TData, TPartialConfig extends Record<string, any> = {}>(
+    partialConfig?: TPartialConfig
+) {
     return <
         TFilter extends TypedTableViewSourceFilter<TForm, TResult>,
         TForm extends FormGroup,
         TResult extends Partial<IListResult<TData>>,
         TOrdering = TData
-    >(config: AdditionalConfig<TForm> & TypedTableViewSourceConfig<TData, TResult, TFilter, TOrdering>) =>
-        createTableViewSourceWithFilterForm(config)
+    >(
+        config: AdditionalConfig<TForm> &
+            TypedTableViewSourceConfigPartial<TData, TResult, TFilter, TOrdering, TPartialConfig>
+    ): TableViewSourceWithSignals<TData, TFilter> & Extensions =>
+        createTableViewSourceWithFilterForm({
+            ...partialConfig,
+            ...config,
+        } as any);
 }
 
+type TypedFormGroupOrUntyped<TTableViewSource extends TableViewSource<any, any>> =
+    TTableViewSource extends TableViewSource<any, infer TFilter>
+        ? TFilter extends Record<string, any>
+            ? TypedFormGroup<TFilter>
+            : UntypedFormGroup
+        : UntypedFormGroup;
+
+type ExtendWithFilterFormConfig<TTableViewSource extends TableViewSource<any, any>> =
+    | AdditionalConfig<TypedFormGroupOrUntyped<TTableViewSource>>
+    | ValueOrSignal<TypedFormGroupOrUntyped<TTableViewSource>>;
+
 /* @internal */
-export function extendWithFilterForm<
-    TTableViewSource extends TableViewSource<any, any>,
-    TFilter extends TypedTableViewSourceFilter<
-        TypedPartialFormGroup<ExtractFilterTypeFrom<TTableViewSource>>,
-        ExtractResultTypeFrom<TTableViewSource>
-    >
->(this: TTableViewSource, config: AdditionalConfig<TypedPartialFormGroup<TFilter>>): TTableViewSource {
-    if (config.filterForm) {
-        const filterForm = config.filterForm;
-        const formGroupValueSignal = formGroupCurrentValueSignal(filterForm as any, {
+export function extendWithFilterForm<TTableViewSource extends TableViewSource<any, any>>(
+    this: TTableViewSource,
+    config: ExtendWithFilterFormConfig<TTableViewSource>
+): TTableViewSource {
+    const filterForm = config instanceof AbstractControl || isSignal(config) ? config : config.filterForm;
+    if (filterForm) {
+        const formGroupValueSignal = formGroupCurrentValueSignal(filterForm, {
             debounceTime: 300,
         });
 
         effect(() => {
-            const formValue = formGroupValueSignal() as TFilter;
+            const formValue = formGroupValueSignal() as ExtractFilterTypeFrom<TTableViewSource>;
             const previousParams = this.getQueryParams().filter;
             const hasChanged = !isObjShallowEqual(formValue, previousParams, undefined, (a, b) => {
                 a = a ?? '';
@@ -134,3 +150,4 @@ export function extendWithFilterForm<
 
     return this;
 }
+

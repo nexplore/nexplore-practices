@@ -2,7 +2,7 @@ import { IListResult } from '../types';
 import { HasTypedQueryParams } from '../types-internal';
 import { getDefaultQueryParams } from '../utils/internal-util';
 import { createExtendableTableViewSource, Extensions } from './extensions';
-import { TableViewSourceWithSignals, TypedTableViewSourceConfig } from './types';
+import { TableViewSourceWithSignals, TypedTableViewSourceConfig, TypedTableViewSourceConfigPartial } from './types';
 
 /**
  * Creates a TableViewSource with the specified configuration
@@ -23,7 +23,12 @@ import { TableViewSourceWithSignals, TypedTableViewSourceConfig } from './types'
  * });
  * ```
  */
-export function createTableViewSource<TData, TResult extends Partial<IListResult<TData>>, TFilter = unknown, TOrdering = TData>(
+export function createTableViewSource<
+    TData,
+    TResult extends Partial<IListResult<TData>>,
+    TFilter = unknown,
+    TOrdering = TData
+>(
     config: TypedTableViewSourceConfig<TData, TResult, TFilter, TOrdering>
 ): TableViewSourceWithSignals<TData, TFilter> & Extensions {
     return createExtendableTableViewSource<TData, TFilter>(
@@ -32,3 +37,14 @@ export function createTableViewSource<TData, TResult extends Partial<IListResult
         getDefaultQueryParams(config as HasTypedQueryParams<TFilter, TOrdering>)
     );
 }
+
+export function createTypedFactory<TData, TPartial extends Record<string, any> = {}>(partialConfig?: TPartial) {
+    return <TFilter, TResult extends Partial<IListResult<TData>>, TOrdering = TData>(
+        config: TypedTableViewSourceConfigPartial<TData, TResult, TFilter, TOrdering, TPartial>
+    ): TableViewSourceWithSignals<TData, TFilter> & Extensions =>
+        createTableViewSource({
+            ...partialConfig,
+            ...config,
+        } as any) as any;
+}
+

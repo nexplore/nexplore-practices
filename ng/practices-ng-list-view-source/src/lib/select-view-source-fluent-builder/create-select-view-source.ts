@@ -28,3 +28,4 @@ export function createTypedFactory<TData>() {
         config: TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams, TOrdering>
     ): SelectViewSourceWithSignals<TData, TFilter> => createSelectViewSource(config);
 }
+

@@ -23,6 +23,121 @@ describe('tableViewSource', () => {
         });
     });
 
+    it('should have fromCommand with separate config', () => {
+        TestBed.runInInjectionContext(() => {
+            class TestDto {
+                constructor(public name: string, public age: number) {}
+            }
+
+            const cmd = command.action(() => [new TestDto('Test', 22)]);
+
+            const vs = tableViewSource.fromCommand(cmd).withConfig({
+                columns: ['name', 'age'],
+                orderBy: 'name',
+                sortInMemory: true,
+            });
+
+            expect(vs).toBeDefined();
+        });
+    });
+
+    it('should have fromCommand with separate config / withPersistedParams', () => {
+        TestBed.runInInjectionContext(() => {
+            class TestDto {
+                constructor(public name: string, public age: number) {}
+            }
+
+            const cmd = command.action(() => [new TestDto('Test', 22)]);
+
+            const vs = tableViewSource.fromCommand(cmd).withPersistedParams({
+                columns: ['name', 'age'],
+                persistParams: {
+                    load: () => ({
+                        filter: null,
+                        orderings: [],
+                    }),
+                    save: () => {},
+                },
+                orderBy: 'name',
+                sortInMemory: true,
+            });
+
+            expect(vs).toBeDefined();
+        });
+    });
+
+    it('should have fromCommand with separate config / withFilterForm', () => {
+        TestBed.runInInjectionContext(() => {
+            class TestDto {
+                constructor(public name: string, public age: number) {}
+            }
+
+            const cmd = command.action((_params: { nameFilter: string }) => [new TestDto('Test', 22)]);
+
+            const form = new FormGroup({
+                nameFilter: new FormControl(''),
+            });
+
+            const vs = tableViewSource.fromCommand(cmd).withFilterForm({
+                columns: ['name', 'age'],
+                filterForm: form,
+                orderBy: 'name',
+                triggerQueryCommandWithFilter: true,
+            });
+
+            expect(vs).toBeDefined();
+        });
+    });
+
+    it('should have fromCommand with separate config / withFilterForm after', () => {
+        TestBed.runInInjectionContext(() => {
+            class TestDto {
+                constructor(public name: string, public age: number) {}
+            }
+
+            const cmd = command.action((_params: { nameFilter: string }) => [new TestDto('Test', 22)]);
+
+            const form = new FormGroup({
+                nameFilter: new FormControl('', { nonNullable: true }),
+            });
+
+            const vs = tableViewSource
+                .fromCommand(cmd)
+                .withConfig({
+                    columns: ['name', 'age'],
+                    orderBy: 'name',
+                    triggerQueryCommandWithFilter: true,
+                })
+                .withFilterForm({
+                    filterForm: form,
+                });
+
+            expect(vs).toBeDefined();
+        });
+    });
+
+    it('should have fromData', () => {
+        TestBed.runInInjectionContext(() => {
+            class TestDto {
+                constructor(public name: string, public age: number) {}
+            }
+
+            const vs = tableViewSource
+                .fromData((_params) =>
+                    of({
+                        data: [new TestDto('Test', 22)],
+                        total: 1,
+                    })
+                )
+                .withConfig({
+                    columns: ['name', 'age'],
+                    orderBy: 'name',
+                });
+
+            expect(vs).toBeDefined();
+        });
+    });
+
     it('should have extensions defined', () => {
         TestBed.runInInjectionContext(() => {
             class TestDto {
@@ -34,10 +149,9 @@ describe('tableViewSource', () => {
             });
 
             const vs = tableViewSource
-                .withType({
-                    type: TestDto,
+                .fromData(() => of(createListResultFromArray([new TestDto('Test', 22)])))
+                .withConfig({
                     columns: ['name', 'age'],
-                    loadFn: () => of(createListResultFromArray([new TestDto('Test', 22)])),
                     orderBy: 'name',
                 })
                 .withPersistedParams({
@@ -57,15 +171,8 @@ describe('tableViewSource', () => {
 
     it('should create tableViewSource with basic config', () => {
         TestBed.runInInjectionContext(() => {
-            interface Employee {
-                name: string;
-                department: string;
-                salary: number;
-                id: number;
-            }
-
             const source = tableViewSource.withConfig({
-                loadFn: (params) =>
+                loadFn: (_params) =>
                     of({
                         data: [
                             { name: 'John', department: 'IT', salary: 50000, id: 1 },
@@ -100,7 +207,7 @@ describe('tableViewSource', () => {
 
             const source = tableViewSource.withType({
                 type: Task,
-                loadFn: (params: any) =>
+                loadFn: (_params) =>
                     of({
                         data: [new Task('Task 1', 'Open', 1, new Date()), new Task('Task 2', 'Closed', 2, new Date())],
                     }),
@@ -150,8 +257,7 @@ describe('tableViewSource', () => {
 
             const source = tableViewSource.withType<Order>().withFilterForm({
                 filterForm,
-                type: Order,
-                loadFn: (params: any) =>
+                loadFn: (_params) =>
                     of({
                         data: [new Order('ORD001', 'Alice', 100), new Order('ORD002', 'Bob', 200)],
                     }),
@@ -174,8 +280,7 @@ describe('tableViewSource', () => {
             }
 
             const source = tableViewSource.withType<Invoice>().withPersistedParams({
-                type: Invoice,
-                loadFn: (params: any) =>
+                loadFn: (_params) =>
                     of({
                         data: [new Invoice('INV001', new Date(), 500), new Invoice('INV002', new Date(), 750)],
                     }),
@@ -215,7 +320,7 @@ describe('tableViewSource', () => {
 
             const source = tableViewSource.withType({
                 type: Report,
-                loadFn: (params: any) =>
+                loadFn: (_params: any) =>
                     of({
                         data: [new Report('Monthly Report', 1), new Report('Weekly Report', 2)],
                     }),
@@ -241,7 +346,13 @@ describe('selectViewSource', () => {
             constructor(public label: string, public id: number) {}
         }
 
-        const fetchItems = (label: string, skip?: number, take?: number, orderings?: any, includeTotal?: boolean) => {
+        const fetchItems = (
+            label: string,
+            _skip?: number,
+            _take?: number,
+            _orderings?: any,
+            _includeTotal?: boolean
+        ) => {
             return [{ id: 1, label: label }];
         };
 
@@ -313,7 +424,7 @@ describe('selectViewSource', () => {
                 value: 'id',
                 searchable: false,
                 localSearch: true,
-                loadFn: (params) =>
+                loadFn: (_params) =>
                     of({
                         data: [new Category('Electronics', 1), new Category('Books', 2)],
                         total: 2,
@@ -376,7 +487,7 @@ describe('selectViewSource', () => {
                 label: 'displayName',
                 value: 'code',
                 searchable: true,
-                loadFn: (params) =>
+                loadFn: (_params) =>
                     of({
                         data: [
                             { displayName: 'Option One', code: 'OPT1', description: 'First option' },
@@ -403,7 +514,7 @@ describe('selectViewSource', () => {
                 label: 'name',
                 searchable: false,
                 localSearch: true,
-                loadFn: (params) =>
+                loadFn: (_params) =>
                     of({
                         data: [
                             { name: 'Active', id: 1 },
@@ -420,3 +531,4 @@ describe('selectViewSource', () => {
         });
     });
 });
+

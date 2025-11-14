@@ -24,7 +24,7 @@ export type TypedTableViewSourceFilter<
     ? FormGroupValues<TForm>
     : any;
 
-export type TypedTableViewSourceConfig<TData, TResult extends Partial<IListResult<TData>>, TFilter, TOrdering> = Omit<
+type TypedTableViewSourceConfigCore<TData, TResult extends Partial<IListResult<TData>>, TFilter, TOrdering> = Omit<
     TableViewSourceConfig<TData>,
     'columns'
 > & {
@@ -43,7 +43,23 @@ export type TypedTableViewSourceConfig<TData, TResult extends Partial<IListResul
      * The function to load the data.
      */
     loadFn: (params: IQueryParamsWithFilter<TFilter>) => MaybeAsync<TResult>;
-} & HasTypedQueryParams<TFilter, TOrdering>;
+};
+
+export type TypedTableViewSourceConfig<
+    TData,
+    TResult extends Partial<IListResult<TData>>,
+    TFilter,
+    TOrdering
+> = TypedTableViewSourceConfigCore<TData, TResult, TFilter, TOrdering> & HasTypedQueryParams<TFilter, TOrdering>;
+
+export type TypedTableViewSourceConfigPartial<
+    TData,
+    TResult extends Partial<IListResult<TData>>,
+    TFilter,
+    TOrdering,
+    TOmit extends Record<string, any> | {}
+> = Omit<TypedTableViewSourceConfigCore<TData, TResult, TFilter, TOrdering>, keyof TOmit> &
+    HasTypedQueryParams<TFilter, TOrdering>;
 
 export type TypedTableViewSourceConfigWithoutLoadFn<
     TData,
@@ -64,3 +80,4 @@ export type TypedTableViewSourceConfigWithoutLoadFn<
 } & HasTypedQueryParams<TFilter, TOrdering>;
 
 export type TableViewSourceWithSignals<TData, TFilter> = EnhancedListViewSource<TableViewSource<TData, TFilter>>;
+

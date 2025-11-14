@@ -10,7 +10,7 @@ import { IListResult, IQueryParams, TypedQueryParamsWithFilter } from '../types'
 import { HasTypedQueryParams } from '../types-internal';
 import { getDefaultQueryParams } from '../utils/internal-util';
 import { createExtendableTableViewSource, Extensions, ExtractDataTypeFrom, ExtractFilterTypeFrom } from './extensions';
-import { TableViewSourceWithSignals, TypedTableViewSourceConfig } from './types';
+import { TableViewSourceWithSignals, TypedTableViewSourceConfig, TypedTableViewSourceConfigPartial } from './types';
 
 export type PersistParamsConfig<TFilter, TData> = {
     /**
@@ -93,10 +93,17 @@ export function createTableViewSourceWithPersistedParams<
     return tableViewSource;
 }
 
-export function createdTypedWithPersistedParamsFactory<TData>() {
+export function createdTypedWithPersistedParamsFactory<TData, TPartialConfig extends Record<string, any> = {}>(
+    partialConfig?: TPartialConfig
+) {
     return <TFilter, TResult extends Partial<IListResult<TData>>, TOrdering = TData>(
-        config: PersistParamsConfig<TFilter, TData> & TypedTableViewSourceConfig<TData, TResult, TFilter, TOrdering>
-    ) => createTableViewSourceWithPersistedParams(config);
+        config: PersistParamsConfig<TFilter, TData> &
+            TypedTableViewSourceConfigPartial<TData, TResult, TFilter, TOrdering, TPartialConfig>
+    ): TableViewSourceWithSignals<TData, TFilter> & Extensions =>
+        createTableViewSourceWithPersistedParams({
+            ...partialConfig,
+            ...config,
+        } as any);
 }
 
 /**
@@ -194,3 +201,4 @@ export function extendWithPersistedParams<TTableViewSource extends TableViewSour
 
     return this;
 }
+
