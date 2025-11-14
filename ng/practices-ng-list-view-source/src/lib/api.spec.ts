@@ -75,7 +75,7 @@ describe('tableViewSource', () => {
             const cmd = command.action((_params: { nameFilter: string }) => [new TestDto('Test', 22)]);
 
             const form = new FormGroup({
-                nameFilter: new FormControl(''),
+                nameFilter: new FormControl('', { nonNullable: true }),
             });
 
             const vs = tableViewSource.fromCommand(cmd).withFilterForm({
