@@ -1,8 +1,8 @@
-import {inject, Injector, signal, Signal} from "@angular/core";
-import {AbstractControl, FormGroup} from "@angular/forms";
-import {BehaviorSubject} from "rxjs";
-import {formValueSignalsDependencyTracker} from "./form-value-signals-dependency-tracker";
-import {FormGroupValues, FormValueSignalsRecord} from "./form.types";
+import { inject, Injector, signal, Signal } from '@angular/core';
+import { AbstractControl, FormGroup } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+import { formValueSignalsDependencyTracker } from './form-value-signals-dependency-tracker';
+import { FormGroupValues, FormValueSignalsRecord } from './form.types';
 
 /**
  * @internal - Do not use directly, used for other api functions.
@@ -68,7 +68,6 @@ export function createFormValueSignalsProxyWithAutoTrackingDependencies<
 
             // Check if the property is a (nested) form group
             if (form.controls[prop] instanceof FormGroup) {
-
                 // Check if we already have a cached proxy signal
                 if (!childFormGroupValueProxiesRecord[prop as string]) {
                     // Recursively create a proxy for the child form group
@@ -124,3 +123,4 @@ export function createFormValueSignalsProxyWithAutoTrackingDependencies<
         },
     });
 }
+

@@ -11,10 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [Practices.Ui] Added `provideWrappedFormControlAccessors` ability to override `setDisabledState`.
 - [Practices.Ui] Added support for filtering status events via a configurable `filter` property in `StatusHubConfig` (ignored by default: AbortError DOMExceptions).
+- [Practices.Ui.*] Added hybrid `formGroup.valueSignal` accessor that works as a signal for the whole form value while still exposing individual control signals.
 
 ### Changed
 
 - [Practices.Ui.*] Improved signal enhanced form group factory to not trigger unnecessary events when setting initial values/configuration.
+- [Practices.Ui.*] Accessing control signals via `formGroup.value.<prop>Signal` now logs a deprecation warning to steer consumers to `valueSignal`.
 
 ### Fixed
 
@@ -25,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Practices.Ui.*] Fixed `command.query.withSignalTrigger()` typing to reflect null/undefined args behavior.
 - [Practices.Ui.*] Fixed table view source column `sortDir` not synchronizing with persisted ordering parameters, plus improved typing of fluent api.
 - [Practices.Ui.*] Fixed table view source `withFilterForm` behavior in combination with `withPersistedParams`, changed timing of when filter form values are applied to the view source.
-- [Practices.Ng.Forms] Fixed `PuibeSelectDirective` not handling NULL values after initialization, Now observes changes to the bound value and updates the selection accordingly.
+- [Practices.Ui.KtBe] Fixed `PuibeSelectDirective` not handling NULL values after initialization, Now observes changes to the bound value and updates the selection accordingly.
 
 ## [11.0.0](https://github.com/nexplore/nexplore-practices/releases/tag/11.0.0) - 2025-11-06
 

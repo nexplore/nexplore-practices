@@ -226,17 +226,39 @@ export function createExtendedFormGroup<TDefinition extends FormGroupDefinition<
         get: (target, prop, receiver) => {
             switch (prop) {
                 case 'value':
+                    // TODO: Deprecated, remove in future major version
                     return new Proxy(Reflect.get(target, prop, receiver), {
                         get: (target, prop, receiver) => {
                             const asksForSignal = typeof prop === 'string' && prop.endsWith(SIGNAL_POSTFIX);
 
                             if (asksForSignal) {
+                                console.warn(
+                                    `[DEPRECATION] Accessing formGroup.value.${String(
+                                        prop
+                                    )} is deprecated and will be removed in future major versions. Please use formGroup.valueSignal.${String(
+                                        prop.slice(0, -SIGNAL_POSTFIX.length)
+                                    )} instead.`,
+                                    target
+                                );
                                 return formSignals.getOrCreateSignalForControl(prop.slice(0, -SIGNAL_POSTFIX.length));
                             } else {
                                 return Reflect.get(target, prop, receiver);
                             }
                         },
                     });
+                case 'valueSignal': {
+                    // Return a hybrid function that can be called as a function (signal), returning the current value, or alternatively returning the formSignals object when accessing properties.
+                    const valueSignal = getSignalForObservable('value', formGroup.valueChanges, formGroup.value);
+
+                    return new Proxy(valueSignal, {
+                        get: (target, prop, receiver) => {
+                            if (Reflect.has(target, prop)) {
+                                return Reflect.get(target, prop, receiver);
+                            }
+                            return formSignals.getOrCreateSignalForControl(prop as string);
+                        },
+                    });
+                }
                 case 'statusSignal':
                     return getSignalForObservable('status', formGroup.statusChanges, formGroup.status);
                 case 'dirtySignal':
@@ -303,3 +325,4 @@ export function createExtendedFormGroup<TDefinition extends FormGroupDefinition<
 
     return formGroupProxy;
 }
+
