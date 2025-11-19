@@ -1,15 +1,15 @@
-import { effect, isSignal } from '@angular/core';
+import { effect, isSignal, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormGroup, UntypedFormGroup } from '@angular/forms';
 import { isObjDeepEqual, isObjShallowEqual, unwrapSignalLike, ValueOrSignal } from '@nexplore/practices-ng-common-util';
-import { formGroupCurrentValueSignal, TypedFormGroup } from '@nexplore/practices-ng-forms';
+import { formGroupCurrentValueSignal, FormGroupValues, TypedFormGroup } from '@nexplore/practices-ng-forms';
 import { trace } from '@nexplore/practices-ng-logging';
 import { debounceTime } from 'rxjs/operators';
 import { TableViewSource } from '../implementation/table-view-source';
 import { IListResult } from '../types';
 import { HasTypedQueryParams } from '../types-internal';
 import { getDefaultQueryParams } from '../utils/internal-util';
-import { createExtendableTableViewSource, Extensions, ExtractFilterTypeFrom } from './extensions';
+import { createExtendableTableViewSource, Extensions } from './extensions';
 import {
     TableViewSourceWithSignals,
     TypedTableViewSourceConfig,
@@ -17,12 +17,26 @@ import {
     TypedTableViewSourceFilter,
 } from './types';
 
+type ShouldApplyFilterFormValueFn<TForm extends FormGroup> = (context: {
+    form: TForm;
+    hasChanged: boolean;
+    previousFilter?: unknown;
+}) => boolean;
+
 type AdditionalConfig<TForm extends FormGroup> = {
     /**
      * The filter form, whose value changes will update the filter params of the TableViewSource.
      */
     filterForm: ValueOrSignal<TForm>;
+    /**
+     * Determines whether a form value change should be pushed to the TableViewSource.
+     * Defaults to only applying values when the form is dirty and the value has changed.
+     */
+    shouldApplyFilterFormValue?: ShouldApplyFilterFormValueFn<TForm>;
 };
+
+const defaultShouldApplyFilterFormValue: ShouldApplyFilterFormValueFn<FormGroup> = ({ form, hasChanged }) =>
+    form.dirty && hasChanged;
 
 /**
  * Creates a TableViewSource that is typed and is connected to a filter form.
@@ -95,41 +109,63 @@ type TypedFormGroupOrUntyped<TTableViewSource extends TableViewSource<any, any>>
             : UntypedFormGroup
         : UntypedFormGroup;
 
-type ExtendWithFilterFormConfig<TTableViewSource extends TableViewSource<any, any>> =
-    | AdditionalConfig<TypedFormGroupOrUntyped<TTableViewSource>>
-    | ValueOrSignal<TypedFormGroupOrUntyped<TTableViewSource>>;
+type ExtendWithFilterFormConfig<TTableViewSource extends TableViewSource<any, any>, TForm extends FormGroup> =
+    | AdditionalConfig<TypedFormGroupOrUntyped<TTableViewSource> | TForm>
+    | ValueOrSignal<TypedFormGroupOrUntyped<TTableViewSource> | TForm>;
 
 /* @internal */
-export function extendWithFilterForm<TTableViewSource extends TableViewSource<any, any>>(
-    this: TTableViewSource,
-    config: ExtendWithFilterFormConfig<TTableViewSource>
-): TTableViewSource {
+export function extendWithFilterForm<
+    TTableViewSource extends TableViewSource<any, FormGroupValues<TForm> | any>,
+    TForm extends FormGroup
+>(this: TTableViewSource, config: ExtendWithFilterFormConfig<TTableViewSource, TForm>): TTableViewSource {
     const filterForm = config instanceof AbstractControl || isSignal(config) ? config : config.filterForm;
+    const defaultCondition = defaultShouldApplyFilterFormValue as ShouldApplyFilterFormValueFn<
+        TypedFormGroupOrUntyped<TTableViewSource>
+    >;
+    const shouldApplyFilterFormValue =
+        config instanceof AbstractControl || isSignal(config)
+            ? defaultCondition
+            : config.shouldApplyFilterFormValue ?? defaultCondition;
     if (filterForm) {
         const formGroupValueSignal = formGroupCurrentValueSignal(filterForm, {
             debounceTime: 300,
         });
 
         effect(() => {
-            const formValue = formGroupValueSignal() as ExtractFilterTypeFrom<TTableViewSource>;
+            const formValue = formGroupValueSignal();
             const previousParams = this.getQueryParams().filter;
             const hasChanged = !isObjShallowEqual(formValue, previousParams, undefined, (a, b) => {
                 a = a ?? '';
                 b = b ?? '';
                 return a === b;
             });
-            if (formValue && hasChanged) {
-                this.filter(formValue);
-                const currentQueryParams = this.getQueryParams();
-                if (currentQueryParams.skip !== 0) {
-                    this.page(0, currentQueryParams.take!); // Reset page when filtering, TODO: Should this be done in implementation class?
-                }
 
-                trace('tableViewSource', 'filter', {
-                    formValue,
-                    previousParams,
-                    hasChanged,
-                    queryParams: this.getQueryParams(),
+            const formInstance = unwrapSignalLike(filterForm) as TypedFormGroupOrUntyped<TTableViewSource>;
+            const shouldApplyFilters = shouldApplyFilterFormValue({
+                form: formInstance,
+                previousFilter: previousParams,
+                hasChanged,
+            });
+            if (shouldApplyFilters) {
+                untracked(() => {
+                    trace('tableViewSource', 'apply form value to filter', {
+                        formValue,
+                        previousParams,
+                        hasChanged,
+                    });
+                    this.filter(formValue as any);
+
+                    const currentQueryParams = this.getQueryParams();
+                    if (currentQueryParams.skip !== 0) {
+                        trace('tableViewSource', 'reset page', {
+                            formValue,
+                            previousParams,
+                            hasChanged,
+                            currentQueryParams,
+                        });
+                        this.page(0, currentQueryParams.take!); // Reset page when filtering, TODO: Should this be done in implementation class?
+                    }
+                    return;
                 });
             }
         });
@@ -150,4 +186,3 @@ export function extendWithFilterForm<TTableViewSource extends TableViewSource<an
 
     return this;
 }
-

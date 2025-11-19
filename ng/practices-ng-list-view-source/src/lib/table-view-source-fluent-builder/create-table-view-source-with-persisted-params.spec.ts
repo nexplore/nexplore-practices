@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
 import { IListResult, IQueryParamsWithFilter, OrderDirection, TypedQueryParamsWithFilter } from '../types';
 import { createTableViewSourceWithPersistedParams } from './create-table-view-source-with-persisted-params';
@@ -23,7 +24,6 @@ describe('createTableViewSourceWithPersistedParams', () => {
             jest.advanceTimersByTime(ms);
             await Promise.resolve();
             TestBed.flushEffects();
-            return;
         }
 
         let guard = 10;
@@ -218,7 +218,7 @@ describe('createTableViewSourceWithPersistedParams', () => {
                 orderings: [{ field: 'name', direction: OrderDirection.Desc }],
                 filter: { search: 'async' },
             };
-            const loadFn = jest.fn((params: IQueryParamsWithFilter<TestFilter>) => of({ data: [], total: 0 }));
+            const loadFn = jest.fn((_params: IQueryParamsWithFilter<TestFilter>) => of({ data: [], total: 0 }));
 
             createTableViewSourceWithPersistedParams<TestDto, TestFilter, IListResult<TestDto>, TestDto>({
                 columns: ['name', 'age'],
@@ -498,6 +498,153 @@ describe('createTableViewSourceWithPersistedParams', () => {
                 // 1. queryParams would show the correct persisted ordering
                 // 2. But ageColumn.sortDir would be undefined/null (not synchronized)
                 // 3. This causes UI inconsistencies where the column header doesn't show the correct sort indicator
+            });
+        });
+    });
+
+    describe('integration with filter form', () => {
+        it('applies persisted filters even when the filter form initializes with null values', async () => {
+            await TestBed.runInInjectionContext(async () => {
+                const filterForm = new FormGroup({
+                    search: new FormControl<string | null>(null),
+                });
+                const persistedParams: TypedQueryParamsWithFilter<TestFilter, TestDto> = {
+                    orderings: [{ field: 'name', direction: OrderDirection.Desc }],
+                    filter: { search: 'persisted-filter' },
+                };
+
+                const vs = createTableViewSourceWithPersistedParams<TestDto, TestFilter, IListResult<TestDto>, TestDto>(
+                    {
+                        columns: ['name'],
+                        orderBy: 'name',
+                        loadFn: () => of({ data: [], total: 0 }),
+                        persistParams: {
+                            load: () => persistedParams,
+                            save: jest.fn(),
+                        },
+                    }
+                ).withFilterForm({ filterForm: filterForm as any });
+
+                await flushAsyncWork();
+                await flushAsyncWork(400); // allow filter form synchronization debounce to settle
+
+                expect(vs.getQueryParams().filter).toEqual({ search: 'persisted-filter' });
+                expect(filterForm.value).toEqual({ search: 'persisted-filter' });
+            });
+        });
+
+        it('overwrites non-dirty form edits once async persisted params resolve', async () => {
+            await TestBed.runInInjectionContext(async () => {
+                const filterForm = new FormGroup({
+                    search: new FormControl<string | null>(null),
+                });
+                let resolvePersisted!: (params: TypedQueryParamsWithFilter<TestFilter, TestDto>) => void;
+
+                const vs = createTableViewSourceWithPersistedParams({
+                    columns: ['name'],
+                    orderBy: 'name',
+                    loadFn: () => of({ data: [], total: 0 }),
+                    persistParams: {
+                        load: () =>
+                            new Promise<TypedQueryParamsWithFilter<TestFilter, TestDto>>((resolve) => {
+                                resolvePersisted = resolve;
+                            }),
+                        save: jest.fn(),
+                    },
+                }).withFilterForm({ filterForm: filterForm });
+
+                await flushAsyncWork();
+
+                filterForm.controls.search.setValue('user-change');
+                await flushAsyncWork(400); // wait for filter form effect debounce
+
+                resolvePersisted({
+                    orderings: [{ field: 'name', direction: OrderDirection.Asc }],
+                    filter: { search: 'persisted-filter' },
+                });
+
+                await flushAsyncWork();
+                await flushAsyncWork(400);
+
+                expect(vs.getQueryParams().filter).toEqual({ search: 'persisted-filter' });
+                expect(filterForm.value).toEqual({ search: 'persisted-filter' });
+            });
+        });
+
+        it('does not apply pristine form changes by default', async () => {
+            await TestBed.runInInjectionContext(async () => {
+                const filterForm = new FormGroup({
+                    search: new FormControl<string | undefined>('', { nonNullable: true }),
+                });
+                const persistedParams: TypedQueryParamsWithFilter<TestFilter, TestDto> = {
+                    orderings: [{ field: 'name', direction: OrderDirection.Asc }],
+                    filter: { search: '' },
+                };
+                const loadFn = jest.fn(() => of({ data: [], total: 0 }));
+
+                const vs = createTableViewSourceWithPersistedParams({
+                    columns: ['name'],
+                    orderBy: 'name',
+                    loadFn,
+                    persistParams: {
+                        load: () => persistedParams,
+                        save: jest.fn(),
+                    },
+                }).withFilterForm({ filterForm });
+
+                await flushAsyncWork();
+                loadFn.mockClear();
+
+                filterForm.controls.search.setValue('pristine-change');
+                filterForm.markAsPristine();
+                filterForm.markAsUntouched();
+
+                await flushAsyncWork(400);
+
+                expect(loadFn).not.toHaveBeenCalled();
+                // The query params should still reflect the persisted filter because the pristine change was ignored
+                expect(vs.getQueryParams().filter).toEqual({ search: '' });
+            });
+        });
+
+        it('can override the apply condition to react even when the form is pristine', async () => {
+            await TestBed.runInInjectionContext(async () => {
+                const filterForm = new FormGroup({
+                    search: new FormControl<string>(''),
+                });
+                const persistedParams: TypedQueryParamsWithFilter<TestFilter, TestDto> = {
+                    orderings: [{ field: 'name', direction: OrderDirection.Asc }],
+                    filter: { search: '' },
+                };
+                const loadFn = jest.fn(() => of({ data: [], total: 0 }));
+                const shouldApplySpy = jest.fn(() => true);
+
+                createTableViewSourceWithPersistedParams<TestDto, TestFilter, IListResult<TestDto>, TestDto>({
+                    columns: ['name'],
+                    orderBy: 'name',
+                    loadFn,
+                    persistParams: {
+                        load: () => persistedParams,
+                        save: jest.fn(),
+                    },
+                }).withFilterForm({
+                    filterForm,
+                    shouldApplyFilterFormValue: shouldApplySpy,
+                });
+
+                await flushAsyncWork();
+
+                filterForm.controls.search.setValue('should-apply');
+
+                await flushAsyncWork(400);
+
+                expect(loadFn).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        filter: { search: 'should-apply' },
+                    })
+                );
+                expect(loadFn).toHaveBeenCalled();
+                expect(shouldApplySpy).toHaveBeenCalled();
             });
         });
     });

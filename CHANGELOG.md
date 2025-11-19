@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- [Practices.Ui.*] Improved signal enhanced form group factory to not trigger unnecessary events when setting initial values/configuration.
+
 ### Fixed
 
 - [Practices.Ui.*] Fixed `command.fromInput` to properly handle legacy commands when `mapArguments` is configured.
@@ -22,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Practices.Ui.*] Fixed `Command.cancel()` to abort even when the handler was returning a promise instead of an observable.
 - [Practices.Ui.*] Fixed `command.query.withSignalTrigger()` typing to reflect null/undefined args behavior.
 - [Practices.Ui.*] Fixed table view source column `sortDir` not synchronizing with persisted ordering parameters, plus improved typing of fluent api.
+- [Practices.Ui.*] Fixed table view source `withFilterForm` behavior in combination with `withPersistedParams`.
 
 ## [11.0.0](https://github.com/nexplore/nexplore-practices/releases/tag/11.0.0) - 2025-11-06
 
