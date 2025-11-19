@@ -156,11 +156,13 @@ export function extendWithPersistedParams<TTableViewSource extends TableViewSour
                 );
                 if (latestPersistedParams) {
                     await firstValueFrom(timer(0)); // First timer is needed so that the ui notices the change
-                    this.update(latestPersistedParams);
+
                     trace('ListViewSource', 'tableViewSourceWithPersistedParams', 'apply loaded query params', {
                         latestPersistedParams,
                         current: this.getQueryParams(),
                     });
+
+                    this.update(latestPersistedParams);
                     await firstValueFrom(timer(0)); // Second timer is needed so the queryParams$ subscription below doesn't get triggered unnecessarily.
                 }
 

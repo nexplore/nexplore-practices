@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Practices.Ui.*] Fixed `command.query.withSignalTrigger()` typing to reflect null/undefined args behavior.
 - [Practices.Ui.*] Fixed table view source column `sortDir` not synchronizing with persisted ordering parameters, plus improved typing of fluent api.
 - [Practices.Ui.*] Fixed table view source `withFilterForm` behavior in combination with `withPersistedParams`, changed timing of when filter form values are applied to the view source.
+- [Practices.Ng.Forms] Fixed `PuibeSelectDirective` not handling NULL values after initialization, Now observes changes to the bound value and updates the selection accordingly.
 
 ## [11.0.0](https://github.com/nexplore/nexplore-practices/releases/tag/11.0.0) - 2025-11-06
 
