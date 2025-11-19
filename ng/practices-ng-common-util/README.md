@@ -8,19 +8,19 @@ These utilities serve as building blocks for library authors and application dev
 
 ## Features
 
--   **Object Comparison** - Compare objects with shallow or deep equality checks
--   **Signal Handling** - Utilities for working with Angular signals in a flexible way
--   **Observable Utilities** - Tools for converting between observables, promises, and values
--   **Property Access** - Safe access to properties that may be null or undefined
--   **Angular Component Helpers** - Base classes for pipes and lifecycle management
--   **Type Conversions** - Type-safe utilities for transforming data structures
--   **Object Manipulation** - Deep merging and object enhancement utilities
--   **Array and String Helpers** - Common operations on arrays and strings
+- **Object Comparison** - Compare objects with shallow or deep equality checks
+- **Signal Handling** - Utilities for working with Angular signals in a flexible way
+- **Observable Utilities** - Tools for converting between observables, promises, and values
+- **Property Access** - Safe access to properties that may be null or undefined
+- **Angular Component Helpers** - Base classes for pipes and lifecycle management
+- **Type Conversions** - Type-safe utilities for transforming data structures
+- **Object Manipulation** - Deep merging and object enhancement utilities
+- **Array and String Helpers** - Common operations on arrays and strings
 
 ## Installation
 
 ```bash
-npm install @nexplore/practices-ng-common-util
+pnpm install @nexplore/practices-ng-common-util
 ```
 
 ## Features and Usage Examples
@@ -147,7 +147,7 @@ const observableResult = await firstValueFromMaybeAsync(of('from observable')); 
 // Get value with fallback for errors
 const safeResult = await firstOrDefaultFromMaybeAsync(
     throwError(() => new Error('Failed')),
-    'default'
+    'default',
 ); // 'default'
 
 // Convert anything to Observable
@@ -253,10 +253,11 @@ getProperty(user, 'name'); // 'Alice' (type-safe)
 
 This utility library serves as a foundation for other practices packages:
 
--   **[@nexplore/practices-ng-signals](../practices-ng-signals/README.md)** - Uses the signal utilities
--   **[@nexplore/practices-ng-commands](../practices-ng-commands/README.md)** - Leverages async and signal utilities
--   **[@nexplore/practices-ng-forms](../practices-ng-forms/README.md)** - Uses object comparison and type utilities
+- **[@nexplore/practices-ng-signals](../practices-ng-signals/README.md)** - Uses the signal utilities
+- **[@nexplore/practices-ng-commands](../practices-ng-commands/README.md)** - Leverages async and signal utilities
+- **[@nexplore/practices-ng-forms](../practices-ng-forms/README.md)** - Uses object comparison and type utilities
 
 ## Running unit tests
 
 Run `npx nx test practices-ng-common-util` to execute the unit tests.
+

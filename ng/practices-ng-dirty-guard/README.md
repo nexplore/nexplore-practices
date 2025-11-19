@@ -8,18 +8,18 @@ The dirty guard system acts as a safety net for users working with forms in Angu
 
 ## Features
 
--   **Navigation Guard** - Prevents accidental navigation when forms have unsaved changes
--   **Configurable Dialog** - Customizable confirmation dialog for discarding changes
--   **Multiple Form Support** - Tracks dirty state across multiple forms in the same view
--   **Router Integration** - Works with Angular Router for both internal and external navigation
--   **Signal-based API** - Modern Angular API using signals
--   **Nested Routes Support** - Works with nested router-outlets
--   **Programmatic Control** - API for temporarily disabling guards when needed
+- **Navigation Guard** - Prevents accidental navigation when forms have unsaved changes
+- **Configurable Dialog** - Customizable confirmation dialog for discarding changes
+- **Multiple Form Support** - Tracks dirty state across multiple forms in the same view
+- **Router Integration** - Works with Angular Router for both internal and external navigation
+- **Signal-based API** - Modern Angular API using signals
+- **Nested Routes Support** - Works with nested router-outlets
+- **Programmatic Control** - API for temporarily disabling guards when needed
 
 ## Installation
 
 ```bash
-npm install @nexplore/practices-ng-dirty-guard
+pnpm install @nexplore/practices-ng-dirty-guard
 ```
 
 ## Features and Usage Examples
@@ -207,3 +207,4 @@ bootstrapApplication(AppComponent, {
 ## Running unit tests
 
 Run `nx test practices-ng-dirty-guard` to execute the unit tests.
+

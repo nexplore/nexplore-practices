@@ -11,7 +11,7 @@ This library serves as a foundational layer for Angular applications, providing 
 ## Installation
 
 ```bash
-npm install @nexplore/practices-ui
+pnpm install @nexplore/practices-ui
 ```
 
 ## Features and Usage Examples
@@ -153,8 +153,8 @@ const saveCommand = command.action(() => saveUser(), {
 
 These features are now re-exported from dedicated packages and might be removed from this package in the future:
 
--   **ListViewSource**: Re-exported from [@nexplore/practices-ng-list-view-source](../practices-ng-list-view-source/README.md)
--   **StatusHubService**: Re-exported from [@nexplore/practices-ng-status](../practices-ng-status/README.md)
+- **ListViewSource**: Re-exported from [@nexplore/practices-ng-list-view-source](../practices-ng-list-view-source/README.md)
+- **StatusHubService**: Re-exported from [@nexplore/practices-ng-status](../practices-ng-status/README.md)
 
 For new code, it's recommended to import these directly from their respective packages.
 
@@ -162,9 +162,10 @@ For new code, it's recommended to import these directly from their respective pa
 
 This library complements the modern `practices-ng-*` packages and is used alongside:
 
--   **[@nexplore/practices-ui-ktbe](../practices-ui-ktbe/README.md)** - KTBE-styled UI component library
--   **[@nexplore/practices-ui-clarity](../practices-ui-clarity/README.md)** - Extensions for Clarity Design System
+- **[@nexplore/practices-ui-ktbe](../practices-ui-ktbe/README.md)** - KTBE-styled UI component library
+- **[@nexplore/practices-ui-clarity](../practices-ui-clarity/README.md)** - Extensions for Clarity Design System
 
 ## Running unit tests
 
 Run `nx test practices-ui` to execute the unit tests.
+

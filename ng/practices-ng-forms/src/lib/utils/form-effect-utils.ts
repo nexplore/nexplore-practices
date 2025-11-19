@@ -22,11 +22,11 @@ import { FormGroupValues, TypedFormGroup } from './form.types';
  */
 export function formFieldsChangeEffect<
     TValue extends FormGroupValues<TForm>,
-    TForm extends FormGroup = TypedFormGroup<TValue>
+    TForm extends FormGroup = TypedFormGroup<TValue>,
 >(
     formSignalOrValue: ValueOrSignal<TForm>,
     effectFn: (value: Exclude<TValue, FormControlState<any>>) => void,
-    options?: { debounceTime?: number }
+    options?: { debounceTime?: number },
 ): EffectRef {
     const injector = inject(Injector);
     let currentInjector: Injector;
@@ -41,7 +41,7 @@ export function formFieldsChangeEffect<
         map((ev: PristineChangeEvent) => !ev.pristine),
         filter((dirty) => dirty),
         take(1),
-        startWith(false)
+        startWith(false),
     );
 
     return effect(() => {
@@ -89,11 +89,10 @@ export function formFieldsChangeEffect<
 export function formControlChangeEffect<TValue>(
     control: ValueOrSignal<AbstractControl<TValue>>,
     effectFn: (value: Exclude<TValue, FormControlState<any>>) => void,
-    options?: { debounceTime?: number }
+    options?: { debounceTime?: number },
 ): EffectRef {
     const injector = inject(Injector);
     let currentInjector: Injector;
-    let currentValue: TValue;
     let currentFormRef: AbstractControl;
     const INITIAL = {};
     let currentSignal: Signal<TValue | typeof INITIAL>;
@@ -106,7 +105,6 @@ export function formControlChangeEffect<TValue>(
 
             trace('formChangeEffect', 'New form object, creating new proxy', {
                 abstractControl,
-                valuesProxy: currentValue,
                 currentInjector,
                 currentFormRef,
             });
@@ -117,10 +115,10 @@ export function formControlChangeEffect<TValue>(
                 toSignal(
                     abstractControl.valueChanges.pipe(
                         filter(() => abstractControl.dirty),
-                        options?.debounceTime ? debounceTime(options.debounceTime) : tap(noop)
+                        options?.debounceTime ? debounceTime(options.debounceTime) : tap(noop),
                     ),
-                    { injector: currentInjector, initialValue: INITIAL as any }
-                )
+                    { injector: currentInjector, initialValue: INITIAL as any },
+                ),
             );
 
             currentFormRef = abstractControl;
@@ -134,3 +132,4 @@ export function formControlChangeEffect<TValue>(
         }
     });
 }
+

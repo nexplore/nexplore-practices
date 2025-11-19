@@ -23,20 +23,20 @@ How to install these libraries in your projects
 ## practices-ui
 
 - Make sure your project has the peer dependencies in `projects/practices-ui/package.json` installed
-- `npm install --save @nexplore/practices-ui`
+- `pnpm install --save @nexplore/practices-ui`
 - Add `providePractices({...})` to the providers array in your main.ts
 
 ## practices-ui-clarity
 
 - Make sure your project has the peer dependencies in `projects/practices-ui-clarity/package.json` installed
 - Make sure to follow the official [Clarity Installation Guide](https://clarity.design/documentation/get-started) to install Clarity in your project
-- `npm install --save @nexplore/practices-ui-clarity`
+- `pnpm install --save @nexplore/practices-ui-clarity`
 
 ## practices-ui-ktbe
 
 - practices-ui-ktbe is based on TailwindCSS. Follow the offical TailwindCSS [Installation Guide](https://tailwindcss.com/docs/guides/angular)
 - Make sure your project has the peer dependencies in `projects/practices-ui-ktbe/package.json` installed
-- `npm install --save @nexplore/practices-ui-ktbe`
+- `pnpm install --save @nexplore/practices-ui-ktbe`
 - Adjust your `tailwind.config.js`:
   - Copy the `projects/samples-ktbe/tailwind.config.js` into your project
   - Adapt the import of the ktbeTheme: `const ktbeTheme = require('./node_modules/@nexplore/practices-ui-ktbe/tailwind.config.js');`
@@ -49,12 +49,12 @@ How to install these libraries in your projects
 
 ## Additional Practices Libraries
 
-- `npm install --save @nexplore/practices-ng-commands`
-- `npm install --save @nexplore/practices-ng-common-util`
-- `npm install --save @nexplore/practices-ng-dirty-guard`
-- `npm install --save @nexplore/practices-ng-forms`
-- `npm install --save @nexplore/practices-ng-list-view-source`
-- `npm install --save @nexplore/practices-ng-logging`
-- `npm install --save @nexplore/practices-ng-signals`
-- `npm install --save @nexplore/practices-ng-status`
-- `npm install --save @nexplore/practices-ng-status-types`
+- `pnpm install --save @nexplore/practices-ng-commands`
+- `pnpm install --save @nexplore/practices-ng-common-util`
+- `pnpm install --save @nexplore/practices-ng-dirty-guard`
+- `pnpm install --save @nexplore/practices-ng-forms`
+- `pnpm install --save @nexplore/practices-ng-list-view-source`
+- `pnpm install --save @nexplore/practices-ng-logging`
+- `pnpm install --save @nexplore/practices-ng-signals`
+- `pnpm install --save @nexplore/practices-ng-status`
+- `pnpm install --save @nexplore/practices-ng-status-types`

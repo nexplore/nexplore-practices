@@ -83,7 +83,7 @@
         "build-schematics": {
             "executor": "nx:run-commands",
             "options": {
-                "command": "npm run build:schematics"
+                "command": "pnpm run build:schematics"
             },
             "dependsOn": ["build"]
         },

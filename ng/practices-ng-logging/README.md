@@ -8,18 +8,18 @@ The library addresses the need for controlled logging in web applications, espec
 
 ## Features
 
--   **Topic-based Logging** - Organize log messages by specific topics or components
--   **Configurable Logging Levels** - Support for regular logs and more detailed trace logs
--   **Runtime Configuration** - Enable/disable logging for specific topics at runtime
--   **URL-based Configuration** - Enable logging via URL parameters for debugging in production
--   **Local Storage Persistence** - Save logging preferences across browser sessions
--   **Visual Differentiation** - Color-coded console output for better readability
--   **Browser Console API** - Global methods to control logging from the browser console
+- **Topic-based Logging** - Organize log messages by specific topics or components
+- **Configurable Logging Levels** - Support for regular logs and more detailed trace logs
+- **Runtime Configuration** - Enable/disable logging for specific topics at runtime
+- **URL-based Configuration** - Enable logging via URL parameters for debugging in production
+- **Local Storage Persistence** - Save logging preferences across browser sessions
+- **Visual Differentiation** - Color-coded console output for better readability
+- **Browser Console API** - Global methods to control logging from the browser console
 
 ## Installation
 
 ```bash
-npm install @nexplore/practices-ng-logging
+pnpm install @nexplore/practices-ng-logging
 ```
 
 ## Features and Usage Examples
@@ -106,3 +106,4 @@ The settings will be persisted in localStorage for convenience across browser re
 ## Running unit tests
 
 Run `nx test practices-ng-logging` to execute the unit tests.
+

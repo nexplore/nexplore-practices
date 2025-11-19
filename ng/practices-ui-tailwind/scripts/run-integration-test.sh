@@ -95,7 +95,7 @@ mkdir -p "$TMP_ROOT" "$LOG_DIR"
 # Optional: clean previous dist schematics build to force rebuild
 rm -rf "$DIST_DIR/schematics" || true
 
-run_step "Building schematics only" "cd '$LIB_DIR' && npm run --silent build:schematics"
+run_step "Building schematics only" "cd '$LIB_DIR' && pnpm run --silent build:schematics"
 
 # Validate that postbuild injected features list into ng-add schema.json
 SCHEMA_DIST="$DIST_DIR/schematics/ng-add/schema.json"
@@ -119,7 +119,7 @@ ok "Tarball: $PKG_TGZ_NAME"
 
 run_step "Scaffolding Angular workspace" "cd '$TMP_ROOT' && npx --yes @angular/cli@latest new $APP_NAME --skip-git --package-manager=npm --routing=false --style=css"
 
-run_step "Installing packed library" "cd '$APP_DIR' && npm install --no-audit --no-fund --legacy-peer-deps '$PKG_TGZ_PATH'"
+run_step "Installing packed library" "cd '$APP_DIR' && pnpm install --no-audit --no-fund --legacy-peer-deps '$PKG_TGZ_PATH'"
 
 DEFAULT_DEST_ROOT="src/practices-ui-tailwind"
 # Run ng-add schematic (accept defaults) before adding a specific component.

@@ -8,16 +8,16 @@ Angular's signals API introduced a powerful new reactive primitive, but there ar
 
 ## Features
 
--   **Signal and Effect Organization** - Organize effects alongside signal declarations for improved code readability
--   **Automatic Subscription Management** - Create effects that properly manage RxJS subscriptions with automatic cleanup
--   **Signal Transformations** - Apply transformations to signal values similar to RxJS pipe operators
--   **Type Conversion Utilities** - Convert between signals, observables, promises, and plain values
--   **Lazy Signal Creation** - Create signals from observables with optimized lazy initialization
+- **Signal and Effect Organization** - Organize effects alongside signal declarations for improved code readability
+- **Automatic Subscription Management** - Create effects that properly manage RxJS subscriptions with automatic cleanup
+- **Signal Transformations** - Apply transformations to signal values similar to RxJS pipe operators
+- **Type Conversion Utilities** - Convert between signals, observables, promises, and plain values
+- **Lazy Signal Creation** - Create signals from observables with optimized lazy initialization
 
 ## Installation
 
 ```bash
-npm install @nexplore/practices-ng-signals
+pnpm install @nexplore/practices-ng-signals
 ```
 
 ## Features and Usage Examples
@@ -156,9 +156,9 @@ const expensiveDataSignal = toSignalLazy(() => this.dataService.fetchExpensiveDa
 
 This library works well with:
 
--   **[@nexplore/practices-ng-commands](../practices-ng-commands/README.md)** - Commands use signals for state management
--   **[@nexplore/practices-ng-forms](../practices-ng-forms/README.md)** - Form validation and state management with signals
--   **[@nexplore/practices-ng-status](../practices-ng-status/README.md)** - Status tracking with signals
+- **[@nexplore/practices-ng-commands](../practices-ng-commands/README.md)** - Commands use signals for state management
+- **[@nexplore/practices-ng-forms](../practices-ng-forms/README.md)** - Form validation and state management with signals
+- **[@nexplore/practices-ng-status](../practices-ng-status/README.md)** - Status tracking with signals
 
 ## Running unit tests
 
@@ -167,3 +167,4 @@ Run `nx test practices-ng-signals` to execute the unit tests.
 ## Contributing
 
 When adding new utilities, please include appropriate unit tests and documentation.
+

@@ -8,21 +8,21 @@ Angular's Reactive Forms provide a powerful foundation for managing form state, 
 
 ## Features
 
--   **Fluent Form Builder API** - Create and configure forms with a chainable, TypeScript-friendly API
--   **Signal Integration** - Built-in integration with Angular Signals for reactive state management
--   **Dependent Validation** - Define validators that depend on other form fields' values
--   **Conditional Validation** - Apply validation rules conditionally based on external signals
--   **Multi-Field Validation** - Create validation rules that span multiple form controls
--   **Form Effects** - React to form changes with effect functions
--   **Form Reset from Signal** - Automatically reset forms when input signals change
--   **Form State Management** - Tools for tracking and managing form dirty states
--   **Control Wrapper** - A utility to make writing form control enabled components easier
--   **Form Field** - A collection of services and directives for implementing form logic when creating custom component libraries
+- **Fluent Form Builder API** - Create and configure forms with a chainable, TypeScript-friendly API
+- **Signal Integration** - Built-in integration with Angular Signals for reactive state management
+- **Dependent Validation** - Define validators that depend on other form fields' values
+- **Conditional Validation** - Apply validation rules conditionally based on external signals
+- **Multi-Field Validation** - Create validation rules that span multiple form controls
+- **Form Effects** - React to form changes with effect functions
+- **Form Reset from Signal** - Automatically reset forms when input signals change
+- **Form State Management** - Tools for tracking and managing form dirty states
+- **Control Wrapper** - A utility to make writing form control enabled components easier
+- **Form Field** - A collection of services and directives for implementing form logic when creating custom component libraries
 
 ## Installation
 
 ```bash
-npm install @nexplore/practices-ng-forms
+pnpm install @nexplore/practices-ng-forms
 ```
 
 ## Features and Usage Examples
@@ -63,9 +63,9 @@ export class UserFormComponent {
 
 **Alternative API:** Direct factory functions are also available if you prefer not to use the fluent `formGroup.with*` syntax:
 
--   [`createFormGroup`](./src/lib/form-group-fluent-builder/create-form-group.ts)
--   [`createFormGroupWithType`](./src/lib/form-group-fluent-builder/create-form-group-with-type.ts)
--   [`createFormGroupWithResetFromSignal`](./src/lib/form-group-fluent-builder/create-form-group-with-reset-from-signal.ts)
+- [`createFormGroup`](./src/lib/form-group-fluent-builder/create-form-group.ts)
+- [`createFormGroupWithType`](./src/lib/form-group-fluent-builder/create-form-group-with-type.ts)
+- [`createFormGroupWithResetFromSignal`](./src/lib/form-group-fluent-builder/create-form-group-with-reset-from-signal.ts)
 
 ### Signal Integration
 
@@ -439,3 +439,4 @@ The library leverages [`@nexplore/practices-ng-signals`](../practices-ng-signals
 ## Running unit tests
 
 Run `nx test practices-ng-forms` to execute the unit tests.
+

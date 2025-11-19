@@ -12,116 +12,116 @@ This library provides a comprehensive set of Angular components, directives, and
 
 ## Key Features
 
--   **Fully styled UI components** easily themable
--   **Standalone components** for easy integration with Angular applications
--   **Responsive design** supporting various screen sizes
--   **Accessibility support** for inclusive user experiences
--   **Tailwind CSS integration** for consistent styling
--   **Type-safe interfaces** for improved developer experience
+- **Fully styled UI components** easily themable
+- **Standalone components** for easy integration with Angular applications
+- **Responsive design** supporting various screen sizes
+- **Accessibility support** for inclusive user experiences
+- **Tailwind CSS integration** for consistent styling
+- **Type-safe interfaces** for improved developer experience
 
 ## Core Components
 
 ### Layout Components
 
--   [Shell components](./src/lib/shell/shell.component.ts) - Application layout structure
--   [Two-column container](./src/lib/common/two-column-container.component.ts) - Flexible layout patterns ([Storybook](./src/lib/common/two-column-container.stories.ts))
--   [Header](./src/lib/header/header.component.ts) - Header component ([Storybook](./src/lib/header/header.stories.ts))
--   [Footer](./src/lib/footer/footer.component.ts) - Footer component
--   [Skip Link](./src/lib/skip-link/skip-link.component.ts) - Accessibility feature to skip to main content
+- [Shell components](./src/lib/shell/shell.component.ts) - Application layout structure
+- [Two-column container](./src/lib/common/two-column-container.component.ts) - Flexible layout patterns ([Storybook](./src/lib/common/two-column-container.stories.ts))
+- [Header](./src/lib/header/header.component.ts) - Header component ([Storybook](./src/lib/header/header.stories.ts))
+- [Footer](./src/lib/footer/footer.component.ts) - Footer component
+- [Skip Link](./src/lib/skip-link/skip-link.component.ts) - Accessibility feature to skip to main content
 
--   [Shell components](./src/lib/shell/shell.component.ts) - Application layout structure
--   [Two-column container](./src/lib/common/two-column-container.component.ts) - Flexible layout patterns ([Storybook](./src/lib/common/two-column-container.stories.ts))
--   [Header](./src/lib/header/header.component.ts) - Header component ([Storybook](./src/lib/header/header.stories.ts))
--   [Footer](./src/lib/footer/footer.component.ts) - Footer component
--   [Skip Link](./src/lib/skip-link/skip-link.component.ts) - Accessibility feature to skip to main content
+- [Shell components](./src/lib/shell/shell.component.ts) - Application layout structure
+- [Two-column container](./src/lib/common/two-column-container.component.ts) - Flexible layout patterns ([Storybook](./src/lib/common/two-column-container.stories.ts))
+- [Header](./src/lib/header/header.component.ts) - Header component ([Storybook](./src/lib/header/header.stories.ts))
+- [Footer](./src/lib/footer/footer.component.ts) - Footer component
+- [Skip Link](./src/lib/skip-link/skip-link.component.ts) - Accessibility feature to skip to main content
 
 ### Navigation Components
 
--   [Breadcrumb](./src/lib/breadcrumb/breadcrumb.component.ts) - Path-based navigation ([Storybook](./src/lib/breadcrumb/breadcrumb.stories.ts))
--   [Side Navigation](./src/lib/side-navigation/side-navigation.component.ts) - Collapsible side menu ([Storybook](./src/lib/side-navigation/side-navigation.stories.ts))
--   [Tabs](./src/lib/tabs/tabs.component.ts) - Tabbed interface ([Storybook](./src/lib/tabs/tabs.stories.ts))
--   [Step Box](./src/lib/step-box/step-box.component.ts) - Step-by-step progression indicator ([Storybook](./src/lib/step-box/step-box.stories.ts))
--   [Arrow Link](./src/lib/link/arrow-link.component.ts) - Links with arrow indicators
+- [Breadcrumb](./src/lib/breadcrumb/breadcrumb.component.ts) - Path-based navigation ([Storybook](./src/lib/breadcrumb/breadcrumb.stories.ts))
+- [Side Navigation](./src/lib/side-navigation/side-navigation.component.ts) - Collapsible side menu ([Storybook](./src/lib/side-navigation/side-navigation.stories.ts))
+- [Tabs](./src/lib/tabs/tabs.component.ts) - Tabbed interface ([Storybook](./src/lib/tabs/tabs.stories.ts))
+- [Step Box](./src/lib/step-box/step-box.component.ts) - Step-by-step progression indicator ([Storybook](./src/lib/step-box/step-box.stories.ts))
+- [Arrow Link](./src/lib/link/arrow-link.component.ts) - Links with arrow indicators
 
 ### Display Components
 
--   [Timeline](./src/lib/timeline/timeline.component.ts) – Vertical timeline layout with optional left/right alignment, used to visually represent events in chronological order
+- [Timeline](./src/lib/timeline/timeline.component.ts) – Vertical timeline layout with optional left/right alignment, used to visually represent events in chronological order
 
 ### Form Components
 
--   [Teaser](./src/lib/teaser/teaser.component.ts) - Content preview ([Storybook](./src/lib/teaser/teaser.stories.ts))
--   [Two-column navigation](./src/lib/two-column-nav/two-column-nav.component.ts) - Split-view navigation layout ([Storybook](./src/lib/two-column-nav/two-column-nav.stories.ts))
--   [Table Hover Emphasis](./src/lib/table/cell/hover-emphasis.directive.ts) - Highlights columns on hover
+- [Teaser](./src/lib/teaser/teaser.component.ts) - Content preview ([Storybook](./src/lib/teaser/teaser.stories.ts))
+- [Two-column navigation](./src/lib/two-column-nav/two-column-nav.component.ts) - Split-view navigation layout ([Storybook](./src/lib/two-column-nav/two-column-nav.stories.ts))
+- [Table Hover Emphasis](./src/lib/table/cell/hover-emphasis.directive.ts) - Highlights columns on hover
 
--   [Teaser](./src/lib/teaser/teaser.component.ts) - Content preview ([Storybook](./src/lib/teaser/teaser.stories.ts))
--   [Two-column navigation](./src/lib/two-column-nav/two-column-nav.component.ts) - Split-view navigation layout ([Storybook](./src/lib/two-column-nav/two-column-nav.stories.ts))
--   [Table Hover Emphasis](./src/lib/table/cell/hover-emphasis.directive.ts) - Highlights columns on hover
+- [Teaser](./src/lib/teaser/teaser.component.ts) - Content preview ([Storybook](./src/lib/teaser/teaser.stories.ts))
+- [Two-column navigation](./src/lib/two-column-nav/two-column-nav.component.ts) - Split-view navigation layout ([Storybook](./src/lib/two-column-nav/two-column-nav.stories.ts))
+- [Table Hover Emphasis](./src/lib/table/cell/hover-emphasis.directive.ts) - Highlights columns on hover
 
 ### Feedback & Status
 
--   [Status Hub](./src/lib/status-hub/status-hub.component.ts) - Central status management for providing user feedback ([Storybook](./src/lib/status-hub/status-hub.stories.ts))
--   [Toast](./src/lib/toast/toast.component.ts) - Notification messages ([Storybook](./src/lib/toast/toast.stories.ts))
--   [Modal](./src/lib/popup/modal.component.ts) and [Flyout](./src/lib/popup/flyout.component.ts) - Dialog interfaces ([Storybook](./src/lib/popup/popups.stories.ts))
--   [Action Dialog](./src/lib/popup/action-dialog.service.ts) - Pre-configured confirmation dialogs ([Storybook](./src/lib/popup/action-dialog.stories.ts))
--   [In-page Search](./src/lib/inpage-search/inpage-search.component.ts) - Search within the current page ([Storybook](./src/lib/inpage-search/inpage-search.stories.ts))
--   [Side Overlay Panel](./src/lib/side-overlay-panel/side-overlay-panel.service.ts) – Service-based slide-in panel for contextual content or workflows, supporting dynamic content injection, title translation, and full lifecycle management via Angular CDK overlay
+- [Status Hub](./src/lib/status-hub/status-hub.component.ts) - Central status management for providing user feedback ([Storybook](./src/lib/status-hub/status-hub.stories.ts))
+- [Toast](./src/lib/toast/toast.component.ts) - Notification messages ([Storybook](./src/lib/toast/toast.stories.ts))
+- [Modal](./src/lib/popup/modal.component.ts) and [Flyout](./src/lib/popup/flyout.component.ts) - Dialog interfaces ([Storybook](./src/lib/popup/popups.stories.ts))
+- [Action Dialog](./src/lib/popup/action-dialog.service.ts) - Pre-configured confirmation dialogs ([Storybook](./src/lib/popup/action-dialog.stories.ts))
+- [In-page Search](./src/lib/inpage-search/inpage-search.component.ts) - Search within the current page ([Storybook](./src/lib/inpage-search/inpage-search.stories.ts))
+- [Side Overlay Panel](./src/lib/side-overlay-panel/side-overlay-panel.service.ts) – Service-based slide-in panel for contextual content or workflows, supporting dynamic content injection, title translation, and full lifecycle management via Angular CDK overlay
 
--   [Status Hub](./src/lib/status-hub/status-hub.component.ts) - Central status management for providing user feedback ([Storybook](./src/lib/status-hub/status-hub.stories.ts))
--   [Toast](./src/lib/toast/toast.component.ts) - Notification messages ([Storybook](./src/lib/toast/toast.stories.ts))
--   [Modal](./src/lib/popup/modal.component.ts) and [Flyout](./src/lib/popup/flyout.component.ts) - Dialog interfaces ([Storybook](./src/lib/popup/popups.stories.ts))
--   [Action Dialog](./src/lib/popup/action-dialog.service.ts) - Pre-configured confirmation dialogs ([Storybook](./src/lib/popup/action-dialog.stories.ts))
--   [In-page Search](./src/lib/inpage-search/inpage-search.component.ts) - Search within the current page ([Storybook](./src/lib/inpage-search/inpage-search.stories.ts))
+- [Status Hub](./src/lib/status-hub/status-hub.component.ts) - Central status management for providing user feedback ([Storybook](./src/lib/status-hub/status-hub.stories.ts))
+- [Toast](./src/lib/toast/toast.component.ts) - Notification messages ([Storybook](./src/lib/toast/toast.stories.ts))
+- [Modal](./src/lib/popup/modal.component.ts) and [Flyout](./src/lib/popup/flyout.component.ts) - Dialog interfaces ([Storybook](./src/lib/popup/popups.stories.ts))
+- [Action Dialog](./src/lib/popup/action-dialog.service.ts) - Pre-configured confirmation dialogs ([Storybook](./src/lib/popup/action-dialog.stories.ts))
+- [In-page Search](./src/lib/inpage-search/inpage-search.component.ts) - Search within the current page ([Storybook](./src/lib/inpage-search/inpage-search.stories.ts))
 
 ### Buttons & Interactions
 
--   [Button](./src/lib/button/button.directive.ts) - Standard and variant buttons ([Storybook](./src/lib/button/button.stories.ts))
--   [Button Arrows](./src/lib/button/button-arrows.component.ts) - Buttons with directional arrows
--   [Button Spinner](./src/lib/button/button-spinner.component.ts) - Loading indicator for buttons
--   [Dropdown Button](./src/lib/dropdown-button/dropdown-button.component.ts) - Button with dropdown menu
--   [Selection](./src/lib/selection/index.ts) - Components for item selection
+- [Button](./src/lib/button/button.directive.ts) - Standard and variant buttons ([Storybook](./src/lib/button/button.stories.ts))
+- [Button Arrows](./src/lib/button/button-arrows.component.ts) - Buttons with directional arrows
+- [Button Spinner](./src/lib/button/button-spinner.component.ts) - Loading indicator for buttons
+- [Dropdown Button](./src/lib/dropdown-button/dropdown-button.component.ts) - Button with dropdown menu
+- [Selection](./src/lib/selection/index.ts) - Components for item selection
 
--   [Button](./src/lib/button/button.directive.ts) - Standard and variant buttons ([Storybook](./src/lib/button/button.stories.ts))
--   [Button Arrows](./src/lib/button/button-arrows.component.ts) - Buttons with directional arrows
--   [Button Spinner](./src/lib/button/button-spinner.component.ts) - Loading indicator for buttons
--   [Dropdown Button](./src/lib/dropdown-button/dropdown-button.component.ts) - Button with dropdown menu
--   [Selection](./src/lib/selection/index.ts) - Components for item selection
+- [Button](./src/lib/button/button.directive.ts) - Standard and variant buttons ([Storybook](./src/lib/button/button.stories.ts))
+- [Button Arrows](./src/lib/button/button-arrows.component.ts) - Buttons with directional arrows
+- [Button Spinner](./src/lib/button/button-spinner.component.ts) - Loading indicator for buttons
+- [Dropdown Button](./src/lib/dropdown-button/dropdown-button.component.ts) - Button with dropdown menu
+- [Selection](./src/lib/selection/index.ts) - Components for item selection
 
 ### Icons
 
 The library includes a basic set of svg-based icons:
 
--   Navigation icons (arrows, hamburger menu, home)
--   Action icons (edit, download, upload)
--   Status icons (valid, invalid, spinner)
--   Enumeration icon (displays numbers as icons)
--   And many more
+- Navigation icons (arrows, hamburger menu, home)
+- Action icons (edit, download, upload)
+- Status icons (valid, invalid, spinner)
+- Enumeration icon (displays numbers as icons)
+- And many more
 
--   Navigation icons (arrows, hamburger menu, home)
--   Action icons (edit, download, upload)
--   Status icons (valid, invalid, spinner)
--   Enumeration icon (displays numbers as icons)
--   And many more
+- Navigation icons (arrows, hamburger menu, home)
+- Action icons (edit, download, upload)
+- Status icons (valid, invalid, spinner)
+- Enumeration icon (displays numbers as icons)
+- And many more
 
 ### Utility Directives
 
--   [Hide If Empty Text](./src/lib/util/hide-if-empty-text.directive.ts) - Hides elements with empty text ([Storybook](./src/lib/util/hide-if-empty-text.stories.ts))
--   [Observe Screen Position](./src/lib/util/observe-screen-position.directive.ts) - Track element position
--   [Observe Scroll Position](./src/lib/util/observe-scroll-position.directive.ts) - Track scroll events
--   [Observe Size](./src/lib/util/observe-size.directive.ts) - Track element size changes
--   [Sticky](./src/lib/util/sticky.directive.ts) - Create sticky positioned elements
--   [Add Title If Ellipsis](./src/lib/util/add-title-if-ellipsis.directive.ts) - Auto-add title attributes
+- [Hide If Empty Text](./src/lib/util/hide-if-empty-text.directive.ts) - Hides elements with empty text ([Storybook](./src/lib/util/hide-if-empty-text.stories.ts))
+- [Observe Screen Position](./src/lib/util/observe-screen-position.directive.ts) - Track element position
+- [Observe Scroll Position](./src/lib/util/observe-scroll-position.directive.ts) - Track scroll events
+- [Observe Size](./src/lib/util/observe-size.directive.ts) - Track element size changes
+- [Sticky](./src/lib/util/sticky.directive.ts) - Create sticky positioned elements
+- [Add Title If Ellipsis](./src/lib/util/add-title-if-ellipsis.directive.ts) - Auto-add title attributes
 
--   [Hide If Empty Text](./src/lib/util/hide-if-empty-text.directive.ts) - Hides elements with empty text ([Storybook](./src/lib/util/hide-if-empty-text.stories.ts))
--   [Observe Screen Position](./src/lib/util/observe-screen-position.directive.ts) - Track element position
--   [Observe Scroll Position](./src/lib/util/observe-scroll-position.directive.ts) - Track scroll events
--   [Observe Size](./src/lib/util/observe-size.directive.ts) - Track element size changes
--   [Sticky](./src/lib/util/sticky.directive.ts) - Create sticky positioned elements
--   [Add Title If Ellipsis](./src/lib/util/add-title-if-ellipsis.directive.ts) - Auto-add title attributes
+- [Hide If Empty Text](./src/lib/util/hide-if-empty-text.directive.ts) - Hides elements with empty text ([Storybook](./src/lib/util/hide-if-empty-text.stories.ts))
+- [Observe Screen Position](./src/lib/util/observe-screen-position.directive.ts) - Track element position
+- [Observe Scroll Position](./src/lib/util/observe-scroll-position.directive.ts) - Track scroll events
+- [Observe Size](./src/lib/util/observe-size.directive.ts) - Track element size changes
+- [Sticky](./src/lib/util/sticky.directive.ts) - Create sticky positioned elements
+- [Add Title If Ellipsis](./src/lib/util/add-title-if-ellipsis.directive.ts) - Auto-add title attributes
 
 ## Installation
 
 ```bash
-npm install @nexplore/practices-ui-tailwind
+pnpm install @nexplore/practices-ui-tailwind
 ```
 
 ## Usage
@@ -326,17 +326,14 @@ export class ExampleFormComponent {
 The form components include:
 
 1. **Unsaved-Changes warning** with the `puiForm` directive
-
     - Keeps track of form state and validation
     - Enables dirty form navigation protection with `enableDirtyFormNavigationGuard` property
 
 2. **Form Fields** with `pui-form-field` component
-
     - Provides consistent field layout and error handling
     - Supports labels, notices, and validation messaging
 
 3. **Input Types**
-
     - Text inputs: `<input puiInput type="text">`
     - Number inputs: `<input puiInput type="number">`
     - Date inputs: `<input puiInput type="date">`
@@ -344,7 +341,6 @@ The form components include:
     - Select/dropdown: `<ng-select puiInput>` (requires [@ng-select/ng-select](https://github.com/ng-select/ng-select))
 
 4. **Checkboxes and Radio Buttons**
-
     - Individual checkboxes: `<pui-checkbox>`
     - Checkbox groups: `<pui-checkbox-group>`
     - Radio button groups: `<pui-radio-button-group>`
@@ -393,11 +389,11 @@ import {
             <pui-table-column field="created" caption="Created"></pui-table-column>
 
             @for (item of tableSource.pageDataSignal(); track item.id) {
-            <pui-table-row>
-                <pui-table-cell>{{ item.id }}</pui-table-cell>
-                <pui-table-cell>{{ item.name }}</pui-table-cell>
-                <pui-table-cell>{{ item.created | date }}</pui-table-cell>
-            </pui-table-row>
+                <pui-table-row>
+                    <pui-table-cell>{{ item.id }}</pui-table-cell>
+                    <pui-table-cell>{{ item.name }}</pui-table-cell>
+                    <pui-table-cell>{{ item.created | date }}</pui-table-cell>
+                </pui-table-row>
             }
             <pui-table-footer>
                 <pui-table-pagination-infinite-scroll />
@@ -409,7 +405,7 @@ export class TableWithInfiniteScrollingComponent {
     tableSource = new TableViewSource(
         { columns: ['id', 'name', 'created'] },
         (params) => this.loadData(params),
-        { take: 30 } // Items per batch
+        { take: 30 }, // Items per batch
     );
 
     private loadData(params) {
@@ -447,11 +443,11 @@ The `PuiTimelineComponent` is a standalone Angular component designed to create 
 
 ##### Features
 
--   Flexible vertical layout with consistent spacing between items
--   Configurable alignment for timeline items (`left` or `right`)
--   Integrates seamlessly with `PuiTimelineItemComponent` for individual timeline entries
--   Uses Tailwind CSS utility classes for styling
--   Supports Angular standalone component architecture and OnPush change detection for performance
+- Flexible vertical layout with consistent spacing between items
+- Configurable alignment for timeline items (`left` or `right`)
+- Integrates seamlessly with `PuiTimelineItemComponent` for individual timeline entries
+- Uses Tailwind CSS utility classes for styling
+- Supports Angular standalone component architecture and OnPush change detection for performance
 
 ##### Usage
 
@@ -470,7 +466,7 @@ Import the component and use it to wrap `pui-timeline-item` components or any co
 
 ##### Related Components
 
--   `PuiTimelineItemComponent`: Individual timeline item component that respects the alignment set by `PuiTimelineComponent` or can override it individually.
+- `PuiTimelineItemComponent`: Individual timeline item component that respects the alignment set by `PuiTimelineComponent` or can override it individually.
 
 ---
 
@@ -508,18 +504,15 @@ export class AppComponent {}
 #### Key Features
 
 1. **Busy State Management**: Displays loading indicators for operations in progress
-
     - Delayed spinner appearance to prevent flickering for quick operations
     - Full-screen blocking overlay for critical operations
 
 2. **Toast Notifications**: Shows error and success messages in toast format
-
     - Automatic dismissal of success messages
     - Persistent error messages requiring user acknowledgment
     - Support for multiple concurrent notifications
 
 3. **Status Categorization**: Applies appropriate visual treatment based on operation type
-
     - `action`: Generic operations
     - `action-save`: Save operations with appropriate messaging
     - `action-delete`: Delete operations with appropriate messaging
@@ -527,7 +520,6 @@ export class AppComponent {}
     - `query-list`: List data loading operations
 
 4. **Positioning Control**: Configurable notification position
-
     - `top-left`, `top`, `top-right`
     - `bottom-left`, `bottom`, `bottom-right`
 
@@ -599,18 +591,18 @@ export class MyComponent {
     protected readonly saveCommand = command.action(() =>
         this._httpClient.post('/api/data', {
             /* your data */
-        })
+        }),
     );
 
     // 2. Signal-triggered query - for data that depends on an input
     public readonly idSignal = input.required<string>({ alias: 'id' });
     protected readonly itemQuery = command.query.withSignalTrigger(this.idSignal, (id) =>
-        this._httpClient.get(`/api/items/${id}`)
+        this._httpClient.get(`/api/items/${id}`),
     );
 
     // 3. Delete command - automatically uses action-delete status category
     protected readonly deleteCommand = command.actionDelete((id: string) =>
-        this._httpClient.delete(`/api/items/${id}`)
+        this._httpClient.delete(`/api/items/${id}`),
     );
 
     // 4. Form submission - validation and status handling built-in
@@ -620,7 +612,7 @@ export class MyComponent {
     }));
     protected readonly submitFormCommand = command.actionSaveForm(
         () => this.userForm,
-        (formValue) => this._httpClient.post('/api/users', formValue)
+        (formValue) => this._httpClient.post('/api/users', formValue),
     );
 
     // 5. Data tables - status handling already configured
@@ -647,7 +639,7 @@ export class MyComponent {
                 progressMessage: 'Processing critical data...',
                 blocking: true, // Show a blocking overlay during execution
             },
-        }
+        },
     );
 
     // Usage in templates:
@@ -714,7 +706,7 @@ export class ExampleComponent {
 
     // Using createShowCommand for template binding
     protected readonly deleteCommand = this._actionDialog.createShowCommand(
-        PUIBE_DIALOG_PRESETS.confirmDelete((item) => this.deleteItem(item.id))
+        PUIBE_DIALOG_PRESETS.confirmDelete((item) => this.deleteItem(item.id)),
     );
 
     private deleteItem(id?: string) {
@@ -852,13 +844,13 @@ Create elements that stick to the viewport during scrolling:
 
 Key features:
 
--   Stick to any edge: `puiStickyDir="top|bottom|left|right"`
--   Custom offset: `[puiStickyThresholdPx]="64"` (in pixels)
--   Apply classes conditionally: `puiStickyClass="my-sticky-class"`
+- Stick to any edge: `puiStickyDir="top|bottom|left|right"`
+- Custom offset: `[puiStickyThresholdPx]="64"` (in pixels)
+- Apply classes conditionally: `puiStickyClass="my-sticky-class"`
 
--   Stick to any edge: `puiStickyDir="top|bottom|left|right"`
--   Custom offset: `[puiStickyThresholdPx]="64"` (in pixels)
--   Apply classes conditionally: `puiStickyClass="my-sticky-class"`
+- Stick to any edge: `puiStickyDir="top|bottom|left|right"`
+- Custom offset: `[puiStickyThresholdPx]="64"` (in pixels)
+- Apply classes conditionally: `puiStickyClass="my-sticky-class"`
 
 For more examples, see the [Sticky directive source](./src/lib/util/sticky.directive.ts).
 
@@ -886,11 +878,11 @@ For more examples, see the [In-page Search stories](./src/lib/inpage-search/inpa
 
 The library provides convenient modules for importing related components:
 
--   `PracticesTailwindShellModule` - Shell components for application layout
--   `PracticesTailwindFormComponentsModule` - All form-related components
--   `PracticesTailwindTableComponentsModule` - Table and data display components
--   `PracticesTailwindDialogModule` - Modal and dialog components
--   `PracticesTailwindFlyoutModule` - Flyout sidebar components
+- `PracticesTailwindShellModule` - Shell components for application layout
+- `PracticesTailwindFormComponentsModule` - All form-related components
+- `PracticesTailwindTableComponentsModule` - Table and data display components
+- `PracticesTailwindDialogModule` - Modal and dialog components
+- `PracticesTailwindFlyoutModule` - Flyout sidebar components
 
 All components are also available as standalone components, allowing for fine-grained imports when using Angular's standalone component pattern.
 
