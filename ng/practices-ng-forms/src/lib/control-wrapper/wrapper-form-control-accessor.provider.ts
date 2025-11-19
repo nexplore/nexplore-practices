@@ -74,6 +74,11 @@ export interface WrapperFormControlAccessor<T = any> {
      * It will then be used to assign the value to the formGroup, whenever the signal emits a new value.
      */
     getValueAccessorEntityDtoSignal?(): Signal<INswagGeneratedType | null>;
+
+    /**
+     * If implemented, this method will be called when the form control is disabled or enabled.
+     */
+    setDisabledState?(isDisabled: boolean): void;
 }
 
 /**
@@ -95,9 +100,9 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                 NEVER.pipe(
                     takeUntilDestroyed(destroyRef),
                     catchError(() => EMPTY),
-                    defaultIfEmpty(null),
-                ),
-            ),
+                    defaultIfEmpty(null)
+                )
+            )
         );
     }
 
@@ -145,7 +150,7 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                             'writeValue',
                             instance,
                             obj,
-                            instance.getValueAccessorWrapperFormControl(),
+                            instance.getValueAccessorWrapperFormControl()
                         );
                         writeEntityToForm(obj);
                     },
@@ -190,7 +195,7 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                         formControl.events
                             .pipe(
                                 filter((ev) => ev instanceof TouchedChangeEvent && ev.touched),
-                                safeTakeUntilDestroyed(destroyRef),
+                                safeTakeUntilDestroyed(destroyRef)
                             )
                             .subscribe(() => {
                                 trace('WrapperFormControlAccessor', 'on touched', instance);
@@ -199,7 +204,9 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                     },
                     setDisabledState(isDisabled: boolean) {
                         trace('WrapperFormControlAccessor', 'setDisabledState', instance, isDisabled);
-                        if (isDisabled) {
+                        if (instance.setDisabledState) {
+                            instance.setDisabledState(isDisabled);
+                        } else if (isDisabled) {
                             instance.getValueAccessorWrapperFormControl()?.disable();
                         } else {
                             instance.getValueAccessorWrapperFormControl()?.enable();
@@ -218,7 +225,7 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                 const isValidChange$ = instance.valueAccessorWrapperFormStateChange$
                     ? instance.valueAccessorWrapperFormStateChange$.pipe(
                           map((state) => state.valid),
-                          distinctUntilChanged(),
+                          distinctUntilChanged()
                       )
                     : defer(
                           () =>
@@ -226,8 +233,8 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                                   debounceTime(1),
                                   distinctUntilChanged(),
                                   map((status) => status === 'VALID'),
-                                  safeTakeUntilDestroyed(destroyRef),
-                              ) ?? EMPTY,
+                                  safeTakeUntilDestroyed(destroyRef)
+                              ) ?? EMPTY
                       );
 
                 const isValidSignal = toSignal(isValidChange$);

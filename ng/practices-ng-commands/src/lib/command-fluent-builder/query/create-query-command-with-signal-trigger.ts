@@ -9,12 +9,14 @@ import { createQueryCommand } from './command-query-util';
  *
  * If triggered while already running, the command will be canceled and re-triggered with the new arguments, unless the arguments are the same.
  *
+ * **Note:** The handler will not be called if the signal produces `null` or `undefined`.
+ *
  * @param signal The signal that will be used to trigger the command.
  * @param handler The handler function that will be called when the command is triggered.
  * @param options Options for the command.
  */
 export function createQueryCommandWithSignalTrigger<TArgs, TResult>(
-    signal: Signal<TArgs> | (() => TArgs | null | undefined),
+    signal: Signal<TArgs | null | undefined> | (() => TArgs | null | undefined),
     handler: CommandAsyncHandlerArg<TArgs, TResult>,
     options?: QueryOptions<TArgs>
 ): QueryCommand<TArgs, TResult> {

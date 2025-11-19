@@ -10,9 +10,10 @@ export function createSelectViewSourceInternal<
     TData,
     TLabelKey extends StringKeyOf<TData> = StringKeyOf<TData>,
     TQueryParams = TData,
-    TFilter extends Pick<TData, TLabelKey> = Pick<TData, TLabelKey>
+    TFilter extends Pick<TData, TLabelKey> = Pick<TData, TLabelKey>,
+    TOrdering = Pick<TData, TLabelKey>
 >(
-    config: TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams>
+    config: TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams, TOrdering>
 ): EnhancedListViewSource<SelectViewSource<TData, TFilter>> {
     const viewSource = new SelectViewSource<TData, TFilter>(
         {

@@ -1,6 +1,6 @@
 import { Injector, Signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControlStatus, FormGroup } from '@angular/forms';
-import { PartialNullable } from '../utils/form.types';
+import { FormGroupControlsValues, FormValueSignalsRecordWithoutPostfix, PartialNullable } from '../utils/form.types';
 import { Extensions } from './extensions';
 import { FormGroupValueWithSignals } from './form-group-types';
 import { FormControlsOfValues } from './form-group-types.internal';
@@ -9,8 +9,33 @@ export type FormGroupEnhancedWithSignals<TControls = any> = TControls extends {
     [K in keyof TControls]: AbstractControl;
 }
     ? FormGroup<TControls> & {
+          /**
+           * The injector associated with this form group. It was used for all the effects and signals created for this form group.
+           */
           readonly injector: Injector;
+
+          /**
+           * Returns the current value of the form group, enhanced with signals for each control.
+           *
+           * Deprecation notic: Accessing `formGroup.value` to get signals for individual controls is deprecated.
+           * Please use `formGroup.valueSignal` instead to access signals for individual controls.
+           */
           readonly value: FormGroupValueWithSignals<TControls>;
+          /**
+           * A signal of the most up-to-date value of the form group.
+           *
+           * Additionally, if you need signals for individual controls, use `formGroup.valueSignal.controlName` instead.
+           *
+           * @example
+           * ```ts
+           * const formGroup = formGroup.withConfig(...);
+           *
+           * const fullValue = formGroup.valueSignal(); // gets the full value of the form group (Emits whenever any control changes)
+           * const individualControlValue = formGroup.valueSignal.controlName(); // gets the value of 'controlName' control (as a signal, emits only when that control changes)
+           * ```
+           */
+          readonly valueSignal: FormValueSignalsRecordWithoutPostfix<FormGroupControlsValues<TControls>> &
+              Signal<FormGroupControlsValues<TControls>>;
 
           readonly statusSignal: Signal<FormControlStatus>;
           readonly dirtySignal: Signal<boolean>;
@@ -171,3 +196,4 @@ export type ValueSatisfying<
     : TValueOrDef extends PartialNullable<TSatisfy>
     ? ValueSatisfyingType<TSatisfy, TValueOrDef>
     : never;
+
