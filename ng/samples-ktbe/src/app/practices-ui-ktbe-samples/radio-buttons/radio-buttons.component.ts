@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PuibeRadioButtonComponent, PuibeRadioButtonGroupComponent } from '@nexplore/practices-ui-ktbe';
 import { delay, map, of } from 'rxjs';
@@ -11,8 +11,6 @@ import { delay, map, of } from 'rxjs';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RadioButtonsComponent {
-    private fb = inject(FormBuilder);
-
     mainForm = this.fb.group({
         basic: this.fb.control<string>(null),
         basicWithHint: this.fb.control<string>(null),
@@ -31,4 +29,6 @@ export class RadioButtonsComponent {
     });
 
     myCoolModel: number;
+
+    constructor(private fb: FormBuilder) {}
 }

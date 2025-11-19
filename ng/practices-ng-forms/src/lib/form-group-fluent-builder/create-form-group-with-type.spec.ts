@@ -8,17 +8,15 @@ describe('withType', () => {
     it('should create a form group with class type', () => {
         TestBed.runInInjectionContext(() => {
             class TestType {
-                constructor(
-                    public name: string,
-                    public age: number,
-                ) {}
+                constructor(public name: string, public age: number) {
+                }
             }
 
-            const fg = formGroup.withType(TestType, { name: 'John Doe', age: null });
+            const fg = formGroup.withType(TestType, {name: 'John Doe', age: null});
 
             fg.controls.age.setValue(40);
 
-            expect(fg.value).toEqual({ name: 'John Doe', age: 40 });
+            expect(fg.value).toEqual({name: 'John Doe', age: 40});
         });
     });
 
@@ -29,13 +27,11 @@ describe('withType', () => {
                 age: number;
             }
 
-            const fg = formGroup
-                .withType<TestType>()
-                .withConfig({ name: { value: 'John Doe' }, age: { nullable: true } });
+            const fg = formGroup.withType<TestType>().withConfig({name: {value: 'John Doe'}, age: {nullable: true}});
 
             fg.controls.age.setValue(40);
 
-            expect(fg.value).toEqual({ name: 'John Doe', age: 40 });
+            expect(fg.value).toEqual({name: 'John Doe', age: 40});
         });
     });
 
@@ -46,25 +42,24 @@ describe('withType', () => {
                 age: number;
             }
 
-            const testSignal = signal<TestType>({ name: 'John Doe', age: 40 });
+            const testSignal = signal<TestType>({name: 'John Doe', age: 40});
             const fg = formGroup.withType<TestType>().withResetFromSignal(testSignal, {
-                name: { nullable: false },
-                age: { nullable: true },
-            });
+                name: {nullable: false},
+                age: {nullable: true}
+            })
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
-            expect(fg.value).toEqual({ name: 'John Doe', age: 40 });
+
+            expect(fg.value).toEqual({name: 'John Doe', age: 40});
         });
     });
 
     it('should create a form group with definition config', () => {
         TestBed.runInInjectionContext(() => {
             class TestType {
-                constructor(
-                    public name: string,
-                    public age: number,
-                ) {}
+                constructor(public name: string, public age: number) {
+                }
             }
 
             const fg = formGroup.withType(TestType, {
@@ -76,34 +71,32 @@ describe('withType', () => {
                 },
             });
 
-            expect(fg.value).toEqual({ name: null, age: null });
+            expect(fg.value).toEqual({name: null, age: null});
         });
     });
 
     it('should work with extensions', () => {
         TestBed.runInInjectionContext(() => {
             class TestType {
-                constructor(
-                    public name: string | null,
-                    public age: number,
-                ) {}
+                constructor(public name: string | null, public age: number) {
+                }
             }
 
             const fg = formGroup
-                .withType(TestType, { name: null, age: null })
-                .withResetFromSignal(signal({ name: 'Lara Croft', age: 0 }))
-                .withValidation(({ dependent }) => ({
+                .withType(TestType, {name: null, age: null})
+                .withResetFromSignal(signal({name: 'Lara Croft', age: 0}))
+                .withValidation(({dependent}) => ({
                     name: [Validators.required],
-                    age: [dependent(({ name }) => !name && Validators.required)],
+                    age: [dependent(({name}) => !name && Validators.required)],
                 }));
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             fg.controls.age.setValue(30);
 
             const value = fg.value;
 
-            expect(value).toEqual({ name: 'Lara Croft', age: 30 });
+            expect(value).toEqual({name: 'Lara Croft', age: 30});
         });
     });
 
@@ -140,8 +133,9 @@ describe('withType', () => {
                     public basic5: boolean | null,
                     public radio: string | null,
                     public file: File | null,
-                    public requiredFile: File,
-                ) {}
+                    public requiredFile: File
+                ) {
+                }
             }
 
             const fg = formGroup
@@ -176,7 +170,7 @@ describe('withType', () => {
                     file: null,
                     requiredFile: null,
                 })
-                .withValidation(({ dependent }) => ({
+                .withValidation(({dependent}) => ({
                     svnumber: [],
                     basicText: [],
                     basicTextWithNotice: [],
@@ -186,10 +180,10 @@ describe('withType', () => {
                     monthDate: [],
                     year: [
                         dependent(
-                            ({ birthDate, year }) =>
+                            ({birthDate, year}) =>
                                 year &&
                                 birthDate &&
-                                year < birthDate.getFullYear() && { yearMustBeAfterBirthDate: true },
+                                year < birthDate.getFullYear() && {yearMustBeAfterBirthDate: true}
                         ),
                     ],
                     basicCombobox: [],
@@ -219,4 +213,3 @@ describe('withType', () => {
         });
     });
 });
-

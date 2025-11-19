@@ -68,8 +68,6 @@ function sizeClassNames(size: Size) {
     ],
 })
 export class PuibeButtonDirective implements OnInit, OnDestroy {
-    private _elementRef = inject<ElementRef<HTMLButtonElement | HTMLAnchorElement>>(ElementRef);
-
     private _variantSubject = new BehaviorSubject<Variant>('secondary');
     private _sizeSubject = new BehaviorSubject<Size>('large');
     private _busySubject = new BehaviorSubject<boolean>(false);
@@ -138,7 +136,7 @@ export class PuibeButtonDirective implements OnInit, OnDestroy {
     @Input()
     disableSmoothAnimationTransform: boolean;
 
-    constructor() {
+    constructor(private _elementRef: ElementRef<HTMLButtonElement | HTMLAnchorElement>) {
         const clickCommandDirective = inject(PuiClickCommandDirective);
 
         effect(() => {

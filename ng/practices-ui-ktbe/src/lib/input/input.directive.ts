@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostBinding, HostListener, Input, OnInit, inject } from '@angular/core';
+import { Directive, ElementRef, HostBinding, HostListener, Input, OnInit, Self } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { DestroyService } from '@nexplore/practices-ui';
 import { takeUntil } from 'rxjs';
@@ -20,11 +20,6 @@ const invalidClassNames = 'border-red placeholder-shown:border-l-ktbe-6 placehol
     providers: [DestroyService],
 })
 export class PuibeInputDirective implements OnInit {
-    private _elementRef = inject<ElementRef<HTMLInputElement | HTMLTextAreaElement>>(ElementRef);
-    private _ngControl = inject(NgControl, { self: true });
-    private _formFieldService = inject(FormFieldService);
-    private _destroy$ = inject(DestroyService);
-
     @HostListener('blur')
     onBlur() {
         if (this._elementRef.nativeElement.type !== 'file') {
@@ -54,6 +49,13 @@ export class PuibeInputDirective implements OnInit {
 
     @HostBinding('class')
     className = className;
+
+    constructor(
+        private _elementRef: ElementRef<HTMLInputElement | HTMLTextAreaElement>,
+        @Self() private _ngControl: NgControl,
+        private _formFieldService: FormFieldService,
+        private _destroy$: DestroyService
+    ) {}
 
     ngOnInit() {
         this._formFieldService.registerNgControl(this._ngControl, this._elementRef.nativeElement);

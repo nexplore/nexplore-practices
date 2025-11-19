@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { getScrollParent } from './utils';
 
 export type ScrollPositionChange = { top: number; left: number };
@@ -8,8 +8,6 @@ export type ScrollPositionChange = { top: number; left: number };
     selector: '[puibeObserveScrollPosition]',
 })
 export class ObserveScrollPositionDirective implements OnInit, OnDestroy, AfterViewInit {
-    private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-
     /** Observes the position relative to the scroll parent, whenever scrolled */
     @Output()
     puibeObserveScrollPosition = new EventEmitter<ScrollPositionChange>();
@@ -18,6 +16,8 @@ export class ObserveScrollPositionDirective implements OnInit, OnDestroy, AfterV
     puibeObserveScrollPositionScrollParent: Element;
 
     scrollParent: Element | Document;
+
+    constructor(private elementRef: ElementRef<HTMLElement>) {}
 
     private checkScrollPosition = (): void => {
         const rect = this.elementRef.nativeElement.getBoundingClientRect();

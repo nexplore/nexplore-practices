@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { LocationStrategy } from '@angular/common';
 import { Router, ActivatedRouteSnapshot, Routes, Params } from '@angular/router';
 import {
@@ -13,9 +13,7 @@ import { PuibeMetaRoute } from './side-navigation/side-navigation.interface';
 
 @Injectable({ providedIn: 'root' })
 export class RouterUtilService {
-    private router = inject(Router);
-    private locationStrategy = inject(LocationStrategy);
-
+    constructor(private router: Router, private locationStrategy: LocationStrategy) {}
 
     /** Returns a list of route segments for the given url */
     getRoutesForUrl(

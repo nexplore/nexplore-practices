@@ -49,12 +49,12 @@ describe('withBuilder', () => {
             results.push(Object.keys(fg.controls));
 
             sourceSignal.set({ name: { value: 'Indiana Jones' }, age: { value: 40 } });
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(Object.keys(fg.controls));
 
             sourceSignal.set({ age: { value: 50 } });
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(Object.keys(fg.controls));
 
@@ -73,12 +73,12 @@ describe('withBuilder', () => {
             results.push(fg.value);
 
             sourceSignal.set({ name: { value: 'Indiana Jones' }, age: { value: 40 } });
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(fg.value);
 
             sourceSignal.set({ age: { value: 50 } });
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(fg.value);
 
@@ -94,10 +94,9 @@ describe('withBuilder', () => {
                 .withResetFromSignal(sourceSignal)
                 .withValidation({ name: [Validators.required] });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(fg.value.name).toEqual('Lara Croft');
         });
     });
 });
-

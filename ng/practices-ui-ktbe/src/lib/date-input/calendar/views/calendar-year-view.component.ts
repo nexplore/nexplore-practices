@@ -1,5 +1,5 @@
 import { A11yModule } from '@angular/cdk/a11y';
-
+import { NgIf, NgFor, NgClass } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -12,12 +12,12 @@ import {
     signal,
 } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { CalendarPeriodItem, CalendarPeriodRow } from '../../services/calendar-period.service';
 import { PuibeCalendarItemComponent } from '../presentation/calendar-item.component';
-
+import { CalendarPeriodItem, CalendarPeriodRow } from '../../services/calendar-period.service';
+import { PuibeCalendarRowLabelComponent } from '../presentation/calendar-row-label.component';
+import { PuibeCalendarToolbarItemDirective } from '../presentation/calendar-toolbar-item.directive';
 import { PuibeCalendarYearViewService } from '../../services/calendar-year-view.service';
 import { PuibeCalendarGridLayoutComponent } from '../presentation/calendar-grid-layout.component';
-import { PuibeCalendarToolbarItemDirective } from '../presentation/calendar-toolbar-item.directive';
 
 @Component({
     selector: 'puibe-calendar-year-view',
@@ -26,8 +26,12 @@ import { PuibeCalendarToolbarItemDirective } from '../presentation/calendar-tool
     standalone: true,
     imports: [
         PuibeCalendarItemComponent,
+        PuibeCalendarRowLabelComponent,
         PuibeCalendarGridLayoutComponent,
         PuibeCalendarToolbarItemDirective,
+        NgIf,
+        NgFor,
+        NgClass,
         TranslateModule,
         A11yModule,
     ],
@@ -50,7 +54,7 @@ export class PuibeCalendarYearViewComponent {
     readonly todayItemSignal = computed(() => this._findItemByDate(new Date()));
 
     readonly periodLabelSignal = computed(() =>
-        this._viewService.getYearRangeLabel(this.viewDateSignal().getFullYear()),
+        this._viewService.getYearRangeLabel(this.viewDateSignal().getFullYear())
     );
 
     @Input()
@@ -77,6 +81,7 @@ export class PuibeCalendarYearViewComponent {
     @Output()
     readonly clickItem = new EventEmitter<CalendarPeriodItem>();
 
+    trackByIndex = (i: number) => i;
     trackByShortLabel = (_: number, item: CalendarPeriodItem) => item.labelShort;
 
     isItemDisabled(item: CalendarPeriodItem) {
@@ -133,4 +138,3 @@ export class PuibeCalendarYearViewComponent {
         return null;
     }
 }
-

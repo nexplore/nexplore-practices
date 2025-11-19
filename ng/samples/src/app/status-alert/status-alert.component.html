@@ -1,50 +1,44 @@
-@if (success && !error) {
-  <div class="alert alert-success alert-app-level" role="alert">
+<div class="alert alert-success alert-app-level" role="alert" *ngIf="success && !error">
     <div class="alert-items">
-      <div class="alert-item static">
-        <span class="alert-text">
-          {{ getSuccessMessage() }}
-        </span>
-        <div class="alert-actions">
-          <button class="btn alert-action btn-icon" aria-label="Close" (click)="successDismissFn()">x</button>
+        <div class="alert-item static">
+            <span class="alert-text">
+                {{ getSuccessMessage() }}
+            </span>
+            <div class="alert-actions">
+                <button class="btn alert-action btn-icon" aria-label="Close" (click)="successDismissFn()">x</button>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-}
+</div>
 
-@if (error) {
-  <div class="alert alert-danger alert-app-level" role="alert">
+<div class="alert alert-danger alert-app-level" role="alert" *ngIf="error">
     <div class="alert-items">
-      <div class="alert-item static">
-        <span class="alert-text">
-          {{ getErrorMessage() }}
-        </span>
-        <div class="alert-actions">
-          <button class="btn alert-action btn-icon" aria-label="Close" (click)="errorDismissFn()">x</button>
+        <div class="alert-item static">
+            <span class="alert-text">
+                {{ getErrorMessage() }}
+            </span>
+            <div class="alert-actions">
+                <button class="btn alert-action btn-icon" aria-label="Close" (click)="errorDismissFn()">x</button>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-}
+</div>
 <div style="position: absolute; left: 97%; top: 10px">
-  @if (busy) {
-    <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#fff">
-      <g fill="none" fill-rule="evenodd">
-        <g transform="translate(1 1)" stroke-width="2">
-          <circle stroke-opacity=".5" cx="18" cy="18" r="18" />
-          <path d="M36 18c0-9.94-8.06-18-18-18">
-            <animateTransform
-              attributeName="transform"
-              type="rotate"
-              from="0 18 18"
-              to="360 18 18"
-              dur="1s"
-              repeatCount="indefinite"
-              />
-          </path>
+    <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#fff" *ngIf="busy">
+        <g fill="none" fill-rule="evenodd">
+            <g transform="translate(1 1)" stroke-width="2">
+                <circle stroke-opacity=".5" cx="18" cy="18" r="18" />
+                <path d="M36 18c0-9.94-8.06-18-18-18">
+                    <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 18 18"
+                        to="360 18 18"
+                        dur="1s"
+                        repeatCount="indefinite"
+                    />
+                </path>
+            </g>
         </g>
-      </g>
     </svg>
-  }
 </div>

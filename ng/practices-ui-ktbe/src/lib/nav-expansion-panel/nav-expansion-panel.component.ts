@@ -1,5 +1,20 @@
-import { CommonModule, NgClass } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, Output, QueryList, Renderer2, ViewChild, ViewChildren, inject } from '@angular/core';
+import { AsyncPipe, CommonModule, NgClass } from '@angular/common';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    EventEmitter,
+    HostBinding,
+    HostListener,
+    Input,
+    Output,
+    QueryList,
+    Renderer2,
+    ViewChild,
+    ViewChildren,
+} from '@angular/core';
 import { PuibeExpansionPanelComponent } from '../expansion-panel/expansion-panel.component';
 
 @Component({
@@ -7,12 +22,9 @@ import { PuibeExpansionPanelComponent } from '../expansion-panel/expansion-panel
     selector: 'puibe-nav-expansion-panel',
     templateUrl: './nav-expansion-panel.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [PuibeExpansionPanelComponent, CommonModule, NgClass],
+    imports: [AsyncPipe, PuibeExpansionPanelComponent, CommonModule, NgClass],
 })
 export class PuibeNavExpansionPanelComponent implements AfterViewInit {
-    private readonly renderer = inject(Renderer2);
-    private readonly cdr = inject(ChangeDetectorRef);
-
     @HostListener('window:resize', []) onWindowResize() {
         this.updateBar();
     }
@@ -43,6 +55,8 @@ export class PuibeNavExpansionPanelComponent implements AfterViewInit {
         this.updateBar();
         this.activeIndexChanged.emit(value);
     }
+
+    constructor(private readonly renderer: Renderer2, private readonly cdr: ChangeDetectorRef) {}
 
     ngAfterViewInit() {
         this.clearActive(); // Reset initially, so the bar has it's height and top set.

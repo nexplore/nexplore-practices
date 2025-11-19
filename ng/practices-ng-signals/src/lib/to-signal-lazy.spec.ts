@@ -38,7 +38,7 @@ describe('toSignalLazy', () => {
 
             // Emit value and read again
             subject.next(10);
-            TestBed.tick();
+            TestBed.flushEffects();
             results.push('value:' + signal());
 
             // Check subscriptions
@@ -75,7 +75,7 @@ describe('toSignalLazy', () => {
 
                 // Read to trigger subscription
                 signal();
-                TestBed.tick();
+                TestBed.flushEffects();
                 results.push('in-context:' + subscriptions.join(','));
             });
 
@@ -99,18 +99,18 @@ describe('toSignalLazy', () => {
 
             // Not read yet, so no subscription
             subject.next(5);
-            TestBed.tick();
+            TestBed.flushEffects();
 
             // First read - undefined because we missed the first emission
             results.push(signal());
 
             // Emit more values after subscription
             subject.next(10);
-            TestBed.tick();
+            TestBed.flushEffects();
             results.push(signal());
 
             subject.next(20);
-            TestBed.tick();
+            TestBed.flushEffects();
             results.push(signal());
 
             // Assert
@@ -136,10 +136,10 @@ describe('toSignalLazy', () => {
                 results.push('effect:' + mySignal());
             });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             hiddenDependencySignal.set('hidden'); // Change the hidden dependency
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual(['effect:expected']);
         });
@@ -162,14 +162,14 @@ describe('toSignalLazy', () => {
                 effect(() => lazyResults.push(lazySignal()));
                 effect(() => regularResults.push(regularSignal()));
 
-                TestBed.tick();
+                TestBed.flushEffects();
 
                 // Act - emit values
                 subject.next(100);
-                TestBed.tick();
+                TestBed.flushEffects();
 
                 subject.next(200);
-                TestBed.tick();
+                TestBed.flushEffects();
 
                 // Assert - should have identical behavior except lazy signal starts later
                 expect(lazyResults).toEqual([initialValue, 100, 200]);
@@ -231,17 +231,17 @@ describe('toSignalLazy', () => {
                 effect(() => lazyResults.push(lazySignal()));
                 effect(() => regularResults.push(regularSignal()));
 
-                TestBed.tick();
+                TestBed.flushEffects();
 
                 // Act - emit objects with same id but different values
                 subject.next({ id: 1, value: 'first' });
-                TestBed.tick();
+                TestBed.flushEffects();
 
                 subject.next({ id: 1, value: 'second' }); // Same id, should not trigger
-                TestBed.tick();
+                TestBed.flushEffects();
 
                 subject.next({ id: 2, value: 'third' }); // Different id, should trigger
-                TestBed.tick();
+                TestBed.flushEffects();
 
                 // Assert - both should filter based on custom equality
                 expect(lazyResults).toHaveLength(3); // undefined, first, third
@@ -279,11 +279,11 @@ describe('toSignalLazy', () => {
                 // Act
                 const lazySignal = toSignalLazy(lazyObservable, { injector: customInjector });
                 const regularSignal = toSignal(regularObservable, { injector: customInjector });
-
+                
                 // Trigger lazy subscription
                 lazySignal();
                 regularSignal();
-                TestBed.tick();
+                TestBed.flushEffects();
 
                 // Assert - regular signal should be subscribed, lazy signal should be subscribed after first read
                 expect(regularSubscriptions).toEqual(['subscribed']);
@@ -313,17 +313,17 @@ describe('toSignalLazy', () => {
                 effect(() => lazyResults.push(lazySignal()));
                 effect(() => regularResults.push(regularSignal()));
 
-                TestBed.tick();
+                TestBed.flushEffects();
 
                 // Act
                 subject.next('Hello');
-                TestBed.tick();
+                TestBed.flushEffects();
 
                 subject.next('HELLO'); // Should be considered equal
-                TestBed.tick();
+                TestBed.flushEffects();
 
                 subject.next('World');
-                TestBed.tick();
+                TestBed.flushEffects();
 
                 // Assert - should have identical behavior
                 expect(lazyResults).toEqual(['initial', 'Hello', 'World']);
@@ -368,4 +368,3 @@ describe('toSignalLazy', () => {
         });
     });
 });
-

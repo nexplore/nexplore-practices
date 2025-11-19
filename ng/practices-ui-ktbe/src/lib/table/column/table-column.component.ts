@@ -1,5 +1,13 @@
-import { AsyncPipe, NgClass } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, ViewChild, inject } from '@angular/core';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    HostBinding,
+    Input,
+    ViewChild,
+} from '@angular/core';
 import { DestroyService, OrderDirection } from '@nexplore/practices-ui';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { map, shareReplay, switchMap, takeUntil } from 'rxjs';
@@ -24,21 +32,17 @@ import {
     templateUrl: './table-column.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-    NgClass,
-    AsyncPipe,
-    TranslateModule,
-    PuibeIconArrowComponent,
-    PuibeIconSpinnerComponent,
-    A11yModule
-],
+        NgIf,
+        NgClass,
+        AsyncPipe,
+        TranslateModule,
+        PuibeIconArrowComponent,
+        PuibeIconSpinnerComponent,
+        A11yModule,
+    ],
     providers: [DestroyService],
 })
 export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterViewInit {
-    private _table = inject(PuibeTableComponent);
-    private _elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-    private _translate = inject(TranslateService);
-    private _destroy$ = inject(DestroyService);
-
     @HostBinding('class')
     className = ClassNames.TABLE_COLUMN;
 
@@ -113,6 +117,13 @@ export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterVie
     readonly sortDirLabel$ = this._column$.pipe(map((column) => this._translateSortDirLabel(column)));
 
     readonly clickToSortLabel$ = this._column$.pipe(map((column) => this._translateClickToSortLabel(column)));
+
+    constructor(
+        private _table: PuibeTableComponent,
+        private _elementRef: ElementRef<HTMLElement>,
+        private _translate: TranslateService,
+        private _destroy$: DestroyService
+    ) {}
 
     ngAfterViewInit(): void {
         setHostClassNames(

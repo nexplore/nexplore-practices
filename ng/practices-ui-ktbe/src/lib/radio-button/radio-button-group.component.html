@@ -1,95 +1,77 @@
-@if (!(isReadonly$ | async)) {
-  <div class="relative mt-5">
+<div *ngIf="!(isReadonly$ | async); else readonly" class="relative mt-5">
     <div
         [ngClass]="{
             'flex justify-between border py-4 pl-7 pr-4': !hideGroupBorder,
             'border-red': !hideGroupBorder && (displayAsInvalid$ | async),
             'border-dark-gray-50': !hideGroupBorder && !(displayAsInvalid$ | async)
         }"
-      >
-      <fieldset>
-        @if (!legendAsLabel) {
-          <legend class="my-[0.625rem] block text-base font-medium">
-            <span [ngClass]="{ 'sr-only': isLegendSrOnly }">{{ legend }}</span>
-            <span class="sr-only">{{ hint }}</span>
-          </legend>
-        }
-        @if (legendAsLabel) {
-          <legend
-            class="text-very-small absolute -top-5 left-6 translate-y-2 rounded-lg bg-white px-1 py-0.5"
-            [class.text-red]="displayAsInvalid$ | async"
-            [class.opacity-0]="hideGroupBorder"
+    >
+        <fieldset>
+            <legend *ngIf="!legendAsLabel" class="my-[0.625rem] block text-base font-medium">
+                <span [ngClass]="{ 'sr-only': isLegendSrOnly }">{{ legend }}</span>
+                <span class="sr-only">{{ hint }}</span>
+            </legend>
+            <legend
+                *ngIf="legendAsLabel"
+                class="text-very-small absolute -top-5 left-6 translate-y-2 rounded-lg bg-white px-1 py-0.5"
+                [class.text-red]="displayAsInvalid$ | async"
+                [class.opacity-0]="hideGroupBorder"
             >
-            <span [ngClass]="{ 'sr-only': isLegendSrOnly }">{{ legend }}</span>
-          </legend>
-        }
-        <div
-          class="flex flex-wrap"
+                <span [ngClass]="{ 'sr-only': isLegendSrOnly }">{{ legend }}</span>
+            </legend>
+
+            <div
+                class="flex flex-wrap"
                 [ngClass]="{
                     'flex-col': displayInline === false,
                     'gap-5': displayInline === false && gapVariant === 'large'
                 }"
-          >
-          <ng-content select="puibe-radio-button"></ng-content>
-          <ng-content></ng-content>
+            >
+                <ng-content select="puibe-radio-button"></ng-content>
+                <ng-content></ng-content>
+            </div>
+            <div *ngIf="hint" class="mb-2 mt-4 text-base font-light leading-tight" aria-hidden="true">
+                {{ hint }}
+            </div>
+        </fieldset>
+        <div class="ml-2 flex" aria-hidden="true" *ngIf="!hideGroupBorder">
+            <puibe-icon-invalid class="h-8 w-8" *ngIf="displayAsInvalid$ | async"></puibe-icon-invalid>
+            <puibe-icon-spinner class="h-8 w-8" *ngIf="pending$ | async"></puibe-icon-spinner>
         </div>
-        @if (hint) {
-          <div class="mb-2 mt-4 text-base font-light leading-tight" aria-hidden="true">
-            {{ hint }}
-          </div>
-        }
-      </fieldset>
-      @if (!hideGroupBorder) {
-        <div class="ml-2 flex" aria-hidden="true">
-          @if (displayAsInvalid$ | async) {
-            <puibe-icon-invalid class="h-8 w-8"></puibe-icon-invalid>
-          }
-          @if (pending$ | async) {
-            <puibe-icon-spinner class="h-8 w-8"></puibe-icon-spinner>
-          }
-        </div>
-      }
     </div>
-    @if (!hideGroupBorder && (isOptional$ | async)) {
-      <span
+    <span
         class="text-very-small absolute -top-5 right-3 translate-y-2 rounded-lg bg-white px-1 py-0.5"
         [class.text-red]="displayAsInvalid$ | async"
+        *ngIf="!hideGroupBorder && (isOptional$ | async)"
         aria-hidden="true"
-        >
+    >
         {{ 'Practices.Labels_Optional' | translate }}
-      </span>
-    }
+    </span>
     <div
-      [attr.id]="(name$ | async) + '-error'"
-      class="text-red text-very-small min-h-5 font-medium"
-      [attr.aria-live]="(dirty$ | async) ? 'assertive' : 'off'"
-      aria-atomic="true"
-      >
-      @for (error of errors$ | async; track error) {
-        <div>
-          {{ error.key | translate : error.param }}
+        [attr.id]="(name$ | async) + '-error'"
+        class="text-red text-very-small min-h-5 font-medium"
+        [attr.aria-live]="(dirty$ | async) ? 'assertive' : 'off'"
+        aria-atomic="true"
+    >
+        <div *ngFor="let error of errors$ | async">
+            {{ error.key | translate : error.param }}
         </div>
-      }
     </div>
     <span class="sr-only" aria-live="polite" aria-atomic="true">
-      @if (pending$ | async) {
-        <span>{{ 'Practices.Labels_Pending' | translate }}</span>
-      }
+        <span *ngIf="pending$ | async">{{ 'Practices.Labels_Pending' | translate }}</span>
     </span>
-  </div>
-} @else {
-  <puibe-readonly-label-value [label]="legend" [useSmallLabel]="useSmallTextForReadonlyLabel">
-    @if (labelOfSelectedRadio$ | async; as label) {
-      @if (label !== '') {
-        <span>{{ label }}</span>
-      }
-      @if (label === '') {
-        <span>{{
-          readonlyEmptyValuePlaceholder ?? ('Practices.Labels_Input_NoInputValue' | translate)
-        }}</span>
-      }
-    } @else {
-      {{ readonlyEmptyValuePlaceholder ?? ('Practices.Labels_Input_NoInputValue' | translate) }}
-    }
-  </puibe-readonly-label-value>
-}
+</div>
+<ng-template #readonly>
+    <puibe-readonly-label-value [label]="legend" [useSmallLabel]="useSmallTextForReadonlyLabel">
+        <ng-container *ngIf="labelOfSelectedRadio$ | async as label; else noEntry">
+            <span *ngIf="label !== ''">{{ label }}</span>
+            <span *ngIf="label === ''">{{
+                readonlyEmptyValuePlaceholder ?? ('Practices.Labels_Input_NoInputValue' | translate)
+            }}</span>
+        </ng-container>
+
+        <ng-template #noEntry>
+            {{ readonlyEmptyValuePlaceholder ?? ('Practices.Labels_Input_NoInputValue' | translate) }}
+        </ng-template>
+    </puibe-readonly-label-value>
+</ng-template>

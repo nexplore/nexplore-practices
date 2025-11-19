@@ -1,5 +1,16 @@
-import { AsyncPipe, NgClass } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, forwardRef, Injector, Input, OnDestroy, inject } from '@angular/core';
+import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    forwardRef,
+    Inject,
+    Injector,
+    Input,
+    OnDestroy,
+    Optional,
+} from '@angular/core';
 import {
     AbstractControl,
     ControlValueAccessor,
@@ -25,7 +36,7 @@ let nextUniqueId = 0;
     selector: 'puibe-checkbox',
     templateUrl: './checkbox.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, AsyncPipe, TranslateModule, PuibeReadonyLabelValueComponent],
+    imports: [NgClass, AsyncPipe, NgFor, TranslateModule, NgIf, PuibeReadonyLabelValueComponent],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -37,14 +48,6 @@ let nextUniqueId = 0;
     hostDirectives: [PuiFormFieldDirective],
 })
 export class PuibeCheckboxComponent implements ControlValueAccessor, AfterViewInit, OnDestroy {
-    private readonly _injector = inject(Injector);
-    private readonly _elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-    private readonly _formFieldService = inject(PuiFormFieldService);
-    private readonly _parent = inject(PuibeCheckboxGroupComponent, { optional: true });
-    private readonly _config = inject<FormConfig>(FORM_CONFIG, { optional: true });
-    private readonly _destroy$ = inject(DestroyService, { optional: true });
-    private readonly _readonlyDirective = inject(PuibeReadonlyDirective, { optional: true });
-
     private _ngControlSubject = new BehaviorSubject<NgControl>(null);
     private _innerControlSubject = new BehaviorSubject<AbstractControl>(null);
     private _onChange: (value: any) => void = null;
@@ -129,10 +132,15 @@ export class PuibeCheckboxComponent implements ControlValueAccessor, AfterViewIn
     isInGroup = false;
     groupId = null;
 
-    constructor() {
-        const _parent = this._parent;
-        const _destroy$ = this._destroy$;
-
+    constructor(
+        private readonly _injector: Injector,
+        private readonly _elementRef: ElementRef<HTMLElement>,
+        private readonly _formFieldService: PuiFormFieldService,
+        @Optional() private readonly _parent: PuibeCheckboxGroupComponent,
+        @Optional() @Inject(FORM_CONFIG) private readonly _config: FormConfig,
+        @Optional() private readonly _destroy$: DestroyService,
+        @Optional() private readonly _readonlyDirective: PuibeReadonlyDirective
+    ) {
         if (_parent != null) {
             this.isInGroup = true;
             this.groupId = _parent.id;

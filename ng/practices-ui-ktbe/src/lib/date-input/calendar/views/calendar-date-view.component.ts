@@ -1,5 +1,5 @@
 import { A11yModule } from '@angular/cdk/a11y';
-
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -34,6 +34,9 @@ import { PuibeCalendarToolbarItemDirective } from '../presentation/calendar-tool
         PuibeCalendarGridLayoutComponent,
         PuibeCalendarToolbarItemDirective,
         PuibeIconArrowComponent,
+        NgIf,
+        NgFor,
+        NgClass,
         TranslateModule,
         A11yModule,
     ],
@@ -67,7 +70,7 @@ export class PuibeCalendarDateViewComponent {
     readonly todayItemSignal = computed(() => this._findItemByDate(new Date()));
 
     readonly periodLabelSignal = computed(() =>
-        this._dateService.format(this.viewDateSignal(), DateFormat.MONTH_LONG_AND_YEAR),
+        this._dateService.format(this.viewDateSignal(), DateFormat.MONTH_LONG_AND_YEAR)
     );
 
     @Input()
@@ -103,6 +106,7 @@ export class PuibeCalendarDateViewComponent {
     @Output()
     readonly clickPeriodHeader = new EventEmitter<void>();
 
+    trackByIndex = (i: number) => i;
     trackByShortLabel = (_: number, item: CalendarPeriodItem) => item.labelShort;
 
     isItemDisabled(item: CalendarPeriodItem) {
@@ -203,4 +207,3 @@ export class PuibeCalendarDateViewComponent {
         return null;
     }
 }
-

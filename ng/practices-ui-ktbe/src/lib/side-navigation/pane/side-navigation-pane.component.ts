@@ -1,11 +1,11 @@
 import { AnimationTriggerMetadata, trigger, style, transition, animate } from '@angular/animations';
-
-import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, inject } from '@angular/core';
+import { NgClass, NgIf } from '@angular/common';
+import { Component, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PuibeIconArrowComponent } from '../../icons/icon-arrow.component';
 import { PuibeIconCloseComponent } from '../../icons/icon-close.component';
-
-
+import { PuibeIconHomeComponent } from '../../icons/icon-home.component';
+import { PuibeSideNavigationItemComponent } from '../item/side-navigation-item.component';
 import { A11yModule } from '@angular/cdk/a11y';
 
 export const panelExpansionAnimation: AnimationTriggerMetadata = trigger('sidePanelAnim', [
@@ -25,17 +25,20 @@ export const panelExpansionAnimation: AnimationTriggerMetadata = trigger('sidePa
     selector: 'puibe-side-navigation-pane',
     templateUrl: './side-navigation-pane.component.html',
     imports: [
-    TranslateModule,
-    TranslateModule,
-    PuibeIconCloseComponent,
-    PuibeIconArrowComponent,
-    A11yModule
-],
+        NgClass,
+        TranslateModule,
+        NgClass,
+        NgIf,
+        TranslateModule,
+        PuibeIconHomeComponent,
+        PuibeIconCloseComponent,
+        PuibeIconArrowComponent,
+        PuibeSideNavigationItemComponent,
+        A11yModule,
+    ],
     animations: [panelExpansionAnimation],
 })
 export class PuibeSideNavigationPaneComponent {
-    private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-
     @Input() heading: string;
 
     @Input() open: boolean;
@@ -54,6 +57,8 @@ export class PuibeSideNavigationPaneComponent {
     /** @internal For debugging and diagnostics only (Angular Dev tools)  */
     @Input()
     data: any;
+
+    constructor(private elementRef: ElementRef<HTMLElement>) {}
 
     close() {
         this.openChange.emit(false);

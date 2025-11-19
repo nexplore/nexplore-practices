@@ -1,4 +1,4 @@
-import { Directive, HostListener, Input, inject } from '@angular/core';
+import { Directive, HostListener, Input } from '@angular/core';
 
 import { PuibeFlyoutService } from './flyout.service';
 
@@ -7,8 +7,6 @@ import { PuibeFlyoutService } from './flyout.service';
     selector: 'button[puibeFlyoutFooterAction], a[puibeFlyoutFooterAction]',
 })
 export class PuibeFlyoutFooterActionDirective {
-    private readonly _puibeFlyoutService = inject(PuibeFlyoutService);
-
     @HostListener('click')
     onClick() {
         if (this.shouldClose) {
@@ -18,4 +16,6 @@ export class PuibeFlyoutFooterActionDirective {
 
     @Input()
     shouldClose = true;
+
+    constructor(private readonly _puibeFlyoutService: PuibeFlyoutService) {}
 }

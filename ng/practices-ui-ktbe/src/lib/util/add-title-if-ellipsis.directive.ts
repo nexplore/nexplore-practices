@@ -1,12 +1,11 @@
-import { AfterViewInit, Directive, ElementRef, inject } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef } from '@angular/core';
 
 @Directive({
     standalone: true,
     selector: '[puibeAddTitleIfEllipsis]',
 })
 export class PuibeAddTitleIfEllipsisDirective implements AfterViewInit {
-    private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-
+    constructor(private elementRef: ElementRef<HTMLElement>) {}
 
     ngAfterViewInit(): void {
         const element = this.elementRef.nativeElement;

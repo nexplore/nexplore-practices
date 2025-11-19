@@ -1,117 +1,104 @@
-@if (!(isReadonly$ | async)) {
-  <div class="relative mt-5">
+<div *ngIf="!(isReadonly$ | async); else readonly" class="relative mt-5">
     <ng-content select="label[puibeLabel]"></ng-content>
-    @if (overlayTextValue$ | async; as overlayTextValue) {
-      <div
+    <div
+        *ngIf="overlayTextValue$ | async as overlayTextValue"
         [ngClass]="overlayTextClassName$ | async"
         aria-hidden="true"
-        >
+    >
         {{ overlayTextValue }}
-      </div>
-    }
+    </div>
     <ng-content select="[puibeInput]"></ng-content>
     <ng-content select="[puibeNotice]"></ng-content>
     <div
-      [ngClass]="iconContainerClassName$ | async"
-      [attr.aria-hidden]="(customIconClickable$ | async) ? 'false' : 'true'"
-      >
-      @if (displayAsInvalid$ | async) {
-        <div [ngClass]="iconClassName">
-          <puibe-icon-invalid class="h-full w-full"></puibe-icon-invalid>
+        [ngClass]="iconContainerClassName$ | async"
+        [attr.aria-hidden]="(customIconClickable$ | async) ? 'false' : 'true'"
+    >
+        <div [ngClass]="iconClassName" *ngIf="displayAsInvalid$ | async">
+            <puibe-icon-invalid class="h-full w-full"></puibe-icon-invalid>
         </div>
-      }
-      @if (pending$ | async) {
-        <div [ngClass]="iconClassName">
-          <puibe-icon-spinner class="h-full w-full"></puibe-icon-spinner>
+        <div [ngClass]="iconClassName" *ngIf="pending$ | async">
+            <puibe-icon-spinner class="h-full w-full"></puibe-icon-spinner>
         </div>
-      }
-      @if (isClearable$ | async) {
         <button
-          type="button"
-          [attr.title]="'Practices.Labels_FormField_Clear_Title' | translate"
-          [attr.aria-label]="'Practices.Labels_FormField_Clear_AriaLabel' | translate"
-          [ngClass]="iconClassName"
-          class="pointer-events-auto scale-50 cursor-pointer"
-          (click)="onClear()"
-          >
-          <puibe-icon-close class="h-full w-full"></puibe-icon-close>
+            type="button"
+            [attr.title]="'Practices.Labels_FormField_Clear_Title' | translate"
+            [attr.aria-label]="'Practices.Labels_FormField_Clear_AriaLabel' | translate"
+            [ngClass]="iconClassName"
+            class="pointer-events-auto scale-50 cursor-pointer"
+            *ngIf="isClearable$ | async"
+            (click)="onClear()"
+        >
+            <puibe-icon-close class="h-full w-full"></puibe-icon-close>
         </button>
-      }
-      @if (showCustomIcon$ | async) {
-        @if (customIconClassName$ | async; as iconClassName) {
-          @if (customIconClickable$ | async) {
-            <button
-              type="button"
-              [attr.title]="customIconTitle$ | async"
-              [attr.aria-label]="customIconTitle$ | async"
-              [ngClass]="iconClassName"
-              data-form-field-icon-btn
-              (click)="onIconClick($event)"
-              >
-              <ng-container *ngComponentOutlet="iconComponent$ | async; inputs: { size: 'fit' }"></ng-container>
-            </button>
-          }
-          @if (!(customIconClickable$ | async)) {
-            <div
-              [ngClass]="iconClassName"
-              [attr.title]="customIconTitle$ | async"
-              [attr.aria-label]="customIconTitle$ | async"
-              >
-              <ng-container *ngComponentOutlet="iconComponent$ | async"></ng-container>
-            </div>
-          }
-        }
-      }
+        <ng-container *ngIf="showCustomIcon$ | async">
+            <ng-container *ngIf="customIconClassName$ | async as iconClassName">
+                <button
+                    type="button"
+                    *ngIf="customIconClickable$ | async"
+                    [attr.title]="customIconTitle$ | async"
+                    [attr.aria-label]="customIconTitle$ | async"
+                    [ngClass]="iconClassName"
+                    data-form-field-icon-btn
+                    (click)="onIconClick($event)"
+                >
+                    <ng-container *ngComponentOutlet="iconComponent$ | async; inputs: { size: 'fit' }"></ng-container>
+                </button>
+                <div
+                    *ngIf="!(customIconClickable$ | async)"
+                    [ngClass]="iconClassName"
+                    [attr.title]="customIconTitle$ | async"
+                    [attr.aria-label]="customIconTitle$ | async"
+                >
+                    <ng-container *ngComponentOutlet="iconComponent$ | async"></ng-container>
+                </div>
+            </ng-container>
+        </ng-container>
     </div>
-    @if ({
-      isCustomIconFilled: isCustomIconFilled$ | async,
-      displayAsInvalid: displayAsInvalid$ | async,
-      isOptional: isOptional$ | async
-      }; as context) {
-      @if (context.isOptional) {
+    <ng-container
+        *ngIf="{
+            isCustomIconFilled: isCustomIconFilled$ | async,
+            displayAsInvalid: displayAsInvalid$ | async,
+            isOptional: isOptional$ | async
+        } as context"
+    >
         <span
-          class="text-very-small absolute -top-5 z-10 translate-y-2 rounded-lg bg-white px-1 py-0.5"
-          [ngClass]="{ 'right-[75px]': context.isCustomIconFilled, 'right-3': !context.isCustomIconFilled }"
-          [class.text-red]="context.displayAsInvalid"
-          aria-hidden="true"
-          >
-          {{ 'Practices.Labels_Optional' | translate }}
+            class="text-very-small absolute -top-5 z-10 translate-y-2 rounded-lg bg-white px-1 py-0.5"
+            [ngClass]="{ 'right-[75px]': context.isCustomIconFilled, 'right-3': !context.isCustomIconFilled }"
+            [class.text-red]="context.displayAsInvalid"
+            *ngIf="context.isOptional"
+            aria-hidden="true"
+        >
+            {{ 'Practices.Labels_Optional' | translate }}
         </span>
-      }
-    }
+    </ng-container>
     <ng-content select="[slot='below-input']"/>
     <div
-      [attr.id]="(id$ | async) + '-error'"
-      class="text-red text-very-small min-h-5 pt-[3px] font-medium"
-      [attr.aria-live]="(dirty$ | async) ? 'assertive' : 'off'"
-      aria-atomic="true"
-      >
-      @for (error of errors$ | async; track error) {
-        <div>
-          {{ error.key | translate : error.param }}
+        [attr.id]="(id$ | async) + '-error'"
+        class="text-red text-very-small min-h-5 pt-[3px] font-medium"
+        [attr.aria-live]="(dirty$ | async) ? 'assertive' : 'off'"
+        aria-atomic="true"
+    >
+        <div *ngFor="let error of errors$ | async">
+            {{ error.key | translate : error.param }}
         </div>
-      }
     </div>
     <span [attr.id]="(id$ | async) + '-description'" class="sr-only">{{ ariaDescription$ | async }}</span>
     <span class="sr-only" aria-live="polite" aria-atomic="true">
-      @if (pending$ | async) {
-        <span>{{ 'Practices.Labels_Pending' | translate }}</span>
-      }
+        <span *ngIf="pending$ | async">{{ 'Practices.Labels_Pending' | translate }}</span>
     </span>
     <ng-content></ng-content>
-  </div>
-} @else {
-  <puibe-readonly-label-value [label]="labelString" [useSmallLabel]="useSmallTextForReadonlyLabel">
-    @if (ngControlValue$ | async; as value) {
-      @if (value || value === 0) {
-        <ng-content select="[slot='readonly-prefix']"/>
-        {{ value }}
-        <ng-content select="[slot='readonly-postfix']"/>
-      } @else {
-        {{ readonlyEmptyValuePlaceholder ?? ('Practices.Labels_Input_NoInputValue' | translate) }}
-      }
-    } @else {
-      {{ readonlyEmptyValuePlaceholder ?? ('Practices.Labels_Input_NoInputValue' | translate) }}
-    }
-  </puibe-readonly-label-value>
-}
+</div>
+<ng-template #readonly>
+    <puibe-readonly-label-value [label]="labelString" [useSmallLabel]="useSmallTextForReadonlyLabel">
+        <ng-container *ngIf="ngControlValue$ | async as value; else noEntry">
+            <ng-container *ngIf="value || value === 0; else noEntry">
+                <ng-content select="[slot='readonly-prefix']"/>
+                {{ value }}
+                <ng-content select="[slot='readonly-postfix']"/>
+            </ng-container>
+        </ng-container>
+        <ng-template #noEntry>
+            {{ readonlyEmptyValuePlaceholder ?? ('Practices.Labels_Input_NoInputValue' | translate) }}
+        </ng-template>
+    </puibe-readonly-label-value>
+</ng-template>

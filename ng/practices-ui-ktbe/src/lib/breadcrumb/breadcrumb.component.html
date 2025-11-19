@@ -1,32 +1,30 @@
 <div role="list" class="flex items-center gap-3">
-  @if (useRouterConfig) {
-    @if (routePath$ | async; as routePath) {
-      @for (route of routePath; let first = $first; let last = $last; track route) {
-        @if (((first && alwaysShowHome) || (getLocalizedTitle$(route) | async) ) &&  (!hideCurrentlyActiveItem || !route.active)) {
-          <puibe-breadcrumb-item
-            [routerLink]="route.pathFromRoot ?? route.path"
-            [href]="route.data?.link?.href"
-            [rel]="route.data?.link?.rel"
-            [target]="route.data?.link?.target"
+    <ng-container *ngIf="useRouterConfig">
+        <ng-container *ngIf="routePath$ | async as routePath">
+            @for (route of routePath; let first = $first; let last = $last; track route) {
+            <puibe-breadcrumb-item
+                *ngIf="((first && alwaysShowHome) || (getLocalizedTitle$(route) | async) ) &&  (!hideCurrentlyActiveItem || !route.active)"
+                [routerLink]="route.pathFromRoot ?? route.path"
+                [href]="route.data?.link?.href"
+                [rel]="route.data?.link?.rel"
+                [target]="route.data?.link?.target"
                 [hasHomeIcon]="
                     route.data?.breadcrumb?.showAsHomeIcon ||
                     (first && ['/', ''].includes(route.pathFromRoot ?? route.path))
                 "
-            [shouldOpenSideNav]="route.data?.breadcrumb?.clickOpensSideNav"
-            [active]="route.active || (last && !first)"
-            [ariaCurrent]="route.active || (last && !first) ? 'page' : undefined"
-            [routerConfig]="routerConfig"
-            [data]="route"
+                [shouldOpenSideNav]="route.data?.breadcrumb?.clickOpensSideNav"
+                [active]="route.active || (last && !first)"
+                [ariaCurrent]="route.active || (last && !first) ? 'page' : undefined"
+                [routerConfig]="routerConfig"
+                [data]="route"
             >
-            @if (!route.data?.breadcrumb?.showAsHomeIcon) {
-              {{
-              getLocalizedTitle$(route) | async
-              }}
+                <ng-container *ngIf="!route.data?.breadcrumb?.showAsHomeIcon">{{
+                        getLocalizedTitle$(route) | async
+                    }}
+                </ng-container>
+            </puibe-breadcrumb-item>
             }
-          </puibe-breadcrumb-item>
-        }
-      }
-    }
-  }
-  <ng-content></ng-content>
+        </ng-container>
+    </ng-container>
+    <ng-content></ng-content>
 </div>

@@ -1,5 +1,5 @@
-import { AsyncPipe } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, combineLatest, map, takeUntil, tap } from 'rxjs';
@@ -11,13 +11,10 @@ import { PuibeTableComponent } from '../table.component';
     standalone: true,
     selector: 'puibe-table-pagination-infinite-scroll',
     templateUrl: './table-pagination-infinite-scroll.component.html',
-    imports: [AsyncPipe, TranslateModule, PuibeIconSpinnerComponent],
+    imports: [NgIf, AsyncPipe, TranslateModule, PuibeIconSpinnerComponent],
     providers: [DestroyService],
 })
 export class PuibeTablePaginationInfiniteScrollComponent implements OnInit, AfterViewInit, OnDestroy {
-    private _table = inject(PuibeTableComponent);
-    private _destroy$ = inject(DestroyService);
-
     @Input()
     pageSize: number = DEFAULT_PAGE_SIZE;
 
@@ -42,6 +39,8 @@ export class PuibeTablePaginationInfiniteScrollComponent implements OnInit, Afte
     );
 
     readonly tableNoItems$ = this._table.noItems$;
+
+    constructor(private _table: PuibeTableComponent, private _destroy$: DestroyService) {}
 
     ngOnInit() {
         // Hook up with view source -> to reset prefetched in case the params get updated.

@@ -1,4 +1,4 @@
-import { describe, expect, it, jest } from '@jest/globals';
+import { expect, describe, it } from '@jest/globals';
 import { compareUrlWithWildcards, isDefinedAndNotEmptyArray, splitArrayChunks, trimChars } from './utils';
 
 describe('trimChars', () => {

@@ -11,13 +11,13 @@ describe('validateConditional', () => {
             const isRequiredSignal = signal(false);
             const formControl = new FormControl(
                 null,
-                validateConditional(() => isRequiredSignal() && Validators.required),
+                validateConditional(() => isRequiredSignal() && Validators.required)
             );
-            TestBed.tick();
+            TestBed.flushEffects();
             results.push(formControl.hasValidator(Validators.required));
 
             isRequiredSignal.set(true);
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(formControl.hasValidator(Validators.required));
         });
@@ -31,23 +31,23 @@ describe('validateConditional', () => {
             const validator = validateConditional(() => isRequiredSignal() && Validators.required);
             const formControl1 = new FormControl(null, validator);
             const formControl2 = new FormControl(null, validator);
-            TestBed.tick();
+            TestBed.flushEffects();
             results.push(
-                formControl1.hasValidator(Validators.required) && formControl2.hasValidator(Validators.required),
+                formControl1.hasValidator(Validators.required) && formControl2.hasValidator(Validators.required)
             );
 
             isRequiredSignal.set(true);
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(
-                formControl1.hasValidator(Validators.required) && formControl2.hasValidator(Validators.required),
+                formControl1.hasValidator(Validators.required) && formControl2.hasValidator(Validators.required)
             );
 
             isRequiredSignal.set(false);
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(
-                formControl1.hasValidator(Validators.required) && formControl2.hasValidator(Validators.required),
+                formControl1.hasValidator(Validators.required) && formControl2.hasValidator(Validators.required)
             );
         });
         expect(results).toEqual([false, true, false]);
@@ -70,24 +70,24 @@ describe('validateDependent', () => {
 
             const formControl = new FormControl(
                 null,
-                validateDependent(formGroupSignal, ({ testControl }) => testControl && Validators.required),
+                validateDependent(formGroupSignal, ({ testControl }) => testControl && Validators.required)
             );
 
-            TestBed.tick();
+            TestBed.flushEffects();
             results.push(formControl.hasValidator(Validators.required));
 
             formGroupSignal.set(formGroup2);
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(formControl.hasValidator(Validators.required));
 
             formGroup1.controls.testControl.setValue(true);
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(formControl.hasValidator(Validators.required));
 
             formGroup2.controls.testControl.setValue(false);
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(formControl.hasValidator(Validators.required));
         });
@@ -95,4 +95,3 @@ describe('validateDependent', () => {
         expect(results).toEqual([false, true, true, false]);
     });
 });
-

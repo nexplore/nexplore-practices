@@ -18,19 +18,15 @@
     <ng-content select="[slot='left']" ngProjectAs="[slot='left-after']"></ng-content>
     <ng-content select="[slot='right']" ngProjectAs="[slot='right']"></ng-content>
 
-    @for (row of dateRowsSignal(); track $index) {
-        <div class="flex shrink-0 grow basis-0 gap-1">
-            @for (item of row.items; track trackByShortLabel($index, item)) {
-                <puibe-calendar-item
-                    [periodItem]="item"
-                    [selected]="item === selectedItemSignal()"
-                    [focused]="item === focusedItemSignal()"
-                    [today]="item === todayItemSignal()"
-                    [disabled]="isItemDisabled(item)"
-                    (click)="clickItem.emit(item)"
-                ></puibe-calendar-item>
-            }
-        </div>
-    }
+    <div class="flex shrink-0 grow basis-0 gap-1" *ngFor="let row of dateRowsSignal(); trackBy: trackByIndex">
+        <puibe-calendar-item
+            *ngFor="let item of row.items; trackBy: trackByShortLabel"
+            [periodItem]="item"
+            [selected]="item === selectedItemSignal()"
+            [focused]="item === focusedItemSignal()"
+            [today]="item === todayItemSignal()"
+            [disabled]="isItemDisabled(item)"
+            (click)="clickItem.emit(item)"
+        ></puibe-calendar-item>
+    </div>
 </puibe-calendar-grid-layout>
-

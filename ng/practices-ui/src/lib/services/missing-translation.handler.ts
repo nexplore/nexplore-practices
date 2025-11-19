@@ -1,4 +1,4 @@
-import { Injectable, InjectionToken, inject } from '@angular/core';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { MissingTranslationHandler, MissingTranslationHandlerParams } from '@ngx-translate/core';
 
 /**
@@ -40,8 +40,9 @@ export const REWRITE_RESOURCE_CONFIG = new InjectionToken<RewriteResourceConfig>
 
 @Injectable()
 export class RewriteMissingTranslationHandler extends MissingTranslationHandler {
-    private readonly _rewriteConfigs = inject<RewriteResourceConfig>(REWRITE_RESOURCE_CONFIG);
-
+    public constructor(@Inject(REWRITE_RESOURCE_CONFIG) private readonly _rewriteConfigs?: RewriteResourceConfig) {
+        super();
+    }
 
     public override handle(params: MissingTranslationHandlerParams) {
         const rewriteConfig = this._rewriteConfigs?.rewriteTypeConfig;

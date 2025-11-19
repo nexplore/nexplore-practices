@@ -4,22 +4,4 @@
   "editor.codeActionsOnSave": {
       "source.organizeImports": "explicit"
   },
-
-  "files.associations": {
-    "**/practices-ui-ktbe/**/*.css": "tailwindcss",
-    "**/samples-ktbe/**/*.css": "tailwindcss",
-    "**/*-tailwind/**/*.css": "tailwindcss"
-  },
-
-  "tailwindCSS.classAttributes": [
-    "class",
-    "className",
-    "ngClass",
-    "class:list"
-  ],
-  "tailwindCSS.experimental.classRegex": [
-      "\\[class\\.([^\\]]*)",
-      "\\w+Class\\w+=\\w+[\"']([^\"']*)",
-      "\\w+ClassNames?\\s*=\\s*[\"'`]([^\"'`]*)",
-  ],
 }

@@ -1,4 +1,15 @@
-import { AfterViewInit, Directive, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnInit, Output, Renderer2, inject } from '@angular/core';
+import {
+    AfterViewInit,
+    Directive,
+    ElementRef,
+    EventEmitter,
+    HostBinding,
+    HostListener,
+    Input,
+    OnInit,
+    Output,
+    Renderer2,
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import { setHostAttr, setHostClassNames } from '../util/utils';
@@ -16,10 +27,6 @@ const inactiveClassNames =
     selector: 'button[puibeHeaderLanguageMenuItem]',
 })
 export class PuibeHeaderLanguageMenuItemDirective implements OnInit, AfterViewInit {
-    private _elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-    private _renderer = inject(Renderer2);
-    private _translateService = inject(TranslateService);
-
     @HostListener('click')
     onClick() {
         if (!this.isActive) {
@@ -57,6 +64,11 @@ export class PuibeHeaderLanguageMenuItemDirective implements OnInit, AfterViewIn
     get language(): PuibeLocale {
         return this._language;
     }
+    constructor(
+        private _elementRef: ElementRef<HTMLElement>,
+        private _renderer: Renderer2,
+        private _translateService: TranslateService
+    ) {}
 
     ngOnInit(): void {
         this.renderSeparator();

@@ -1,5 +1,5 @@
 import { compareObjShallow } from './util';
-import { describe, expect, it, jest } from '@jest/globals';
+import { describe, expect, it } from '@jest/globals';
 
 describe('compareObjShallow', () => {
     it('should ignore functions', () => {

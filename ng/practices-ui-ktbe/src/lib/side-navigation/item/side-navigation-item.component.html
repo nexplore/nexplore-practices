@@ -1,6 +1,6 @@
 <!-- TODO: For some reason, anchor with href does ignore mouseclick? -->
-@if (href) {
-  <a
+<a
+    *ngIf="href; else routerLinkTmpl"
     [attr.href]="href"
     [attr.target]="target ?? '_self'"
     [attr.rel]="rel ?? ''"
@@ -19,35 +19,38 @@
     [attr.aria-expanded]="expanded ? 'true' : 'false'"
     class="text-h6 group relative flex w-full items-center justify-between py-4 no-underline outline-none"
     data-nav-btn
-    >
+>
     <ng-container *ngTemplateOutlet="linkContent"></ng-container>
-  </a>
-} @else {
-  @if (routerLink !== undefined && routerLink !== null) {
+</a>
+
+<ng-template #routerLinkTmpl>
     <a
-      [routerLink]="routerLink === '' ? '/' : routerLink"
-      [routerLinkActive]="'router-link-active'"
-      (isActiveChange)="isRouteActive = $event"
+        *ngIf="routerLink !== undefined && routerLink !== null; else noLink"
+        [routerLink]="routerLink === '' ? '/' : routerLink"
+        [routerLinkActive]="'router-link-active'"
+        (isActiveChange)="isRouteActive = $event"
         [ngClass]="{
             'font-light hover:text-black': !expanded && !active && !isRouteActive,
             'text-red': expanded || active || isRouteActive,
             'bg-light-sand font-medium': active || isRouteActive,
             'font-normal': expanded
         }"
-      [routerLinkActiveOptions]="{ exact: true }"
-      (click)="activate.emit($event)"
-      (keyup.space)="activate.emit($event)"
-      (keyup.enter)="activate.emit($event)"
-      [autofocus]="autofocus"
-      [attr.cdkFocusInitial]="autofocus ? '' : undefined"
-      [ariaCurrent]="active || isRouteActive ? 'page' : undefined"
-      [attr.aria-expanded]="expanded ? 'true' : 'false'"
-      class="text-h6 group relative flex w-full items-center justify-between py-4 no-underline outline-none"
-      data-nav-btn
-      >
-      <ng-container *ngTemplateOutlet="linkContent"></ng-container>
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="activate.emit($event)"
+        (keyup.space)="activate.emit($event)"
+        (keyup.enter)="activate.emit($event)"
+        [autofocus]="autofocus"
+        [attr.cdkFocusInitial]="autofocus ? '' : undefined"
+        [ariaCurrent]="active || isRouteActive ? 'page' : undefined"
+        [attr.aria-expanded]="expanded ? 'true' : 'false'"
+        class="text-h6 group relative flex w-full items-center justify-between py-4 no-underline outline-none"
+        data-nav-btn
+    >
+        <ng-container *ngTemplateOutlet="linkContent"></ng-container>
     </a>
-  } @else {
+</ng-template>
+
+<ng-template #noLink>
     <button
         [ngClass]="{
             'font-light hover:text-black': !expanded && !active && !isRouteActive,
@@ -55,41 +58,35 @@
             'bg-light-sand font-medium': active || isRouteActive,
             'font-normal': expanded
         }"
-      (click)="activate.emit($event)"
-      (keyup.space)="activate.emit($event)"
-      (keyup.enter)="activate.emit($event)"
-      [autofocus]="autofocus"
-      [attr.cdkFocusInitial]="autofocus ? '' : undefined"
-      [ariaCurrent]="active || isRouteActive ? 'page' : undefined"
-      [attr.aria-expanded]="expanded ? 'true' : 'false'"
-      class="text-h6 group relative flex w-full items-center justify-between py-4 text-left no-underline outline-none"
-      data-nav-btn
-      >
-      <ng-container *ngTemplateOutlet="linkContent"></ng-container>
+        (click)="activate.emit($event)"
+        (keyup.space)="activate.emit($event)"
+        (keyup.enter)="activate.emit($event)"
+        [autofocus]="autofocus"
+        [attr.cdkFocusInitial]="autofocus ? '' : undefined"
+        [ariaCurrent]="active || isRouteActive ? 'page' : undefined"
+        [attr.aria-expanded]="expanded ? 'true' : 'false'"
+        class="text-h6 group relative flex w-full items-center justify-between py-4 text-left no-underline outline-none"
+        data-nav-btn
+    >
+        <ng-container *ngTemplateOutlet="linkContent"></ng-container>
     </button>
-  }
-}
-
-
+</ng-template>
 
 <ng-template #linkContent>
-  @if (active || isRouteActive) {
-    <div class="bg-red absolute bottom-0 top-0 w-[6px]"></div>
-  }
-  <span class="flex-grow basis-full overflow-hidden text-ellipsis px-10">
-    <span
-      class="inline-block after:block after:scale-x-0 after:border-b after:transition-all after:duration-300 after:ease-in-out group-hover:after:scale-x-100 group-focus:after:scale-x-100 group-active:after:scale-x-100"
+    <div *ngIf="active || isRouteActive" class="bg-red absolute bottom-0 top-0 w-[6px]"></div>
+    <span class="flex-grow basis-full overflow-hidden text-ellipsis px-10">
+        <span
+            class="inline-block after:block after:scale-x-0 after:border-b after:transition-all after:duration-300 after:ease-in-out group-hover:after:scale-x-100 group-focus:after:scale-x-100 group-active:after:scale-x-100"
             [ngClass]="{
                 'after:border-b-red': active || isRouteActive
             }"
-      ><ng-content></ng-content
-    ></span>
-  </span>
+            ><ng-content></ng-content
+        ></span>
+    </span>
 
-  @if (canExpand) {
     <puibe-icon-arrow-breadcrumb
-      class="duration-400 mr-8 flex h-6 w-6 shrink-0 basis-6 items-center justify-self-end transition-all ease-in-out group-hover:translate-x-2"
-      [ngClass]="{ 'fill-red': expanded }"
+        class="duration-400 mr-8 flex h-6 w-6 shrink-0 basis-6 items-center justify-self-end transition-all ease-in-out group-hover:translate-x-2"
+        [ngClass]="{ 'fill-red': expanded }"
+        *ngIf="canExpand"
     ></puibe-icon-arrow-breadcrumb>
-  }
 </ng-template>

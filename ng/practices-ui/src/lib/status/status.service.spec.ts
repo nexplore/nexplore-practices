@@ -1,4 +1,3 @@
-import { TestBed } from '@angular/core/testing';
 import { describe, expect, it, jest } from '@jest/globals';
 import { distinctUntilChanged, first, firstValueFrom, shareReplay, Subject, take, timer } from 'rxjs';
 import { LegacyCommand } from '../command';
@@ -20,7 +19,7 @@ describe('StatusService', () => {
                 .mockImplementation((observable) =>
                     observable.subscribe((n) => {
                         statusHubSubject.next(n);
-                    }),
+                    })
                 )
                 .mockName('statusHub.register()');
             const statusService = new StatusService(statusHub);
@@ -41,7 +40,7 @@ describe('StatusService', () => {
                 .mockImplementation((observable) =>
                     observable.subscribe((n) => {
                         statusHubSubject.next(n);
-                    }),
+                    })
                 )
                 .mockName('statusHub.register()');
             const statusService = new StatusService(statusHub);
@@ -66,7 +65,7 @@ describe('StatusService', () => {
                 .mockImplementation((observable) =>
                     observable.subscribe((n) => {
                         statusHubSubject.next(n);
-                    }),
+                    })
                 )
                 .mockName('statusHub.register()');
             const statusService = new StatusService(statusHub);
@@ -146,7 +145,7 @@ describe('StatusService', () => {
                         if (n.error && statusErrors.at(-1) !== n.error) {
                             statusErrors.push(n.error);
                         }
-                    }),
+                    })
                 )
                 .mockName('statusHub.register()');
             const statusService = new StatusService(statusHub);

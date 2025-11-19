@@ -360,11 +360,11 @@ describe('createCommandWithSignalsAndStatus', () => {
                 results.push(cmd.errorSignal());
             });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             cmd.trigger();
 
-            TestBed.tick();
+            TestBed.flushEffects();
         });
         expect(results).toEqual([undefined, new Error('error')]);
     });
@@ -381,11 +381,11 @@ describe('createCommandWithSignalsAndStatus', () => {
                 results.push(result);
             });
 
-            TestBed.tick();
+            TestBed.flushEffects();
             cmd.trigger();
-            TestBed.tick();
+            TestBed.flushEffects();
             subject.complete();
-            TestBed.tick();
+            TestBed.flushEffects();
         });
 
         expect(results).toEqual([false, true, false]);
@@ -403,7 +403,7 @@ describe('createCommandWithSignalsAndStatus', () => {
             });
 
             cmd.trigger();
-            TestBed.tick();
+            TestBed.flushEffects();
         });
 
         expect(results).toEqual([1]);
@@ -419,7 +419,7 @@ describe('createCommandWithSignalsAndStatus', () => {
                         .pipe(
                             finalize(() => results.push('completed')),
                             map((ev) => ev.busy),
-                            distinctUntilChanged(),
+                            distinctUntilChanged()
                         )
                         .subscribe((busy) => results.push(busy)),
             },
@@ -450,7 +450,7 @@ describe('createCommandWithSignalsAndStatus', () => {
                         .pipe(
                             finalize(() => results.push('completed')),
                             map((ev) => ev.error),
-                            distinctUntilChanged(),
+                            distinctUntilChanged()
                         )
                         .subscribe((err) => results.push(err)),
             },
@@ -469,4 +469,3 @@ describe('createCommandWithSignalsAndStatus', () => {
         expect(results).toEqual([undefined, new Error('error'), 'completed']);
     });
 });
-

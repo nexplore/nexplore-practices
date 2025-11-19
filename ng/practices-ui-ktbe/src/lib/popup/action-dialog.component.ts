@@ -1,5 +1,5 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-
+import { NgFor, NgIf } from '@angular/common';
 import { Component, inject, Injector, Input, model, runInInjectionContext } from '@angular/core';
 import { Command, command, isCommand } from '@nexplore/practices-ng-commands';
 import { CombinedCommandInput } from '@nexplore/practices-ui';
@@ -20,17 +20,19 @@ import { PuibeModalComponent } from './modal.component';
     standalone: true,
     templateUrl: './action-dialog.component.html',
     imports: [
-    PuibeModalComponent,
-    PuibeModalContentDirective,
-    PuibeModalTitleDirective,
-    PuibeModalSubtitleDirective,
-    PuibeModalFooterActionDirective,
-    PuibeButtonDirective,
-    TranslateModule,
-    PuibeIconSpinnerComponent,
-    DialogTemplateContentComponent,
-    PuibeHideIfEmptyTextDirective
-],
+        PuibeModalComponent,
+        PuibeModalContentDirective,
+        PuibeModalTitleDirective,
+        PuibeModalSubtitleDirective,
+        PuibeModalFooterActionDirective,
+        PuibeButtonDirective,
+        NgFor,
+        NgIf,
+        TranslateModule,
+        PuibeIconSpinnerComponent,
+        DialogTemplateContentComponent,
+        PuibeHideIfEmptyTextDirective,
+    ],
 })
 export class ActionDialogComponent<TAction extends PuibeDialogActionTemplate<any, TDialogData>, TDialogData = unknown> {
     private readonly _injector = inject(Injector);

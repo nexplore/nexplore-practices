@@ -4,10 +4,8 @@
 <button class="btn btn-primary" (click)="attach()">1. Attach to ListDataView</button>
 
 <p>
-  Last requested api url:
-  @if (lastRequestedApiUrl) {
-    <code class="language-html">{{ lastRequestedApiUrl }}</code>
-  }
+    Last requested api url:
+    <code class="language-html" *ngIf="lastRequestedApiUrl">{{ lastRequestedApiUrl }}</code>
 </p>
 <br />
 

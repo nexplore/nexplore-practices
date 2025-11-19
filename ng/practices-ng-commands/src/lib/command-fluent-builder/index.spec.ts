@@ -96,7 +96,7 @@ describe('command', () => {
                 TestBed.runInInjectionContext(() => {
                     const handler = jest.fn<() => void>();
                     const _cmd = command.query.withAutoTrigger(handler);
-                    TestBed.tick();
+                    TestBed.flushEffects();
                     expect(handler).toHaveBeenCalled();
                 });
             });
@@ -105,7 +105,7 @@ describe('command', () => {
                 TestBed.runInInjectionContext(() => {
                     const handler = () => 1;
                     const cmd = command.query.withAutoTrigger(handler);
-                    TestBed.tick();
+                    TestBed.flushEffects();
                     expect(cmd.result).toBeDefined();
                 });
             });
@@ -116,7 +116,7 @@ describe('command', () => {
                     const subject = new Subject<number>();
                     const handler = () => subject;
                     const cmd = command.query.withAutoTrigger(handler);
-                    TestBed.tick();
+                    TestBed.flushEffects();
                     results.push(cmd.result);
                     subject.next(1);
 
@@ -130,7 +130,7 @@ describe('command', () => {
                     const subject = new Subject<void>();
                     const handler = jest.fn(() => subject);
                     const cmd = command.query.withAutoTrigger(handler);
-                    TestBed.tick();
+                    TestBed.flushEffects();
                     cmd.trigger();
                     cmd.trigger();
                     subject.complete();
@@ -148,10 +148,10 @@ describe('command', () => {
                     const cmd = command.query.withSignalTrigger(source, handler);
 
                     source.set(1);
-                    TestBed.tick();
+                    TestBed.flushEffects();
 
                     source.set(2);
-                    TestBed.tick();
+                    TestBed.flushEffects();
                 });
                 expect(handler).toHaveBeenCalledTimes(2);
             });
@@ -169,7 +169,7 @@ describe('command', () => {
 
                         return completionSubject.pipe(
                             take(1),
-                            map(() => `completed ${args}`),
+                            map(() => `completed ${args}`)
                         );
                     });
 
@@ -181,16 +181,16 @@ describe('command', () => {
                     });
 
                     source.set(1);
-                    TestBed.tick();
+                    TestBed.flushEffects();
 
                     source.set(2);
-                    TestBed.tick();
+                    TestBed.flushEffects();
 
                     source.set(3);
-                    TestBed.tick();
+                    TestBed.flushEffects();
 
                     completionSubject.next();
-                    TestBed.tick();
+                    TestBed.flushEffects();
                 });
                 expect(result).toEqual(['aborted 1', 'aborted 2', 'completed 3']);
             });
@@ -202,7 +202,7 @@ describe('command', () => {
 
                     const cmd = command.query.withSignalTrigger(source, handler);
 
-                    TestBed.tick();
+                    TestBed.flushEffects();
                 });
                 expect(handler).toHaveBeenCalledTimes(0);
             });
@@ -214,7 +214,7 @@ describe('command', () => {
 
                     const cmd = command.query.withSignalTrigger(source, handler);
 
-                    TestBed.tick();
+                    TestBed.flushEffects();
                 });
                 expect(handler).toHaveBeenCalledTimes(0);
             });
@@ -226,7 +226,7 @@ describe('command', () => {
 
                     const cmd = command.query.withSignalTrigger(source, handler);
 
-                    TestBed.tick();
+                    TestBed.flushEffects();
                 });
                 expect(handler).toHaveBeenCalledTimes(1);
             });
@@ -237,7 +237,7 @@ describe('command', () => {
                     const source = signal(1);
 
                     const cmd = command.query.withSignalTrigger(source, handler);
-                    TestBed.tick();
+                    TestBed.flushEffects();
                 });
                 expect(handler).toHaveBeenCalledTimes(1);
             });
@@ -369,12 +369,12 @@ describe('command', () => {
                 const cmdSignal = command.fromInputSignal<void, void>(input);
 
                 input.set(handler2);
-                TestBed.tick();
+                TestBed.flushEffects();
 
                 cmdSignal().trigger();
 
                 input.set(handler3);
-                TestBed.tick();
+                TestBed.flushEffects();
 
                 cmdSignal().trigger();
                 cmdSignal().trigger();
@@ -396,7 +396,7 @@ describe('command', () => {
                                 [args.rosesAre]: 'roses',
                             };
                         },
-                    },
+                    }
                 );
 
                 return cmd.triggerAsync({ rosesAre: 'red' });
@@ -461,12 +461,12 @@ describe('command', () => {
                 const cmdSignal = command.fromInputSignal<any, any>(input);
 
                 input.set(handler2Cmd);
-                TestBed.tick();
+                TestBed.flushEffects();
 
                 cmdSignal().trigger();
 
                 input.set(handler3);
-                TestBed.tick();
+                TestBed.flushEffects();
 
                 cmdSignal().trigger();
                 cmdSignal().trigger();
@@ -505,4 +505,3 @@ describe('command', () => {
         });
     });
 });
-

@@ -1,4 +1,4 @@
-import { describe, expect, it, jest } from '@jest/globals';
+import { describe, expect, it } from '@jest/globals';
 import { lastValueFrom, of } from 'rxjs';
 import { StatusHubConfig } from './model';
 import { StatusMap, getLatestStatusEventsList$ } from './status-hub.util';

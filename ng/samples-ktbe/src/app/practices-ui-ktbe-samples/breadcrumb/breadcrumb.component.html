@@ -1,14 +1,13 @@
 <div class="container mx-auto">
-  <puibe-breadcrumb></puibe-breadcrumb>
+    <puibe-breadcrumb></puibe-breadcrumb>
 </div>
-@if (canOpenSubRoute) {
-  <div class="container mx-auto mt-4">
+<div class="container mx-auto mt-4" *ngIf="canOpenSubRoute">
     <p>
-      <a [routerLink]="['sub1', 'sub2']">Open sub-route</a>
+        <a [routerLink]="['sub1', 'sub2']">Open sub-route</a>
     </p>
     <p>
-      <a [routerLink]="['sub1', 'sub2']" [queryParams]="{ someId: '42' }">Open sub-route with query params</a>
+        <a [routerLink]="['sub1', 'sub2']" [queryParams]="{ someId: '42' }">Open sub-route with query params</a>
     </p>
+
     <div class="mt-96 h-96"></div>
-  </div>
-}
+</div>

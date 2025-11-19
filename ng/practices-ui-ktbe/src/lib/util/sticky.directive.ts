@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { getScrollParent, setClassNames } from './utils';
 
 @Directive({
@@ -6,8 +6,6 @@ import { getScrollParent, setClassNames } from './utils';
     selector: '[puibeSticky], [puibeStickyClass]',
 })
 export class PuibeStickyDirective implements OnInit, OnDestroy, OnChanges {
-    private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-
     private resizeObserver: ResizeObserver;
 
     private scrollParent: Element | Document;
@@ -26,6 +24,8 @@ export class PuibeStickyDirective implements OnInit, OnDestroy, OnChanges {
 
     @Input()
     puibeStickyOffClass: string;
+
+    constructor(private elementRef: ElementRef<HTMLElement>) {}
 
     toggleClass: () => any = () => {
         const el = this.elementRef.nativeElement;

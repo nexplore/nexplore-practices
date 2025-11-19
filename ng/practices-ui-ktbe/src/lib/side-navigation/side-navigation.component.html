@@ -1,82 +1,81 @@
 <div
-  [className]="className"
-  (click)="$event.target === el && onOverlayClick()"
-  (keydown.escape)="onEscape()"
-  #el
-  [cdkTrapFocus]="!noOverlay && open"
-  [cdkTrapFocusAutoCapture]="true"
-  >
-  <div
-    class="flex snap-x snap-mandatory flex-row overflow-auto bg-white"
-    #scrollContainer
-    data-subtle-scroll-container
+    [className]="className"
+    (click)="$event.target === el && onOverlayClick()"
+    (keydown.escape)="onEscape()"
+    #el
+    [cdkTrapFocus]="!noOverlay && open"
+    [cdkTrapFocusAutoCapture]="true"
+>
+    <div
+        class="flex snap-x snap-mandatory flex-row overflow-auto bg-white"
+        #scrollContainer
+        data-subtle-scroll-container
     >
-    @if (!useRouterConfig) {
-      <ng-content></ng-content>
-    }
+        <ng-content *ngIf="!useRouterConfig"></ng-content>
 
-    @if (openedSidePanes$ | async; as openedSidePanes) {
-      @for (pane of openedSidePanes; track trackyByFn($index, pane); let last = $last) {
-        <puibe-side-navigation-pane
-          @sidePanelAnim
-          [heading]="getLocalizedTitle$(pane.route) | async"
-          [open]="true"
-          (openChange)="onOpenChange($event)"
-          (backClick)="onBack(pane)"
-          [canClose]="last && !noOverlay"
-          [canGoBack]="isSubPane(pane.route, pane.parents)"
-          [noHeader]="pane.parents.length === 0 && noHeader"
-          [attr.aria-modal]="!noOverlay"
-          [data]="pane"
-          style="scroll-snap-align: start"
-          role="navigation"
-          [hidden]="(isMobileBreakpoint$ | async) && !last"
+        <ng-container *ngIf="openedSidePanes$ | async as openedSidePanes">
+            <ng-container *ngFor="let pane of openedSidePanes; trackBy: trackyByFn; let last = last">
+                <puibe-side-navigation-pane
+                    @sidePanelAnim
+                    [heading]="getLocalizedTitle$(pane.route) | async"
+                    [open]="true"
+                    (openChange)="onOpenChange($event)"
+                    (backClick)="onBack(pane)"
+                    [canClose]="last && !noOverlay"
+                    [canGoBack]="isSubPane(pane.route, pane.parents)"
+                    [noHeader]="pane.parents.length === 0 && noHeader"
+                    [attr.aria-modal]="!noOverlay"
+                    [data]="pane"
+                    style="scroll-snap-align: start"
+                    role="navigation"
+                    [hidden]="(isMobileBreakpoint$ | async) && !last"
                     class="{{
                         pane.comparableKey === (activeSidePane$ | async)?.comparableKey || noOverlay
                             ? ''
                             : 'max-lg:max-h-screen max-lg:max-w-screen max-lg:min-w-screen max-lg:overflow-hidden'
                     }}"
-          >
-          @if (pane.parents.length === 0) {
-            <div puibeHeader class="sticky top-4">
-              <ng-content select="puibe-header-logo, [puibeHeader]"></ng-content>
-            </div>
-          }
-          @if (pane.route; as route) {
-            @for (child of route.children; track child; let first = $first) {
-              <!-- Use ng-template to recursively expand all children -->
-              <ng-container
+                >
+                    <div puibeHeader *ngIf="pane.parents.length === 0" class="sticky top-4">
+                        <ng-content select="puibe-header-logo, [puibeHeader]"></ng-content>
+                    </div>
+
+                    <ng-container *ngIf="pane.route as route">
+                        <ng-container *ngFor="let child of route.children; let first = first">
+                            <!-- Use ng-template to recursively expand all children -->
+                            <ng-container
                                 *ngTemplateOutlet="
                                     recursiveSubchildrenTmpl;
                                     context: { $implicit: child, route, parents: pane.parents, first }
                                 "
-              ></ng-container>
-              <ng-template
-                #recursiveSubchildrenTmpl
-                let-child
-                let-parents="parents"
-                let-route="route"
-                let-first="first"
-                >
-                @if (
-                  child.children?.length ||
-                  child.data?.link?.href ||
-                  child.redirectTo ||
-                  child.path ||
-                  child.path === ''
-                  ) {
-                  @if (child.title) {
-                    <ng-container
+                            ></ng-container>
+                            <ng-template
+                                #recursiveSubchildrenTmpl
+                                let-child
+                                let-parents="parents"
+                                let-route="route"
+                                let-first="first"
+                            >
+                                <ng-container
+                                    *ngIf="
+                                        child.children?.length ||
+                                        child.data?.link?.href ||
+                                        child.redirectTo ||
+                                        child.path ||
+                                        child.path === ''
+                                    "
+                                >
+                                    <ng-container *ngIf="child.title">
+                                        <ng-container
                                             *ngTemplateOutlet="
                                                 itemTmpl;
                                                 context: { $implicit: child, route, parents, first }
                                             "
-                    ></ng-container>
-                  }
-                  @if (!child.title && child.children?.length) {
-                    <!-- Expand subchildren for entries with no title -->
-                    @for (subChild of child.children; track subChild; let first = $first) {
-                      <ng-container
+                                        ></ng-container>
+                                    </ng-container>
+                                    <ng-container *ngIf="!child.title && child.children?.length">
+                                        <!-- Expand subchildren for entries with no title -->
+                                        <ng-container *ngFor="let subChild of child.children; let first = first">
+                                            <ng-container
                                                 *ngTemplateOutlet="
                                                     recursiveSubchildrenTmpl;
                                                     context: {
@@ -86,48 +85,47 @@
                                                         first
                                                     }
                                                 "
-                    ></ng-container>
-                  }
-                }
-              }
-            </ng-template>
-          }
-          <ng-template #itemTmpl let-child let-parents="parents" let-route="route" let-first="first">
-            @if (mergeParents(route, parents); as parents) {
-              <puibe-side-navigation-item
-                [routerLink]="child.pathFromRoot"
-                [href]="child.data?.link ? child.data.link.href ?? child.redirectTo : null"
-                [rel]="child.data?.link?.rel"
-                [target]="child.data?.link?.target"
-                [canExpand]="canExpand(child)"
-                [expanded]="isExpanded(child, parents)"
-                [active]="isActiveRoute(child, parents)"
-                (activate)="onItemClick(child, parents)"
-                [data]="{child, parents, route}"
-                [attr.data-path]="child.path"
-                [ngClass]="{ 'sticky bottom-0': isExpanded(child, parents) }"
-                [autofocus]="(first || isExpanded(child, parents)) && isLastPaneRoute(route)"
-                >
-                <ng-container>{{ getLocalizedTitle$(child) | async }}</ng-container>
-                @if (itemAfterTemplate) {
-                  <ng-container
-                    *ngTemplateOutlet="itemAfterTemplate; context: { $implicit: child }"
-                    ></ng-container
+                                            ></ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                </ng-container>
+                            </ng-template>
+                        </ng-container>
+                        <ng-template #itemTmpl let-child let-parents="parents" let-route="route" let-first="first">
+                            <ng-container *ngIf="mergeParents(route, parents) as parents">
+                                <puibe-side-navigation-item
+                                    [routerLink]="child.pathFromRoot"
+                                    [href]="child.data?.link ? child.data.link.href ?? child.redirectTo : null"
+                                    [rel]="child.data?.link?.rel"
+                                    [target]="child.data?.link?.target"
+                                    [canExpand]="canExpand(child)"
+                                    [expanded]="isExpanded(child, parents)"
+                                    [active]="isActiveRoute(child, parents)"
+                                    (activate)="onItemClick(child, parents)"
+                                    [data]="{child, parents, route}"
+                                    [attr.data-path]="child.path"
+                                    [ngClass]="{ 'sticky bottom-0': isExpanded(child, parents) }"
+                                    [autofocus]="(first || isExpanded(child, parents)) && isLastPaneRoute(route)"
+                                >
+                                    <ng-container>{{ getLocalizedTitle$(child) | async }}</ng-container>
+                                    <ng-container *ngIf="itemAfterTemplate"
+                                        ><ng-container
+                                            *ngTemplateOutlet="itemAfterTemplate; context: { $implicit: child }"
+                                        ></ng-container
+                                    ></ng-container>
+                                </puibe-side-navigation-item>
+                            </ng-container>
+                        </ng-template>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="sidemenuFooterTemplate && (isMobileBreakpoint$ | async)"
+                        ngProjectAs="[puibeFooter]"
                     >
-                  }
-                </puibe-side-navigation-item>
-              }
-            </ng-template>
-          }
-          @if (sidemenuFooterTemplate && (isMobileBreakpoint$ | async)) {
-            <ng-container
-              ngProjectAs="[puibeFooter]"
-              >
-              <ng-container *ngTemplateOutlet="sidemenuFooterTemplate"></ng-container>
+                        <ng-container *ngTemplateOutlet="sidemenuFooterTemplate"></ng-container>
+                    </ng-container>
+                </puibe-side-navigation-pane>
             </ng-container>
-          }
-        </puibe-side-navigation-pane>
-      }
-    }
-  </div>
+        </ng-container>
+    </div>
 </div>

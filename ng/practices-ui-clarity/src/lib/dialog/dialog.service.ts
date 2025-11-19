@@ -1,6 +1,6 @@
 import { ComponentPortal, DomPortalOutlet } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
-import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector, inject } from '@angular/core';
+import { ApplicationRef, ComponentFactoryResolver, Inject, Injectable, Injector } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { from, merge, Observable, ObservableInput, of } from 'rxjs';
 import { map, take, tap } from 'rxjs/operators';
@@ -13,16 +13,15 @@ import { DIALOG_OPTIONS, DialogComponent } from './dialog.component';
     providedIn: 'root',
 })
 export class DialogService {
-    private componentFactoryResolver = inject(ComponentFactoryResolver);
-    private appRef = inject(ApplicationRef);
-    private injector = inject(Injector);
-    private translateService = inject(TranslateService);
-
     private document: Document;
 
-    constructor() {
-        const document = inject(DOCUMENT);
-
+    constructor(
+        private componentFactoryResolver: ComponentFactoryResolver,
+        private appRef: ApplicationRef,
+        private injector: Injector,
+        private translateService: TranslateService,
+        @Inject(DOCUMENT) document: any
+    ) {
         this.document = document as Document;
     }
 

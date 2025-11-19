@@ -1,6 +1,6 @@
-import { describe, expect, it, jest } from '@jest/globals';
-import { firstValueFromMaybeAsync } from './first-value-from-maybe-async';
+import { describe, expect, it } from '@jest/globals';
 import { of, Subject } from 'rxjs';
+import { firstValueFromMaybeAsync } from './first-value-from-maybe-async';
 
 describe('firstValueFromMaybeAsync', () => {
   it('should return the promise directly when input is a promise', async () => {

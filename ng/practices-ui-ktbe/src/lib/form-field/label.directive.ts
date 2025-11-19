@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostBinding, Input, OnInit, inject } from '@angular/core';
+import { Directive, ElementRef, HostBinding, Input, OnInit } from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
 import { BehaviorSubject, combineLatest, Observable, takeUntil } from 'rxjs';
 import { combineLatestWith } from 'rxjs/operators';
@@ -18,11 +18,6 @@ const hiddenClassName = 'translate-y-7 opacity-0';
     providers: [DestroyService],
 })
 export class PuibeLabelDirective implements OnInit {
-    private _elementRef = inject<ElementRef<HTMLLabelElement>>(ElementRef);
-    private _formFieldService = inject(FormFieldService);
-    private _formFieldComponent = inject(PuibeFormFieldComponent);
-    private _destroy$ = inject(DestroyService);
-
     private _alwaysVisibleSubject = new BehaviorSubject<boolean>(false);
 
     @Input()
@@ -32,6 +27,13 @@ export class PuibeLabelDirective implements OnInit {
 
     @HostBinding('class')
     className = className;
+
+    constructor(
+        private _elementRef: ElementRef<HTMLLabelElement>,
+        private _formFieldService: FormFieldService,
+        private _formFieldComponent: PuibeFormFieldComponent,
+        private _destroy$: DestroyService
+    ) {}
 
     ngOnInit() {
         this._formFieldService.id$

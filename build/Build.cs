@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using Nexplore.Practices.Build.Helpers;
 using Nuke.Common;
-using Nuke.Common.CI.AzurePipelines;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
@@ -30,8 +29,8 @@ partial class Build : NukeBuild
 
     private readonly string[] NgLibProjects = [
         "practices-ui",
-        // "practices-ui-clarity", - Skip temporarly due to ng 20 incompatibility
-        // "practices-ui-ktbe",
+        "practices-ui-clarity",
+        "practices-ui-ktbe",
         "practices-ui-tailwind",
         "practices-ng-status",
         "practices-ng-signals",
@@ -45,15 +44,7 @@ partial class Build : NukeBuild
 
     private readonly string[] NgAppProjects = ["samples", "samples-ktbe", "samples-tailwind"];
 
-    Target UpdateBuildNumber => _ => _
-        .Unlisted()
-        .Executes(() =>
-        {
-            AzurePipelines.Instance?.UpdateBuildNumber(GitVersion.PracticesPackageVersion());
-        });
-
     Target Clean => _ => _
-        .DependsOn(UpdateBuildNumber)
         .Executes(() =>
         {
             OutputDirectory.DeleteDirectory();
@@ -118,24 +109,13 @@ partial class Build : NukeBuild
         .After(AnalyzeNg)
         .Executes(() =>
         {
-            try
-            {
-                DotNetTasks.DotNetTest(settings => settings
-                    .SetProjectFile(DotNetSolution)
-                    .SetNoRestore(true)
-                    .SetNoBuild(true)
-                    .SetConfiguration(Configuration.Release)
-                    .SetResultsDirectory(TestResultDirectory)
-                    .SetLoggers("trx"));
-            }
-            finally
-            {
-                var testResultFiles = TestResultDirectory.GlobFiles("*.trx").Select(filePath => filePath.ToString());
-                AzurePipelines.Instance?.PublishTestResults(
-                    "DotNet Tests",
-                    AzurePipelinesTestResultsType.VSTest,
-                    testResultFiles);
-            }
+            DotNetTasks.DotNetTest(settings => settings
+                .SetProjectFile(DotNetSolution)
+                .SetNoRestore(true)
+                .SetNoBuild(true)
+                .SetConfiguration(Configuration.Release)
+                .SetResultsDirectory(TestResultDirectory)
+                .SetLoggers("trx"));
         });
 
     Target TestNg => _ => _
@@ -145,24 +125,10 @@ partial class Build : NukeBuild
         {
             Environment.SetEnvironmentVariable("JEST_JUNIT_OUTPUT_DIR", TestResultDirectory);
 
-            try
-            {
-                NpmTasks.NpmRun(settings => settings
-                    .SetCommand("test-ci")
-                    .SetProcessLogger(LogHelpers.OverrideNpmLogger)
-                    .SetProcessWorkingDirectory(NgDirectory));
-            }
-            finally
-            {
-                var testResultFiles = TestResultDirectory.GlobFiles("*.xml").Select(filePath => filePath.ToString()).ToArray();
-                if (testResultFiles.Length > 0)
-                {
-                    AzurePipelines.Instance?.PublishTestResults(
-                        "Ng Tests",
-                        AzurePipelinesTestResultsType.JUnit,
-                        testResultFiles);
-                }
-            }
+            NpmTasks.NpmRun(settings => settings
+                .SetCommand("test-ci")
+                .SetProcessLogger(LogHelpers.OverrideNpmLogger)
+                .SetProcessWorkingDirectory(NgDirectory));
         });
 
     Target BuildKtBeStorybook => _ => _
@@ -230,5 +196,5 @@ partial class Build : NukeBuild
         });
 
     Target BuildPackAll => _ => _
-        .DependsOn(PackDotNet, PackNg/*, PackKtBeStorybook*/);
+        .DependsOn(PackDotNet, PackNg, PackKtBeStorybook);
 }

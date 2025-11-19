@@ -1,5 +1,5 @@
 import { effect, inject, Injector, runInInjectionContext, signal } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 import { describe, expect, it, jest } from '@jest/globals';
 import { tryDestroyInjector } from './try-destroy-injector';
 
@@ -37,16 +37,16 @@ describe('tryDestroyInjector', () => {
 
     it('should actually mark the injector as destroyed', () => {
         TestBed.runInInjectionContext(() => {
-            const injector = Injector.create({ providers: [], parent: inject(Injector) });
+            const injector = Injector.create({providers: [], parent: inject(Injector)});
             tryDestroyInjector(injector);
             const destroyed = (injector as any).destroyed;
             expect(destroyed).toBe(true);
         });
     });
 
-    it('Should stop effects from running after injector is destroyed', () => {
+    it ('Should stop effects from running after injector is destroyed', () => {
         TestBed.runInInjectionContext(() => {
-            const injector = Injector.create({ providers: [], parent: inject(Injector) });
+            const injector = Injector.create({providers: [], parent: inject(Injector)});
             let isDestroyed = false;
             let latestValue: any = null;
             const mySignal = signal(0);
@@ -61,16 +61,15 @@ describe('tryDestroyInjector', () => {
             });
 
             mySignal.set(1);
-            TestBed.tick();
+            TestBed.flushEffects();
 
             tryDestroyInjector(injector);
 
             mySignal.set(2);
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(isDestroyed).toBe(true);
             expect(latestValue).toBe(1);
         });
     });
 });
-

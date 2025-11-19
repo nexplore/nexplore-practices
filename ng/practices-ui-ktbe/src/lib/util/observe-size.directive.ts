@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 
 export type SizeChange = DOMRect
 
@@ -7,12 +7,12 @@ export type SizeChange = DOMRect
     selector: '[puibeObserveSize]',
 })
 export class PuibeObserveSizeDirective implements OnInit, OnDestroy {
-    private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-
     private obs: ResizeObserver;
 
     @Output()
     puibeObserveSize = new EventEmitter<SizeChange>();
+
+    constructor(private elementRef: ElementRef<HTMLElement>) {}
 
     ngOnInit(): void {
         this.obs = new ResizeObserver((ch) => {

@@ -21,8 +21,8 @@ describe('enhanceWithMutableData', () => {
                             data: [1, 2],
                             total: 2,
                         }),
-                    {},
-                ),
+                    {}
+                )
             ).withMutableData();
 
             effect(() => {
@@ -33,12 +33,12 @@ describe('enhanceWithMutableData', () => {
             source.refresh();
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             source.pageDataSignal.set([1, 2, 3]);
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual([[], [1, 2], [1, 2, 3]]);
         });
@@ -55,8 +55,8 @@ describe('enhanceWithMutableData', () => {
                             data: [1, 2],
                             total: 2,
                         }),
-                    {},
-                ),
+                    {}
+                )
             ).withMutableData();
 
             effect(() => {
@@ -65,17 +65,17 @@ describe('enhanceWithMutableData', () => {
             });
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             source.pageDataSignal.set([1, 2, 3]);
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             source.refresh();
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual([[], [1, 2], [1, 2, 3], [1, 2]]);
         });
@@ -92,22 +92,21 @@ describe('enhanceWithMutableData', () => {
                             data: [1, 2],
                             total: 2,
                         }),
-                    {},
-                ),
+                    {}
+                )
             ).withMutableData();
 
             source.page$.subscribe((page: any) => results.push(page));
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             source.pageDataSignal.set([1, 2, 3]);
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual([
-                { data: [], total: 2 },
                 { data: [1, 2], total: 2 },
                 { data: [1, 2, 3], total: 2 },
             ]);
@@ -125,19 +124,19 @@ describe('enhanceWithMutableData', () => {
                             data: [1, 2],
                             total: 2,
                         }),
-                    {},
-                ),
+                    {}
+                )
             ).withMutableData();
 
             source.pageData$.subscribe((page: any) => results.push(page));
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             source.pageDataSignal.set([1, 2, 3]);
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual([
                 [1, 2],
@@ -165,14 +164,14 @@ describe('enhanceWithMutableData', () => {
                         }),
                     {
                         orderings: [{ field: 'id', direction: OrderDirection.Asc }],
-                    },
-                ),
+                    }
+                )
             ).withMutableData();
 
             source.pageData$.subscribe((page: any) => results.push(page));
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             source.pageDataSignal.update((data: any) => [
                 ...data,
@@ -191,7 +190,7 @@ describe('enhanceWithMutableData', () => {
             ]);
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual([
                 [
@@ -233,8 +232,8 @@ describe('enhanceWithMutableData', () => {
                         }),
                     {
                         orderings: [{ field: 'id', direction: OrderDirection.Asc }],
-                    },
-                ),
+                    }
+                )
             ).withMutableData({
                 disableInMemorySorting: true,
             });
@@ -242,7 +241,7 @@ describe('enhanceWithMutableData', () => {
             source.pageData$.subscribe((page: any) => results.push(page));
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             source.pageDataSignal.update((data: any) => [
                 ...data,
@@ -261,7 +260,7 @@ describe('enhanceWithMutableData', () => {
             ]);
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual([
                 [
@@ -295,8 +294,8 @@ describe('enhanceWithMutableData', () => {
                             data: [1, 2],
                             total: 2,
                         }),
-                    {},
-                ),
+                    {}
+                )
             ).withMutableData();
 
             effect(() => {
@@ -305,12 +304,12 @@ describe('enhanceWithMutableData', () => {
             });
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             source.totalCountSignal.set(3);
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual([0, 2, 3]);
         });
@@ -327,22 +326,21 @@ describe('enhanceWithMutableData', () => {
                             data: [1, 2],
                             total: 2,
                         }),
-                    {},
-                ),
+                    {}
+                )
             ).withMutableData();
 
             source.page$.subscribe((page: any) => results.push(page));
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             source.totalCountSignal.set(3);
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual([
-                { data: [], total: 2 },
                 { data: [1, 2], total: 2 },
                 { data: [1, 2], total: 3 },
             ]);
@@ -360,23 +358,22 @@ describe('enhanceWithMutableData', () => {
                             data: [1, 2],
                             total: 2,
                         }),
-                    {},
-                ),
+                    {}
+                )
             ).withMutableData();
 
             source.page$.subscribe((page: any) => results.push(page));
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             source.totalCountSignal.set(3);
             source.pageDataSignal.set([1, 2, 3]);
 
             jest.runAllTimers();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual([
-                { data: [], total: 2 },
                 { data: [1, 2], total: 2 },
                 { data: [1, 2], total: 3 },
                 { data: [1, 2, 3], total: 3 },

@@ -15,13 +15,13 @@ describe('conditionalValidationEffect', () => {
 
             const effect = conditionalValidationEffect(formControl, () => addValidatorSignal() && Validators.required);
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(formControl.hasValidator(Validators.required));
 
             addValidatorSignal.set(true);
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(formControl.hasValidator(Validators.required));
 
@@ -39,16 +39,16 @@ describe('conditionalValidationEffect', () => {
 
             const effect = conditionalValidationEffect(
                 formControl,
-                () => addValidatorSignal() && [Validators.required, Validators.email],
+                () => addValidatorSignal() && [Validators.required, Validators.email]
             );
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(formControl.hasValidator(Validators.required) && formControl.hasValidator(Validators.email));
 
             addValidatorSignal.set(true);
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(formControl.hasValidator(Validators.required) && formControl.hasValidator(Validators.email));
 
@@ -71,13 +71,13 @@ describe('conditionalValidationEffect', () => {
                 return validators[currentIndex];
             });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(formControl.hasValidator(validators[0]));
 
             validatorIndexSignal.set(1);
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(formControl.hasValidator(validators[1]) && false === formControl.hasValidator(validators[0]));
 
@@ -103,19 +103,19 @@ describe('conditionalValidationEffect', () => {
                 return validators[currentIndex];
             });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(formControl.hasValidator(validators[0][0]) && formControl.hasValidator(validators[0][1]));
 
             validatorIndexSignal.set(1);
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(
                 formControl.hasValidator(validators[1][0]) &&
                     formControl.hasValidator(validators[1][1]) &&
                     false === formControl.hasValidator(validators[0][0]) &&
-                    false === formControl.hasValidator(validators[0][1]),
+                    false === formControl.hasValidator(validators[0][1])
             );
 
             effect.destroy();
@@ -139,17 +139,17 @@ describe('configureFormValidationsEffect', () => {
                     dependent: [],
                 }));
 
-                TestBed.tick();
+                TestBed.flushEffects();
                 results.push(formGroup.controls.control.hasValidator(Validators.required));
 
                 formGroup.controls.dependent.setValue(true);
 
-                TestBed.tick();
+                TestBed.flushEffects();
                 results.push(formGroup.controls.control.hasValidator(Validators.required));
 
                 formGroup.controls.dependent.setValue(false);
 
-                TestBed.tick();
+                TestBed.flushEffects();
                 results.push(formGroup.controls.control.hasValidator(Validators.required));
             });
 
@@ -157,4 +157,3 @@ describe('configureFormValidationsEffect', () => {
         });
     });
 });
-

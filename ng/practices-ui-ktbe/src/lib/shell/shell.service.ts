@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Route, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { getRoutesForUrl, routerLinkToString } from '../util/router.utils';
@@ -26,10 +26,10 @@ type RequestOpenRouteInSideMenuConfig = Omit<RequestOpenRouteInSideMenuOptionsPa
 
 @Injectable({ providedIn: 'root' })
 export class PuibeShellService {
-    private router = inject(Router);
-
     private requestOpenRouteInSideMenuSubject = new Subject<RequestOpenRouteInSideMenuConfig>();
     readonly requestOpenRouteInSideMenu$ = this.requestOpenRouteInSideMenuSubject.asObservable();
+
+    constructor(private router: Router) {}
 
     openRouteInSideMenu(options: RequestOpenRouteInSideMenuOptionsParam): void;
     openRouteInSideMenu(route: Route[] | string, routerConfig?: Route[]): void;

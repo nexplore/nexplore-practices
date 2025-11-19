@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
-import { firstOrDefaultFromMaybeAsync } from './first-or-default-from-maybe-async';
 import { Observable, Subject } from 'rxjs';
+import { firstOrDefaultFromMaybeAsync } from './first-or-default-from-maybe-async';
 
 // Mock logging
 jest.mock('@nexplore/practices-ng-logging', () => ({

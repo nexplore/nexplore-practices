@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of, Subscriber, Subscription } from 'rxjs';
 import { delay, finalize, first, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { LegacyCommand } from '../command/command';
@@ -22,8 +22,7 @@ type CommandWithStatusSubscription<TArgs, TResult> = LegacyCommandBase<TArgs, TR
     providedIn: 'root',
 })
 export class StatusService {
-    // eslint-disable-next-line @angular-eslint/prefer-inject
-    public constructor(private statusHub: StatusHubService = inject(StatusHubService)) {}
+    constructor(private statusHub: StatusHubService) {}
 
     /** Immediately presents a success message to the user */
     showSuccessMessage = (message: string) => {
@@ -38,7 +37,7 @@ export class StatusService {
                 statusCategory: 'query',
                 ...progressOptions,
             },
-            sourceObservable,
+            sourceObservable
         );
         return this._registerObservable(sourceObservable, new Subscriber(operation));
     };
@@ -47,7 +46,7 @@ export class StatusService {
         sourceObservable: Observable<T>,
         successMessage?: SuccessMessage,
         errorMessage?: ErrorMessage,
-        progressOptions?: StatusProgressOptions,
+        progressOptions?: StatusProgressOptions
     ): Observable<T> => {
         const operation = new BehaviorSubject<StatusEvent>({ busy: false });
         if (!progressOptions) {
@@ -72,7 +71,7 @@ export class StatusService {
 
     registerListViewSource$ = <TSource extends IListViewSource<TData>, TData>(
         listViewSource: TSource,
-        progressOptions?: StatusProgressOptions,
+        progressOptions?: StatusProgressOptions
     ) => {
         return new Observable<TSource>((subscriber) => {
             subscriber.next(listViewSource);
@@ -83,31 +82,31 @@ export class StatusService {
 
     registerListViewSource = <TSource extends IListViewSource<TData>, TData>(
         listViewSource: TSource,
-        progressOptions?: StatusProgressOptions,
+        progressOptions?: StatusProgressOptions
     ) => {
         return this._registerListViewSourceInternal(listViewSource as any, progressOptions) as TSource;
     };
 
     registerFilterableListViewSource = <TSource extends IFilterableListViewSource<TData, TFilter>, TData, TFilter>(
         listViewSource: TSource,
-        progressOptions?: StatusProgressOptions,
+        progressOptions?: StatusProgressOptions
     ) => {
         return this._registerListViewSourceInternal(listViewSource as any, progressOptions) as TSource;
     };
 
     subscribeToListViewSource = <TSource extends IListViewSource<TData>, TData>(
         listViewSource: TSource,
-        progressOptions?: StatusProgressOptions,
+        progressOptions?: StatusProgressOptions
     ) => {
         const operation = new BehaviorSubject<StatusEvent>({ busy: false });
         const statusObservable = combineLatest([listViewSource.error$, listViewSource.busy$]).pipe(
-            map(([err, busy]) => ({ busy, error: err, success: undefined })),
+            map(([err, busy]) => ({ busy, error: err, success: undefined }))
         );
 
         const subscription = this.statusHub.register(
             operation,
             { statusCategory: 'query-list', ...progressOptions },
-            listViewSource,
+            listViewSource
         );
         subscription.add(statusObservable.subscribe(operation));
         return subscription;
@@ -115,7 +114,7 @@ export class StatusService {
 
     private _registerListViewSourceInternal(
         listViewSource: IListViewSource<{}> | IFilterableListViewSource<{}, {}>,
-        progressOptions?: StatusProgressOptions,
+        progressOptions?: StatusProgressOptions
     ): (IListViewSource<{}> | IFilterableListViewSource<{}, {}>) & {
         _currentlyActiveStatusSubscription?: Subscription;
     } {
@@ -137,7 +136,7 @@ export class StatusService {
      * @returns A new command that is wrapped with status notifications
      */
     registerCommand<TArgs, TResult>(
-        command: LegacyCommandBase<TArgs, TResult>,
+        command: LegacyCommandBase<TArgs, TResult>
     ): CommandWithStatusSubscription<TArgs, TResult> {
         const commandWithStatus = LegacyCommand.withDefaultOptions(command, {
             beforeExecuteHandler: () => {
@@ -166,7 +165,7 @@ export class StatusService {
             .pipe(
                 switchMap(() => {
                     return this._registerCommandOneTime<TArgs, TResult>(command);
-                }),
+                })
             )
             .subscribe();
     }
@@ -178,7 +177,7 @@ export class StatusService {
             command.completed$.pipe(
                 first(),
                 map((_) => true),
-                startWith(false),
+                startWith(false)
             ),
             command.busy$.pipe(takeUntil(command.completed$)),
         ]).pipe(
@@ -188,7 +187,7 @@ export class StatusService {
                 error,
                 success: hasCompleted && !error ? true : undefined,
                 result,
-            })),
+            }))
         ) as Observable<StatusEvent>;
 
         const options = { ...command.options, statusCategory: command.options?.statusCategory ?? 'action' };
@@ -213,7 +212,7 @@ export class StatusService {
                             });
                             statusSubscriber.complete();
                         }
-                    }),
+                    })
                 )
                 .subscribe(
                     (next) => {
@@ -238,7 +237,7 @@ export class StatusService {
                         });
                         statusSubscriber.complete();
                         subscriber.complete();
-                    },
+                    }
                 );
         });
     }

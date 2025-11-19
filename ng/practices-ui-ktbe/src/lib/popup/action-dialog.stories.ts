@@ -1,5 +1,5 @@
 import { DialogModule } from '@angular/cdk/dialog';
-
+import { CommonModule } from '@angular/common';
 import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LegacyCommand } from '@nexplore/practices-ui';
@@ -38,7 +38,7 @@ import { MODAL_PROVIDERS } from './providers';
             </form>
         </ng-template>`,
     providers: [...MODAL_PROVIDERS],
-    imports: [PuibeButtonDirective, DialogModule, ReactiveFormsModule, PracticesKtbeFormComponentsModule],
+    imports: [PuibeButtonDirective, DialogModule, CommonModule, ReactiveFormsModule, PracticesKtbeFormComponentsModule],
 })
 class LaunchComponent {
     private readonly _actionDialog = inject(PuibeActionDialogService);

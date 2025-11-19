@@ -1,5 +1,14 @@
-import { AsyncPipe, NgClass, NgComponentOutlet, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, HostBinding, Input, TemplateRef, Type, inject } from '@angular/core';
+import { AsyncPipe, NgClass, NgComponentOutlet, NgIf, NgTemplateOutlet } from '@angular/common';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    forwardRef,
+    HostBinding,
+    Input,
+    TemplateRef,
+    Type,
+} from '@angular/core';
 import { DestroyService, StatusProgressOptions, StatusService } from '@nexplore/practices-ui';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, combineLatest, filter, map, startWith, Subject, switchMap, takeUntil } from 'rxjs';
@@ -31,20 +40,17 @@ export type TableInteractionEvent =
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [PageService, DestroyService],
     imports: [
-    NgClass,
-    AsyncPipe,
-    TranslateModule,
-    NgTemplateOutlet,
-    NgComponentOutlet,
-    PuibeIconSpinnerComponent,
-    forwardRef(() => PuibeTableColumnComponent)
-],
+        NgIf,
+        NgClass,
+        AsyncPipe,
+        TranslateModule,
+        NgTemplateOutlet,
+        NgComponentOutlet,
+        PuibeIconSpinnerComponent,
+        forwardRef(() => PuibeTableColumnComponent),
+    ],
 })
 export class PuibeTableComponent implements Partial<TableViewSourceConfig<any>> {
-    private _destroy$ = inject(DestroyService);
-    private _elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-    private _statusService = inject(StatusService);
-
     private _beforeColumnTemplate = new BehaviorSubject<ColumnTemplate>(null);
     private readonly _defaultTableColumnsSubject = new BehaviorSubject<Array<TableColumnItem<any>>>([]);
     private readonly _tableViewSourceSubject = new BehaviorSubject<TableViewSource<any>>(null);
@@ -142,7 +148,11 @@ export class PuibeTableComponent implements Partial<TableViewSourceConfig<any>> 
         })
     );
 
-    constructor() {
+    constructor(
+        private _destroy$: DestroyService,
+        private _elementRef: ElementRef<HTMLElement>,
+        private _statusService: StatusService
+    ) {
         this.busy$.pipe(takeUntil(this._destroy$)).subscribe((busy) => {
             setHostClassNames(
                 {

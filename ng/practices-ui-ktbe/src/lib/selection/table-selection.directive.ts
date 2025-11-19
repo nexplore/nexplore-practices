@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Directive, ElementRef, HostListener, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Directive, ElementRef, HostListener, Optional } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { combineLatest } from 'rxjs';
 import { PuibeTableComponent } from '../table/table.component';
@@ -14,10 +14,12 @@ import { PuibeSelectableDirective, PuibeSelectionDirective } from './selection.d
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PuibeTableSelectionCheckboxComponent {
-    private _selectableRow = inject(PuibeSelectableDirective, { optional: true });
-    private _selectionTable = inject(PuibeSelectionDirective);
-
     readonly checked$ = this._selectableRow?.selected$ ?? this._selectionTable.selectAll;
+
+    constructor(
+        @Optional() private _selectableRow: PuibeSelectableDirective,
+        private _selectionTable: PuibeSelectionDirective
+    ) { }
 
     onChange(checked: boolean) {
         if (this._selectableRow) {
@@ -33,10 +35,7 @@ export class PuibeTableSelectionCheckboxComponent {
     standalone: true,
 })
 export class PuibeTableSelectionDirective {
-    constructor() {
-        const table = inject(PuibeTableComponent);
-        const selection = inject(PuibeSelectionDirective);
-
+    constructor(table: PuibeTableComponent, selection: PuibeSelectionDirective) {
         selection.selectionMode$.subscribe((selectionMode) => {
             if (selectionMode === 'multi') {
                 table.beforeColumnTemplate = { componentType: PuibeTableSelectionCheckboxComponent };
@@ -52,9 +51,6 @@ export class PuibeTableSelectionDirective {
     standalone: true,
 })
 export class PuibeTableSelectableDirective {
-    private _host = inject(PuibeSelectableDirective);
-    private _elementRef = inject(ElementRef);
-
     @HostListener('click')
     onClick() {
         if (this._host.selectable && this._host.selectionMode === 'single') {
@@ -62,7 +58,7 @@ export class PuibeTableSelectableDirective {
         }
     }
 
-    constructor() {
+    constructor(private _host: PuibeSelectableDirective, private _elementRef: ElementRef) {
         combineLatest([this._host.selected$, this._host.selectable$, this._host.selectionMode$]).subscribe(
             ([isSelected, isSelectable, selectionMode]) => {
                 const isSingleSelect = selectionMode === 'single';

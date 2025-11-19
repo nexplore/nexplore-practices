@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, inject } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { translations } from './translations';
 
@@ -28,9 +28,7 @@ import { translations } from './translations';
     ],
 })
 export class StorybookWrapperComponent {
-    constructor() {
-        const translateService = inject(TranslateService);
-
+    constructor(translateService: TranslateService) {
         translateService.setDefaultLang('de-CH');
         translateService.use('de').subscribe();
         translateService.setTranslation('de', translations);

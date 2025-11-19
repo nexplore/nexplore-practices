@@ -1,6 +1,6 @@
 import { DomPortal, PortalModule } from '@angular/cdk/portal';
-import { AsyncPipe, NgClass } from '@angular/common';
-import { Component, Input, EventEmitter, Output, ElementRef, ViewChild, OnInit, TemplateRef, inject } from '@angular/core';
+import { AsyncPipe, NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
+import { Component, Input, EventEmitter, Output, ElementRef, ViewChild, OnInit, TemplateRef } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PuibeSideNavigationComponent } from '../side-navigation/side-navigation.component';
 import { PuibeHeaderLogoComponent } from './header-logo.component';
@@ -20,22 +20,21 @@ import { PuibeShellService } from '../shell/shell.service';
     selector: 'puibe-header',
     templateUrl: './header.component.html',
     imports: [
-    NgClass,
-    AsyncPipe,
-    TranslateModule,
-    PuibeSideNavigationComponent,
-    PuibeHeaderLogoComponent,
-    PortalModule,
-    LayoutModule,
-    PuibeIconHamburgerComponent,
-    PuibeHeaderMobileMenuItemDirective,
-    PuibeObserveSizeDirective
-],
+        NgClass,
+        NgIf,
+        AsyncPipe,
+        TranslateModule,
+        NgTemplateOutlet,
+        PuibeSideNavigationComponent,
+        PuibeHeaderLogoComponent,
+        PortalModule,
+        LayoutModule,
+        PuibeIconHamburgerComponent,
+        PuibeHeaderMobileMenuItemDirective,
+        PuibeObserveSizeDirective,
+    ],
 })
 export class PuibeHeaderComponent implements OnInit {
-    private breakpointObserver = inject(BreakpointObserver);
-    private shellService = inject(PuibeShellService);
-
     @Input()
     logoLink = '/';
 
@@ -150,6 +149,8 @@ export class PuibeHeaderComponent implements OnInit {
             return state.matches;
         })
     );
+
+    constructor(private breakpointObserver: BreakpointObserver, private shellService: PuibeShellService) {}
 
     ngOnInit() {
         this.headerLogoWrapperPortal = new DomPortal(this.headerLogoWrapper);

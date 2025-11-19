@@ -24,36 +24,31 @@
             [labelShort]="'Practices.Labels_DatePicker_CalendarweekShort' | translate"
             [restrictSizeToCircle]="true"
         ></puibe-calendar-row-label>
-        @for (day of headers; track day) {
-            <div
-                class="flex min-w-8 flex-1 items-center justify-center"
-                [attr.aria-label]="day.long"
-                [title]="day.long"
-                role="columnheader"
-            >
-                <div class="text-center font-medium">{{ day.short }}</div>
-            </div>
-        }
-    </div>
-    @for (row of dateRowsSignal(); track $index) {
-        <div class="flex shrink-0 grow basis-0 gap-1">
-            <puibe-calendar-row-label
-                [label]="row.rowLabelLong"
-                [labelShort]="row.rowLabel"
-                [restrictSizeToCircle]="true"
-            ></puibe-calendar-row-label>
-            @for (item of row.items; track trackByShortLabel($index, item)) {
-                <puibe-calendar-item
-                    [periodItem]="item"
-                    [selected]="item === selectedItemSignal()"
-                    [focused]="item === focusedItemSignal()"
-                    [today]="item === todayItemSignal()"
-                    [restrictSizeToCircle]="true"
-                    [disabled]="isItemDisabled(item)"
-                    (click)="clickItem.emit(item)"
-                ></puibe-calendar-item>
-            }
+        <div
+            *ngFor="let day of headers"
+            class="flex min-w-8 flex-1 items-center justify-center"
+            [attr.aria-label]="day.long"
+            [title]="day.long"
+            role="columnheader"
+        >
+            <div class="text-center font-medium">{{ day.short }}</div>
         </div>
-    }
+    </div>
+    <div class="flex shrink-0 grow basis-0 gap-1" *ngFor="let row of dateRowsSignal(); trackBy: trackByIndex">
+        <puibe-calendar-row-label
+            [label]="row.rowLabelLong"
+            [labelShort]="row.rowLabel"
+            [restrictSizeToCircle]="true"
+        ></puibe-calendar-row-label>
+        <puibe-calendar-item
+            *ngFor="let item of row.items; trackBy: trackByShortLabel"
+            [periodItem]="item"
+            [selected]="item === selectedItemSignal()"
+            [focused]="item === focusedItemSignal()"
+            [today]="item === todayItemSignal()"
+            [restrictSizeToCircle]="true"
+            [disabled]="isItemDisabled(item)"
+            (click)="clickItem.emit(item)"
+        ></puibe-calendar-item>
+    </div>
 </puibe-calendar-grid-layout>
-

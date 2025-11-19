@@ -1,4 +1,4 @@
-
+import { NgIf } from '@angular/common';
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PuibeIconKtbeLogoComponent } from '../icons/icon-ktbe-logo.component';
@@ -7,7 +7,7 @@ import { PuibeIconKtbeLogoComponent } from '../icons/icon-ktbe-logo.component';
     standalone: true,
     selector: 'puibe-header-logo',
     templateUrl: './header-logo.component.html',
-    imports: [RouterLink, PuibeIconKtbeLogoComponent],
+    imports: [NgIf, RouterLink, PuibeIconKtbeLogoComponent],
 })
 export class PuibeHeaderLogoComponent {
     @HostListener('click', ['$event'])

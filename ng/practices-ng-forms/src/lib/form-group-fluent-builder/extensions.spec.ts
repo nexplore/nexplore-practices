@@ -23,12 +23,12 @@ describe('formGroup', () => {
 
             results.push(formGroup.value.name);
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(formGroup.value.name);
 
             sourceSignal.set({ name: 'Indiana Jones' });
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(formGroup.value.name);
 
@@ -69,11 +69,11 @@ describe('formGroup', () => {
                 results.push(status);
             });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             formGroup.setValue({ name: '' });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual(['VALID', 'INVALID']);
         });
@@ -90,11 +90,11 @@ describe('formGroup', () => {
                 results.push(dirty);
             });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             formGroup.markAsDirty();
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual([false, true]);
         });
@@ -112,11 +112,11 @@ describe('formGroup', () => {
             });
 
             formGroup.markAsDirty();
-            TestBed.tick();
+            TestBed.flushEffects();
 
             formGroup.markAsPristine();
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual([false, true]);
         });
@@ -133,11 +133,11 @@ describe('formGroup', () => {
                 results.push(touched);
             });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             formGroup.markAsTouched();
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual([false, true]);
         });
@@ -156,11 +156,11 @@ describe('formGroup', () => {
 
             formGroup.markAsTouched();
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             formGroup.markAsUntouched();
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual([false, true]);
         });
@@ -177,11 +177,11 @@ describe('formGroup', () => {
                 results.push(valid);
             });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             formGroup.setValue({ name: '' });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual([true, false]);
         });
@@ -198,11 +198,11 @@ describe('formGroup', () => {
                 results.push(invalid);
             });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             formGroup.setValue({ name: '' });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual([false, true]);
         });
@@ -219,11 +219,11 @@ describe('formGroup', () => {
                 results.push(name);
             });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             formGroup.patchValue({ name: 'Jane Doe' });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual(['John Doe', 'Jane Doe']);
         });
@@ -232,7 +232,7 @@ describe('formGroup', () => {
     it('should return a value whose keys are not including the signal properties', () => {
         TestBed.runInInjectionContext(() => {
             const formGroup = createExtendedFormGroup({ name: 'John Doe' });
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(Object.keys(formGroup.value)).toEqual(['name']);
         });
@@ -241,7 +241,7 @@ describe('formGroup', () => {
     it('should return a value which can be used in Object.assign without the signal properties', () => {
         TestBed.runInInjectionContext(() => {
             const formGroup = createExtendedFormGroup({ name: 'John Doe' });
-            TestBed.tick();
+            TestBed.flushEffects();
 
             const obj = Object.assign({}, formGroup.value);
 
@@ -259,7 +259,7 @@ describe('formGroup', () => {
 
             results.push(formGroup.valid);
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             results.push(formGroup.valid);
 
@@ -275,4 +275,3 @@ describe('formGroup', () => {
         });
     });
 });
-

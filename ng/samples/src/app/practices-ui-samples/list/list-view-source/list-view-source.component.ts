@@ -1,4 +1,4 @@
-import { Component, OnDestroy, inject } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { createListViewSource, IListViewSource, OrderDirection, StatusService } from '@nexplore/practices-ui';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -10,14 +10,12 @@ import { listEndpointMock } from '../endpointMock';
     templateUrl: './list-view-source.component.html',
 })
 export class ListViewSourceComponent implements OnDestroy {
-    private statusService = inject(StatusService);
-
     lastRequestedApiUrl: string;
     listViewSource: IListViewSource<string>;
 
     private destroy$ = new Subject<void>();
 
-    constructor() {
+    constructor(private statusService: StatusService) {
         this.listViewSource = this.statusService.registerListViewSource(
             createListViewSource(listEndpointMock, { take: 30 })
         );

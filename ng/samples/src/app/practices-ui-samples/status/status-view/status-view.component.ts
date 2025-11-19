@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { StatusService } from '@nexplore/practices-ui';
 import { interval, of } from 'rxjs';
 import { delay, map, take } from 'rxjs/operators';
@@ -8,8 +8,7 @@ import { delay, map, take } from 'rxjs/operators';
     templateUrl: './status-view.component.html',
 })
 export class StatusViewComponent {
-    private statusService = inject(StatusService);
-
+    constructor(private statusService: StatusService) {}
 
     register3SecondQuery() {
         this.statusService.registerQuery(of(true).pipe(delay(3000))).subscribe();

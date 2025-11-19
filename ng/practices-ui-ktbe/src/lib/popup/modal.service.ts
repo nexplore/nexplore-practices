@@ -1,13 +1,11 @@
 import { Dialog, DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { ComponentType } from '@angular/cdk/portal';
-import { Injectable, TemplateRef, inject } from '@angular/core';
+import { Injectable, TemplateRef } from '@angular/core';
 
 export type PuibeModalConfig<D = unknown> = DialogConfig<D>
 
 @Injectable()
 export class PuibeModalService {
-    private readonly _dialog = inject(Dialog);
-
     private readonly _defaultConfig: DialogConfig = {
         hasBackdrop: true,
         backdropClass: 'bg-dark-gray-50',
@@ -19,6 +17,8 @@ export class PuibeModalService {
     };
 
     private _dialogRef: DialogRef;
+
+    constructor(private readonly _dialog: Dialog) {}
 
     open<R = unknown, C = unknown, D = unknown>(
         componentOrTemplateRef: ComponentType<C> | TemplateRef<unknown>,

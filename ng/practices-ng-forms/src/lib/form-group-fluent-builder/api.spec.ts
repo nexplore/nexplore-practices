@@ -7,10 +7,7 @@ import { formGroup } from './api';
 describe('formGroup', () => {
     it('Works as expected when signal reset and validation are combined', () => {
         class TestDto {
-            constructor(
-                public name: string,
-                public nickname: string | null = null,
-            ) {}
+            constructor(public name: string, public nickname: string | null = null) {}
         }
 
         TestBed.runInInjectionContext(() => {
@@ -40,42 +37,42 @@ describe('formGroup', () => {
                     Validators.maxLength(4),
                     dependent(
                         ({ name, nickname }) =>
-                            name && nickname && !name.includes(nickname) && { nicknameMustBeShortVersionOfName: true },
+                            name && nickname && !name.includes(nickname) && { nicknameMustBeShortVersionOfName: true }
                     ),
                 ],
             }));
             const fg = fg3;
 
-            TestBed.tick();
+            TestBed.flushEffects();
             pushResults();
 
             isRequiredSignal.set(true);
-            TestBed.tick();
+            TestBed.flushEffects();
             pushResults();
 
             sourceSignal.set(new TestDto('John Doe'));
 
-            TestBed.tick();
+            TestBed.flushEffects();
             pushResults();
 
             fg.patchValue({ nickname: 'John' });
 
-            TestBed.tick();
+            TestBed.flushEffects();
             pushResults();
 
             fg.patchValue({ nickname: 'Lisa' });
 
-            TestBed.tick();
+            TestBed.flushEffects();
             pushResults();
 
             fg.patchValue({ nickname: 'Johnny' });
 
-            TestBed.tick();
+            TestBed.flushEffects();
             pushResults();
 
             fg.patchValue({ nickname: 'Jo' });
 
-            TestBed.tick();
+            TestBed.flushEffects();
             pushResults();
 
             expect(results).toEqual([
@@ -90,4 +87,3 @@ describe('formGroup', () => {
         });
     });
 });
-

@@ -1,7 +1,19 @@
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import { AfterContentChecked, AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild, inject } from '@angular/core';
+import {
+    AfterContentChecked,
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    Output,
+    TemplateRef,
+    ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
@@ -50,8 +62,6 @@ let nextUniqueId = 0;
     ],
 })
 export class PuibeDropdownButtonComponent implements AfterViewInit, AfterContentChecked, OnDestroy {
-    private _router = inject(Router);
-
     private _menuMinWidthSubject = new BehaviorSubject<string>('');
     private _buttonPaddingLeftPxSubject = new BehaviorSubject<number>(0);
     private _buttonPaddingRightPxSubject = new BehaviorSubject<number>(0);
@@ -88,6 +98,8 @@ export class PuibeDropdownButtonComponent implements AfterViewInit, AfterContent
 
     // CdkMenu menu should handle this aria state, but it doesn't set to false when closing via click outside of menu, so we do it manually
     isExpanded = false;
+
+    constructor(private _router: Router) {}
 
     ngAfterViewInit(): void {
         this.computeMenuStyles();

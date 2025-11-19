@@ -28,11 +28,6 @@ import { AppModalComponent } from './modal.component';
     providers: [...MODAL_PROVIDERS, ...FLYOUT_PROVIDERS], // TODO: Normally you would probably `importProvidersFrom(PracticesKtbeDialogModule)` in the bootstrap module
 })
 export class AppPopupsComponent {
-    private readonly _modalService = inject(PuibeModalService);
-    private readonly _flyoutService = inject(PuibeFlyoutService);
-    private readonly _actionDialog = inject(PuibeActionDialogService);
-    private readonly _status = inject(StatusService);
-
     @HostBinding('class')
     className = 'flex flex-col gap-4';
 
@@ -56,6 +51,13 @@ export class AppPopupsComponent {
         PUIBE_DIALOG_PRESETS.confirmDiscardUnsavedChanges(true),
         {}
     );
+
+    constructor(
+        private readonly _modalService: PuibeModalService,
+        private readonly _flyoutService: PuibeFlyoutService,
+        private readonly _actionDialog: PuibeActionDialogService,
+        private readonly _status: StatusService
+    ) {}
 
     openModal(): void {
         const ref = this._modalService.open(AppModalComponent, {

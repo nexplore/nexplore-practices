@@ -1,31 +1,29 @@
 <div class="mx-auto w-3/4">
-  <h2 class="my-6">Table with Infinite Scroll</h2>
+    <h2 class="my-6">Table with Infinite Scroll</h2>
 
-  <puibe-table [tableViewSource]="tableSource" class="w-full" [showBusyAnimation]="false">
-    <puibe-table-column [fieldName]="tableSource.columns.id"></puibe-table-column>
-    <puibe-table-column
-      [fieldName]="tableSource.columns.name"
-      [sortable]="true"
-      class="w-full"
-    ></puibe-table-column>
-    <puibe-table-column
-      [fieldName]="tableSource.columns.created"
-      [sortable]="true"
-      class="min-w-[8rem]"
-    ></puibe-table-column>
-    <puibe-table-column>Actions</puibe-table-column>
+    <puibe-table [tableViewSource]="tableSource" class="w-full" [showBusyAnimation]="false">
+        <puibe-table-column [fieldName]="tableSource.columns.id"></puibe-table-column>
+        <puibe-table-column
+            [fieldName]="tableSource.columns.name"
+            [sortable]="true"
+            class="w-full"
+        ></puibe-table-column>
+        <puibe-table-column
+            [fieldName]="tableSource.columns.created"
+            [sortable]="true"
+            class="min-w-[8rem]"
+        ></puibe-table-column>
+        <puibe-table-column>Actions</puibe-table-column>
 
-    @for (item of tableSource.pageData$ | async; track item) {
-      <puibe-table-row puibeTableRowActionTrigger>
-        <puibe-table-cell>{{ item.id }}</puibe-table-cell>
-        <puibe-table-cell [hoverEmphasis]="true">{{ item.name }}</puibe-table-cell>
-        <puibe-table-cell>{{ item.created | date }}</puibe-table-cell>
-        <puibe-table-cell></puibe-table-cell>
-      </puibe-table-row>
-    }
+        <puibe-table-row *ngFor="let item of tableSource.pageData$ | async" puibeTableRowActionTrigger>
+            <puibe-table-cell>{{ item.id }}</puibe-table-cell>
+            <puibe-table-cell [hoverEmphasis]="true">{{ item.name }}</puibe-table-cell>
+            <puibe-table-cell>{{ item.created | date }}</puibe-table-cell>
+            <puibe-table-cell></puibe-table-cell>
+        </puibe-table-row>
 
-    <puibe-table-footer>
-      <puibe-table-pagination-infinite-scroll [pageSize]="10"></puibe-table-pagination-infinite-scroll>
-    </puibe-table-footer>
-  </puibe-table>
+        <puibe-table-footer>
+            <puibe-table-pagination-infinite-scroll [pageSize]="10"></puibe-table-pagination-infinite-scroll>
+        </puibe-table-footer>
+    </puibe-table>
 </div>

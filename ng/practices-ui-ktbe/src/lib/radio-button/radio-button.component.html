@@ -1,43 +1,41 @@
 <label
-  class="mr-9 inline-flex items-center align-middle antialiased"
-  [for]="(name$ | async) + '-' + uniqueId"
-  [ngClass]="(disabled$ | async) ? 'cursor-default' : 'cursor-pointer'"
-  >
-  <div class="relative -ml-[0.625rem] box-content inline-block h-7 w-7 p-[0.625rem]">
-    <input
-      class="peer absolute bottom-0 left-0 right-0 top-0 m-0 h-12 w-12 p-0 opacity-0"
-      type="radio"
-      [id]="(name$ | async) + '-' + uniqueId"
-      [name]="name$ | async"
-      [value]="value"
-      [checked]="checked$ | async"
-      [required]="isRequired$ | async"
-      [disabled]="disabled$ | async"
-      (change)="setValueInGroup()"
-      (blur)="markAsTouched()"
-      [attr.aria-describedby]="(name$ | async) + '-error'"
-      />
-    <div
-      class="relative box-border inline-block h-7 w-7 peer-focus:rounded-xl peer-focus:outline peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-[-webkit-focus-ring-color] peer-checked:[&_.check-target]:opacity-100"
-      >
-      <div
-        class="absolute left-0 top-0 box-border h-full w-full rounded-[50%] border"
+    class="mr-9 inline-flex items-center align-middle antialiased"
+    [for]="(name$ | async) + '-' + uniqueId"
+    [ngClass]="(disabled$ | async) ? 'cursor-default' : 'cursor-pointer'"
+>
+    <div class="relative -ml-[0.625rem] box-content inline-block h-7 w-7 p-[0.625rem]">
+        <input
+            class="peer absolute bottom-0 left-0 right-0 top-0 m-0 h-12 w-12 p-0 opacity-0"
+            type="radio"
+            [id]="(name$ | async) + '-' + uniqueId"
+            [name]="name$ | async"
+            [value]="value"
+            [checked]="checked$ | async"
+            [required]="isRequired$ | async"
+            [disabled]="disabled$ | async"
+            (change)="setValueInGroup()"
+            (blur)="markAsTouched()"
+            [attr.aria-describedby]="(name$ | async) + '-error'"
+        />
+        <div
+            class="relative box-border inline-block h-7 w-7 peer-focus:rounded-xl peer-focus:outline peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-[-webkit-focus-ring-color] peer-checked:[&_.check-target]:opacity-100"
+        >
+            <div
+                class="absolute left-0 top-0 box-border h-full w-full rounded-[50%] border"
                 [ngClass]="{
                     'border-red': (displayAsInvalid$ | async),
                     'border-dark-gray': !(displayAsInvalid$ | async),
                     'bg-light-gray opacity-50': (disabled$ | async)
                 }"
-      ></div>
-      <div
-        class="check-target absolute left-2 top-2 box-border h-3 w-3 rounded-[50%] bg-black opacity-0 transition-all duration-150 ease-in-out"
-        [ngClass]="{ '!opacity-50': (disabled$ | async) && (checked$ | async) }"
-      ></div>
+            ></div>
+            <div
+                class="check-target absolute left-2 top-2 box-border h-3 w-3 rounded-[50%] bg-black opacity-0 transition-all duration-150 ease-in-out"
+                [ngClass]="{ '!opacity-50': (disabled$ | async) && (checked$ | async) }"
+            ></div>
+        </div>
     </div>
-  </div>
-  <div class="flex flex-col">
-    {{ label }}
-    @if (description) {
-      <span class="text-very-small">{{ description }}</span>
-    }
-  </div>
+    <div class="flex flex-col">
+        {{ label }}
+        <span class="text-very-small" *ngIf="description">{{ description }}</span>
+    </div>
 </label>

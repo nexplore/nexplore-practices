@@ -1,4 +1,4 @@
-import { Directive, effect, ElementRef, HostListener, input, inject } from '@angular/core';
+import { Directive, effect, ElementRef, HostListener, input } from '@angular/core';
 import { setHostClassNames } from '../../util/utils';
 
 @Directive({
@@ -6,8 +6,6 @@ import { setHostClassNames } from '../../util/utils';
     selector: 'puibe-table-row[puibeTableRowActionTrigger]',
 })
 export class PuibeTableRowActionTriggerDirective {
-    private _elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-
     @HostListener('click', ['$event.target'])
     onClick(elem) {
         if (this.puibeTableRowActionTriggerDisabledSignal()) {
@@ -37,7 +35,7 @@ export class PuibeTableRowActionTriggerDirective {
         alias: 'puibeTableRowActionTriggerDisabled',
     });
 
-    constructor() {
+    constructor(private _elementRef: ElementRef<HTMLElement>) {
         effect(() => {
             const className = 'cursor-pointer hover:bg-light-sand';
             setHostClassNames(

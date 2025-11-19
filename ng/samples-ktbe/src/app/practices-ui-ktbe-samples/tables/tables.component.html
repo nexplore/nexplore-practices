@@ -1,378 +1,356 @@
 <puibe-two-column-nav [heading]="'Inhalt'" [headingSelectors]="['h2[id]']">
-  <div>
-    <h2 id="complete-example" class="mb-4">Table with filters</h2>
-    <puibe-table-example></puibe-table-example>
+    <div>
+        <h2 id="complete-example" class="mb-4">Table with filters</h2>
+        <puibe-table-example></puibe-table-example>
 
-    <h2 id="static-table" class="mb-4 mt-12">Static table</h2>
+        <h2 id="static-table" class="mb-4 mt-12">Static table</h2>
 
-    <div class="flex gap-10">
-      <puibe-table>
-        <puibe-table-column>H1</puibe-table-column>
-        <puibe-table-column>H2</puibe-table-column>
-        <puibe-table-column>H3</puibe-table-column>
-        <puibe-table-column>H4</puibe-table-column>
+        <div class="flex gap-10">
+            <puibe-table>
+                <puibe-table-column>H1</puibe-table-column>
+                <puibe-table-column>H2</puibe-table-column>
+                <puibe-table-column>H3</puibe-table-column>
+                <puibe-table-column>H4</puibe-table-column>
 
-        <puibe-table-row>
-          <puibe-table-cell>A1</puibe-table-cell>
-          <puibe-table-cell>A2</puibe-table-cell>
-          <puibe-table-cell>A3</puibe-table-cell>
-          <puibe-table-cell>A4</puibe-table-cell>
-        </puibe-table-row>
+                <puibe-table-row>
+                    <puibe-table-cell>A1</puibe-table-cell>
+                    <puibe-table-cell>A2</puibe-table-cell>
+                    <puibe-table-cell>A3</puibe-table-cell>
+                    <puibe-table-cell>A4</puibe-table-cell>
+                </puibe-table-row>
 
-        <puibe-table-row>
-          <puibe-table-cell>B1</puibe-table-cell>
-          <puibe-table-cell>B2</puibe-table-cell>
-          <puibe-table-cell>B3</puibe-table-cell>
-          <puibe-table-cell>B4</puibe-table-cell>
-        </puibe-table-row>
-      </puibe-table>
+                <puibe-table-row>
+                    <puibe-table-cell>B1</puibe-table-cell>
+                    <puibe-table-cell>B2</puibe-table-cell>
+                    <puibe-table-cell>B3</puibe-table-cell>
+                    <puibe-table-cell>B4</puibe-table-cell>
+                </puibe-table-row>
+            </puibe-table>
 
-      <puibe-table>
-        <puibe-table-column>H1</puibe-table-column>
-        <puibe-table-column class="border-l">H2</puibe-table-column>
-        <puibe-table-column class="border-l">H3</puibe-table-column>
-        <puibe-table-column class="border-l">H4</puibe-table-column>
+            <puibe-table>
+                <puibe-table-column>H1</puibe-table-column>
+                <puibe-table-column class="border-l">H2</puibe-table-column>
+                <puibe-table-column class="border-l">H3</puibe-table-column>
+                <puibe-table-column class="border-l">H4</puibe-table-column>
 
-        <puibe-table-row>
-          <puibe-table-cell>A1</puibe-table-cell>
-          <puibe-table-cell class="border-l">A2</puibe-table-cell>
-          <puibe-table-cell class="border-l">A3</puibe-table-cell>
-          <puibe-table-cell class="border-l">A4</puibe-table-cell>
-        </puibe-table-row>
+                <puibe-table-row>
+                    <puibe-table-cell>A1</puibe-table-cell>
+                    <puibe-table-cell class="border-l">A2</puibe-table-cell>
+                    <puibe-table-cell class="border-l">A3</puibe-table-cell>
+                    <puibe-table-cell class="border-l">A4</puibe-table-cell>
+                </puibe-table-row>
 
-        <puibe-table-row>
-          <puibe-table-cell>B1</puibe-table-cell>
-          <puibe-table-cell class="border-l">B2</puibe-table-cell>
-          <puibe-table-cell class="border-l">B3</puibe-table-cell>
-          <puibe-table-cell class="border-l">B4</puibe-table-cell>
-        </puibe-table-row>
-      </puibe-table>
-    </div>
+                <puibe-table-row>
+                    <puibe-table-cell>B1</puibe-table-cell>
+                    <puibe-table-cell class="border-l">B2</puibe-table-cell>
+                    <puibe-table-cell class="border-l">B3</puibe-table-cell>
+                    <puibe-table-cell class="border-l">B4</puibe-table-cell>
+                </puibe-table-row>
+            </puibe-table>
+        </div>
 
-    <h2 id="table-with-viewsource" class="mb-4 mt-12">Table with ViewSource and options menu</h2>
+        <h2 id="table-with-viewsource" class="mb-4 mt-12">Table with ViewSource and options menu</h2>
 
-    <puibe-table [tableViewSource]="tableSource1" class="w-full">
-      <puibe-table-column [fieldName]="tableSource1.columns.id"></puibe-table-column>
-      <puibe-table-column
-        [fieldName]="tableSource1.columns.name"
-        [sortable]="true"
-        class="w-full"
-      ></puibe-table-column>
-      <puibe-table-column
-        [fieldName]="tableSource1.columns.created"
-        [sortable]="true"
-        class="min-w-[8rem]"
-      ></puibe-table-column>
-      <puibe-table-column>Actions</puibe-table-column>
+        <puibe-table [tableViewSource]="tableSource1" class="w-full">
+            <puibe-table-column [fieldName]="tableSource1.columns.id"></puibe-table-column>
+            <puibe-table-column
+                [fieldName]="tableSource1.columns.name"
+                [sortable]="true"
+                class="w-full"
+            ></puibe-table-column>
+            <puibe-table-column
+                [fieldName]="tableSource1.columns.created"
+                [sortable]="true"
+                class="min-w-[8rem]"
+            ></puibe-table-column>
+            <puibe-table-column>Actions</puibe-table-column>
 
-      @for (item of tableSource1.pageData$ | async; track item) {
-        <puibe-table-row puibeTableRowActionTrigger>
-          <puibe-table-cell>{{ item.id }}</puibe-table-cell>
-          <puibe-table-cell>{{ item.name }}</puibe-table-cell>
-          <puibe-table-cell>{{ item.created | date }}</puibe-table-cell>
-          <puibe-table-cell>
-            <puibe-table-col-actions [showOptionsMenu]="true">
-              <a puibeTableRowAction href="https://be.ch" target="_blank" class="flex items-center"
-                ><puibe-icon-arrow class="mr-2 block h-3 w-3" [direction]="'right'"></puibe-icon-arrow>
-                be.ch</a
+            <puibe-table-row *ngFor="let item of tableSource1.pageData$ | async" puibeTableRowActionTrigger>
+                <puibe-table-cell>{{ item.id }}</puibe-table-cell>
+                <puibe-table-cell>{{ item.name }}</puibe-table-cell>
+                <puibe-table-cell>{{ item.created | date }}</puibe-table-cell>
+                <puibe-table-cell>
+                    <puibe-table-col-actions [showOptionsMenu]="true">
+                        <a puibeTableRowAction href="https://be.ch" target="_blank" class="flex items-center"
+                            ><puibe-icon-arrow class="mr-2 block h-3 w-3" [direction]="'right'"></puibe-icon-arrow>
+                            be.ch</a
+                        >
+                        <a href="https://google.com" target="_blank" class="flex items-center"
+                            ><puibe-icon-arrow class="mr-2 block h-3 w-3" [direction]="'right'"></puibe-icon-arrow>
+                            google.com</a
+                        >
+                    </puibe-table-col-actions></puibe-table-cell
                 >
-                <a href="https://google.com" target="_blank" class="flex items-center"
-                  ><puibe-icon-arrow class="mr-2 block h-3 w-3" [direction]="'right'"></puibe-icon-arrow>
-                  google.com</a
-                  >
-                </puibe-table-col-actions></puibe-table-cell
-                >
-              </puibe-table-row>
-            }
-          </puibe-table>
+            </puibe-table-row>
+        </puibe-table>
 
-          <h2 id="table-selectable" class="mb-4 mt-12">Selectable Table</h2>
+        <h2 id="table-selectable" class="mb-4 mt-12">Selectable Table</h2>
 
-          <puibe-table
+        <puibe-table
             [tableViewSource]="tableSource2"
             class="w-full"
             [selectionMode]="'single'"
             [(selectedItem)]="selectedItem2"
-            >
+        >
             <puibe-table-column [fieldName]="tableSource2.columns.id"></puibe-table-column>
             <puibe-table-column
-              [fieldName]="tableSource2.columns.name"
-              [sortable]="true"
-              class="w-full"
+                [fieldName]="tableSource2.columns.name"
+                [sortable]="true"
+                class="w-full"
             ></puibe-table-column>
             <puibe-table-column
-              [fieldName]="tableSource2.columns.created"
-              [sortable]="true"
-              class="min-w-[8rem]"
+                [fieldName]="tableSource2.columns.created"
+                [sortable]="true"
+                class="min-w-[8rem]"
             ></puibe-table-column>
             <puibe-table-column>Actions</puibe-table-column>
 
-            @for (item of tableSource2.pageData$ | async; track item) {
-              <puibe-table-row [selectable]="item">
+            <puibe-table-row *ngFor="let item of tableSource2.pageData$ | async" [selectable]="item">
                 <puibe-table-cell>{{ item.id }}</puibe-table-cell>
                 <puibe-table-cell>{{ item.name }}</puibe-table-cell>
                 <puibe-table-cell>{{ item.created | date }}</puibe-table-cell>
                 <puibe-table-cell></puibe-table-cell>
-              </puibe-table-row>
-            }
+            </puibe-table-row>
 
             <puibe-table-footer>
-              <h3>Selected: {{ selectedItem2?.name ?? 'None' }}</h3>
+                <h3>Selected: {{ selectedItem2?.name ?? 'None' }}</h3>
             </puibe-table-footer>
-          </puibe-table>
+        </puibe-table>
 
-          <h2 id="table-with-multiselect" class="mb-4 mt-12">Multi-Select Table</h2>
+        <h2 id="table-with-multiselect" class="mb-4 mt-12">Multi-Select Table</h2>
 
-          <puibe-table
+        <puibe-table
             [tableViewSource]="tableSource3"
             class="w-full"
             [selectionMode]="'multi'"
             [(selectedItems)]="selectedItems3"
-            >
+        >
             <puibe-table-column [fieldName]="tableSource3.columns.id"></puibe-table-column>
             <puibe-table-column
-              [fieldName]="tableSource3.columns.name"
-              [sortable]="true"
-              class="w-full"
+                [fieldName]="tableSource3.columns.name"
+                [sortable]="true"
+                class="w-full"
             ></puibe-table-column>
             <puibe-table-column
-              [fieldName]="tableSource3.columns.created"
-              [sortable]="true"
-              class="min-w-[8rem]"
+                [fieldName]="tableSource3.columns.created"
+                [sortable]="true"
+                class="min-w-[8rem]"
             ></puibe-table-column>
             <puibe-table-column>Actions</puibe-table-column>
 
-            @for (item of tableSource3.pageData$ | async; track item) {
-              <puibe-table-row [selectable]="item">
+            <puibe-table-row *ngFor="let item of tableSource3.pageData$ | async" [selectable]="item">
                 <puibe-table-cell>{{ item.id }}</puibe-table-cell>
                 <puibe-table-cell>{{ item.name }}</puibe-table-cell>
                 <puibe-table-cell>{{ item.created | date }}</puibe-table-cell>
                 <puibe-table-cell></puibe-table-cell>
-              </puibe-table-row>
-            }
+            </puibe-table-row>
 
             <puibe-table-footer>
-              <h3>{{ selectedItems3?.length }} items selected</h3>
+                <h3>{{ selectedItems3?.length }} items selected</h3>
             </puibe-table-footer>
-          </puibe-table>
+        </puibe-table>
 
-          <h2 id="table-with-paging" class="mb-4 mt-12">Table with Paging</h2>
+        <h2 id="table-with-paging" class="mb-4 mt-12">Table with Paging</h2>
 
-          <puibe-table [tableViewSource]="tableSource4" class="w-full">
+        <puibe-table [tableViewSource]="tableSource4" class="w-full">
             <puibe-table-column [fieldName]="tableSource4.columns.id"></puibe-table-column>
             <puibe-table-column
-              [fieldName]="tableSource4.columns.name"
-              [sortable]="true"
-              class="w-full"
+                [fieldName]="tableSource4.columns.name"
+                [sortable]="true"
+                class="w-full"
             ></puibe-table-column>
             <puibe-table-column
-              [fieldName]="tableSource4.columns.created"
-              [sortable]="true"
-              class="min-w-[8rem]"
+                [fieldName]="tableSource4.columns.created"
+                [sortable]="true"
+                class="min-w-[8rem]"
             ></puibe-table-column>
             <puibe-table-column>Actions</puibe-table-column>
 
-            @for (item of tableSource4.pageData$ | async; track item) {
-              <puibe-table-row>
+            <puibe-table-row *ngFor="let item of tableSource4.pageData$ | async">
                 <puibe-table-cell>{{ item.id }}</puibe-table-cell>
                 <puibe-table-cell>{{ item.name }}</puibe-table-cell>
                 <puibe-table-cell>{{ item.created | date }}</puibe-table-cell>
                 <puibe-table-cell></puibe-table-cell>
-              </puibe-table-row>
-            }
+            </puibe-table-row>
 
             <puibe-table-footer>
-              <puibe-table-pagination [showFirstAndLastPageButton]="true">
-                <puibe-table-page-size>Items per page </puibe-table-page-size>
-              </puibe-table-pagination>
+                <puibe-table-pagination [showFirstAndLastPageButton]="true">
+                    <puibe-table-page-size>Items per page </puibe-table-page-size>
+                </puibe-table-pagination>
             </puibe-table-footer>
-          </puibe-table>
+        </puibe-table>
 
-          <h2 id="table-with-auto-col-config" class="mb-4 mt-12">Table with Automatic Column Config</h2>
+        <h2 id="table-with-auto-col-config" class="mb-4 mt-12">Table with Automatic Column Config</h2>
 
-          <puibe-table [tableViewSource]="tableSource5" class="w-full">
+        <puibe-table [tableViewSource]="tableSource5" class="w-full">
             <puibe-table-column [field]="tableSource5.columns.id"></puibe-table-column>
             <puibe-table-column [field]="tableSource5.columns.name" class="w-full"></puibe-table-column>
             <puibe-table-column [field]="tableSource5.columns.created" class="min-w-[8rem]"></puibe-table-column>
             <puibe-table-column>Actions</puibe-table-column>
 
-            @for (item of tableSource5.pageData$ | async; track item) {
-              <puibe-table-row>
+            <puibe-table-row *ngFor="let item of tableSource5.pageData$ | async">
                 <puibe-table-cell>{{ item.id }}</puibe-table-cell>
                 <puibe-table-cell>{{ item.name }}</puibe-table-cell>
                 <puibe-table-cell>{{ item.created | date }}</puibe-table-cell>
                 <puibe-table-cell></puibe-table-cell>
-              </puibe-table-row>
-            }
-          </puibe-table>
+            </puibe-table-row>
+        </puibe-table>
 
-          <h2 id="table-with-viewsource-array" class="mb-4 mt-12">Table with ViewSource Array</h2>
+        <h2 id="table-with-viewsource-array" class="mb-4 mt-12">Table with ViewSource Array</h2>
 
-          <puibe-table [tableViewSource]="tableSource6" class="w-full">
-            @for (columnDef of tableSource6.columnsArray$ | async; track columnDef) {
-              <puibe-table-column
+        <puibe-table [tableViewSource]="tableSource6" class="w-full">
+            <puibe-table-column
+                *ngFor="let columnDef of tableSource6.columnsArray$ | async"
                 [field]="columnDef"
-              ></puibe-table-column>
-            }
+            ></puibe-table-column>
 
-            @for (item of tableSource6.pageData$ | async; track item) {
-              <puibe-table-row>
+            <puibe-table-row *ngFor="let item of tableSource6.pageData$ | async">
                 <puibe-table-cell>{{ item.id }}</puibe-table-cell>
                 <puibe-table-cell class="w-full">{{ item.name }}</puibe-table-cell>
                 <puibe-table-cell class="min-w-[8rem]">{{ item.created | date }}</puibe-table-cell>
                 <puibe-table-cell></puibe-table-cell>
-              </puibe-table-row>
-            }
-          </puibe-table>
+            </puibe-table-row>
+        </puibe-table>
 
-          <h2 id="table-with-viewsource-label-prefix" class="mb-4 mt-12">Table with ViewSource LabelPrefix</h2>
+        <h2 id="table-with-viewsource-label-prefix" class="mb-4 mt-12">Table with ViewSource LabelPrefix</h2>
 
-          <puibe-table [tableViewSource]="tableSource7" columnTranslationPrefix="Labels_SampleTable_" class="w-full">
-            @for (columnDef of tableSource7.columnsArray$ | async; track columnDef) {
-              <puibe-table-column
+        <puibe-table [tableViewSource]="tableSource7" columnTranslationPrefix="Labels_SampleTable_" class="w-full">
+            <puibe-table-column
+                *ngFor="let columnDef of tableSource7.columnsArray$ | async"
                 [field]="columnDef"
-              ></puibe-table-column>
-            }
+            ></puibe-table-column>
 
-            @for (item of tableSource7.pageData$ | async; track item) {
-              <puibe-table-row>
+            <puibe-table-row *ngFor="let item of tableSource7.pageData$ | async">
                 <puibe-table-cell>{{ item.id }}</puibe-table-cell>
                 <puibe-table-cell>{{ item.name }}</puibe-table-cell>
                 <puibe-table-cell>{{ item.created | date }}</puibe-table-cell>
                 <puibe-table-cell></puibe-table-cell>
-              </puibe-table-row>
-            }
-          </puibe-table>
+            </puibe-table-row>
+        </puibe-table>
 
-          <h2 id="table-with-directive-td" class="mb-4 mt-12">Table with puibeTableCell Directive</h2>
+        <h2 id="table-with-directive-td" class="mb-4 mt-12">Table with puibeTableCell Directive</h2>
 
-          <puibe-table [tableViewSource]="tableSource9" class="w-full" [showBusyAnimation]="false">
+        <puibe-table [tableViewSource]="tableSource9" class="w-full" [showBusyAnimation]="false">
             <puibe-table-column [fieldName]="tableSource9.columns.id"></puibe-table-column>
             <puibe-table-column [fieldName]="tableSource9.columns.name" [sortable]="true"></puibe-table-column>
             <puibe-table-column
-              align="right"
-              [fieldName]="tableSource9.columns.created"
-              [sortable]="true"
+                align="right"
+                [fieldName]="tableSource9.columns.created"
+                [sortable]="true"
             ></puibe-table-column>
 
-            @for (item of tableSource9.pageData$ | async; track item) {
-              <puibe-table-row puibeTableRowActionTrigger>
+            <puibe-table-row *ngFor="let item of tableSource9.pageData$ | async" puibeTableRowActionTrigger>
                 <td puibeTableCell>{{ item.id }}</td>
                 <td puibeTableCell>{{ item.name }}</td>
                 <td puibeTableCell align="right">{{ item.created | date }}</td>
-              </puibe-table-row>
-            }
-          </puibe-table>
+            </puibe-table-row>
+        </puibe-table>
 
-          <h2 id="table-with-colspan2" class="mb-4 mt-12">Table with colspan 2</h2>
+        <h2 id="table-with-colspan2" class="mb-4 mt-12">Table with colspan 2</h2>
 
-          <puibe-table class="w-full">
+        <puibe-table class="w-full">
             <puibe-table-column>T1</puibe-table-column>
             <puibe-table-column>T2</puibe-table-column>
             <puibe-table-column>T3</puibe-table-column>
 
             <puibe-table-row>
-              <puibe-table-cell>A1</puibe-table-cell>
-              <puibe-table-cell>A2</puibe-table-cell>
-              <puibe-table-cell>A3</puibe-table-cell>
+                <puibe-table-cell>A1</puibe-table-cell>
+                <puibe-table-cell>A2</puibe-table-cell>
+                <puibe-table-cell>A3</puibe-table-cell>
             </puibe-table-row>
 
             <puibe-table-row>
-              <td puibeTableCell colspan="2">B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1</td>
-              <td puibeTableCell>B3</td>
+                <td puibeTableCell colspan="2">B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1</td>
+                <td puibeTableCell>B3</td>
             </puibe-table-row>
-          </puibe-table>
+        </puibe-table>
 
-          <h2 id="table-with-rowinfooter" class="mb-4 mt-12">Table with row in footer</h2>
+        <h2 id="table-with-rowinfooter" class="mb-4 mt-12">Table with row in footer</h2>
 
-          <puibe-table [tableViewSource]="tableSource10" class="w-full" [showBusyAnimation]="false">
+        <puibe-table [tableViewSource]="tableSource10" class="w-full" [showBusyAnimation]="false">
             <puibe-table-column [fieldName]="tableSource10.columns.id"></puibe-table-column>
             <puibe-table-column [fieldName]="tableSource10.columns.name"></puibe-table-column>
             <puibe-table-column align="right" [fieldName]="tableSource10.columns.created"></puibe-table-column>
 
-            @for (item of tableSource10.pageData$ | async; track item) {
-              <puibe-table-row puibeTableRowActionTrigger>
+            <puibe-table-row *ngFor="let item of tableSource10.pageData$ | async" puibeTableRowActionTrigger>
                 <puibe-table-cell>{{ item.id }}</puibe-table-cell>
                 <puibe-table-cell>{{ item.name }}</puibe-table-cell>
                 <puibe-table-cell align="right">{{ item.created | date }}</puibe-table-cell>
-              </puibe-table-row>
-            }
+            </puibe-table-row>
 
             <puibe-table-footer>
-              <puibe-table-row [borderBottom]="false" class="bg-sand">
-                <puibe-table-cell>Total</puibe-table-cell>
-                <puibe-table-cell>Hallo</puibe-table-cell>
-                <puibe-table-cell align="right">Welt</puibe-table-cell>
-              </puibe-table-row>
+                <puibe-table-row [borderBottom]="false" class="bg-sand">
+                    <puibe-table-cell>Total</puibe-table-cell>
+                    <puibe-table-cell>Hallo</puibe-table-cell>
+                    <puibe-table-cell align="right">Welt</puibe-table-cell>
+                </puibe-table-row>
             </puibe-table-footer>
-          </puibe-table>
+        </puibe-table>
 
-          <h2 id="table-with-custom-cell-border" class="mb-4 mt-12">Table with custom cell border</h2>
+        <h2 id="table-with-custom-cell-border" class="mb-4 mt-12">Table with custom cell border</h2>
 
-          <puibe-table class="w-full">
+        <puibe-table class="w-full">
             <puibe-table-column>T1</puibe-table-column>
             <puibe-table-column>T2</puibe-table-column>
             <puibe-table-column align="right">T3</puibe-table-column>
 
             <puibe-table-row [borderBottom]="false">
-              <puibe-table-cell>A1</puibe-table-cell>
-              <puibe-table-cell>A2</puibe-table-cell>
-              <puibe-table-cell align="right">A3</puibe-table-cell>
+                <puibe-table-cell>A1</puibe-table-cell>
+                <puibe-table-cell>A2</puibe-table-cell>
+                <puibe-table-cell align="right">A3</puibe-table-cell>
             </puibe-table-row>
 
             <puibe-table-row [borderBottom]="false">
-              <puibe-table-cell>B1</puibe-table-cell>
-              <puibe-table-cell>B2</puibe-table-cell>
-              <puibe-table-cell align="center">B3</puibe-table-cell>
+                <puibe-table-cell>B1</puibe-table-cell>
+                <puibe-table-cell>B2</puibe-table-cell>
+                <puibe-table-cell align="center">B3</puibe-table-cell>
             </puibe-table-row>
 
             <puibe-table-row [borderTop]="true">
-              <puibe-table-cell>C1</puibe-table-cell>
-              <puibe-table-cell>C2</puibe-table-cell>
-              <puibe-table-cell align="left">C3</puibe-table-cell>
+                <puibe-table-cell>C1</puibe-table-cell>
+                <puibe-table-cell>C2</puibe-table-cell>
+                <puibe-table-cell align="left">C3</puibe-table-cell>
             </puibe-table-row>
 
             <puibe-table-row [borderBottom]="false">
-              <puibe-table-cell>D1</puibe-table-cell>
-              <puibe-table-cell>D2</puibe-table-cell>
-              <puibe-table-cell align="center">D3</puibe-table-cell>
+                <puibe-table-cell>D1</puibe-table-cell>
+                <puibe-table-cell>D2</puibe-table-cell>
+                <puibe-table-cell align="center">D3</puibe-table-cell>
             </puibe-table-row>
 
             <puibe-table-row>
-              <puibe-table-cell>E1</puibe-table-cell>
-              <puibe-table-cell>E2</puibe-table-cell>
-              <puibe-table-cell align="right">E3</puibe-table-cell>
+                <puibe-table-cell>E1</puibe-table-cell>
+                <puibe-table-cell>E2</puibe-table-cell>
+                <puibe-table-cell align="right">E3</puibe-table-cell>
             </puibe-table-row>
-          </puibe-table>
+        </puibe-table>
 
-          <h2 id="table-with-infinite-scroll" class="mb-4 mt-12">Table with Infinite Scroll</h2>
+        <h2 id="table-with-infinite-scroll" class="mb-4 mt-12">Table with Infinite Scroll</h2>
 
-          <puibe-table [tableViewSource]="tableSource8" class="w-full" [showBusyAnimation]="false">
+        <puibe-table [tableViewSource]="tableSource8" class="w-full" [showBusyAnimation]="false">
             <puibe-table-column [fieldName]="tableSource8.columns.id"></puibe-table-column>
             <puibe-table-column
-              [fieldName]="tableSource8.columns.name"
-              [sortable]="true"
-              class="w-full"
+                [fieldName]="tableSource8.columns.name"
+                [sortable]="true"
+                class="w-full"
             ></puibe-table-column>
             <puibe-table-column
-              [fieldName]="tableSource8.columns.created"
-              [sortable]="true"
-              class="min-w-[8rem]"
+                [fieldName]="tableSource8.columns.created"
+                [sortable]="true"
+                class="min-w-[8rem]"
             ></puibe-table-column>
             <puibe-table-column>Actions</puibe-table-column>
 
-            @for (item of tableSource8.pageData$ | async; track item) {
-              <puibe-table-row puibeTableRowActionTrigger>
+            <puibe-table-row *ngFor="let item of tableSource8.pageData$ | async" puibeTableRowActionTrigger>
                 <puibe-table-cell>{{ item.id }}</puibe-table-cell>
                 <puibe-table-cell [hoverEmphasis]="true">{{ item.name }}</puibe-table-cell>
                 <puibe-table-cell>{{ item.created | date }}</puibe-table-cell>
                 <puibe-table-cell></puibe-table-cell>
-              </puibe-table-row>
-            }
+            </puibe-table-row>
 
             <puibe-table-footer>
-              <puibe-table-pagination-infinite-scroll [pageSize]="10"></puibe-table-pagination-infinite-scroll>
+                <puibe-table-pagination-infinite-scroll [pageSize]="10"></puibe-table-pagination-infinite-scroll>
             </puibe-table-footer>
-          </puibe-table>
-        </div>
-      </puibe-two-column-nav>
+        </puibe-table>
+    </div>
+</puibe-two-column-nav>

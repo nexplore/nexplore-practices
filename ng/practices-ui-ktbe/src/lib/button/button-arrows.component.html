@@ -1,33 +1,29 @@
-@if (variant === 'left-arrow') {
-  <puibe-icon-go-back
+<puibe-icon-go-back
     class="mr-3 inline-block h-5 w-6 align-middle opacity-100 transition-all duration-300 ease-in-out group-hover:-translate-x-[5rem] group-hover:opacity-0 group-disabled:translate-x-0 group-disabled:opacity-0"
     [fillClassName]="fillClassName$ | async"
-  ></puibe-icon-go-back>
-}
-@if (variant === 'right-arrow') {
-  <puibe-icon-go-next
+    *ngIf="variant === 'left-arrow'"
+></puibe-icon-go-back>
+<puibe-icon-go-next
     class="mr-3 inline-block h-5 w-6 -translate-x-9 align-middle opacity-0 transition-all duration-300 ease-in-out group-hover:translate-x-9 group-hover:opacity-100 group-disabled:-translate-x-9 group-disabled:opacity-0"
     [fillClassName]="fillClassName$ | async"
-  ></puibe-icon-go-next>
-}
+    *ngIf="variant === 'right-arrow'"
+></puibe-icon-go-next>
 <div
-  class="inline-flex items-center gap-1 transition-all duration-300 ease-in-out group-disabled:translate-x-0"
+    class="inline-flex items-center gap-1 transition-all duration-300 ease-in-out group-disabled:translate-x-0"
     [ngClass]="{
         'group-hover:-translate-x-9': variant === 'left-arrow',
         'group-hover:translate-x-9': variant === 'right-arrow'
     }"
-  >
-  <ng-content></ng-content>
+>
+    <ng-content></ng-content>
 </div>
-@if (variant === 'left-arrow') {
-  <puibe-icon-go-back
+<puibe-icon-go-back
     class="ml-4 inline-block h-5 w-6 translate-x-9 align-middle opacity-0 transition-all duration-300 ease-in-out group-hover:-translate-x-9 group-hover:opacity-100 group-disabled:translate-x-9 group-disabled:opacity-0"
     [fillClassName]="fillClassName$ | async"
-  ></puibe-icon-go-back>
-}
-@if (variant === 'right-arrow') {
-  <puibe-icon-go-next
+    *ngIf="variant === 'left-arrow'"
+></puibe-icon-go-back>
+<puibe-icon-go-next
     class="ml-4 inline-block h-5 w-6 align-middle opacity-100 transition-all duration-300 ease-in-out group-hover:translate-x-[5rem] group-hover:opacity-0 group-disabled:translate-x-0 group-disabled:opacity-0"
     [fillClassName]="fillClassName$ | async"
-  ></puibe-icon-go-next>
-}
+    *ngIf="variant === 'right-arrow'"
+></puibe-icon-go-next>

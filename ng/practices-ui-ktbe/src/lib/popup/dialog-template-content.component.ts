@@ -1,22 +1,22 @@
 import { Component, Input, TemplateRef } from '@angular/core';
-import { NgComponentOutlet, NgTemplateOutlet } from '@angular/common';
+import { NgComponentOutlet, NgIf, NgTemplateOutlet } from '@angular/common';
 import { DialogContent } from './action-dialog.types';
 
 @Component({
     selector: 'puibe-dialog-template-content',
     standalone: true,
-    imports: [NgComponentOutlet, NgTemplateOutlet],
+    imports: [NgIf, NgComponentOutlet, NgTemplateOutlet],
     template: `
-        @if (isContentString) {
-          {{ content }}
-        } @else {
-          @if (isContentTemplate) {
-            <ng-container *ngTemplateOutlet="content; context: { $implicit: contentInputs }"></ng-container>
-          } @else {
+        <ng-container *ngIf="isContentString; else tmpl">{{ content }}</ng-container>
+        <ng-template #tmpl>
+            <ng-container *ngIf="isContentTemplate; else cmp">
+                <ng-container *ngTemplateOutlet="content; context: { $implicit: contentInputs }"></ng-container>
+            </ng-container>
+        </ng-template>
+        <ng-template #cmp>
             <ng-container *ngComponentOutlet="content; inputs: contentInputs"></ng-container>
-          }
-        }
-        `,
+        </ng-template>
+    `,
 })
 export class DialogTemplateContentComponent {
     @Input()

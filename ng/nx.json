@@ -76,7 +76,7 @@
         }
     },
     "release": {
-        "projects": ["*"],
+        "projects": [ "*" ],
         "releaseTagPattern": "{version}"
     },
     "useInferencePlugins": false,

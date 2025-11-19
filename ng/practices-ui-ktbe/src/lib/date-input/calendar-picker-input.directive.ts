@@ -1,6 +1,6 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { DatePipe } from '@angular/common';
-import { Directive, ElementRef, forwardRef, HostListener, Input, OnInit, inject } from '@angular/core';
+import { Directive, ElementRef, forwardRef, HostListener, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator } from '@angular/forms';
 import { DestroyService } from '@nexplore/practices-ui';
 import { TranslateService } from '@ngx-translate/core';
@@ -35,15 +35,6 @@ import { CalendarPeriodType, DateInput, PuibeCalendarPeriodService } from './ser
 })
 /** @internal */
 export class PuibeCalendarPickerInputDirective implements OnInit, ControlValueAccessor, Validator {
-    protected readonly _elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
-    protected readonly _formFieldService = inject(FormFieldService);
-    protected readonly _destroy$ = inject(DestroyService);
-    protected readonly _calendarPeriodService = inject(PuibeCalendarPeriodService);
-    protected readonly _datepipe = inject(DatePipe);
-    protected readonly _translate = inject(TranslateService);
-    protected readonly _calendarPicker = inject(PuibeCalendarPickerAnchorDirective);
-    protected readonly _validationService = inject(PuibeCalendarPeriodValidationService);
-
     @HostListener('change')
     onChange() {
         this._setNewDate(this._parseCurrentInputValue());
@@ -74,9 +65,16 @@ export class PuibeCalendarPickerInputDirective implements OnInit, ControlValueAc
     // eslint-disable-next-line @typescript-eslint/member-ordering
     @Input() getModelValueHandler: (date: Date | null) => DateInput = (date) => date;
 
-    constructor() {
-        const _elementRef = this._elementRef;
-
+    constructor(
+        protected readonly _elementRef: ElementRef<HTMLInputElement>,
+        protected readonly _formFieldService: FormFieldService,
+        protected readonly _destroy$: DestroyService,
+        protected readonly _calendarPeriodService: PuibeCalendarPeriodService,
+        protected readonly _datepipe: DatePipe,
+        protected readonly _translate: TranslateService,
+        protected readonly _calendarPicker: PuibeCalendarPickerAnchorDirective,
+        protected readonly _validationService: PuibeCalendarPeriodValidationService
+    ) {
         setHostAttr('type', false, _elementRef);
         setHostAttr('inputmode', 'numeric', _elementRef);
 

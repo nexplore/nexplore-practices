@@ -1,17 +1,13 @@
 <div [ngClass]="{ 'border-gray border bg-white': variant === 'white', 'bg-sand': variant === 'sand' }">
-  @if (heading || caption) {
-    <div class="p-6" role="heading" [attr.aria-level]="headingLevel">
-      <div class="text-h4 font-light">{{ heading }}</div>
-      @if (caption) {
-        <div class="mt-1 font-light">{{ caption }}</div>
-      }
+    <div class="p-6" role="heading" [attr.aria-level]="headingLevel" *ngIf="heading || caption">
+        <div class="text-h4 font-light">{{ heading }}</div>
+        <div class="mt-1 font-light" *ngIf="caption">{{ caption }}</div>
     </div>
-  }
-  <div
+    <div
         [ngClass]="{
             'p-6': addItemPadding
         }"
     >
-    <ng-content></ng-content>
-  </div>
+        <ng-content></ng-content>
+    </div>
 </div>

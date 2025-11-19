@@ -1,6 +1,6 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-
-import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Inject, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import {
     PracticesKtbeDefaultModule,
@@ -22,23 +22,22 @@ import { SampleListEntry, SampleType } from './table-example.component';
     selector: 'app-table-detail-modal',
     templateUrl: 'detail-modal.component.html',
     imports: [
-    PuibeModalComponent,
-    PuibeModalContentDirective,
-    PuibeModalTitleDirective,
-    PuibeModalSubtitleDirective,
-    PuibeModalFooterActionDirective,
-    PuibeButtonDirective,
-    PuibeIconEnumerationComponent,
-    PracticesKtbeDefaultModule,
-    NgSelectModule,
-    PracticesKtbeFormComponentsModule,
-    PuibeSelectDirective
-],
+        PuibeModalComponent,
+        PuibeModalContentDirective,
+        PuibeModalTitleDirective,
+        PuibeModalSubtitleDirective,
+        PuibeModalFooterActionDirective,
+        PuibeButtonDirective,
+        PuibeIconEnumerationComponent,
+
+        CommonModule,
+        PracticesKtbeDefaultModule,
+        NgSelectModule,
+        PracticesKtbeFormComponentsModule,
+        PuibeSelectDirective,
+    ],
 })
 export class AppTableDetailModalComponent {
-    dialogRef = inject(DialogRef);
-    data = inject<SampleListEntry>(DIALOG_DATA);
-
     private readonly _formBuilder = inject(FormBuilder);
 
     readonly form = this._formBuilder.group({
@@ -57,4 +56,6 @@ export class AppTableDetailModalComponent {
         { label: 'Type 2', value: SampleType.Type2 },
         { label: 'Type 3', value: SampleType.Type3 },
     ];
+
+    constructor(public dialogRef: DialogRef, @Inject(DIALOG_DATA) public data: SampleListEntry) {}
 }

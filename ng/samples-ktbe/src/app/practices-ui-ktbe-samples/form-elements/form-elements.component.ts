@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import {
     AbstractControl,
     FormBuilder,
@@ -59,10 +59,6 @@ function defaultLoadFn(params: IQueryParamsWithFilter<IItem>) {
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormElementsComponent implements OnInit {
-    private fb = inject(FormBuilder);
-    private readonly _titleService = inject(TitleService);
-    private router = inject(Router);
-
     foods = items;
     foodSource = new SelectViewSource<IItem>({ label: 'name', value: 'id' }, defaultLoadFn);
     readonly: boolean;
@@ -128,6 +124,9 @@ export class FormElementsComponent implements OnInit {
             return await this.router.navigate(['/']);
         }
     });
+
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    constructor(private fb: FormBuilder, private readonly _titleService: TitleService, private router: Router) {}
 
     ngOnInit() {
         this._titleService.setBreadcrumbTitle('A very sleek breadcrumb title');

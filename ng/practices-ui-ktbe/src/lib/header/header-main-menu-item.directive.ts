@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostBinding, Input, OnDestroy, OnInit, Renderer2, inject } from '@angular/core';
+import { Directive, ElementRef, HostBinding, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { IsActiveMatchOptions } from '@angular/router';
 import { DestroyService } from '@nexplore/practices-ui';
 import { TranslateService } from '@ngx-translate/core';
@@ -31,12 +31,6 @@ const withoutAnimationClassNames = 'after:border-b-0';
     providers: [DestroyService, MenuItemService],
 })
 export class PuibeHeaderMainMenuItemDirective implements OnInit, OnDestroy {
-    private _destroy$ = inject(DestroyService);
-    private _menuItemService = inject(MenuItemService);
-    private _elementRef = inject(ElementRef);
-    private _renderer = inject(Renderer2);
-    private _translate = inject(TranslateService);
-
     @HostBinding('class')
     className: string = classNames;
 
@@ -69,6 +63,14 @@ export class PuibeHeaderMainMenuItemDirective implements OnInit, OnDestroy {
     isIcon = false;
 
     private screenReaderTextElement: HTMLSpanElement;
+
+    constructor(
+        private _destroy$: DestroyService,
+        private _menuItemService: MenuItemService,
+        private _elementRef: ElementRef,
+        private _renderer: Renderer2,
+        private _translate: TranslateService
+    ) {}
 
     ngOnInit(): void {
         const liClassNames = ['inline-block'].concat(this.isIcon ? (this.isSmall ? ['h-6'] : ['h-8']) : []);

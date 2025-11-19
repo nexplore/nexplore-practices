@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import {
     PuibeExpansionPanelComponent,
     PuibeTeaserComponent,
@@ -13,9 +13,9 @@ import {
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExpansionPanelsComponent {
-    private readonly renderer = inject(Renderer2);
-
     @ViewChild('twoColumnNavContent', { static: true }) twoColumnNavContent: ElementRef<HTMLDivElement>;
+
+    constructor(private readonly renderer: Renderer2) {}
 
     public addSpacerBetweenHeadings() {
         const addClasses =

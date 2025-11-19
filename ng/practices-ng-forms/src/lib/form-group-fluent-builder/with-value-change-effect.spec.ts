@@ -14,10 +14,10 @@ describe('withValueChangeEffect', () => {
 
             fg.markAsDirty();
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             fg.controls.name.setValue('Jane Doe');
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual(['John Doe', 'Jane Doe']);
         });
@@ -34,10 +34,10 @@ describe('withValueChangeEffect', () => {
 
             fg.markAsDirty();
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             fg.controls.name.setValue('John Doe');
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual(['John Doe']);
         });
@@ -52,10 +52,10 @@ describe('withValueChangeEffect', () => {
                     results.push(name);
                 });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             fg.controls.name.setValue('Jane Doe');
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual([]);
         });
@@ -72,13 +72,12 @@ describe('withValueChangeEffect', () => {
 
             fg.markAsDirty();
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             fg.controls.age.setValue(40);
-            TestBed.tick();
+            TestBed.flushEffects();
 
             expect(results).toEqual(['John Doe']);
         });
     });
 });
-

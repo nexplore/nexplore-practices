@@ -1,5 +1,5 @@
-import { NgClass } from '@angular/common';
-import { Component, EventEmitter, forwardRef, Input, Output, inject } from '@angular/core';
+import { NgClass, NgIf } from '@angular/common';
+import { Component, EventEmitter, forwardRef, Input, Optional, Output } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { PuibeMigratingClickCommandHostDirective } from '../command/migrating-click-command-host.directive';
 import { PuibeIconArrowComponent } from '../icons/icon-arrow.component';
@@ -10,7 +10,7 @@ let nextUniqueId = 0;
     standalone: true,
     selector: 'puibe-teaser',
     templateUrl: './teaser.component.html',
-    imports: [PuibeIconArrowComponent, NgClass],
+    imports: [PuibeIconArrowComponent, NgClass, NgIf],
     hostDirectives: [
         {
             directive: forwardRef(() => PuibeMigratingClickCommandHostDirective),
@@ -19,9 +19,6 @@ let nextUniqueId = 0;
     ],
 })
 export class PuibeTeaserComponent {
-    private readonly _router = inject(Router, { optional: true });
-    private readonly _activatedRoute = inject(ActivatedRoute, { optional: true });
-
     @Input()
     title: string;
 
@@ -58,6 +55,11 @@ export class PuibeTeaserComponent {
     get id() {
         return this._id;
     }
+
+    constructor(
+        @Optional() private readonly _router: Router,
+        @Optional() private readonly _activatedRoute: ActivatedRoute
+    ) {}
 
     onNavigate() {
         if (this.teaserLink) {

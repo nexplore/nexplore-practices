@@ -1,5 +1,13 @@
-import { AsyncPipe, NgClass, NgComponentOutlet } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChild, HostBinding, Input, inject } from '@angular/core';
+import { AsyncPipe, NgClass, NgComponentOutlet, NgFor, NgIf } from '@angular/common';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ContentChild,
+    HostBinding,
+    Input,
+    Optional,
+} from '@angular/core';
 import { PuiFormFieldDirective } from '@nexplore/practices-ng-forms';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -42,24 +50,23 @@ const overlayTextEmptyClassName = 'text-opacity-60';
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-    PuibeIconInvalidComponent,
-    PuibeIconSpinnerComponent,
-    PuibeIconCloseComponent,
-    PuibeReadonyLabelValueComponent,
-    NgClass,
-    AsyncPipe,
-    TranslateModule,
-    NgComponentOutlet
-],
+        PuibeIconInvalidComponent,
+        PuibeIconSpinnerComponent,
+        PuibeIconCloseComponent,
+        PuibeReadonyLabelValueComponent,
+        NgIf,
+        NgFor,
+        NgClass,
+        AsyncPipe,
+        TranslateModule,
+        NgComponentOutlet,
+    ],
     hostDirectives: [PuiFormFieldDirective],
     selector: 'puibe-form-field',
     standalone: true,
     templateUrl: './form-field.component.html',
 })
 export class PuibeFormFieldComponent implements AfterViewInit {
-    private _formFieldService = inject(FormFieldService);
-    private readonly _readonlyDirective = inject(PuibeReadonlyDirective, { optional: true });
-
     isReadonly$ = this._readonlyDirective?.isReadonly$ ?? of(false);
     labelString: string;
     readonly ngControlValue$ = this._formFieldService.readonlyValue$;
@@ -183,6 +190,11 @@ export class PuibeFormFieldComponent implements AfterViewInit {
         ),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
+
+    constructor(
+        private _formFieldService: FormFieldService,
+        @Optional() private readonly _readonlyDirective: PuibeReadonlyDirective
+    ) {}
 
     ngAfterViewInit() {
         this.labelString = this.label?.getLabel();

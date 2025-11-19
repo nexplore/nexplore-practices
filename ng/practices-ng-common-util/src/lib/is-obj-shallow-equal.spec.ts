@@ -1,4 +1,4 @@
-import { describe, expect, it, jest } from '@jest/globals';
+import { describe, expect, it } from '@jest/globals';
 import { isObjShallowEqual } from './is-obj-shallow-equal';
 
 describe('isObjShallowEqual', () => {

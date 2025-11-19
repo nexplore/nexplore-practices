@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
-import { describe, expect, it, jest } from '@jest/globals';
+import { describe, expect, it } from '@jest/globals';
 import { command } from '@nexplore/practices-ng-commands';
 import { of } from 'rxjs';
 import { OrderDirection, tableViewSource } from './api';
@@ -10,10 +10,7 @@ describe('tableViewSource', () => {
     it('should have fromCommand', () => {
         TestBed.runInInjectionContext(() => {
             class TestDto {
-                constructor(
-                    public name: string,
-                    public age: number,
-                ) {}
+                constructor(public name: string, public age: number) {}
             }
 
             const cmd = command.action(() => [new TestDto('Test', 22)]);
@@ -30,10 +27,7 @@ describe('tableViewSource', () => {
     it('should have extensions defined', () => {
         TestBed.runInInjectionContext(() => {
             class TestDto {
-                constructor(
-                    public name: string,
-                    public age: number,
-                ) {}
+                constructor(public name: string, public age: number) {}
             }
 
             const filterForm = new FormGroup({
@@ -62,4 +56,3 @@ describe('tableViewSource', () => {
         });
     });
 });
-

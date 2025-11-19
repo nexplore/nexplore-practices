@@ -1,5 +1,5 @@
-import { AsyncPipe, NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnDestroy, inject } from '@angular/core';
+import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnDestroy, Optional } from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, combineLatest, combineLatestWith, map, of, switchMap, takeUntil } from 'rxjs';
@@ -16,15 +16,10 @@ let nextUniqueId = 0;
     selector: 'puibe-checkbox-group',
     templateUrl: './checkbox-group.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, PuibeIconInvalidComponent, AsyncPipe, TranslateModule, PuibeIconSpinnerComponent],
+    imports: [NgFor, NgClass, PuibeIconInvalidComponent, AsyncPipe, TranslateModule, PuibeIconSpinnerComponent, NgIf],
     providers: [DestroyService],
 })
 export class PuibeCheckboxGroupComponent implements OnDestroy {
-    private readonly _destroy$ = inject(DestroyService);
-    private readonly _elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-    private readonly _markControlService = inject(MarkControlService, { optional: true });
-    private readonly _readonlyDirective = inject(PuibeReadonlyDirective, { optional: true });
-
     @Input()
     readonlyEmptyValuePlaceholder: string;
 
@@ -144,7 +139,12 @@ export class PuibeCheckboxGroupComponent implements OnDestroy {
     set hideOptional(value: boolean) {
         this._hideOptionalSubject.next(value);
     }
-    constructor() {
+    constructor(
+        private readonly _destroy$: DestroyService,
+        private readonly _elementRef: ElementRef<HTMLElement>,
+        @Optional() private readonly _markControlService: MarkControlService,
+        @Optional() private readonly _readonlyDirective: PuibeReadonlyDirective
+    ) {
         this._markControlService?.touched$.pipe(takeUntil(this._destroy$)).subscribe(() => {
             this.markAsTouched();
         });

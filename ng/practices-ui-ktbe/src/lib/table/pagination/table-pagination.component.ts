@@ -3,8 +3,19 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of https://github.com/vmware-clarity/ng-clarity.
  */
-
-import { Component, ContentChild, ElementRef, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
+import { NgClass, NgIf } from '@angular/common';
+import {
+    Component,
+    ContentChild,
+    ElementRef,
+    EventEmitter,
+    HostBinding,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    ViewChild,
+} from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
 import { TranslateModule } from '@ngx-translate/core';
 import { combineLatest, merge, Observable, startWith, Subscription, switchMap, takeUntil, tap } from 'rxjs';
@@ -21,13 +32,9 @@ import { PuibeTablePageSizeComponent } from './table-page-size.component';
     selector: 'puibe-table-pagination',
     templateUrl: './table-pagination.component.html',
     providers: [DestroyService],
-    imports: [TranslateModule, PuibeIconArrowEndComponent, PuibeIconArrowSlidingComponent],
+    imports: [NgIf, NgClass, TranslateModule, PuibeIconArrowEndComponent, PuibeIconArrowSlidingComponent],
 })
 export class PuibeTablePaginationComponent implements OnDestroy, OnInit {
-    private _table = inject(PuibeTableComponent);
-    private _destroy$ = inject(DestroyService);
-    page = inject(PageService);
-
     /**
      * Subscription to the page service changes
      */
@@ -112,6 +119,8 @@ export class PuibeTablePaginationComponent implements OnDestroy, OnInit {
     showFirstAndLastPageButton = false;
 
     @Output() currentPageChange = new EventEmitter<number>(false);
+
+    constructor(private _table: PuibeTableComponent, private _destroy$: DestroyService, public page: PageService) {}
 
     /*
      * Subscription to the Page service for page changes.

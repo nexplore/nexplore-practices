@@ -2,7 +2,9 @@ import { effect } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { describe, expect, it } from '@jest/globals';
-import { createFormValueSignalsProxyWithAutoTrackingDependencies } from './create-form-value-signals-proxy-with-auto-tracking-dependencies';
+import {
+    createFormValueSignalsProxyWithAutoTrackingDependencies
+} from "./create-form-value-signals-proxy-with-auto-tracking-dependencies";
 
 describe('createFormValueSignalsProxyWithAutoTrackingDependencies', () => {
     it('should return a proxy that tracks dependencies', () => {
@@ -20,15 +22,15 @@ describe('createFormValueSignalsProxyWithAutoTrackingDependencies', () => {
                 results.push(value);
             });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             form.controls.testControl.setValue(true);
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             form.controls.testControl.setValue(false);
 
-            TestBed.tick();
+            TestBed.flushEffects();
         });
 
         expect(results).toEqual([false, true, false]);
@@ -54,16 +56,16 @@ describe('createFormValueSignalsProxyWithAutoTrackingDependencies', () => {
             });
 
             form.controls.aTracked.setValue(true);
-            TestBed.tick();
+            TestBed.flushEffects();
 
             form.controls.bUntracked.setValue(true);
-            TestBed.tick();
+            TestBed.flushEffects();
 
             form.controls.cUntracked.setValue(true);
-            TestBed.tick();
+            TestBed.flushEffects();
 
             form.controls.dTracked.setValue(true);
-            TestBed.tick();
+            TestBed.flushEffects();
         });
 
         expect(results).toEqual([false, true]);
@@ -83,16 +85,16 @@ describe('createFormValueSignalsProxyWithAutoTrackingDependencies', () => {
                 results.push(entries);
             });
 
-            TestBed.tick();
+            TestBed.flushEffects();
 
             form.addControl('b', new FormControl<null | boolean>(false));
-            TestBed.tick();
+            TestBed.flushEffects();
 
             form.addControl('c', new FormControl<null | boolean>(false));
-            TestBed.tick();
+            TestBed.flushEffects();
 
             form.removeControl('b');
-            TestBed.tick();
+            TestBed.flushEffects();
         });
 
         expect(results).toEqual([
@@ -115,4 +117,3 @@ describe('createFormValueSignalsProxyWithAutoTrackingDependencies', () => {
 
     // TODO: Add tests for debouncing
 });
-
