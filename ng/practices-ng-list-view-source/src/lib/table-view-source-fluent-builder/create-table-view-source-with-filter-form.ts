@@ -1,10 +1,9 @@
 import { effect, isSignal, untracked } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormGroup, UntypedFormGroup } from '@angular/forms';
 import { isObjDeepEqual, isObjShallowEqual, unwrapSignalLike, ValueOrSignal } from '@nexplore/practices-ng-common-util';
 import { formGroupCurrentValueSignal, FormGroupValues, TypedFormGroup } from '@nexplore/practices-ng-forms';
 import { trace } from '@nexplore/practices-ng-logging';
-import { debounceTime } from 'rxjs/operators';
+import { subscriptionEffect } from '@nexplore/practices-ng-signals';
 import { TableViewSource } from '../implementation/table-view-source';
 import { IListResult } from '../types';
 import { HasTypedQueryParams } from '../types-internal';
@@ -30,13 +29,12 @@ type AdditionalConfig<TForm extends FormGroup> = {
     filterForm: ValueOrSignal<TForm>;
     /**
      * Determines whether a form value change should be pushed to the TableViewSource.
-     * Defaults to only applying values when the form is dirty and the value has changed.
+     * Defaults to only applying values when the value has changed.
      */
     shouldApplyFilterFormValue?: ShouldApplyFilterFormValueFn<TForm>;
 };
 
-const defaultShouldApplyFilterFormValue: ShouldApplyFilterFormValueFn<FormGroup> = ({ form, hasChanged }) =>
-    form.dirty && hasChanged;
+const defaultShouldApplyFilterFormValue: ShouldApplyFilterFormValueFn<FormGroup> = ({ hasChanged }) => hasChanged;
 
 /**
  * Creates a TableViewSource that is typed and is connected to a filter form.
@@ -152,6 +150,7 @@ export function extendWithFilterForm<
                         formValue,
                         previousParams,
                         hasChanged,
+                        formInstance,
                     });
                     this.filter(formValue as any);
 
@@ -171,17 +170,24 @@ export function extendWithFilterForm<
         });
 
         // If the filters change from outside, make sure the filter form has those changes reflected
-        this.filter$.pipe(debounceTime(100), takeUntilDestroyed()).subscribe((filters) => {
-            const form = unwrapSignalLike(filterForm);
-            const hasChanged = !isObjDeepEqual(filters, form.value, { maximumDepth: 3 });
-            if (hasChanged) {
-                trace('tableViewSource', 'apply filter to form', {
-                    filters,
-                    formValue: form.value,
-                });
-                form.patchValue(filters);
-            }
-        });
+        subscriptionEffect(() =>
+            this.filter$.subscribe((filters) => {
+                const form = unwrapSignalLike(filterForm);
+                const hasChanged = !isObjDeepEqual(filters, form.value, { maximumDepth: 3 });
+                if (hasChanged) {
+                    trace('tableViewSource', 'apply filter to form', {
+                        filters,
+                        formValue: form.value,
+                    });
+                    form.patchValue(filters);
+                } else {
+                    trace('tableViewSource', 'skip applying filter to form, no changes', {
+                        filters,
+                        formValue: form.value,
+                    });
+                }
+            })
+        );
     }
 
     return this;

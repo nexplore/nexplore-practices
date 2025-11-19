@@ -571,7 +571,7 @@ describe('createTableViewSourceWithPersistedParams', () => {
             });
         });
 
-        it('does not apply pristine form changes by default', async () => {
+        it('does apply pristine form changes by default', async () => {
             await TestBed.runInInjectionContext(async () => {
                 const filterForm = new FormGroup({
                     search: new FormControl<string | undefined>('', { nonNullable: true }),
@@ -601,13 +601,12 @@ describe('createTableViewSourceWithPersistedParams', () => {
 
                 await flushAsyncWork(400);
 
-                expect(loadFn).not.toHaveBeenCalled();
-                // The query params should still reflect the persisted filter because the pristine change was ignored
-                expect(vs.getQueryParams().filter).toEqual({ search: '' });
+                expect(loadFn).toHaveBeenCalled();
+                expect(vs.getQueryParams().filter).toEqual({ search: 'pristine-change' });
             });
         });
 
-        it('can override the apply condition to react even when the form is pristine', async () => {
+        it('can override the apply condition to react only when the form is dirty', async () => {
             await TestBed.runInInjectionContext(async () => {
                 const filterForm = new FormGroup({
                     search: new FormControl<string>(''),
@@ -617,7 +616,7 @@ describe('createTableViewSourceWithPersistedParams', () => {
                     filter: { search: '' },
                 };
                 const loadFn = jest.fn(() => of({ data: [], total: 0 }));
-                const shouldApplySpy = jest.fn(() => true);
+                const shouldApplySpy = jest.fn(() => filterForm.dirty);
 
                 createTableViewSourceWithPersistedParams<TestDto, TestFilter, IListResult<TestDto>, TestDto>({
                     columns: ['name'],
@@ -638,7 +637,7 @@ describe('createTableViewSourceWithPersistedParams', () => {
 
                 await flushAsyncWork(400);
 
-                expect(loadFn).toHaveBeenCalledWith(
+                expect(loadFn).not.toHaveBeenCalledWith(
                     expect.objectContaining({
                         filter: { search: 'should-apply' },
                     })

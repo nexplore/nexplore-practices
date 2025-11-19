@@ -143,16 +143,6 @@ export function extendWithPersistedParams<TTableViewSource extends TableViewSour
         const destroyRef = inject(DestroyRef);
         subscribeAndForget(
             defer(async () => {
-                // if (this.defaults.take) {
-                //     await firstValueFrom(timer(0)); // First timer is needed so that the ui notices the change
-                //     trace('tableViewSourceWithPersistedParams', 'apply page settings from defaults', {
-                //         defaults: this.defaults,
-                //     });
-                //     this.page(this.defaults.skip ?? 0, this.defaults.take!);
-
-                //     await firstValueFrom(timer(0)); // Second timer is needed so the queryParams$ subscription below doesn't get triggered unnecessarily.
-                // }
-
                 // Get initial list state
                 const latestPersistedParams: IQueryParams | null = await firstValueFromMaybeAsync(
                     config.persistParams.load()
@@ -201,4 +191,3 @@ export function extendWithPersistedParams<TTableViewSource extends TableViewSour
 
     return this;
 }
-
