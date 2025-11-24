@@ -194,6 +194,39 @@ describe('tableViewSource', () => {
         });
     });
 
+    it('should create tableViewSource with type and basic config', () => {
+        TestBed.runInInjectionContext(() => {
+            interface Employee {
+                id: number;
+                firstName: string;
+                lastName: string;
+                department: string;
+                hireDate: Date;
+            }
+
+            const source = tableViewSource.withType<Employee>().withConfig({
+                loadFn: (_params) =>
+                    of({
+                        data: [
+                            { id: 1, firstName: 'John', lastName: 'Doe', department: 'IT', hireDate: new Date() },
+                            { id: 2, firstName: 'Jane', lastName: 'Smith', department: 'HR', hireDate: new Date() },
+                        ],
+                        total: 2,
+                    }),
+                columns: {
+                    firstName: { sortable: true },
+                    lastName: { sortable: true },
+                    department: { sortable: true },
+                },
+                orderBy: 'lastName',
+            });
+
+            expect(source).toBeDefined();
+            expect(source.columnsArray).toBeDefined();
+            expect(source.columnsArray.length).toBe(3);
+        });
+    });
+
     it('should create typed tableViewSource with column configurations', () => {
         TestBed.runInInjectionContext(() => {
             class Task {
@@ -627,4 +660,3 @@ describe('selectViewSource', () => {
         });
     });
 });
-

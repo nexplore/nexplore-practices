@@ -2,6 +2,7 @@ import { Type } from '@angular/core';
 import { IListResult } from '../types';
 import { HasTypedQueryParams } from '../types-internal';
 import { getDefaultQueryParams } from '../utils/internal-util';
+import { createTypedFactory } from './create-table-view-source';
 import { createTypedWithFilterFormFactory } from './create-table-view-source-with-filter-form';
 import { createdTypedWithPersistedParamsFactory } from './create-table-view-source-with-persisted-params';
 import { createExtendableTableViewSource, Extensions } from './extensions';
@@ -100,12 +101,14 @@ export function createTableViewSourceWithType<
 type TypedTableViewSourceFactoryFluentApi<TData> = {
     withFilterForm: ReturnType<typeof createTypedWithFilterFormFactory<TData>>;
     withPersistedParams: ReturnType<typeof createdTypedWithPersistedParamsFactory<TData>>;
+    withConfig: ReturnType<typeof createTypedFactory<TData>>;
 };
 
 function createTableViewSourceFactoryFluentApi<TData>(): TypedTableViewSourceFactoryFluentApi<TData> {
     return {
         withFilterForm: createTypedWithFilterFormFactory<TData>(),
         withPersistedParams: createdTypedWithPersistedParamsFactory<TData>(),
+        withConfig: createTypedFactory<TData>()
     };
 }
 
