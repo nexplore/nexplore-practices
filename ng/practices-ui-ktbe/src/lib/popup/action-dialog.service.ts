@@ -8,7 +8,7 @@ import { ActionDialogComponent } from './action-dialog.component';
 import {
     PUIBE_DIALOG_ACTIONS,
     PuibeActionDialogConfig,
-    PuibeActionDialogConfigUntyped,
+    PuibeActionDialogConfigWithDefaultActions,
     PuibeDialogActionsTemplates,
     PuibeDialogActionTemplate,
 } from './action-dialog.types';
@@ -43,9 +43,44 @@ export class PuibeActionDialogService {
      * ), { status: { silent: true } });
      * ```
      * Notice the `silent` option, which prevents the loading spinner to overlay the dialog. The action-dialog itself already handles loading and error states!
+     *
+     *
+     * You can also customize the buttons from a set of predefined actions, without having to use a template:
+     * ```ts
+     * deleteCommand = this.actionDialogService.createShowCommand(
+     *     {
+     *       titleKey: 'Labels.Delete',
+     *       contentKey: 'Labels.DeleteConfirmQuestion',
+     *       actions: {
+     *         DELETE: () => this.someApiProxy.deleteSomething(id),
+     *         CANCEL: false // Represents the return value when cancelling
+     *       }
+     *     }
+     * );
+     * ```
+     *
+     * If you need more control over the style and labels of the individual buttons, you can also define the ations yourself, using the array syntax:
+     * ```ts
+     *  deleteCommand = this._actionDialogService.createShowCommand({
+     *      actions: [
+     *          {
+     *              labelKey: 'Labels.Delete',
+     *              variant: 'danger',
+     *              command: () => this.someApiProxy.deleteSomething(),
+     *          },
+     *          PUIBE_DIALOG_ACTIONS.CANCEL, // You can also use predefined action templates
+     *      ],
+     *      titleKey: 'Labels.Delete',
+     *      contentKey: 'Labels.DeleteConfirmQuestion',
+     *  });
+     * ```
+     *
      */
     createShowCommand<TArgs = void>(
-        actionConfig: ValueOrGetter<PuibeActionDialogConfigUntyped, TArgs>,
+        actionConfig: ValueOrGetter<
+            PuibeActionDialogConfigWithDefaultActions<PUIBE_DEFAULT_DIALOG_ACTION, TArgs>,
+            TArgs
+        >,
         commandConfig?: CommandOptions<TArgs>,
         dialogConfig?: ValueOrGetter<DialogConfig<TArgs, PUIBE_DEFAULT_DIALOG_ACTION>, TArgs>
     ): Command<TArgs, PUIBE_DEFAULT_DIALOG_ACTION>;
