@@ -40,9 +40,9 @@ export class PuibeActionDialogService {
      * ```ts
      * deleteCommand = command.action(() => this.actionDialogService.showAsync(
      *    PUIBE_DIALOG_PRESETS.confirmDelete(() => this.someApiProxy.deleteSomething(id))
-     * ), {silent: true});
+     * ), { status: { silent: true } });
      * ```
-     * Notice the `silent` option, which is prevents the loading spinner to overlay the dialog. The action-dialog itself already handles loading and error states!
+     * Notice the `silent` option, which prevents the loading spinner to overlay the dialog. The action-dialog itself already handles loading and error states!
      */
     createShowCommand<TArgs = void>(
         actionConfig: ValueOrGetter<PuibeActionDialogConfigUntyped, TArgs>,
@@ -222,12 +222,12 @@ export class PuibeActionDialogService {
 
         const errors$ = actionConfig.errorClosesDialog
             ? allCommands.map((cmd) =>
-                cmd.error$.pipe(
-                    map((err) => {
-                        throw err;
-                    })
-                )
-            )
+                  cmd.error$.pipe(
+                      map((err) => {
+                          throw err;
+                      })
+                  )
+              )
             : [];
 
         const result = await firstValueFrom(
