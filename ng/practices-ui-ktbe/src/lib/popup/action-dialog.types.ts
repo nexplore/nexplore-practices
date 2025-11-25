@@ -114,7 +114,7 @@ export type PuibeActionDialogConfigWithDefaultActions<TResult = unknown, TArgs =
                *
                * Note, will not get called for actions which have a command defined directly on them.
                */
-              command: CombinedCommandInput<TResult, TArgs>;
+              command?: CombinedCommandInput<PuibeDialogActionTemplate<TResult, TArgs>, TResult>;
           }
     );
 
