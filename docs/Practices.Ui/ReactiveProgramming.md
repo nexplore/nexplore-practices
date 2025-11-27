@@ -60,7 +60,7 @@ export class SearchComponent {
   }));
 
   protected readonly resultsSignal = computedPipe(
-    () => this.searchForm.value.keywordsSignal(),
+    () => this.searchForm.valueSignal.keywords(),
     debounceTime(300),
     switchMap((keywords) => this.searchService.search(keywords))
   );
@@ -101,7 +101,7 @@ export class SearchComponent {
   }));
 
   private readonly _keywordsDebouncedSignal = computedPipe(
-    () => this.searchForm.value.keywordsSignal(),
+    () => this.searchForm.valueSignal.keywords(),
     debounceTime(300)
   );
   protected readonly searchQuery = command.query.withSignalTrigger(

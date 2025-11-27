@@ -39,7 +39,7 @@ describe('formGroup', () => {
         TestBed.runInInjectionContext(() => {
             const formGroup = createExtendedFormGroup({ name: 'John Doe' });
 
-            expect(formGroup.value.nameSignal).toBeDefined();
+            expect(formGroup.valueSignal.name).toBeDefined();
         });
     });
 
@@ -214,7 +214,7 @@ describe('formGroup', () => {
             const results: string[] = [];
 
             effect(() => {
-                const name = formGroup.value.nameSignal();
+                const name = formGroup.valueSignal.name();
                 results.push(name);
             });
 

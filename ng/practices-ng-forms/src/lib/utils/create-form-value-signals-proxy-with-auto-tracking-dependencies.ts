@@ -63,7 +63,7 @@ export function createFormValueSignalsProxyWithAutoTrackingDependencies<
 
     return new Proxy<TFormValue & FormValueSignalsRecord<TFormValue>>(form.value as any, {
         get(_target, prop: keyof TFormValue extends string ? keyof TFormValue : never) {
-            // Fields can be accessed either directly or via a signal, for example, a form group like `new FormGroup({ field1: new FormControl("hi") })`, can be accessed as `form.value.field1` or `form.value.field1Signal`
+            // Fields can be accessed either directly or via a signal, for example, a form group like `new FormGroup({ field1: new FormControl("hi") })`, can be accessed as `form.value.field1` or `form.valueSignal.field1`
             const asksForSignalReference = prop.endsWith('Signal');
 
             // Check if the property is a (nested) form group
@@ -123,4 +123,3 @@ export function createFormValueSignalsProxyWithAutoTrackingDependencies<
         },
     });
 }
-

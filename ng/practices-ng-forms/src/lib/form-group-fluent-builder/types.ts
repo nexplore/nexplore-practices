@@ -17,10 +17,11 @@ export type FormGroupEnhancedWithSignals<TControls = any> = TControls extends {
           /**
            * Returns the current value of the form group, enhanced with signals for each control.
            *
-           * Deprecation notic: Accessing `formGroup.value` to get signals for individual controls is deprecated.
+           * Deprecation notice: Accessing `formGroup.value` to get signals for individual controls is deprecated.
            * Please use `formGroup.valueSignal` instead to access signals for individual controls.
            */
           readonly value: FormGroupValueWithSignals<TControls>;
+          
           /**
            * A signal of the most up-to-date value of the form group.
            *
