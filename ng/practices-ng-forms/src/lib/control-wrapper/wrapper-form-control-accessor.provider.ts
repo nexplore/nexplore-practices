@@ -1,5 +1,5 @@
-import { DestroyRef, effect, inject, Provider, Signal, Type } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { DestroyRef, effect, inject, isSignal, Provider, Signal, Type, untracked } from '@angular/core';
+import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import {
     AbstractControl,
     ControlValueAccessor,
@@ -22,18 +22,24 @@ import {
     MonoTypeOperatorFunction,
     NEVER,
     Observable,
+    of,
     pipe,
+    switchMap,
     takeUntil,
 } from 'rxjs';
 import { combineDirectiveControlErrors } from '../utils/combine-directive-control-errors';
-import { cloneDtoWith } from '../utils/dto-nswag-utils';
-import { INswagGeneratedType } from '../utils/form.types';
+import { cloneDtoWith, isDto } from '../utils/dto-nswag-utils';
+import { INswagGeneratedType, TypedPartialFormGroup } from '../utils/form.types';
 
 export interface WrapperFormControlAccessor<T = any> {
     /**
      * The formGroup or control that will be used to read and write values as well as to validate the form control.
      */
-    getValueAccessorWrapperFormControl(): AbstractControl<T> | undefined;
+    getValueAccessorWrapperFormControl():
+        | AbstractControl<T>
+        | TypedPartialFormGroup<T>
+        | Signal<AbstractControl<T> | TypedPartialFormGroup<T> | undefined>
+        | undefined;
 
     /**
      * If implemented, this observable will be used to listen for value changes and callback the form control accessor.
@@ -57,9 +63,9 @@ export interface WrapperFormControlAccessor<T = any> {
     writeValue?(value: any): void;
 
     /**
-     * If implemented, this method should validate the form control.
+     * If implemented, this method should return the validation errors of the form control.
      */
-    validate?(_control: AbstractControl): ValidationErrors | null;
+    validate?(control: AbstractControl): ValidationErrors | null;
 
     /**
      * If implemented, this method should return the instance of the current DTO.
@@ -69,11 +75,20 @@ export interface WrapperFormControlAccessor<T = any> {
     getValueAccessorEntityDto?(): INswagGeneratedType | null;
 
     /**
+     * @deprecated Use `getValueAccessorEntityDtoSignalToAutoResetForm` instead.
+     *
      * If implemented, this method should return the signal of the current DTO.
      *
      * It will then be used to assign the value to the formGroup, whenever the signal emits a new value.
      */
     getValueAccessorEntityDtoSignal?(): Signal<INswagGeneratedType | null>;
+
+    /**
+     * If implemented, this method should return the signal of the current DTO.
+     *
+     * It will then be used to assign the value to the formGroup, whenever the signal emits a new value.
+     */
+    getValueAccessorEntityDtoSignalToAutoResetForm?(): Signal<INswagGeneratedType | null | undefined>;
 
     /**
      * If implemented, this method will be called when the form control is disabled or enabled.
@@ -105,6 +120,15 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
             )
         );
     }
+    function getValueAccessorWrapperFormControl(
+        instance: WrapperFormControlAccessor
+    ): AbstractControl<any, any> | TypedPartialFormGroup<any> | undefined {
+        const formControl = instance.getValueAccessorWrapperFormControl();
+        if (isSignal(formControl)) {
+            return formControl();
+        }
+        return formControl;
+    }
 
     return [
         {
@@ -114,25 +138,47 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                 const instance = inject(component);
                 const destroyRef = inject(DestroyRef);
 
+                // TODO: Remove when `getValueAccessorEntityDtoSignal` is migrated
+                if (
+                    instance.getValueAccessorEntityDtoSignal &&
+                    !instance.getValueAccessorEntityDtoSignalToAutoResetForm
+                ) {
+                    console.warn(
+                        '`getValueAccessorEntityDtoSignal` is deprecated. Please use `getValueAccessorEntityDtoSignalToAutoResetForm` instead.',
+                        instance
+                    );
+
+                    instance.getValueAccessorEntityDtoSignalToAutoResetForm = instance.getValueAccessorEntityDtoSignal;
+                }
+
+                // This variable will hold the actual instance of the value that was written to the form control.
+                // We need to hold it separately, because the form control might be a `FormGroup` or `FormControl` that does not have a direct reference to the DTO.
+                // We need to be able to access the DTO in the `registerOnChange` method, so we can make sure that, in case of a DTO, the value is cloned and merged with the DTO before passing it to the change emitter.
+                // It can be overridden by implementing the `getValueAccessorEntityDto` or `getValueAccessorEntityDtoSignalToAutoResetForm` methods.
+                let currentDtoValue: any | null = null;
+
                 trace('WrapperFormControlAccessor', 'NG_VALUE_ACCESSOR', { instance });
 
                 function writeEntityToForm(obj: any): void {
+                    currentDtoValue = obj;
                     if (instance.writeValue) {
+                        trace('WrapperFormControlAccessor', 'calling (custom) method');
                         instance.writeValue(obj);
                     } else {
                         const control = instance.getValueAccessorWrapperFormControl();
                         if (control) {
-                            instance.getValueAccessorWrapperFormControl()?.reset(obj);
+                            trace('WrapperFormControlAccessor', 'calling reset on form control');
+                            getValueAccessorWrapperFormControl(instance)?.reset(obj);
                         }
                     }
                 }
 
-                if (instance.getValueAccessorEntityDtoSignal) {
-                    const signal = instance.getValueAccessorEntityDtoSignal();
+                if (instance.getValueAccessorEntityDtoSignalToAutoResetForm) {
+                    const signal = instance.getValueAccessorEntityDtoSignalToAutoResetForm();
                     let isInitial = true;
                     effect(() => {
                         const dto = signal();
-                        if (isInitial && (dto === null || dto === undefined)) {
+                        if (isInitial && (dto === undefined || dto === null)) {
                             // initially, we do not want to write the value if the dto is not available (The form might already have a initial value)
                             return;
                         } else {
@@ -144,50 +190,69 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                 }
 
                 return {
-                    writeValue(obj: any) {
-                        trace(
-                            'WrapperFormControlAccessor',
-                            'writeValue',
-                            instance,
-                            obj,
-                            instance.getValueAccessorWrapperFormControl()
-                        );
-                        writeEntityToForm(obj);
+                    writeValue(value: any) {
+                        const form = getValueAccessorWrapperFormControl(instance);
+                        trace('WrapperFormControlAccessor', 'writeValue', instance, {
+                            value,
+                            form,
+                            formStatus: form?.status,
+                            dirty: form?.dirty,
+                        });
+                        writeEntityToForm(value);
                     },
                     registerOnChange(fn: any) {
-                        const formControl = instance.getValueAccessorWrapperFormControl();
+                        const formControl = getValueAccessorWrapperFormControl(instance);
 
                         (
                             instance.valueAccessorWrapperFormValueChange$ ??
-                            formControl?.valueChanges.pipe(filter(() => formControl.dirty)) ??
+                            formControl?.valueChanges.pipe(
+                                debounceTime(1),
+                                filter(() => formControl.dirty)
+                            ) ??
                             EMPTY
                         )
-                            .pipe(debounceTime(1), safeTakeUntilDestroyed(destroyRef))
+                            .pipe(safeTakeUntilDestroyed(destroyRef))
                             .subscribe((value) => {
-                                trace('WrapperFormControlAccessor', 'on value change', instance, {
-                                    value,
-                                    isDirty: formControl?.dirty,
-                                });
-                                if (instance.getValueAccessorEntityDto || instance.getValueAccessorEntityDtoSignal) {
-                                    const entity =
-                                        instance.getValueAccessorEntityDto?.() ??
-                                        instance.getValueAccessorEntityDtoSignal?.()();
-                                    if (entity) {
-                                        value = cloneDtoWith(entity, value);
-                                        trace('WrapperFormControlAccessor', 'new value', { value });
-                                    } else {
-                                        trace('WrapperFormControlAccessor', 'Entity is not available', {
-                                            instance,
-                                            entity,
-                                            value,
-                                        });
+                                untracked(() => {
+                                    trace('WrapperFormControlAccessor', 'on value change', instance, {
+                                        value,
+                                        copyOfValueAtTime: { ...value },
+                                        isDirty: formControl?.dirty,
+                                    });
+                                    if (
+                                        (instance.getValueAccessorEntityDto ||
+                                            instance.getValueAccessorEntityDtoSignalToAutoResetForm ||
+                                            currentDtoValue) &&
+                                        !isDto(value)
+                                    ) {
+                                        const entity =
+                                            instance.getValueAccessorEntityDto?.() ??
+                                            instance.getValueAccessorEntityDtoSignalToAutoResetForm?.()() ??
+                                            isDto(currentDtoValue)
+                                                ? currentDtoValue
+                                                : null;
+
+                                        if (entity && value !== null) {
+                                            value = cloneDtoWith(entity, value);
+                                            trace('WrapperFormControlAccessor', 'new value', { value });
+                                        } else {
+                                            trace(
+                                                'WrapperFormControlAccessor',
+                                                'Entity is not available or value is null',
+                                                {
+                                                    instance,
+                                                    entity,
+                                                    value,
+                                                }
+                                            );
+                                        }
                                     }
-                                }
-                                fn(value);
+                                    fn(value);
+                                });
                             });
                     },
                     registerOnTouched(fn: any) {
-                        const formControl = instance.getValueAccessorWrapperFormControl();
+                        const formControl = getValueAccessorWrapperFormControl(instance);
                         if (!formControl) {
                             return;
                         }
@@ -207,9 +272,9 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                         if (instance.setDisabledState) {
                             instance.setDisabledState(isDisabled);
                         } else if (isDisabled) {
-                            instance.getValueAccessorWrapperFormControl()?.disable();
+                            getValueAccessorWrapperFormControl(instance)?.disable();
                         } else {
-                            instance.getValueAccessorWrapperFormControl()?.enable();
+                            getValueAccessorWrapperFormControl(instance)?.enable();
                         }
                     },
                 };
@@ -222,6 +287,9 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                 const instance = inject(component);
                 const destroyRef = inject(DestroyRef);
 
+                const wrapperControl = instance.getValueAccessorWrapperFormControl();
+                const wrapperControl$ = isSignal(wrapperControl) ? toObservable(wrapperControl) : of(wrapperControl);
+
                 const isValidChange$ = instance.valueAccessorWrapperFormStateChange$
                     ? instance.valueAccessorWrapperFormStateChange$.pipe(
                           map((state) => state.valid),
@@ -229,7 +297,8 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                       )
                     : defer(
                           () =>
-                              instance.getValueAccessorWrapperFormControl()?.statusChanges.pipe(
+                              wrapperControl$.pipe(
+                                  switchMap((ctrl) => ctrl?.statusChanges ?? EMPTY),
                                   debounceTime(1),
                                   distinctUntilChanged(),
                                   map((status) => status === 'VALID'),
@@ -240,28 +309,31 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                 const isValidSignal = toSignal(isValidChange$);
 
                 return {
-                    validate(control: AbstractControl): ValidationErrors | null {
-                        if (instance.validate) {
-                            return instance.validate(control);
-                        }
+                    validate(_control: AbstractControl): ValidationErrors | null {
+                        return untracked(() => {
+                            if (instance.validate) {
+                                return instance.validate(_control);
+                            }
 
-                        const isValid = isValidSignal();
+                            const isValid = isValidSignal();
 
-                        const form = instance.getValueAccessorWrapperFormControl();
+                            const form = getValueAccessorWrapperFormControl(instance);
 
-                        if (isValid || !form) {
-                            return null;
-                        }
+                            if (isValid || !form) {
+                                return null;
+                            }
 
-                        const errors = combineDirectiveControlErrors(form);
+                            const combinedErrors = combineDirectiveControlErrors(form);
+                            trace(
+                                'WrapperFormControlAccessor',
+                                'validate',
+                                instance,
+                                instance.getValueAccessorWrapperFormControl(),
+                                combinedErrors
+                            );
 
-                        trace('WrapperFormControlAccessor', 'validate', instance, {
-                            isValid,
-                            errors,
-                            form,
+                            return combinedErrors;
                         });
-
-                        return errors;
                     },
                     registerOnValidatorChange(fn: () => void) {
                         isValidChange$.subscribe(fn);

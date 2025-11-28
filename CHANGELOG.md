@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [Practices.Ui.*] Improved signal enhanced form group factory to not trigger unnecessary events when setting initial values/configuration.
 - [Practices.Ui.*] Accessing control signals via `formGroup.value.<prop>Signal` now logs a deprecation warning to steer consumers to `valueSignal`.
+- [Practices.Ng.Forms] Improved `WrapperFormControlAccessor` to support signals and partial form groups, enhanced value/validation handling, and deprecated `getValueAccessorEntityDtoSignal` in favor of `getValueAccessorEntityDtoSignalToAutoResetForm`.
 
 ### Fixed
 
