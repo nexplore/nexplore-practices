@@ -252,10 +252,11 @@ export function createExtendedFormGroup<TDefinition extends FormGroupDefinition<
 
                     return new Proxy(valueSignal, {
                         get: (target, prop, receiver) => {
-                            if (Reflect.has(target, prop)) {
+                            if (prop in formGroup.controls) {
+                                return formSignals.getOrCreateSignalForControl(prop as string);
+                            } else {
                                 return Reflect.get(target, prop, receiver);
                             }
-                            return formSignals.getOrCreateSignalForControl(prop as string);
                         },
                     });
                 }
@@ -325,4 +326,3 @@ export function createExtendedFormGroup<TDefinition extends FormGroupDefinition<
 
     return formGroupProxy;
 }
-
