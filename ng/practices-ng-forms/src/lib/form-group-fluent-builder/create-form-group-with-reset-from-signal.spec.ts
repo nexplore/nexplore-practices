@@ -15,7 +15,7 @@ describe('withResetFromSignal', () => {
             });
             const formGroup = createFormGroupWithResetFromSignal(sourceSignal, { firstName: '', lastName: null });
 
-            formGroup.value.lastNameSignal();
+            formGroup.valueSignal.lastName();
             results.push(formGroup.value.firstName);
 
             TestBed.flushEffects();

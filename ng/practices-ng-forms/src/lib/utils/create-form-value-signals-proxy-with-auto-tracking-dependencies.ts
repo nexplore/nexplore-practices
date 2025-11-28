@@ -1,8 +1,8 @@
-import {inject, Injector, signal, Signal} from "@angular/core";
-import {AbstractControl, FormGroup} from "@angular/forms";
-import {BehaviorSubject} from "rxjs";
-import {formValueSignalsDependencyTracker} from "./form-value-signals-dependency-tracker";
-import {FormGroupValues, FormValueSignalsRecord} from "./form.types";
+import { inject, Injector, signal, Signal } from '@angular/core';
+import { AbstractControl, FormGroup } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+import { formValueSignalsDependencyTracker } from './form-value-signals-dependency-tracker';
+import { FormGroupValues, FormValueSignalsRecord } from './form.types';
 
 /**
  * @internal - Do not use directly, used for other api functions.
@@ -63,12 +63,11 @@ export function createFormValueSignalsProxyWithAutoTrackingDependencies<
 
     return new Proxy<TFormValue & FormValueSignalsRecord<TFormValue>>(form.value as any, {
         get(_target, prop: keyof TFormValue extends string ? keyof TFormValue : never) {
-            // Fields can be accessed either directly or via a signal, for example, a form group like `new FormGroup({ field1: new FormControl("hi") })`, can be accessed as `form.value.field1` or `form.value.field1Signal`
+            // Fields can be accessed either directly or via a signal, for example, a form group like `new FormGroup({ field1: new FormControl("hi") })`, can be accessed as `form.value.field1` or `form.valueSignal.field1`
             const asksForSignalReference = prop.endsWith('Signal');
 
             // Check if the property is a (nested) form group
             if (form.controls[prop] instanceof FormGroup) {
-
                 // Check if we already have a cached proxy signal
                 if (!childFormGroupValueProxiesRecord[prop as string]) {
                     // Recursively create a proxy for the child form group

@@ -54,8 +54,8 @@ export class UserFormComponent {
 
   // Accessing values via signals
   protected readonly fullNameSignal = computed(() => {
-    const firstName = this.userForm.value.firstNameSignal();
-    const lastName = this.userForm.value.lastNameSignal();
+    const firstName = this.userForm.valueSignal.firstName();
+    const lastName = this.userForm.valueSignal.lastName();
     return `${firstName} ${lastName}`;
   });
 }
@@ -83,8 +83,8 @@ const isValid = userForm.validSignal(); // Whether the form is valid
 const isInvalid = userForm.invalidSignal(); // Whether the form is invalid
 
 // Access individual form control values as signals:
-const firstName = userForm.value.firstNameSignal(); // Signal-based access
-const lastName = userForm.value.lastNameSignal(); // Signal-based access
+const firstName = userForm.valueSignal.firstName(); // Signal-based access
+const lastName = userForm.valueSignal.lastName(); // Signal-based access
 ```
 
 ### Dependent Validation - [`withValidation` with `dependent`](./src/lib/form-group-fluent-builder/with-validation.ts)
