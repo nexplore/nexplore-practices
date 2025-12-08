@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
- - `practices-ng-forms` Added `provideWrappedFormControlAccessors` ability to override `setDisabledState`.
+- `practices-ng-forms` Added `provideWrappedFormControlAccessors` ability to override `setDisabledState`.
 - `practices-ng-status` Added support for filtering status events via a configurable `filter` property in `StatusHubConfig` (ignored by default: AbortError DOMExceptions).
 - `practices-ng-forms` Added hybrid `formGroup.valueSignal` accessor that works as a signal for the whole form value while still exposing individual control signals.
 
@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `practices-ng-forms` Improved signal enhanced form group factory to not trigger unnecessary events when setting initial values/configuration.
 - `practices-ng-forms` Accessing control signals via `formGroup.value.<prop>Signal` now logs a deprecation warning to steer consumers to `valueSignal`.
 - `practices-ng-forms` Improved `WrapperFormControlAccessor` to support signals and partial form groups, enhanced value/validation handling, and deprecated `getValueAccessorEntityDtoSignal` in favor of `getValueAccessorEntityDtoSignalToAutoResetForm`.
+- `practices-ng-list-view-source` Improved typing and API for `selectViewSource` and related fluent builders:
+  - Added support for default filter type when no label key is provided.
+    When a label is defined, the filter now only consists of the label.
 
 ### Fixed
 

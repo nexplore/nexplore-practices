@@ -569,7 +569,7 @@ describe('selectViewSource', () => {
         });
     });
 
-    it('should create typed selectViewSource with complex config', () => {
+    it('should create typed selectViewSource with complex config with label', () => {
         TestBed.runInInjectionContext(() => {
             interface User {
                 username: string;
@@ -587,7 +587,7 @@ describe('selectViewSource', () => {
                         data: [
                             { username: 'john', id: 1, email: 'john@test.com', isActive: true },
                             { username: 'jane', id: 2, email: 'jane@test.com', isActive: false },
-                        ].filter((u) => !params.filter['username'] || u.username.includes(params.filter['username'])),
+                        ].filter((u) => !params.filter.username || u.username.includes(params.filter.username)),
                         total: 2,
                     }),
                 defaultQueryParams: {
@@ -600,6 +600,40 @@ describe('selectViewSource', () => {
 
             expect(source).toBeDefined();
             expect(source.label).toBe('username');
+            expect(source.value).toBe('id');
+        });
+    });
+
+    it('should create typed selectViewSource with complex config without label', () => {
+        TestBed.runInInjectionContext(() => {
+            interface User {
+                username: string;
+                id: number;
+                email: string;
+                isActive: boolean;
+            }
+
+            const source = selectViewSource.withType<User>().withConfig({
+                value: 'id',
+                searchable: true,
+                loadFn: (params) =>
+                    of({
+                        data: [
+                            { username: 'john', id: 1, email: 'john@test.com', isActive: true },
+                            { username: 'jane', id: 2, email: 'jane@test.com', isActive: false },
+                        ].filter((u) => !params.filter.label || u.username.includes(params.filter.label)),
+                        total: 2,
+                    }),
+                defaultQueryParams: {
+                    filter: { label: '' },
+                    skip: 0,
+                    take: 50,
+                    orderings: [{ field: 'username', direction: OrderDirection.Asc }],
+                },
+            });
+
+            expect(source).toBeDefined();
+            expect(source.label).toBeUndefined();
             expect(source.value).toBe('id');
         });
     });

@@ -1,6 +1,10 @@
-import { StringKeyOf } from '@nexplore/practices-ng-common-util';
 import { createSelectViewSourceInternal } from './extensions';
-import { SelectViewSourceWithSignals, TypedSelectViewSourceConfig } from './types';
+import {
+    SelectViewSourceFilterType,
+    SelectViewSourceLabelKey,
+    SelectViewSourceWithSignals,
+    TypedSelectViewSourceConfig,
+} from './types';
 
 /**
  * Creates a SelectViewSource .
@@ -8,10 +12,10 @@ import { SelectViewSourceWithSignals, TypedSelectViewSourceConfig } from './type
  */
 export function createSelectViewSource<
     TData,
-    TLabelKey extends StringKeyOf<TData> = StringKeyOf<TData>,
+    TLabelKey extends SelectViewSourceLabelKey<TData>,
     TQueryParams = TData,
-    TFilter extends Pick<TData, TLabelKey> = Pick<TData, TLabelKey>,
-    TOrdering = Pick<TData, TLabelKey>
+    TFilter extends SelectViewSourceFilterType<TData, TLabelKey> = SelectViewSourceFilterType<TData, TLabelKey>,
+    TOrdering = TData
 >(
     config: TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams, TOrdering>
 ): SelectViewSourceWithSignals<TData, TFilter> {
@@ -20,12 +24,11 @@ export function createSelectViewSource<
 
 export function createTypedFactory<TData>() {
     return <
-        TLabelKey extends StringKeyOf<TData> = StringKeyOf<TData>,
-        TQueryParams = TData,
-        TFilter extends Pick<TData, TLabelKey> = Pick<TData, TLabelKey>,
-        TOrdering = Pick<TData, TLabelKey>
+        TLabelKey extends SelectViewSourceLabelKey<TData>,
+        TQueryParams,
+        TFilter extends SelectViewSourceFilterType<TData, TLabelKey>,
+        TOrdering = TData
     >(
         config: TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams, TOrdering>
     ): SelectViewSourceWithSignals<TData, TFilter> => createSelectViewSource(config);
 }
-
