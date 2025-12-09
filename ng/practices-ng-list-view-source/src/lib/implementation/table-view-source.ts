@@ -118,7 +118,7 @@ export class TableViewSource<TData, TFilter = TData>
         super(loadFn, { filter: {} as TFilter, ...defaults });
         Object.assign(this, config);
         this.columns = config.columns ?? [];
-        this.patchSortableColumnWithDefaultOrdering(defaults);
+        this._patchSortableColumnOrderingByQueryParams(defaults);
     }
 
     protected override getQueryParams$(queryParams$: Observable<IQueryParams>): Observable<IQueryParams> {
@@ -157,22 +157,15 @@ export class TableViewSource<TData, TFilter = TData>
         super.update(params);
 
         // If orderings were updated, we need to patch the columns accordingly
-        // Only the first ordering will be applied
-        if (params.orderings && params.orderings.length > 0) {
-            const ordering = params.orderings[0];
-            const fieldNameNormalized = firstCharToLower(ordering.field);
-            const existingColumn =
-                this.columnsArray.find((c) => c.orderingFieldName === ordering.field) ?? // Try to find the field by the orderingFieldName
-                this.columnsArray.find((c) => firstCharToLower(c.fieldName as string) === fieldNameNormalized); // Fallback is to find the field by the fieldName
-            if (existingColumn != null) {
-                this.patchColumn(existingColumn, { sortDir: ordering.direction });
-            }
-        }
+        this._patchSortableColumnOrderingByQueryParams(params);
     }
 
-    private patchSortableColumnWithDefaultOrdering(defaults: Partial<IQueryParamsWithFilter<TFilter>>) {
-        if (defaults && defaults.orderings && defaults.orderings.length === 1) {
-            const ordering = defaults.orderings[0];
+    /**
+     *  Only the first ordering will be applied
+     */
+    private _patchSortableColumnOrderingByQueryParams(queryParams: Partial<IQueryParamsWithFilter<TFilter>>) {
+        if (queryParams && queryParams.orderings && queryParams.orderings.length === 1) {
+            const ordering = queryParams.orderings[0];
             const orderingFieldNameNormalized = firstCharToLower(ordering.field);
             const existingColumn =
                 this.columnsArray.find((c) => c.orderingFieldName === ordering.field) ?? // Try to find the field by the orderingFieldName
