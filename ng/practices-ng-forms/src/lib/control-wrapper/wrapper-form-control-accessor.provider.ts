@@ -38,8 +38,8 @@ export interface WrapperFormControlAccessor<T = any> {
     getValueAccessorWrapperFormControl():
         | AbstractControl<T>
         | TypedPartialFormGroup<T>
-        | Signal<AbstractControl<T> | TypedPartialFormGroup<T> | undefined>
-        | undefined;
+        | undefined
+        | Signal<AbstractControl<T> | TypedPartialFormGroup<T> | undefined>;
 
     /**
      * If implemented, this observable will be used to listen for value changes and callback the form control accessor.
