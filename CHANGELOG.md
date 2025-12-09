@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `practices-ng-commands` Fixed `command.fromInput` to properly handle legacy commands when `mapArguments` is configured.
 - `practices-ui-ktbe` Fixed `PuibeCheckboxComponent` touched initial value not emitting.
+- _BREAKING_ `practices-ui-ktbe` Fixed typo in `PuibeReadonyLabelValueComponent`, renamed to `PuibeReadonlyLabelValueComponent`.
 - `practices-ui-ktbe` Fixed `PuibeReadonlyLabelValueComponent` styling, to break long words when they are overflowing.
 - `practices-ng-commands` Fixed `Command.cancel()` to abort even when the handler was returning a promise instead of an observable.
 - `practices-ng-commands` Fixed `command.query.withSignalTrigger()` typing to reflect null/undefined args behavior.
