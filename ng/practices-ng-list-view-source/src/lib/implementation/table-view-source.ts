@@ -157,16 +157,16 @@ export class TableViewSource<TData, TFilter = TData>
         super.update(params);
 
         // If orderings were updated, we need to patch the columns accordingly
-        if (params.orderings) {
-            params.orderings.forEach((ordering) => {
-                const fieldNameNormalized = firstCharToLower(ordering.field);
-                const existingColumn =
-                    this.columnsArray.find((c) => c.orderingFieldName === ordering.field) ?? // Try to find the field by the orderingFieldName
-                    this.columnsArray.find((c) => firstCharToLower(c.fieldName as string) === fieldNameNormalized); // Fallback is to find the field by the fieldName
-                if (existingColumn != null) {
-                    this.patchColumn(existingColumn, { sortDir: ordering.direction });
-                }
-            });
+        // Only the first ordering will be applied
+        if (params.orderings && params.orderings.length > 0) {
+            const ordering = params.orderings[0];
+            const fieldNameNormalized = firstCharToLower(ordering.field);
+            const existingColumn =
+                this.columnsArray.find((c) => c.orderingFieldName === ordering.field) ?? // Try to find the field by the orderingFieldName
+                this.columnsArray.find((c) => firstCharToLower(c.fieldName as string) === fieldNameNormalized); // Fallback is to find the field by the fieldName
+            if (existingColumn != null) {
+                this.patchColumn(existingColumn, { sortDir: ordering.direction });
+            }
         }
     }
 
@@ -208,4 +208,3 @@ export class TableViewSource<TData, TFilter = TData>
         return { field, direction: columnDefinition.sortDir! };
     };
 }
-
