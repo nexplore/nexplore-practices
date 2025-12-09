@@ -68,4 +68,3 @@ export function createExtendableTableViewSource<TData, TFilter>(
 
     return enhanceListViewSource(tableViewSource) as any;
 }
-

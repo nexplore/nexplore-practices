@@ -36,4 +36,3 @@ export type HasTypedQueryParams<TFilter, TQueryParams> =
            */
           defaultQueryParams: Partial<TypedQueryParamsWithFilter<TFilter, TQueryParams>>;
       };
-

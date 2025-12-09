@@ -80,4 +80,3 @@ export type TypedTableViewSourceConfigWithoutLoadFn<
 } & HasTypedQueryParams<TFilter, TOrdering>;
 
 export type TableViewSourceWithSignals<TData, TFilter> = EnhancedListViewSource<TableViewSource<TData, TFilter>>;
-
