@@ -35,6 +35,7 @@ export function createTableViewSourceFromCommand<TData, TArgs, TFilter = TArgs, 
 export function createTableViewSourceFromCommand<TData, TArgs>(
     command: ValueOrGetter<AbstractCommand<TArgs, TData[] | null | undefined>>
 ): TypedTableViewSourceFactoryFluentApi<TData, TArgs>;
+
 /**
  * Creates a new `TableViewSource` from a query command.
  *
@@ -114,4 +115,3 @@ function createTableViewSourceFactoryFluentApi<TData, TArgs>(
 type TypedTableViewSourceFactoryFluentApi<TData, TArgs> = ReturnType<
     typeof createTableViewSourceFactoryFluentApi<TData, TArgs>
 >;
-

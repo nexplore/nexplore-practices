@@ -27,6 +27,7 @@ type AdditionalConfig<TForm extends FormGroup> = {
      * The filter form, whose value changes will update the filter params of the TableViewSource.
      */
     filterForm: ValueOrSignal<TForm>;
+
     /**
      * Determines whether a form value change should be pushed to the TableViewSource.
      * Defaults to only applying values when the value has changed.
@@ -152,7 +153,7 @@ export function extendWithFilterForm<
                         hasChanged,
                         formInstance,
                     });
-                    this.filter(formValue as any);
+                    this.filter(formValue);
 
                     const currentQueryParams = this.getQueryParams();
                     if (currentQueryParams.skip !== 0) {
@@ -164,7 +165,6 @@ export function extendWithFilterForm<
                         });
                         this.page(0, currentQueryParams.take!); // Reset page when filtering, TODO: Should this be done in implementation class?
                     }
-                    return;
                 });
             }
         });
@@ -192,4 +192,3 @@ export function extendWithFilterForm<
 
     return this;
 }
-

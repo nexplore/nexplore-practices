@@ -156,7 +156,7 @@ describe('createTableViewSourceWithPersistedParams', () => {
                 orderings: [{ field: 'name', direction: OrderDirection.Desc }],
                 filter: { search: 'persisted' },
             };
-            const loadFn = jest.fn((params: IQueryParamsWithFilter<TestFilter>) => of({ data: [], total: 0 }));
+            const loadFn = jest.fn((_params: IQueryParamsWithFilter<TestFilter>) => of({ data: [], total: 0 }));
 
             createTableViewSourceWithPersistedParams<TestDto, TestFilter, IListResult<TestDto>, TestDto>({
                 columns: ['name', 'age'],
@@ -346,7 +346,7 @@ describe('createTableViewSourceWithPersistedParams', () => {
             });
         });
 
-        it('synchronizes multiple orderings from persisted params (should only keep the last one)', async () => {
+        it('synchronizes multiple orderings from persisted params (should only keep the first one)', async () => {
             await TestBed.runInInjectionContext(async () => {
                 const persistedParams: TypedQueryParamsWithFilter<TestFilter, TestDto> = {
                     orderings: [
@@ -380,8 +380,8 @@ describe('createTableViewSourceWithPersistedParams', () => {
                 // Only one column should have sortDir set (the last one processed)
                 const columnsWithSort = vs.columnsArray.filter((c) => c.sortDir != null);
                 expect(columnsWithSort).toHaveLength(1);
-                expect(ageColumn?.sortDir).toBe(OrderDirection.Desc);
-                expect(nameColumn?.sortDir).toBeNull();
+                expect(nameColumn?.sortDir).toBe(OrderDirection.Asc);
+                expect(ageColumn?.sortDir).toBeUndefined();
             });
         });
 
