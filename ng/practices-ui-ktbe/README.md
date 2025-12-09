@@ -166,7 +166,7 @@ import {
 
             <main>
                 <!-- Add the puibeGlobalDirtyGuard directive to protect navigation when forms have unsaved changes -->
-                <router-outlet puibeGlobalDirtyGuard></router-outlet>
+                <router-outlet puibeGlobalDirtyGuard />
             </main>
 
             <puibe-footer puibeFooter>
@@ -176,7 +176,7 @@ import {
         </puibe-shell>
 
         <!-- Renders global toasts for progress and error-tracking -->
-        <puibe-status-hub></puibe-status-hub>
+        <puibe-status-hub />
     `,
 })
 export class AppComponent {
