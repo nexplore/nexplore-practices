@@ -108,7 +108,6 @@ function createTableViewSourceFactoryFluentApi<TData>(): TypedTableViewSourceFac
     return {
         withFilterForm: createTypedWithFilterFormFactory<TData>(),
         withPersistedParams: createdTypedWithPersistedParamsFactory<TData>(),
-        withConfig: createTypedFactory<TData>()
+        withConfig: createTypedFactory<TData>(),
     };
 }
-
