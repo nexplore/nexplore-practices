@@ -151,10 +151,7 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
             if (value === null) {
                 const nullItem = this._ngSelectComponent.itemsList.findItem(null);
                 if (nullItem) {
-                    trace('SelectDirective', 'handle null value', 'selecting null item', this, {
-                        nullItem,
-                        value,
-                    });
+                    trace('SelectDirective', 'handle null value', 'selecting null item', this, nullItem, value);
                     this._ngSelectComponent.select(nullItem);
                 }
             }
