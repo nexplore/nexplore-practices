@@ -130,8 +130,16 @@ export interface PuibeActionDialogConfig<
      */
     actionTemplates?: TActionTemplates;
 
+    /**
+     * Definition for the button actions and their associated commands or static results
+     */
     actions?: TActions;
 
+    /**
+     * If provided, defines a main command, that is called when any action is triggered, with the action as parameter.
+     *
+     * Note, will not get called for actions which have a command defined directly on them.
+     */
     command?: CombinedCommandInput<TAction, TResult>;
 }
 

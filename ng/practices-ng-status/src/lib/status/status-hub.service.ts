@@ -19,7 +19,8 @@ export class StatusHubService {
         messageEventTimeToLiveMs: 5000,
         busyAsSilentByDefault: false,
         disableLogErrorsToConsole: true,
-        filter: (ev) => !(ev.error instanceof DOMException && ev.error.name === 'AbortError'), // Ignore abort errors by default (These are only thrown by AbortController and should never be shown to the user)
+        // Ignore abort errors by default (These are only thrown by AbortController and should never be shown to the user)
+        filter: (ev) => !(ev.error instanceof DOMException && ev.error.name === 'AbortError'),
     };
 
     get currentBusyOperations() {
