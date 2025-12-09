@@ -24,7 +24,7 @@ export function createCommandFromInput<TInnerArgs, TResult, TArgs = TInnerArgs>(
     commandInput: CommandInput<TInnerArgs, TResult>,
     options?: CommandOptions<TArgs> & {
         mapArguments?: (args: TArgs) => TInnerArgs;
-    },
+    }
 ): Command<TArgs, TResult> {
     const mergedOptions = deepMerge({ isCancellable: true, status: options?.status ?? { silent: true } }, options);
 
@@ -53,8 +53,8 @@ export function createCommandFromInput<TInnerArgs, TResult, TArgs = TInnerArgs>(
                     runWithoutStatus(() => commandInput.triggerAsync(args as any, { abortSignal: abort }), statusHub),
                 deepMerge(
                     { status: (commandInput.options as unknown as CommandOptions<TArgs>)?.status },
-                    mergedOptions,
-                ) as any,
+                    mergedOptions
+                ) as any
             ) as any;
         });
     } else if (isLegacyCommandLike(commandInput)) {
@@ -70,7 +70,7 @@ export function createCommandFromInput<TInnerArgs, TResult, TArgs = TInnerArgs>(
                 runWithoutStatus(() => {
                     return triggerLegacyCommandAsync(legacyCommand, args as any, abort);
                 }, statusHub),
-            deepMerge({ status: legacyCommand.options }, mergedOptions) as any,
+            deepMerge({ status: legacyCommand.options }, mergedOptions) as any
         ) as any;
     } else {
         return createCommandWithSignalsAndStatus(commandInput, mergedOptions as any) as any;
@@ -78,8 +78,7 @@ export function createCommandFromInput<TInnerArgs, TResult, TArgs = TInnerArgs>(
 }
 
 function isLegacyCommandLike<TArgs, TResult>(
-    commandInput: Function | ILegacyCommand<TArgs, TResult>,
+    commandInput: Function | ILegacyCommand<TArgs, TResult>
 ): commandInput is ILegacyCommand<TArgs, TResult> {
     return 'trigger' in commandInput && 'error$' in commandInput && 'result$' in commandInput;
 }
-
