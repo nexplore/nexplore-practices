@@ -45,6 +45,5 @@ export function createTypedFactory<TData, TPartial extends Record<string, any> =
         createTableViewSource({
             ...partialConfig,
             ...config,
-        } as any) as any;
+        } as any);
 }
-
