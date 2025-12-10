@@ -25,4 +25,4 @@ export class PuibeReadonlyLabelValueComponent {
 /**
  * @deprecated Renamed to `PuibeReadonlyLabelValueComponent`. Use the renamed component instead.
  */
-export type PuibeReadonyLabelValueComponent = PuibeReadonlyLabelValueComponent;
+export class PuibeReadonyLabelValueComponent extends PuibeReadonlyLabelValueComponent {}
