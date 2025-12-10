@@ -40,7 +40,7 @@ export type ExtractResultTypeFrom<TTableViewSource> = TTableViewSource extends T
 
 export function createExtendableTableViewSource<TData, TFilter>(
     config: Omit<TableViewSourceConfig<TData>, 'columns'> & {
-        columns: Array<keyof TData> | Array<TableColumnItem<TData>> | TableColumnDefinitions<Partial<TData>>;
+        columns?: Array<keyof TData> | Array<TableColumnItem<TData>> | TableColumnDefinitions<Partial<TData>>;
     },
     loadFn: (params: IQueryParamsWithFilter<TFilter>) => MaybeAsync<Partial<IListResult<TData>>>,
     defaults: Partial<IQueryParamsWithFilter<TFilter>> = {}

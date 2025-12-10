@@ -16,6 +16,7 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
+import { trace } from '@nexplore/practices-ng-logging';
 import { DestroyService } from '@nexplore/practices-ui';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { TranslateService } from '@ngx-translate/core';
@@ -144,6 +145,17 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
                 this._ngSelectComponent.select(nullItem);
             }
         }
+
+        // Handle case where the model is set to null programmatically
+        this._ngControl.valueChanges?.pipe(takeUntil(this._destroy$)).subscribe((value) => {
+            if (value === null) {
+                const nullItem = this._ngSelectComponent.itemsList.findItem(null);
+                if (nullItem) {
+                    trace('SelectDirective', 'handle null value', 'selecting null item', this, nullItem, value);
+                    this._ngSelectComponent.select(nullItem);
+                }
+            }
+        });
 
         this._formFieldService.readonlyValue$.pipe(takeUntil(this._destroy$)).subscribe((value) => {
             // Using ng-select with a screenreader does not read out the currently selected value, so we need to set the aria-label.

@@ -1,11 +1,13 @@
 import { signal, untracked } from '@angular/core';
 import { AbstractCommand } from '@nexplore/practices-ng-commands';
-import { unwrapSignalLike, ValueOrGetter } from '@nexplore/practices-ng-common-util';
+import { unwrapSignalLike, ValueOrGetter, ValueOrSignal } from '@nexplore/practices-ng-common-util';
+import { TypedFormGroup } from '@nexplore/practices-ng-forms';
 import { tap } from 'rxjs/operators';
 import { IListResult } from '../types';
 import { HasTypedQueryParams } from '../types-internal';
 import { commandToListResultObservable, refreshListViewSourceWhenCommandTriggered } from '../utils/command-list-util';
 import { getDefaultQueryParams } from '../utils/internal-util';
+import { PersistParamsConfig } from './create-table-view-source-with-persisted-params';
 import { createExtendableTableViewSource, Extensions } from './extensions';
 import { TableViewSourceWithSignals, TypedTableViewSourceConfigWithoutLoadFn } from './types';
 
@@ -24,6 +26,15 @@ type AdditionalConfig = {
      */
     triggerQueryCommandWithFilter?: boolean;
 };
+
+export function createTableViewSourceFromCommand<TData, TArgs, TFilter = TArgs, TOrdering = TData>(
+    command: ValueOrGetter<AbstractCommand<TArgs, TData[] | null | undefined>>,
+    config: AdditionalConfig & TypedTableViewSourceConfigWithoutLoadFn<TData, IListResult<TData>, TFilter, TOrdering>
+): TableViewSourceWithSignals<TData, TFilter> & Extensions;
+
+export function createTableViewSourceFromCommand<TData, TArgs>(
+    command: ValueOrGetter<AbstractCommand<TArgs, TData[] | null | undefined>>
+): TypedTableViewSourceFactoryFluentApi<TData, TArgs>;
 
 /**
  * Creates a new `TableViewSource` from a query command.
@@ -44,8 +55,12 @@ type AdditionalConfig = {
  */
 export function createTableViewSourceFromCommand<TData, TArgs, TFilter = TArgs, TOrdering = TData>(
     command: ValueOrGetter<AbstractCommand<TArgs, TData[] | null | undefined>>,
-    config: AdditionalConfig & TypedTableViewSourceConfigWithoutLoadFn<TData, IListResult<TData>, TFilter, TOrdering>
-): TableViewSourceWithSignals<TData, TFilter> & Extensions {
+    config?: AdditionalConfig & TypedTableViewSourceConfigWithoutLoadFn<TData, IListResult<TData>, TFilter, TOrdering>
+): (TableViewSourceWithSignals<TData, TFilter> & Extensions) | TypedTableViewSourceFactoryFluentApi<TData, TArgs> {
+    if (!config) {
+        return createTableViewSourceFactoryFluentApi<TData, TArgs>(command);
+    }
+
     const isBeingTriggerredByListViewSourceSignal = signal(false);
     const tableViewSource = createExtendableTableViewSource<TData, TFilter>(
         config,
@@ -64,3 +79,39 @@ export function createTableViewSourceFromCommand<TData, TArgs, TFilter = TArgs, 
 
     return tableViewSource;
 }
+
+function createTableViewSourceFactoryFluentApi<TData, TArgs>(
+    command: ValueOrGetter<AbstractCommand<TArgs, TData[] | null | undefined>>
+) {
+    return {
+        withConfig<TFilter = TArgs, TOrdering = TData>(
+            config: AdditionalConfig &
+                TypedTableViewSourceConfigWithoutLoadFn<TData, IListResult<TData>, TFilter, TOrdering>
+        ) {
+            return createTableViewSourceFromCommand(command, config);
+        },
+        withFilterForm<TFilter = TArgs, TOrdering = TData>(
+            config: AdditionalConfig &
+                TypedTableViewSourceConfigWithoutLoadFn<TData, IListResult<TData>, TFilter, TOrdering> &
+                (
+                    | {
+                          filterForm: ValueOrSignal<TypedFormGroup<TFilter>>;
+                      }
+                    | ValueOrSignal<TypedFormGroup<TFilter>>
+                )
+        ) {
+            return createTableViewSourceFromCommand(command, config).withFilterForm(config as any);
+        },
+        withPersistedParams<TFilter = TArgs, TOrdering = TData>(
+            config: AdditionalConfig &
+                TypedTableViewSourceConfigWithoutLoadFn<TData, IListResult<TData>, TFilter, TOrdering> &
+                PersistParamsConfig<TFilter, TData>
+        ) {
+            return createTableViewSourceFromCommand(command, config).withPersistedParams(config);
+        },
+    };
+}
+
+type TypedTableViewSourceFactoryFluentApi<TData, TArgs> = ReturnType<
+    typeof createTableViewSourceFactoryFluentApi<TData, TArgs>
+>;

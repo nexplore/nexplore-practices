@@ -22,10 +22,9 @@ import { triggerLegacyCommandAsync } from '../commands/legacy-command-util';
  */
 export function createCommandFromInput<TInnerArgs, TResult, TArgs = TInnerArgs>(
     commandInput: CommandInput<TInnerArgs, TResult>,
-    options?:
-        | CommandOptions<TArgs> & {
-              mapArguments?: (args: TArgs) => TInnerArgs;
-          }
+    options?: CommandOptions<TArgs> & {
+        mapArguments?: (args: TArgs) => TInnerArgs;
+    }
 ): Command<TArgs, TResult> {
     const mergedOptions = deepMerge({ isCancellable: true, status: options?.status ?? { silent: true } }, options);
 
@@ -37,6 +36,8 @@ export function createCommandFromInput<TInnerArgs, TResult, TArgs = TInnerArgs>(
                 return commandInput.triggerAsync(options.mapArguments!(args), { abortSignal: abort });
             } else if (typeof commandInput === 'function') {
                 return commandInput(options.mapArguments!(args), abort);
+            } else if (isLegacyCommandLike(commandInput)) {
+                return triggerLegacyCommandAsync(commandInput, options.mapArguments!(args), abort);
             } else {
                 throw new Error('Cannot map arguments for the provided input');
             }
@@ -56,7 +57,7 @@ export function createCommandFromInput<TInnerArgs, TResult, TArgs = TInnerArgs>(
                 ) as any
             ) as any;
         });
-    } else if ('trigger' in commandInput && 'error$' in commandInput && 'result$' in commandInput) {
+    } else if (isLegacyCommandLike(commandInput)) {
         // Check if the command is a legacy command (TODO: This is temporary, until all commands are migrated)
         const legacyCommand = commandInput as unknown as ILegacyCommand<TArgs, TResult>;
 
@@ -74,4 +75,10 @@ export function createCommandFromInput<TInnerArgs, TResult, TArgs = TInnerArgs>(
     } else {
         return createCommandWithSignalsAndStatus(commandInput, mergedOptions as any) as any;
     }
+}
+
+function isLegacyCommandLike<TArgs, TResult>(
+    commandInput: Function | ILegacyCommand<TArgs, TResult>
+): commandInput is ILegacyCommand<TArgs, TResult> {
+    return 'trigger' in commandInput && 'error$' in commandInput && 'result$' in commandInput;
 }

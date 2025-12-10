@@ -1,4 +1,4 @@
-import { effect, signal } from '@angular/core';
+import { computed, effect, isSignal, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Validators } from '@angular/forms';
 import { createExtendedFormGroup } from './extensions';
@@ -39,7 +39,7 @@ describe('formGroup', () => {
         TestBed.runInInjectionContext(() => {
             const formGroup = createExtendedFormGroup({ name: 'John Doe' });
 
-            expect(formGroup.value.nameSignal).toBeDefined();
+            expect(formGroup.valueSignal.name).toBeDefined();
         });
     });
 
@@ -214,7 +214,7 @@ describe('formGroup', () => {
             const results: string[] = [];
 
             effect(() => {
-                const name = formGroup.value.nameSignal();
+                const name = formGroup.valueSignal.name();
                 results.push(name);
             });
 
@@ -245,6 +245,77 @@ describe('formGroup', () => {
             const obj = Object.assign({}, formGroup.value);
 
             expect(obj).toEqual({ name: 'John Doe' });
+        });
+    });
+
+    it('should expose full value updates through valueSignal', () => {
+        TestBed.runInInjectionContext(() => {
+            const formGroup = createExtendedFormGroup({ firstName: 'John', lastName: 'Doe' });
+
+            const results: string[] = [];
+
+            effect(() => {
+                const value = formGroup.valueSignal();
+                results.push(`${value.firstName} ${value.lastName}`);
+            });
+
+            TestBed.flushEffects();
+
+            formGroup.patchValue({ firstName: 'Lara', lastName: 'Croft' });
+
+            TestBed.flushEffects();
+
+            expect(results).toEqual(['John Doe', 'Lara Croft']);
+        });
+    });
+
+    it('should expose control signals through valueSignal property access', () => {
+        TestBed.runInInjectionContext(() => {
+            const formGroup = createExtendedFormGroup({ firstName: 'John', lastName: 'Doe' });
+
+            const results: string[] = [];
+
+            effect(() => {
+                const firstName = formGroup.valueSignal.firstName();
+                const lastName = formGroup.valueSignal.lastName();
+                results.push(`${firstName} ${lastName}`);
+            });
+
+            TestBed.flushEffects();
+
+            formGroup.patchValue({ firstName: 'Lara', lastName: 'Croft' });
+
+            TestBed.flushEffects();
+
+            expect(results).toEqual(['John Doe', 'Lara Croft']);
+        });
+    });
+
+    it('should behave like an Angular signal when using valueSignal helpers', () => {
+        TestBed.runInInjectionContext(() => {
+            const formGroup = createExtendedFormGroup({ firstName: 'John', lastName: 'Doe' });
+
+            expect(isSignal(formGroup.valueSignal)).toBe(true);
+            expect(typeof formGroup.valueSignal).toBe('function');
+
+            const fullName = computed(() => {
+                const value = formGroup.valueSignal();
+                return `${value.firstName} ${value.lastName}`;
+            });
+
+            const results: string[] = [];
+
+            effect(() => {
+                results.push(fullName());
+            });
+
+            TestBed.flushEffects();
+
+            formGroup.patchValue({ firstName: 'Lara', lastName: 'Croft' });
+
+            TestBed.flushEffects();
+
+            expect(results).toEqual(['John Doe', 'Lara Croft']);
         });
     });
 

@@ -9,6 +9,7 @@ import {
     PristineChangeEvent,
     TouchedChangeEvent,
 } from '@angular/forms';
+import { isObjDeepEqual } from '@nexplore/practices-ng-common-util';
 import { trace } from '@nexplore/practices-ng-logging';
 import { filter, map, Observable } from 'rxjs';
 import { formValueSignalsDependencyTracker } from '../utils/form-value-signals-dependency-tracker';
@@ -49,7 +50,8 @@ function toFormControlOptions<T>(
 function updateFormGroupDefinition(
     controlDefs: FormGroupDefinitionRecord<any> | undefined,
     formGroup: FormGroup,
-    formBuilder: FormBuilder
+    formBuilder: FormBuilder,
+    options: { emitChangeEvents: boolean }
 ) {
     if (!controlDefs) {
         return;
@@ -61,7 +63,7 @@ function updateFormGroupDefinition(
             AbstractControl<any> | FormControlDefinition<any> | FormControlDefinitionValueOmitted
         ]) => {
             if (controlDef instanceof AbstractControl) {
-                formGroup.addControl(key, controlDef);
+                formGroup.addControl(key, controlDef, { emitEvent: options.emitChangeEvents });
             } else {
                 if (formGroup.contains(key)) {
                     const existingControl = formGroup.get(key)!;
@@ -72,7 +74,9 @@ function updateFormGroupDefinition(
                     const value = 'value' in controlDef ? controlDef.value : existingControl.value;
 
                     if (needsToRecreateControl) {
-                        formGroup.setControl(key, formBuilder.control(value, controlDef));
+                        formGroup.setControl(key, formBuilder.control(value, controlDef), {
+                            emitEvent: options.emitChangeEvents,
+                        });
                     } else {
                         if (existingControl.value !== value) {
                             existingControl.reset(value);
@@ -92,7 +96,8 @@ function updateFormGroupDefinition(
                         formBuilder.control(
                             'value' in controlDef ? controlDef.value : undefined,
                             toFormControlOptions(controlDef)
-                        )
+                        ),
+                        { emitEvent: options.emitChangeEvents }
                     );
                 }
             }
@@ -101,7 +106,7 @@ function updateFormGroupDefinition(
 
     Object.entries(formGroup.controls).forEach(([key, control]) => {
         if (!(key in controlDefs)) {
-            control.reset();
+            control.reset(undefined, { emitEvent: options.emitChangeEvents });
             control.disable();
         }
     });
@@ -152,9 +157,13 @@ export function createExtendedFormGroup<TDefinition extends FormGroupDefinition<
         });
         formGroup = new FormGroup({});
 
+        let hasInitialized = false;
+        let initialDefinition: unknown = undefined;
         try {
             const controlDefs = definition(formBuilderProxy);
-            updateFormGroupDefinition(controlDefs, formGroup, formBuilder);
+            updateFormGroupDefinition(controlDefs, formGroup, formBuilder, { emitChangeEvents: false });
+            initialDefinition = controlDefs;
+            hasInitialized = true;
         } catch (e) {
             trace(
                 'createExtendedFormGroup',
@@ -163,11 +172,26 @@ export function createExtendedFormGroup<TDefinition extends FormGroupDefinition<
             );
         }
 
+        let isFirstEffectRun = true;
         runInInjectionContext(injector, () => {
             effect(() => {
-                // TODO: Can we find a way to prevent this from running twice initially? Not really a big deal
                 const controlDefs = definition(formBuilderProxy);
-                updateFormGroupDefinition(controlDefs, formGroup, formBuilder);
+                if (isFirstEffectRun && hasInitialized && isObjDeepEqual(controlDefs, initialDefinition)) {
+                    trace(
+                        'createExtendedFormGroup',
+                        'Skipping first effect run to avoid double initialization, as defintition has not changed.',
+                        {
+                            controlDefs,
+                            initialDefinition,
+                        }
+                    );
+                    isFirstEffectRun = false;
+                    return;
+                }
+                updateFormGroupDefinition(controlDefs, formGroup, formBuilder, { emitChangeEvents: !hasInitialized });
+                trace('createExtendedFormGroup', 'Updated form group definition from factory function.', controlDefs);
+                hasInitialized = true;
+                isFirstEffectRun = false;
             });
         });
     } else {
@@ -202,17 +226,40 @@ export function createExtendedFormGroup<TDefinition extends FormGroupDefinition<
         get: (target, prop, receiver) => {
             switch (prop) {
                 case 'value':
+                    // TODO: Deprecated, remove in future major version
                     return new Proxy(Reflect.get(target, prop, receiver), {
                         get: (target, prop, receiver) => {
                             const asksForSignal = typeof prop === 'string' && prop.endsWith(SIGNAL_POSTFIX);
 
                             if (asksForSignal) {
+                                console.warn(
+                                    `[DEPRECATION] Accessing formGroup.value.${String(
+                                        prop
+                                    )} is deprecated and will be removed in future major versions. Please use formGroup.valueSignal.${String(
+                                        prop.slice(0, -SIGNAL_POSTFIX.length)
+                                    )} instead.`,
+                                    target
+                                );
                                 return formSignals.getOrCreateSignalForControl(prop.slice(0, -SIGNAL_POSTFIX.length));
                             } else {
                                 return Reflect.get(target, prop, receiver);
                             }
                         },
                     });
+                case 'valueSignal': {
+                    // Return a hybrid function that can be called as a function (signal), returning the current value, or alternatively returning the formSignals object when accessing properties.
+                    const valueSignal = getSignalForObservable('value', formGroup.valueChanges, formGroup.value);
+
+                    return new Proxy(valueSignal, {
+                        get: (target, prop, receiver) => {
+                            if (prop in formGroup.controls) {
+                                return formSignals.getOrCreateSignalForControl(prop as string);
+                            } else {
+                                return Reflect.get(target, prop, receiver);
+                            }
+                        },
+                    });
+                }
                 case 'statusSignal':
                     return getSignalForObservable('status', formGroup.statusChanges, formGroup.status);
                 case 'dirtySignal':

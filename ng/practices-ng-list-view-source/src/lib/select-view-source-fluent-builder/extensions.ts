@@ -1,18 +1,19 @@
-import { maybeAsyncToObservable, StringKeyOf } from '@nexplore/practices-ng-common-util';
+import { maybeAsyncToObservable } from '@nexplore/practices-ng-common-util';
 import { map } from 'rxjs/operators';
 import { SelectViewSource } from '../implementation/select-view-source';
 import { EnhancedListViewSource, IListResult } from '../types';
 import { enhanceListViewSource, getDefaultQueryParams } from '../utils/internal-util';
-import { TypedSelectViewSourceConfig } from './types';
+import { SelectViewSourceFilterType, SelectViewSourceLabelKey, TypedSelectViewSourceConfig } from './types';
 
 /* @internal */
 export function createSelectViewSourceInternal<
     TData,
-    TLabelKey extends StringKeyOf<TData> = StringKeyOf<TData>,
+    TLabelKey extends SelectViewSourceLabelKey<TData> = SelectViewSourceLabelKey<TData>,
     TQueryParams = TData,
-    TFilter extends Pick<TData, TLabelKey> = Pick<TData, TLabelKey>
+    TFilter extends SelectViewSourceFilterType<TData, TLabelKey> = SelectViewSourceFilterType<TData, TLabelKey>,
+    TOrdering = TData
 >(
-    config: TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams>
+    config: TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams, TOrdering>
 ): EnhancedListViewSource<SelectViewSource<TData, TFilter>> {
     const viewSource = new SelectViewSource<TData, TFilter>(
         {

@@ -1,4 +1,4 @@
-import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 
 import { TranslateModule } from '@ngx-translate/core';
@@ -9,9 +9,9 @@ import { FORM_CONFIG } from '../form/form.config';
     selector: 'puibe-readonly-label-value',
     templateUrl: './readonly-label-value.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, NgIf, NgTemplateOutlet, TranslateModule],
+    imports: [NgClass, TranslateModule],
 })
-export class PuibeReadonyLabelValueComponent {
+export class PuibeReadonlyLabelValueComponent {
     readonly themeConfig = inject(FORM_CONFIG, { optional: true });
     readonly useSmallLabelFallback = this.themeConfig?.useSmallTextForReadonlyLabel;
 
@@ -21,3 +21,8 @@ export class PuibeReadonyLabelValueComponent {
     @Input()
     useSmallLabel: boolean | null = null;
 }
+
+/**
+ * @deprecated Renamed to `PuibeReadonlyLabelValueComponent`. Use the renamed component instead.
+ */
+export type PuibeReadonyLabelValueComponent = PuibeReadonlyLabelValueComponent;

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ErrorMessage, StatusProgressOptions, SuccessMessage } from './types';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { finalize, map, share, shareReplay, takeUntil } from 'rxjs/operators';
+import { ErrorMessage, StatusProgressOptions, SuccessMessage } from './types';
 
 import { AggregatedStatusInfo, StatusEvent, StatusEventExt, StatusHubConfig } from './model';
 import { getLatestStatusEventsList$, StatusMap } from './status-hub.util-internal';
@@ -19,6 +19,8 @@ export class StatusHubService {
         messageEventTimeToLiveMs: 5000,
         busyAsSilentByDefault: false,
         disableLogErrorsToConsole: true,
+        // Ignore abort errors by default (These are only thrown by AbortController and should never be shown to the user)
+        filter: (ev) => !(ev.error instanceof DOMException && ev.error.name === 'AbortError'),
     };
 
     get currentBusyOperations() {
@@ -300,17 +302,22 @@ export class StatusHubService {
             return;
         }
 
+        const newStatusEvent = {
+            ...prevValue,
+            ...statusEvent,
+            autohide: options?.autohide ?? statusEvent.success !== undefined,
+            statusCategory: options?.statusCategory,
+            timestamp: performance.now(),
+            dismiss: this._aggregatedStatusMapSubject.value?.['dismiss'] ?? (() => this.removeStatus(operationId)),
+        };
+
+        if (this.config?.filter && !this.config.filter(newStatusEvent)) {
+            return;
+        }
+
         this._aggregatedStatusMapSubject.next(
             Object.assign({}, this._aggregatedStatusMapSubject.value, {
-                [operationId]: {
-                    ...prevValue,
-                    ...statusEvent,
-                    autohide: options?.autohide ?? statusEvent.success !== undefined,
-                    statusCategory: options?.statusCategory,
-                    timestamp: performance.now(),
-                    dismiss:
-                        this._aggregatedStatusMapSubject.value?.['dismiss'] ?? (() => this.removeStatus(operationId)),
-                },
+                [operationId]: newStatusEvent,
             })
         );
 

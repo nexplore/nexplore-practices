@@ -92,6 +92,188 @@ describe('createCommandWithSignalsAndStatus', () => {
         });
     });
 
+    it('should queue triggerAsync calls when concurrentTriggerBehavior is waitForRunning', async () => {
+        await TestBed.runInInjectionContext(async () => {
+            const firstSubject = new Subject<void>();
+            const secondSubject = new Subject<void>();
+            const handler = jest.fn<() => Observable<void>>();
+            handler.mockImplementationOnce(() => firstSubject);
+            handler.mockImplementationOnce(() => secondSubject);
+
+            const cmd = createCommandWithSignalsAndStatus<void, void>(handler, {
+                concurrentTriggerBehavior: { type: 'waitForRunning' },
+            });
+
+            const first = cmd.triggerAsync();
+            const secondSettled = jest.fn();
+            const second = cmd.triggerAsync().finally(secondSettled);
+
+            const observations = {
+                handlerCallsAfterFirst: 0,
+                secondSettledAfterFirst: 0,
+                handlerCallsFinal: 0,
+                secondSettledFinal: 0,
+            };
+
+            firstSubject.complete();
+            await first;
+            observations.handlerCallsAfterFirst = handler.mock.calls.length;
+            observations.secondSettledAfterFirst = secondSettled.mock.calls.length;
+
+            secondSubject.complete();
+            await second;
+            observations.handlerCallsFinal = handler.mock.calls.length;
+            observations.secondSettledFinal = secondSettled.mock.calls.length;
+
+            expect(observations).toEqual({
+                handlerCallsAfterFirst: 2,
+                secondSettledAfterFirst: 0,
+                handlerCallsFinal: 2,
+                secondSettledFinal: 1,
+            });
+        });
+    });
+
+    it('should return last result after queued execution when waiting for running command', async () => {
+        await TestBed.runInInjectionContext(async () => {
+            const firstSubject = new Subject<number>();
+            const secondSubject = new Subject<number>();
+            const subjects = [firstSubject, secondSubject];
+            const handler = jest.fn<() => Observable<number>>(() => {
+                const nextSubject = subjects.shift();
+                if (!nextSubject) {
+                    throw new Error('unexpected call');
+                }
+                return nextSubject;
+            });
+
+            const cmd = createCommandWithSignalsAndStatus<void, number>(handler, {
+                concurrentTriggerBehavior: { type: 'waitForRunning' },
+            });
+
+            const first = cmd.triggerAsync();
+            let secondResolved = false;
+            const second = cmd
+                .triggerAsync(undefined, { whenNotTriggeredBehavior: 'return-last-result' })
+                .then((value) => {
+                    secondResolved = true;
+                    return value;
+                });
+
+            const observations = {
+                handlerCallsBeforeSecondCompletion: 0,
+                secondResolvedBeforeSecondCompletion: false,
+                finalResult: 0,
+                handlerCallsFinal: 0,
+            };
+
+            firstSubject.next(1);
+            firstSubject.complete();
+            await first;
+
+            observations.handlerCallsBeforeSecondCompletion = handler.mock.calls.length;
+            observations.secondResolvedBeforeSecondCompletion = secondResolved;
+
+            secondSubject.next(2);
+            secondSubject.complete();
+            observations.finalResult = await second;
+            observations.handlerCallsFinal = handler.mock.calls.length;
+
+            expect(observations).toEqual({
+                handlerCallsBeforeSecondCompletion: 2,
+                secondResolvedBeforeSecondCompletion: false,
+                finalResult: 2,
+                handlerCallsFinal: 2,
+            });
+        });
+    });
+
+    it('should cancel running execution when concurrentTriggerBehavior is cancelRunning', () => {
+        TestBed.runInInjectionContext(() => {
+            let cancelCount = 0;
+            const handler = jest.fn(() => new Observable<void>(() => () => cancelCount++));
+            const cmd = createCommandWithSignalsAndStatus<void, void>(handler, {
+                isCancellable: true,
+                concurrentTriggerBehavior: { type: 'cancelRunning' },
+            });
+
+            cmd.trigger();
+            cmd.trigger();
+
+            expect({ cancelCount, handlerCalls: handler.mock.calls.length }).toEqual({ cancelCount: 1, handlerCalls: 2 });
+        });
+    });
+
+    it('should return last result when whenNotTriggeredBehavior is return-last-result', async () => {
+        await TestBed.runInInjectionContext(async () => {
+            const runningSubject = new Subject<number>();
+            const handler = jest.fn<() => number | Observable<number>>(() => {
+                throw new Error('unexpected call');
+            });
+            handler.mockImplementationOnce(() => 7);
+            handler.mockImplementationOnce(() => runningSubject);
+
+            const cmd = createCommandWithSignalsAndStatus<void, number>(handler);
+
+            await cmd.triggerAsync();
+            const pending = cmd.triggerAsync();
+            const result = await cmd.triggerAsync(undefined, { whenNotTriggeredBehavior: 'return-last-result' });
+
+            runningSubject.complete();
+            await pending;
+
+            expect(result).toBe(7);
+        });
+    });
+
+    it('should throw when whenNotTriggeredBehavior is throw-error', async () => {
+        await TestBed.runInInjectionContext(async () => {
+            const runningSubject = new Subject<void>();
+            const handler = jest.fn<() => Observable<void>>(() => {
+                throw new Error('unexpected call');
+            });
+            handler.mockImplementationOnce(() => runningSubject);
+
+            const cmd = createCommandWithSignalsAndStatus<void, void>(handler);
+
+            const pending = cmd.triggerAsync();
+
+            await expect(cmd.triggerAsync(undefined, { whenNotTriggeredBehavior: 'throw-error' })).rejects.toThrow(
+                'Command was aborted because it was already running'
+            );
+
+            runningSubject.complete();
+            await pending;
+        });
+    });
+
+    it('should ignore identical queued args when onlyWhenParamsChanged is set', async () => {
+        await TestBed.runInInjectionContext(async () => {
+            const firstSubject = new Subject<void>();
+            const secondSubject = new Subject<void>();
+            const handler = jest.fn<(args: string) => Observable<void>>(() => {
+                throw new Error('unexpected call');
+            });
+            handler.mockImplementationOnce(() => firstSubject);
+            handler.mockImplementationOnce(() => secondSubject);
+
+            const cmd = createCommandWithSignalsAndStatus<string, void>(handler, {
+                concurrentTriggerBehavior: { type: 'waitForRunning', onlyWhenParamsChanged: true },
+            });
+
+            const first = cmd.triggerAsync('a');
+            const second = cmd.triggerAsync('a');
+            const result = await cmd.triggerAsync('a');
+
+            firstSubject.complete();
+            await first;
+            secondSubject.complete();
+            await second;
+
+            expect({ result, handlerCalls: handler.mock.calls.length }).toEqual({ result: undefined, handlerCalls: 2 });
+        });
+    });
+
     it('should run beforeExecuteHandler before handler', () => {
         TestBed.runInInjectionContext(() => {
             const beforeExecuteHandler = jest.fn<() => void>();
