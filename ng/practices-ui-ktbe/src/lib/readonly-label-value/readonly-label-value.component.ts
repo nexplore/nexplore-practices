@@ -23,6 +23,6 @@ export class PuibeReadonlyLabelValueComponent {
 }
 
 /**
- * @deprecated Renamed to `PuibeReadonlyLabelValueComponent`. Use the renamed component instead.
+ * @deprecated Deprecated due to typo in name ('Readony' instead of 'Readonly'). Use `PuibeReadonlyLabelValueComponent` instead.
  */
 export class PuibeReadonyLabelValueComponent extends PuibeReadonlyLabelValueComponent {}
