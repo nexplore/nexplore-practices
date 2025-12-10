@@ -25,4 +25,11 @@ export class PuibeReadonlyLabelValueComponent {
 /**
  * @deprecated Deprecated due to typo in name ('Readony' instead of 'Readonly'). Use `PuibeReadonlyLabelValueComponent` instead.
  */
+@Component({
+    standalone: true,
+    selector: 'puibe-readonly-label-value',
+    templateUrl: './readonly-label-value.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [NgClass, TranslateModule],
+})
 export class PuibeReadonyLabelValueComponent extends PuibeReadonlyLabelValueComponent {}
