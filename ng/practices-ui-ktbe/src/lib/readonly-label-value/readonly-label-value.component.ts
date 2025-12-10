@@ -21,3 +21,8 @@ export class PuibeReadonlyLabelValueComponent {
     @Input()
     useSmallLabel: boolean | null = null;
 }
+
+/**
+ * @deprecated Renamed to `PuibeReadonlyLabelValueComponent`. Use the renamed component instead.
+ */
+export type PuibeReadonyLabelValueComponent = PuibeReadonlyLabelValueComponent;
