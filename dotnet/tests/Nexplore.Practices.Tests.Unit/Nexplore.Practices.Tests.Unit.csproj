@@ -4,6 +4,10 @@
         <NeutralLanguage>de-CH</NeutralLanguage>
     </PropertyGroup>
 
+    <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+        <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="10.0.1" />
+    </ItemGroup>
+
     <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
         <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="9.0.7" />
     </ItemGroup>
