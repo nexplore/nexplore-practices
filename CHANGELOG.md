@@ -5,6 +5,21 @@ All notable changes to this library will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+
+### Added
+
+- `Practices.*` Add support for .NET 10
+
+### Changed
+
+- `Practices.Core` Update Autofac to 9.0.0
+- `Practices.Mail` Update MailKit to 4.14.1
+- `Practices.Syncfusion.Excel` Update Syncfusion.XlsIO.Net.Core to 31.2.18
+- `Practices.Syncfusion.Pdf` Update Syncfusion.Pdf.Net.Core to 31.2.18
+
+### Fixed
+
 ## [11.1.0](https://github.com/nexplore/nexplore-practices/releases/tag/11.1.0) - 2025-12-10
 
 ### Added
