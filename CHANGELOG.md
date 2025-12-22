@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `Practices.*` Add support for .NET 10
+- `practices-ng-*`, `practices-ui`, `practices-ui-ktbe` Add support for Angular 21
 
 ### Changed
 
