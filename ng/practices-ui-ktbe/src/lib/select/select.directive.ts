@@ -226,6 +226,7 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
             p.set(value);
             try {
                 this._cdr.markForCheck();
+                (this._ngSelectComponent as any)?._cd?.detectChanges?.();
             } catch {
                 // ignore
             }
@@ -239,6 +240,7 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
                     signalSetFn(node, value);
                     try {
                         this._cdr.markForCheck();
+                        (this._ngSelectComponent as any)?._cd?.detectChanges?.();
                     } catch {
                         // ignore
                     }
@@ -251,6 +253,7 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
                 (p as any).set(value);
                 try {
                     this._cdr.markForCheck();
+                    (this._ngSelectComponent as any)?._cd?.detectChanges?.();
                 } catch {
                     // ignore
                 }
@@ -262,6 +265,7 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
             (this._ngSelectComponent as any)[prop] = value;
             try {
                 this._cdr.markForCheck();
+                (this._ngSelectComponent as any)?._cd?.detectChanges?.();
             } catch {
                 // ignore
             }
