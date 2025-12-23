@@ -1,4 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Directive, Input, OnDestroy, OnInit, Optional, Self } from '@angular/core';
+// ⚠️ INTERNAL API: used to update readonly input signals when present
+import { SIGNAL, signalSetFn } from '@angular/core/primitives/signals';
 import { DestroyService, StatusProgressOptions, StatusService } from '@nexplore/practices-ui';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { BehaviorSubject, combineLatest, filter, map, startWith, Subject, switchMap, takeUntil } from 'rxjs';
@@ -65,35 +67,43 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
         private _destroy$: DestroyService,
         private _statusService: StatusService
     ) {
-        this._ngSelectComponent.items = []; // force ng-select to use items instead of ngOptions
+        // force ng-select to use items instead of ngOptions (support both old property and new signal model)
+        this._writeComponentProp('items', []);
     }
 
     ngOnInit() {
         this._selectViewSource$.pipe(takeUntil(this._destroy$)).subscribe((viewSource) => {
+            // bindLabel
             if (viewSource.label != null && typeof viewSource.label === 'string') {
-                this._ngSelectComponent.bindLabel = viewSource.label;
+                this._writeComponentProp('bindLabel', viewSource.label);
             } else {
-                viewSource.label = this._ngSelectComponent.bindLabel;
+                const current = this._readComponentProp<string | undefined>('bindLabel');
+                viewSource.label = current ?? viewSource.label;
             }
 
+            // bindValue
             if (viewSource.value != null && typeof viewSource.value === 'string') {
-                this._ngSelectComponent.bindValue = viewSource.value;
+                this._writeComponentProp('bindValue', viewSource.value);
             } else {
-                viewSource.value = this._ngSelectComponent.bindValue;
+                const current = this._readComponentProp<string | undefined>('bindValue');
+                viewSource.value = current ?? viewSource.value;
             }
 
+            // searchable
             if (viewSource.searchable != null) {
-                this._ngSelectComponent.searchable = viewSource.searchable;
+                this._writeComponentProp('searchable', viewSource.searchable);
             } else {
-                viewSource.searchable = this._ngSelectComponent.searchable;
+                const current = this._readComponentProp<boolean | undefined>('searchable');
+                viewSource.searchable = current ?? viewSource.searchable;
             }
 
             this.setSearchMode(viewSource.searchable, viewSource.localSearch);
         });
 
         this._busy$.pipe(takeUntil(this._destroy$)).subscribe((busy) => {
-            this._ngSelectComponent.loading = busy;
-            if (this._ngSelectComponent.isOpen) {
+            this._writeComponentProp('loading', busy);
+            const isOpen = this._readComponentProp<boolean>('isOpen');
+            if (isOpen) {
                 this._formFieldService.setLoading(busy);
             } else {
                 this._formFieldService.setLoading(false);
@@ -101,11 +111,15 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
         });
 
         this._data$.pipe(takeUntil(this._destroy$)).subscribe((data) => {
-            this._ngSelectComponent.items = data;
+            this._writeComponentProp('items', data);
 
             // This is a dangerous hack because it relies on the internals of ng-select
             // It is necessary because angular does not call ngOnChanges when we set properties manually and ng-select uses this to detect changes of items.
-            this._ngSelectComponent.ngOnChanges({ items: { currentValue: data } } as any);
+            try {
+                (this._ngSelectComponent as any).ngOnChanges({ items: { currentValue: data } } as any);
+            } catch {
+                // ignore if ngOnChanges is not present on older/newer versions
+            }
             this._changeDetectorRef.markForCheck();
         });
 
@@ -116,7 +130,7 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
             )
             .subscribe(([searchInput, viewSource]) =>
                 viewSource.filter({
-                    [this._ngSelectComponent.bindLabel ?? viewSource.label ?? 'label']: searchInput,
+                    [this._readComponentProp<string | undefined>('bindLabel') ?? viewSource.label ?? 'label']: searchInput,
                 })
             );
     }
@@ -138,11 +152,89 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
         this._searchInputSubject.complete();
     }
 
+    // Helper to read a property from the ng-select component that may be a plain value or a signal/function
+    private _readComponentProp<T = any>(prop: string): T {
+        const p = (this._ngSelectComponent as any)[prop];
+        if (p == null) {
+            return p;
+        }
+        // signal / model / input are callable functions returning the value
+        if (typeof p === 'function') {
+            try {
+                return p();
+            } catch {
+                // If calling fails, fall back to returning the function itself
+                return p as any;
+            }
+        }
+        return p;
+    }
+
+    // Helper to write a property to the ng-select component that may accept direct assignment or a signal `.set()` method
+    private _writeComponentProp(prop: string, value: any): void {
+        const p = (this._ngSelectComponent as any)[prop];
+        if (p != null && typeof p.set === 'function') {
+            p.set(value);
+            try {
+                this._changeDetectorRef.markForCheck();
+                (this._ngSelectComponent as any)?._cd?.detectChanges?.();
+            } catch {
+                // ignore
+            }
+            return;
+        }
+
+        // Some inputs are readonly input-signals (callable) without `.set()`.
+        // Attempt to detect and write into their internal signal node using internal APIs.
+        if (typeof p === 'function') {
+            try {
+                const node = (p as any)[SIGNAL];
+                if (node) {
+                    signalSetFn(node, value);
+                    try {
+                        this._changeDetectorRef.markForCheck();
+                        (this._ngSelectComponent as any)?._cd?.detectChanges?.();
+                    } catch {
+                        // ignore
+                    }
+                    return;
+                }
+            } catch {
+                // ignore and fallback to assignment below
+            }
+            // If the function itself exposes set on it, use that
+            if (typeof (p as any).set === 'function') {
+                (p as any).set(value);
+                try {
+                    this._changeDetectorRef.markForCheck();
+                    (this._ngSelectComponent as any)?._cd?.detectChanges?.();
+                } catch {
+                    // ignore
+                }
+                return;
+            }
+        }
+
+        // Fallback to direct assignment for older ng-select versions
+        try {
+            (this._ngSelectComponent as any)[prop] = value;
+            try {
+                this._changeDetectorRef.markForCheck();
+                (this._ngSelectComponent as any)?._cd?.detectChanges?.();
+            } catch {
+                // ignore
+            }
+        } catch {
+            // ignore if assignment fails for unknown ng-select versions
+        }
+    }
+
     private setSearchMode(searchable: boolean, localSearch: boolean) {
-        if (searchable && !localSearch && !this._ngSelectComponent.typeahead) {
-            this._ngSelectComponent.typeahead = this._searchInputSubject;
-        } else if (this._ngSelectComponent.typeahead === this._searchInputSubject) {
-            this._ngSelectComponent.typeahead = null;
+        const currentTypeahead = this._readComponentProp<any>('typeahead');
+        if (searchable && !localSearch && !currentTypeahead) {
+            this._writeComponentProp('typeahead', this._searchInputSubject);
+        } else if (currentTypeahead === this._searchInputSubject) {
+            this._writeComponentProp('typeahead', null);
         }
     }
 }
