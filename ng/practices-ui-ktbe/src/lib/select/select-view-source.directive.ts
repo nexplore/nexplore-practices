@@ -175,6 +175,11 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
         const p = (this._ngSelectComponent as any)[prop];
         if (p != null && typeof p.set === 'function') {
             p.set(value);
+            try {
+                this._changeDetectorRef.markForCheck();
+            } catch {
+                // ignore
+            }
             return;
         }
 
@@ -185,6 +190,11 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
                 const node = (p as any)[SIGNAL];
                 if (node) {
                     signalSetFn(node, value);
+                    try {
+                        this._changeDetectorRef.markForCheck();
+                    } catch {
+                        // ignore
+                    }
                     return;
                 }
             } catch {
@@ -193,6 +203,11 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
             // If the function itself exposes set on it, use that
             if (typeof (p as any).set === 'function') {
                 (p as any).set(value);
+                try {
+                    this._changeDetectorRef.markForCheck();
+                } catch {
+                    // ignore
+                }
                 return;
             }
         }
@@ -200,6 +215,11 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
         // Fallback to direct assignment for older ng-select versions
         try {
             (this._ngSelectComponent as any)[prop] = value;
+            try {
+                this._changeDetectorRef.markForCheck();
+            } catch {
+                // ignore
+            }
         } catch {
             // ignore if assignment fails for unknown ng-select versions
         }
