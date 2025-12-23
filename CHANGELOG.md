@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Practices.Mail` Update MailKit to 4.14.1
 - `Practices.Syncfusion.Excel` Update Syncfusion.XlsIO.Net.Core to 31.2.18
 - `Practices.Syncfusion.Pdf` Update Syncfusion.Pdf.Net.Core to 31.2.18
+- `practices-ui-ktbe` Added `whitespace-pre-line` CSS class to `PuibeReadonlyLabelValueComponent` to properly display line breaks in readonly values.
 
 ### Fixed
 
