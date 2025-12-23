@@ -15,6 +15,8 @@ import {
     ViewContainerRef,
     ViewEncapsulation,
 } from '@angular/core';
+// ⚠️ INTERNAL API: used to update readonly input signals when present
+import { SIGNAL, signalSetFn } from '@angular/core/primitives/signals';
 import { NgControl } from '@angular/forms';
 import { trace } from '@nexplore/practices-ng-logging';
 import { DestroyService } from '@nexplore/practices-ui';
@@ -224,10 +226,23 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
             p.set(value);
             return;
         }
-        if (typeof p === 'function' && typeof (p as any).set === 'function') {
-            (p as any).set(value);
-            return;
+
+        if (typeof p === 'function') {
+            try {
+                const node = (p as any)[SIGNAL];
+                if (node) {
+                    signalSetFn(node, value);
+                    return;
+                }
+            } catch {
+                // ignore and fallback to other methods
+            }
+            if (typeof (p as any).set === 'function') {
+                (p as any).set(value);
+                return;
+            }
         }
+
         try {
             (this._ngSelectComponent as any)[prop] = value;
         } catch {
