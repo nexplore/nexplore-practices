@@ -1,5 +1,12 @@
 import { Injector, Signal } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControlStatus, FormGroup } from '@angular/forms';
+import {
+    AbstractControl,
+    AsyncValidatorFn,
+    FormBuilder,
+    FormControlStatus,
+    FormGroup,
+    ValidatorFn,
+} from '@angular/forms';
 import { FormGroupControlsValues, FormValueSignalsRecordWithoutPostfix, PartialNullable } from '../utils/form.types';
 import { Extensions } from './extensions';
 import { FormGroupValueWithSignals } from './form-group-types';
@@ -21,7 +28,7 @@ export type FormGroupEnhancedWithSignals<TControls = any> = TControls extends {
            * Please use `formGroup.valueSignal` instead to access signals for individual controls.
            */
           readonly value: FormGroupValueWithSignals<TControls>;
-          
+
           /**
            * A signal of the most up-to-date value of the form group.
            *
@@ -79,6 +86,10 @@ export type FormControlDefinition<T> = {
     updateOn?: 'change' | 'blur' | 'submit';
 
     nullable?: boolean;
+
+    validators?: ValidatorFn[];
+
+    asyncValidators?: AsyncValidatorFn[];
 };
 
 export type FormControlDefinitionValueOmitted = {
@@ -90,6 +101,10 @@ export type FormControlDefinitionValueOmitted = {
     updateOn?: 'change' | 'blur' | 'submit';
 
     nullable?: boolean;
+
+    validators?: ValidatorFn[];
+
+    asyncValidators?: AsyncValidatorFn[];
 };
 
 export type FormGroupDefinitionRecord<TValue extends FormGroupValueBase> = {
@@ -197,4 +212,3 @@ export type ValueSatisfying<
     : TValueOrDef extends PartialNullable<TSatisfy>
     ? ValueSatisfyingType<TSatisfy, TValueOrDef>
     : never;
-
