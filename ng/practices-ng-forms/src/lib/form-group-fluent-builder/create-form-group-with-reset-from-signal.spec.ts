@@ -1,6 +1,7 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Validators } from '@angular/forms';
+import { firstValueFrom, of } from 'rxjs';
 import { formGroup } from './api';
 import { createFormGroupWithResetFromSignal } from './create-form-group-with-reset-from-signal';
 
@@ -94,6 +95,34 @@ describe('withResetFromSignal', () => {
             TestBed.flushEffects();
 
             expect(fg.value.name).toEqual('Lara Croft');
+        });
+    });
+
+    it('should apply all control option properties', async () => {
+        await TestBed.runInInjectionContext(async () => {
+            const sourceSignal = signal({ name: 'Lara Croft' });
+            const asyncValidator = () => of(null);
+            const fg = formGroup.withResetFromSignal(sourceSignal, {
+                name: {
+                    value: '',
+                    validators: [Validators.required],
+                    asyncValidators: [asyncValidator],
+                    updateOn: 'blur',
+                    nullable: false,
+                },
+            });
+            TestBed.flushEffects();
+
+            const control = fg.controls.name;
+            control.setValue('');
+            control.updateValueAndValidity();
+
+            expect(control.updateOn).toEqual('blur');
+            expect(control.hasError('required')).toEqual(true);
+            expect((control as any).nonNullable).toEqual(true);
+            expect(control.asyncValidator).toBeDefined();
+            const asyncResult = await firstValueFrom((control.asyncValidator as any)(control));
+            expect(asyncResult).toEqual(null);
         });
     });
 });

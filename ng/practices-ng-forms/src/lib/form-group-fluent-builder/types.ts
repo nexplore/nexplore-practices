@@ -85,6 +85,12 @@ export type FormControlDefinition<T> = {
      */
     updateOn?: 'change' | 'blur' | 'submit';
 
+    /**
+     * Whether the form control should allow `null` values and use `null` as its default value.
+     * When `true`, the control can be reset to `null` and its type includes `null` (e.g., `string | null`).
+     * When `false` (default), the control will revert to its initial value when reset and has a non-nullable type.
+     * This maps to Angular's `nonNullable` FormControl option (inverted).
+     */
     nullable?: boolean;
 
     validators?: ValidatorFn[];
@@ -100,6 +106,12 @@ export type FormControlDefinitionValueOmitted = {
      */
     updateOn?: 'change' | 'blur' | 'submit';
 
+    /**
+     * Whether the form control should allow `null` values and use `null` as its default value.
+     * When `true`, the control can be reset to `null` and its type includes `null` (e.g., `string | null`).
+     * When `false` (default), the control will revert to its initial value when reset and has a non-nullable type.
+     * This maps to Angular's `nonNullable` FormControl option (inverted).
+     */
     nullable?: boolean;
 
     validators?: ValidatorFn[];
@@ -108,10 +120,7 @@ export type FormControlDefinitionValueOmitted = {
 };
 
 export type FormGroupDefinitionRecord<TValue extends FormGroupValueBase> = {
-    [K in keyof TValue]:
-        | AbstractControl<TValue[K]>
-        | FormControlDefinition<TValue[K]>
-        | FormControlDefinitionValueOmitted;
+    [K in keyof TValue]: FormControlDefinition<TValue[K]> | FormControlDefinitionValueOmitted;
 };
 
 export type BuildFromGroupValueFn<TValue extends FormGroupValueBase> = (
