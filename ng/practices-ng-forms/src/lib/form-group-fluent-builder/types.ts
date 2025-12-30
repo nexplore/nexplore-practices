@@ -133,12 +133,12 @@ type AddNullableIfConfigured<TControlDef, TFallback = TControlDef> = TControlDef
     nullable: true;
 }
     ? TValue | null
+    : TControlDef extends FormControlDefinition<infer TValue>
+    ? TValue
     : TControlDef extends FormControlDefinitionValueOmitted & { nullable: true }
     ? TFallback | null
     : TControlDef extends FormControlDefinitionValueOmitted & { nullable: false }
     ? TFallback
-    : TControlDef extends FormControlDefinition<infer TValue>
-    ? TValue
     : TControlDef extends AbstractControl<infer TValue>
     ? TValue
     : Exclude<TControlDef, FormControlDefinitionValueOmitted>;
