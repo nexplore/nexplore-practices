@@ -41,7 +41,10 @@ function toFormControlOptions<T>(
     controlDef: FormControlDefinition<T> | FormControlDefinitionValueOmitted
 ): FormControlOptions {
     return {
-        ...controlDef,
+        validators: [],
+        asyncValidators: [],
+        updateOn: controlDef.updateOn,
+        nonNullable: !controlDef.nullable,
     };
 }
 
