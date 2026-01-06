@@ -21,12 +21,13 @@ export class PuibeHideIfEmptyTextDirective {
             this.hideIfEmpty();
         });
 
-        const onChildEmptyChange = (event: CustomEvent<{ empty: boolean }>) => {
-            if (event.target === element) {
+        const onChildEmptyChange = (event: Event) => {
+            if (!(event instanceof CustomEvent)) {
                 return;
             }
 
-            if (event.detail?.empty === false) {
+            const customEvent = event as CustomEvent<{ empty: boolean }>;
+            if (customEvent.detail?.empty === false) {
                 this._overrideEmpty(false);
             } else {
                 this.hideIfEmpty();
