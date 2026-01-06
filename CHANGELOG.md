@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- `practices-ui-ktbe` Fixed `PuibeHideIfEmptyTextDirective` to work with projected elements in the directive tree.
+
 ## [11.1.0](https://github.com/nexplore/nexplore-practices/releases/tag/11.1.0) - 2025-12-10
 
 ### Added
