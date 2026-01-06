@@ -48,7 +48,7 @@ describe('formGroup', () => {
         });
     });
 
-    it('should reset nullable control to initial value', () => {
+    it('should reset non-nullable control to initial value', () => {
         TestBed.runInInjectionContext(() => {
             const formGroup = createExtendedFormGroup({ name: { value: 'initial', nullable: false } });
 
@@ -60,7 +60,7 @@ describe('formGroup', () => {
         });
     });
 
-    it('should reset nullable control to initial value by default', () => {
+    it('should reset non-nullable control to initial value by default', () => {
         TestBed.runInInjectionContext(() => {
             const formGroup = createExtendedFormGroup({ name: { value: 'initial' } });
 
