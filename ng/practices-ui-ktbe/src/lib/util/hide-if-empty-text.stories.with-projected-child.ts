@@ -38,4 +38,3 @@ export class ComponentProjectedChild {
 
     showDelayed = toSignal(toObservable(this.show).pipe(delay(2000)));
 }
-

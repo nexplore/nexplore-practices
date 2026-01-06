@@ -21,7 +21,7 @@ export class PuibeHideIfEmptyTextDirective {
             this.hideIfEmpty();
         });
 
-        const onChildEmptyChange = (event: CustomEvent<{ empty?: boolean }>) => {
+        const onChildEmptyChange = (event: CustomEvent<{ empty: boolean }>) => {
             if (event.target === element) {
                 return;
             }
@@ -92,4 +92,3 @@ export class PuibeHideIfEmptyTextDirective {
         );
     }
 }
-
