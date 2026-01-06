@@ -1,6 +1,7 @@
 import { computed, effect, isSignal, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Validators } from '@angular/forms';
+import { firstValueFrom, of } from 'rxjs';
 import { createExtendedFormGroup } from './extensions';
 
 describe('formGroup', () => {
@@ -32,6 +33,71 @@ describe('formGroup', () => {
             results.push(formGroup.value.name);
 
             expect(results).toEqual(['', 'Lara Croft', 'Indiana Jones']);
+        });
+    });
+
+    it('should reset nullable control to null', () => {
+        TestBed.runInInjectionContext(() => {
+            const formGroup = createExtendedFormGroup({ name: { value: '', nullable: true } });
+
+            formGroup.controls.name.setValue('Temp');
+            formGroup.reset();
+
+            const name: string | null = formGroup.value.name;
+            expect(name).toEqual(null);
+        });
+    });
+
+    it('should reset non-nullable control to initial value', () => {
+        TestBed.runInInjectionContext(() => {
+            const formGroup = createExtendedFormGroup({ name: { value: 'initial', nullable: false } });
+
+            formGroup.controls.name.setValue('Temp');
+            formGroup.reset();
+
+            const name: string | null = formGroup.value.name;
+            expect(name).toEqual('initial');
+        });
+    });
+
+    it('should reset non-nullable control to initial value by default', () => {
+        TestBed.runInInjectionContext(() => {
+            const formGroup = createExtendedFormGroup({ name: { value: 'initial' } });
+
+            formGroup.controls.name.setValue('Temp');
+            formGroup.reset();
+
+            const name: string | null = formGroup.value.name;
+            expect(name).toEqual('initial');
+        });
+    });
+
+    it('should apply all control option properties', async () => {
+        await TestBed.runInInjectionContext(async () => {
+            const asyncValidator = () => of(null);
+            const formGroup = createExtendedFormGroup({
+                name: {
+                    value: '',
+                    validators: [Validators.required],
+                    asyncValidators: [asyncValidator],
+                    updateOn: 'blur',
+                    nullable: false,
+                },
+            });
+
+            const control = formGroup.controls.name;
+            control.setValue('');
+            control.updateValueAndValidity();
+
+            expect(control.updateOn).toEqual('blur');
+            expect(control.hasError('required')).toEqual(true);
+
+            control.setValue('Temp');
+            formGroup.reset();
+            expect(control.value).toEqual('');
+            expect(control.asyncValidator).toBeDefined();
+            const asyncResult = await firstValueFrom((control.asyncValidator as any)(control));
+            expect(asyncResult).toEqual(null);
         });
     });
 
