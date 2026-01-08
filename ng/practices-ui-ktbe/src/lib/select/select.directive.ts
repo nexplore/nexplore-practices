@@ -224,11 +224,6 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
         const p = (this._ngSelectComponent as any)[prop];
         if (p != null && typeof p.set === 'function') {
             p.set(value);
-            try {
-                this._cdr.markForCheck();
-            } catch {
-                // ignore
-            }
             return;
         }
 
@@ -237,11 +232,6 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
                 const node = (p as any)[SIGNAL];
                 if (node) {
                     signalSetFn(node, value);
-                    try {
-                        this._cdr.markForCheck();
-                    } catch {
-                        // ignore
-                    }
                     return;
                 }
             } catch {
@@ -249,22 +239,12 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
             }
             if (typeof (p as any).set === 'function') {
                 (p as any).set(value);
-                try {
-                    this._cdr.markForCheck();
-                } catch {
-                    // ignore
-                }
                 return;
             }
         }
 
         try {
             (this._ngSelectComponent as any)[prop] = value;
-            try {
-                this._cdr.markForCheck();
-            } catch {
-                // ignore
-            }
         } catch {
             // ignore assignment failures for compatibility
         }
