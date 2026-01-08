@@ -1,6 +1,4 @@
 import { AfterViewInit, ChangeDetectorRef, Directive, Input, OnDestroy, OnInit, Optional, Self } from '@angular/core';
-// ⚠️ INTERNAL API: used to update readonly input signals when present
-import { SIGNAL, signalSetFn } from '@angular/core/primitives/signals';
 import { DestroyService, StatusProgressOptions, StatusService } from '@nexplore/practices-ui';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { BehaviorSubject, combineLatest, filter, map, startWith, Subject, switchMap, takeUntil } from 'rxjs';
@@ -177,27 +175,11 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
             p.set(value);
             return;
         }
-
-        // Some inputs are readonly input-signals (callable) without `.set()`.
-        // Attempt to detect and write into their internal signal node using internal APIs.
-        if (typeof p === 'function') {
-            try {
-                const node = (p as any)[SIGNAL];
-                if (node) {
-                    signalSetFn(node, value);
-                    return;
-                }
-            } catch {
-                // ignore and fallback to assignment below
-            }
-            // If the function itself exposes set on it, use that
-            if (typeof (p as any).set === 'function') {
-                (p as any).set(value);
-                return;
-            }
+        // sometimes the property itself is a function-like signal with set on it
+        if (typeof p === 'function' && typeof (p as any).set === 'function') {
+            (p as any).set(value);
+            return;
         }
-
-        // Fallback to direct assignment for older ng-select versions
         try {
             (this._ngSelectComponent as any)[prop] = value;
         } catch {
