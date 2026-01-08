@@ -177,7 +177,6 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
             p.set(value);
             try {
                 this._changeDetectorRef.markForCheck();
-                (this._ngSelectComponent as any)?._cd?.detectChanges?.();
             } catch {
                 // ignore
             }
@@ -193,7 +192,6 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
                     signalSetFn(node, value);
                     try {
                         this._changeDetectorRef.markForCheck();
-                        (this._ngSelectComponent as any)?._cd?.detectChanges?.();
                     } catch {
                         // ignore
                     }
@@ -207,7 +205,6 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
                 (p as any).set(value);
                 try {
                     this._changeDetectorRef.markForCheck();
-                    (this._ngSelectComponent as any)?._cd?.detectChanges?.();
                 } catch {
                     // ignore
                 }
@@ -220,7 +217,6 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
             (this._ngSelectComponent as any)[prop] = value;
             try {
                 this._changeDetectorRef.markForCheck();
-                (this._ngSelectComponent as any)?._cd?.detectChanges?.();
             } catch {
                 // ignore
             }
