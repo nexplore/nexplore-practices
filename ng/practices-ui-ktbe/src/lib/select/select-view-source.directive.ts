@@ -1,4 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Directive, Input, OnDestroy, OnInit, Optional, Self } from '@angular/core';
+import { SIGNAL, signalSetFn } from '@angular/core/primitives/signals';
 import { DestroyService, StatusProgressOptions, StatusService } from '@nexplore/practices-ui';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { BehaviorSubject, combineLatest, filter, map, startWith, Subject, switchMap, takeUntil } from 'rxjs';
@@ -154,12 +155,6 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
 
     // Helper to read a property from the ng-select component that may be a plain value or a signal/function
     private _readComponentProp<T = any>(prop: string): T {
-        const stateProp = `${prop}State`;
-        const state = (this._ngSelectComponent as any)[stateProp];
-        if (state != null) {
-            return state();
-        }
-
         const p = (this._ngSelectComponent as any)[prop];
         if (typeof p === 'function') {
             return p();
@@ -170,16 +165,15 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
 
     // Helper to write a property to the ng-select component that may accept direct assignment or a signal `.set()` method
     private _writeComponentProp(prop: string, value: any): void {
-        const stateProp = `${prop}State`;
-        const state = (this._ngSelectComponent as any)[stateProp];
-        if (state != null && typeof state.set === 'function') {
-            state.set(value);
-            return;
-        }
-
         const p = (this._ngSelectComponent as any)[prop];
         if (p != null && typeof p.set === 'function') {
             p.set(value);
+            return;
+        }
+
+        // This is a dangerous hack relying on Angular signals internals and is only a temporary solution until ng-select supports writable signals
+        if (typeof p === 'function' && (p as any)[SIGNAL] != null) {
+            signalSetFn((p as any)[SIGNAL], value);
             return;
         }
         
