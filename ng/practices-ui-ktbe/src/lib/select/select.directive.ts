@@ -203,36 +203,36 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
 
     // Helper to read a property from the ng-select component that may be a plain value or a signal/function
     private _readComponentProp<T = any>(prop: string): T {
+        const stateProp = `${prop}State`;
+        const state = (this._ngSelectComponent as any)[stateProp];
+        if (state != null) {
+            return state();
+        }
+
         const p = (this._ngSelectComponent as any)[prop];
-        if (p == null) {
-            return p;
-        }
         if (typeof p === 'function') {
-            try {
-                return p();
-            } catch {
-                return p as any;
-            }
+            return p();
         }
+
         return p;
     }
 
     // Helper to write a property to the ng-select component that may accept direct assignment or a signal `.set()` method
     private _writeComponentProp(prop: string, value: any): void {
+        const stateProp = `${prop}State`;
+        const state = (this._ngSelectComponent as any)[stateProp];
+        if (state != null && typeof state.set === 'function') {
+            state.set(value);
+            return;
+        }
+
         const p = (this._ngSelectComponent as any)[prop];
         if (p != null && typeof p.set === 'function') {
             p.set(value);
             return;
         }
-        if (typeof p === 'function' && typeof (p as any).set === 'function') {
-            (p as any).set(value);
-            return;
-        }
-        try {
-            (this._ngSelectComponent as any)[prop] = value;
-        } catch {
-            // ignore assignment failures for compatibility
-        }
+        
+        (this._ngSelectComponent as any)[prop] = value;
     }
 
     private ngSelectInputElement() {
