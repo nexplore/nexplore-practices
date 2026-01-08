@@ -65,7 +65,9 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
         private _destroy$: DestroyService,
         private _statusService: StatusService
     ) {
-        // force ng-select to use items instead of ngOptions (support both old property and new signal model)
+        // This is a dangerous hack because it relies on the internals of ng-select. Prevents ng-select from trying to override items from ng-options
+        (this._ngSelectComponent as any)['_itemsAreUsed'] = true;
+        
         this._writeComponentProp('items', []);
     }
 
