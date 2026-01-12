@@ -68,7 +68,7 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
     ) {
         // This is a dangerous hack because it relies on the internals of ng-select. Prevents ng-select from trying to override items from ng-options
         (this._ngSelectComponent as any)['_itemsAreUsed'] = true;
-        
+
         this._writeComponentProp('items', []);
     }
 
@@ -116,11 +116,7 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
 
             // This is a dangerous hack because it relies on the internals of ng-select
             // It is necessary because angular does not call ngOnChanges when we set properties manually and ng-select uses this to detect changes of items.
-            try {
-                (this._ngSelectComponent as any).ngOnChanges({ items: { currentValue: data } } as any);
-            } catch {
-                // ignore if ngOnChanges is not present on older/newer versions
-            }
+            this._ngSelectComponent.ngOnChanges({ items: { currentValue: data } } as any);
             this._changeDetectorRef.markForCheck();
         });
 
@@ -131,7 +127,8 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
             )
             .subscribe(([searchInput, viewSource]) =>
                 viewSource.filter({
-                    [this._readComponentProp<string | undefined>('bindLabel') ?? viewSource.label ?? 'label']: searchInput,
+                    [this._readComponentProp<string | undefined>('bindLabel') ?? viewSource.label ?? 'label']:
+                        searchInput,
                 })
             );
     }
@@ -176,7 +173,7 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
             signalSetFn((p as any)[SIGNAL], value);
             return;
         }
-        
+
         (this._ngSelectComponent as any)[prop] = value;
     }
 
