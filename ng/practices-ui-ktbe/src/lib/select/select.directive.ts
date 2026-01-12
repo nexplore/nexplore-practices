@@ -180,7 +180,8 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
         // This need to be done after view init, because the select-view-source directive set searchable at on init
         const searchable = this._readComponentProp('searchable');
         this._formFieldService.setIcon({
-            component: this.useSearchIconIfSearchable && searchable ? PuibeIconSearchComponent : PuibeIconArrowComponent,
+            component:
+                this.useSearchIconIfSearchable && searchable ? PuibeIconSearchComponent : PuibeIconArrowComponent,
             className: this.useSearchIconIfSearchable && searchable ? '' : arrowDownIconClassName,
         });
 
@@ -194,10 +195,10 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
         // find the correspondig label and format a string
         let selectedValuesString = '';
         // get all labels of selected values
-        const selValues = this._readComponentProp<any[]>('selectedValues') || [];
+        const selectedValues = this._readComponentProp<any[]>('selectedValues') || [];
         const bindLabel = this._readComponentProp<string | undefined>('bindLabel');
-        selValues.forEach((elem, index) =>
-            (selectedValuesString += (index > 0 ? ', ' : '') + (elem[bindLabel ?? 'label'] || ''))
+        selectedValues.forEach(
+            (elem, index) => (selectedValuesString += (index > 0 ? ', ' : '') + (elem[bindLabel ?? 'label'] || ''))
         );
         return selectedValuesString;
     }
@@ -219,13 +220,13 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
             p.set(value);
             return;
         }
-        
+
         // This is a dangerous hack relying on Angular signals internals and is only a temporary solution until ng-select supports writable signals
         if (typeof p === 'function' && (p as any)[SIGNAL] != null) {
             signalSetFn((p as any)[SIGNAL], value);
             return;
         }
-        
+
         (this._ngSelectComponent as any)[prop] = value;
     }
 
