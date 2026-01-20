@@ -1,5 +1,12 @@
 import { Injector, Signal } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControlStatus, FormGroup } from '@angular/forms';
+import {
+    AbstractControl,
+    AsyncValidatorFn,
+    FormBuilder,
+    FormControlStatus,
+    FormGroup,
+    ValidatorFn,
+} from '@angular/forms';
 import { FormGroupControlsValues, FormValueSignalsRecordWithoutPostfix, PartialNullable } from '../utils/form.types';
 import { Extensions } from './extensions';
 import { FormGroupValueWithSignals } from './form-group-types';
@@ -21,7 +28,7 @@ export type FormGroupEnhancedWithSignals<TControls = any> = TControls extends {
            * Please use `formGroup.valueSignal` instead to access signals for individual controls.
            */
           readonly value: FormGroupValueWithSignals<TControls>;
-          
+
           /**
            * A signal of the most up-to-date value of the form group.
            *
@@ -78,7 +85,17 @@ export type FormControlDefinition<T> = {
      */
     updateOn?: 'change' | 'blur' | 'submit';
 
+    /**
+     * Whether the form control should allow `null` values and use `null` as its default value.
+     * When `true`, the control can be reset to `null` and its type includes `null` (e.g., `string | null`).
+     * When `false` (default), the control will revert to its initial value when reset and has a non-nullable type.
+     * This maps to Angular's `nonNullable` FormControl option (inverted).
+     */
     nullable?: boolean;
+
+    validators?: ValidatorFn[];
+
+    asyncValidators?: AsyncValidatorFn[];
 };
 
 export type FormControlDefinitionValueOmitted = {
@@ -89,14 +106,21 @@ export type FormControlDefinitionValueOmitted = {
      */
     updateOn?: 'change' | 'blur' | 'submit';
 
+    /**
+     * Whether the form control should allow `null` values and use `null` as its default value.
+     * When `true`, the control can be reset to `null` and its type includes `null` (e.g., `string | null`).
+     * When `false` (default), the control will revert to its initial value when reset and has a non-nullable type.
+     * This maps to Angular's `nonNullable` FormControl option (inverted).
+     */
     nullable?: boolean;
+
+    validators?: ValidatorFn[];
+
+    asyncValidators?: AsyncValidatorFn[];
 };
 
 export type FormGroupDefinitionRecord<TValue extends FormGroupValueBase> = {
-    [K in keyof TValue]:
-        | AbstractControl<TValue[K]>
-        | FormControlDefinition<TValue[K]>
-        | FormControlDefinitionValueOmitted;
+    [K in keyof TValue]: FormControlDefinition<TValue[K]> | FormControlDefinitionValueOmitted;
 };
 
 export type BuildFromGroupValueFn<TValue extends FormGroupValueBase> = (
@@ -109,12 +133,12 @@ type AddNullableIfConfigured<TControlDef, TFallback = TControlDef> = TControlDef
     nullable: true;
 }
     ? TValue | null
+    : TControlDef extends FormControlDefinition<infer TValue>
+    ? TValue
     : TControlDef extends FormControlDefinitionValueOmitted & { nullable: true }
     ? TFallback | null
     : TControlDef extends FormControlDefinitionValueOmitted & { nullable: false }
     ? TFallback
-    : TControlDef extends FormControlDefinition<infer TValue>
-    ? TValue
     : TControlDef extends AbstractControl<infer TValue>
     ? TValue
     : Exclude<TControlDef, FormControlDefinitionValueOmitted>;
@@ -197,4 +221,3 @@ export type ValueSatisfying<
     : TValueOrDef extends PartialNullable<TSatisfy>
     ? ValueSatisfyingType<TSatisfy, TValueOrDef>
     : never;
-
