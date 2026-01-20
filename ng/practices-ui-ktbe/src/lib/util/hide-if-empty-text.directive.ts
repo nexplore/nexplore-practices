@@ -4,6 +4,8 @@ const EMPTY_TEXT_EVENT = 'puibeHideIfEmptyText:empty-change';
 
 /**
  * Hides the element if it has no visible text content.
+ *
+ * Note: If the element has a display style set, it will be overridden when hiding/showing the element. The original value won't be restored.
  */
 @Directive({
     selector: '[puibeHideIfEmptyText]',
@@ -28,7 +30,8 @@ export class PuibeHideIfEmptyTextDirective {
 
             const customEvent = event as CustomEvent<{ empty: boolean }>;
             if (customEvent.detail?.empty === false) {
-                this._overrideEmpty(false);
+                this._elementRef.nativeElement.style.removeProperty('display');
+                this.emptyTextChange.emit(false);
             } else {
                 this.hideIfEmpty();
             }
@@ -60,27 +63,11 @@ export class PuibeHideIfEmptyTextDirective {
             }
         } else {
             if (this._elementRef.nativeElement.style.display === 'none') {
+                // TODO: consider restoring previous display value instead of removing the style
                 this._elementRef.nativeElement.style.removeProperty('display');
                 this.emptyTextChange.emit(false);
                 this._emitEmptyEvent(false);
             }
-        }
-    }
-
-    /**
-     * @internal
-     *
-     * Overrides the empty state manually.
-     *
-     * If `true`, the element will be hidden regardless of its content, otherwise it will be shown.
-     */
-    private _overrideEmpty(empty: boolean): void {
-        if (empty) {
-            this._elementRef.nativeElement.style.display = 'none';
-            this.emptyTextChange.emit(true);
-        } else {
-            this._elementRef.nativeElement.style.removeProperty('display');
-            this.emptyTextChange.emit(false);
         }
     }
 
