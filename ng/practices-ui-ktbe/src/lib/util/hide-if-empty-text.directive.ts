@@ -20,7 +20,7 @@ export class PuibeHideIfEmptyTextDirective {
     constructor(destroyRef: DestroyRef) {
         const element = this._elementRef.nativeElement;
         const mutationObserver = new MutationObserver(() => {
-            this.hideIfEmpty();
+            this._hideIfEmpty();
         });
 
         const onChildEmptyChange = (event: Event) => {
@@ -33,7 +33,7 @@ export class PuibeHideIfEmptyTextDirective {
                 this._elementRef.nativeElement.style.removeProperty('display');
                 this.emptyTextChange.emit(false);
             } else {
-                this.hideIfEmpty();
+                this._hideIfEmpty();
             }
         };
 
@@ -54,7 +54,7 @@ export class PuibeHideIfEmptyTextDirective {
     /**
      * Hides the element if it has no visible text content.
      */
-    public hideIfEmpty(): void {
+    private _hideIfEmpty(): void {
         if (!this._elementRef.nativeElement.innerText) {
             if (this._elementRef.nativeElement.style.display !== 'none') {
                 this._elementRef.nativeElement.style.display = 'none';
