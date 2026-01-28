@@ -6,6 +6,7 @@ import { delay, map, take } from 'rxjs/operators';
 @Component({
     selector: 'app-status-view',
     templateUrl: './status-view.component.html',
+    standalone: false
 })
 export class StatusViewComponent {
     constructor(private statusService: StatusService) {}
