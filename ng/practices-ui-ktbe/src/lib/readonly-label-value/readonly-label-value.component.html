@@ -2,7 +2,7 @@
     <dt [ngClass]="useSmallLabel ?? useSmallLabelFallback ? 'text-very-small font-normal' : 'text-base font-light'">
         {{ label }}
     </dt>
-    <dd class="text-base font-medium [word-break:break-word]">
+    <dd class="whitespace-pre-line text-base font-medium [word-break:break-word]">
         <ng-content></ng-content>
     </dd>
 </dl>
