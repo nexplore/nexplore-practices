@@ -94,4 +94,10 @@ module.exports = [
             parser: require('jsonc-eslint-parser'),
         },
     },
+    {
+        files: ['samples/**/*.ts', 'samples/**/*.tsx'],
+        rules: {
+            '@angular-eslint/prefer-standalone': 'off',
+        },
+    },
 ];
