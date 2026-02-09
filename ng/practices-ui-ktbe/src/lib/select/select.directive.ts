@@ -15,6 +15,7 @@ import {
     ViewContainerRef,
     ViewEncapsulation,
 } from '@angular/core';
+import { SIGNAL, signalSetFn } from '@angular/core/primitives/signals';
 import { NgControl } from '@angular/forms';
 import { trace } from '@nexplore/practices-ng-logging';
 import { DestroyService } from '@nexplore/practices-ui';
@@ -57,14 +58,14 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
 
     @HostListener('open')
     onOpen() {
-        if (!this.useSearchIconIfSearchable || !this._ngSelectComponent.searchable) {
+        if (!this.useSearchIconIfSearchable || !this._readComponentProp('searchable')) {
             this._formFieldService.updateIcon({ className: arrowUpIconClassName });
         }
     }
 
     @HostListener('close')
     onClose() {
-        if (!this.useSearchIconIfSearchable || !this._ngSelectComponent.searchable) {
+        if (!this.useSearchIconIfSearchable || !this._readComponentProp('searchable')) {
             this._formFieldService.updateIcon({ className: arrowDownIconClassName });
         }
     }
@@ -111,7 +112,7 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
         this._formFieldService.setReadonlyValueFunction(() => this.getReadOnlyValue());
 
         this._formFieldService.id$.pipe(takeUntil(this._destroy$)).subscribe((id) => {
-            this._ngSelectComponent.labelForId = id;
+            this._writeComponentProp('labelForId', id);
             setAttr('autocomplete', 'off', this.ngSelectInputElement());
 
             const ariaDescribedByError = `${id}-error`;
@@ -134,11 +135,12 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
 
         // Displays the label as placeholder, until focused, then switches to actual placeholder (if defined)
         this._formFieldService.placeholder$.pipe(takeUntil(this._destroy$)).subscribe((placeholder) => {
-            this._ngSelectComponent.placeholder = placeholder;
+            this._writeComponentProp('placeholder', placeholder);
             this._cdr.markForCheck();
         });
 
-        if (!this._ngSelectComponent.selectedValues?.length) {
+        const selectedValues = this._readComponentProp<any[]>('selectedValues');
+        if (!selectedValues?.length) {
             // If there is an item with a `null` value, select it initially
             const nullItem = this._ngSelectComponent.itemsList.findItem(null);
             if (nullItem) {
@@ -163,7 +165,7 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
             this.ngSelectInputElement().ariaLabel = label ? `${label} ${value}` : value;
         });
 
-        if (this._ngSelectComponent.clearable) {
+        if (this._readComponentProp('clearable')) {
             this._formFieldService.value$.pipe(takeUntil(this._destroy$)).subscribe((value) => {
                 this._formFieldService.setClearable(isDefinedAndNotEmptyArray(value));
             });
@@ -176,16 +178,14 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
 
     ngAfterViewInit() {
         // This need to be done after view init, because the select-view-source directive set searchable at on init
+        const searchable = this._readComponentProp('searchable');
         this._formFieldService.setIcon({
             component:
-                this.useSearchIconIfSearchable && this._ngSelectComponent.searchable
-                    ? PuibeIconSearchComponent
-                    : PuibeIconArrowComponent,
-            className:
-                this.useSearchIconIfSearchable && this._ngSelectComponent.searchable ? '' : arrowDownIconClassName,
+                this.useSearchIconIfSearchable && searchable ? PuibeIconSearchComponent : PuibeIconArrowComponent,
+            className: this.useSearchIconIfSearchable && searchable ? '' : arrowDownIconClassName,
         });
 
-        if (this._ngSelectComponent.searchable) {
+        if (searchable) {
             this._formFieldService.setFocusedPlaceholder(this._translate.instant('Practices.Labels_Select_SearchText'));
         }
     }
@@ -195,12 +195,39 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
         // find the correspondig label and format a string
         let selectedValuesString = '';
         // get all labels of selected values
-        this._ngSelectComponent.selectedValues.forEach(
-            (elem, index) =>
-                (selectedValuesString +=
-                    (index > 0 ? ', ' : '') + (elem[this._ngSelectComponent.bindLabel ?? 'label'] || ''))
+        const selectedValues = this._readComponentProp<any[]>('selectedValues') || [];
+        const bindLabel = this._readComponentProp<string | undefined>('bindLabel');
+        selectedValues.forEach(
+            (elem, index) => (selectedValuesString += (index > 0 ? ', ' : '') + (elem[bindLabel ?? 'label'] || ''))
         );
         return selectedValuesString;
+    }
+
+    // Helper to read a property from the ng-select component that may be a plain value or a signal/function
+    private _readComponentProp<T = any>(prop: string): T {
+        const p = (this._ngSelectComponent as any)[prop];
+        if (typeof p === 'function') {
+            return p();
+        }
+
+        return p;
+    }
+
+    // Helper to write a property to the ng-select component that may accept direct assignment or a signal `.set()` method
+    private _writeComponentProp(prop: string, value: any): void {
+        const p = (this._ngSelectComponent as any)[prop];
+        if (p != null && typeof p.set === 'function') {
+            p.set(value);
+            return;
+        }
+
+        // This is a dangerous hack relying on Angular signals internals and is only a temporary solution until ng-select supports writable signals
+        if (typeof p === 'function' && (p as any)[SIGNAL] != null) {
+            signalSetFn((p as any)[SIGNAL], value);
+            return;
+        }
+
+        (this._ngSelectComponent as any)[prop] = value;
     }
 
     private ngSelectInputElement() {

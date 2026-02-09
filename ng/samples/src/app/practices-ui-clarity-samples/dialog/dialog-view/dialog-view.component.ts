@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 @Component({
     selector: 'app-dialog-view',
     templateUrl: './dialog-view.component.html',
+    standalone: false
 })
 export class DialogViewComponent {
     confirmDialogResponse: boolean | undefined;

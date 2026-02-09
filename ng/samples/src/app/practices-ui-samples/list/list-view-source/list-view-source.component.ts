@@ -8,6 +8,7 @@ import { listEndpointMock } from '../endpointMock';
 @Component({
     selector: 'app-list-view-source',
     templateUrl: './list-view-source.component.html',
+    standalone: false
 })
 export class ListViewSourceComponent implements OnDestroy {
     lastRequestedApiUrl: string;

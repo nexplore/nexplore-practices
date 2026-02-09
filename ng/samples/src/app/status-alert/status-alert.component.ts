@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 @Component({
     selector: 'app-status-alert',
     templateUrl: './status-alert.component.html',
+    standalone: false
 })
 export class StatusAlertComponent implements OnInit, OnDestroy {
     private subscription: Subscription;
