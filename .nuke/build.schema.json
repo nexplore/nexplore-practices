@@ -38,8 +38,7 @@
         "PublishNpm",
         "PublishNuGet",
         "TestDotNet",
-        "TestNg",
-        "UpdateBuildNumber"
+        "TestNg"
       ]
     },
     "Verbosity": {
