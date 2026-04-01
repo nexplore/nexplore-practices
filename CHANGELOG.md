@@ -11,7 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `Practices.*` Added support for .NET 10
 - `practices-ng-*`, `practices-ui`, `practices-ui-ktbe` Added support for Angular 21
-- `practices-ui-ktbe` Added `whitespace-pre-line` CSS class to `PuibeReadonlyLabelValueComponent` to properly display line breaks in readonly values.
 
 ### Changed
 
@@ -22,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Practices.Syncfusion.Excel` Updated Syncfusion.XlsIO.Net.Core to 31.2.18
 - `Practices.Syncfusion.Pdf` Updated Syncfusion.Pdf.Net.Core to 31.2.18
 - `Practices.Syncfusion.Pdf` Updated SixLabors.ImageSharp to 3.1.12
+- `practices-ui-ktbe` Added `whitespace-pre-line` CSS class to `PuibeReadonlyLabelValueComponent` to properly display line breaks in readonly values.
 - `practices-ng-forms` Updated `toFormControlOptions` nonNullable behavior.
 - _BREAKING_ `practices-ng-forms` Removed `AbstractControl` from `FormGroupDefinitionRecord` to limit configuration to supported properties.
 
