@@ -22,9 +22,9 @@ namespace Nexplore.Practices.Tests.Unit.Core.Security.Cryptography
             var encryptedData = service.EncryptDataAes(inputData, password, out byte[] iv);
 
             // Assert -> Encrypt
-            Assert.That(encryptedData, Is.Not.Null.Or.Empty);
+            Assert.That(encryptedData, Is.Not.Null.And.Not.Empty);
             Assert.That(encryptedData, Is.Not.EqualTo(inputData));
-            Assert.That(iv, Is.Not.Null.Or.Empty);
+            Assert.That(iv, Is.Not.Null.And.Not.Empty);
 
             // Act -> Decrypt
             var decryptedData = service.DecryptDataAes(encryptedData, password, iv);

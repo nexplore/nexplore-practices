@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using Nexplore.Practices.Build.Helpers;
 using Nuke.Common;
 using Nuke.Common.IO;
@@ -19,7 +18,7 @@ partial class Build : NukeBuild
     [GitVersion(UpdateBuildNumber = false)] readonly GitVersion GitVersion;
 
     private readonly Solution DotNetSolution =
-        SolutionModelTasks.ParseSolution(RootDirectory / "dotnet/Nexplore.Practices.sln");
+        (RootDirectory / "dotnet/Nexplore.Practices.sln").ReadSolution();
 
     private AbsolutePath OutputDirectory => TemporaryDirectory / "output";
     private AbsolutePath TemplateDirectory => RootDirectory / "build" / "templates";
