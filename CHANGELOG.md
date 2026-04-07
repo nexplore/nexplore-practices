@@ -9,15 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- `Practices.*` Add support for .NET 10
-- `practices-ng-*`, `practices-ui`, `practices-ui-ktbe` Add support for Angular 21
+- `Practices.*` Added support for .NET 10
+- `practices-ng-*`, `practices-ui`, `practices-ui-ktbe` Added support for Angular 21
 
 ### Changed
 
-- `Practices.Core` Update Autofac to 9.0.0
-- `Practices.Mail` Update MailKit to 4.14.1
-- `Practices.Syncfusion.Excel` Update Syncfusion.XlsIO.Net.Core to 31.2.18
-- `Practices.Syncfusion.Pdf` Update Syncfusion.Pdf.Net.Core to 31.2.18
+- `Practices.*` Updated Microsoft.Extensions.* dependencies
+- `Practices.Core` Updated Autofac to 9.1.0
+- `Practices.EntityFramework` Updated Microsoft.EntityFrameworkCore.*
+- `Practices.Mail` Updated MailKit to 4.15.1
+- `Practices.Syncfusion.Excel` Updated Syncfusion.XlsIO.Net.Core to 31.2.18
+- `Practices.Syncfusion.Pdf` Updated Syncfusion.Pdf.Net.Core to 31.2.18
+- `Practices.Syncfusion.Pdf` Updated SixLabors.ImageSharp to 3.1.12
 - `practices-ui-ktbe` Added `whitespace-pre-line` CSS class to `PuibeReadonlyLabelValueComponent` to properly display line breaks in readonly values.
 - `practices-ng-forms` Updated `toFormControlOptions` nonNullable behavior.
 - _BREAKING_ `practices-ng-forms` Removed `AbstractControl` from `FormGroupDefinitionRecord` to limit configuration to supported properties.

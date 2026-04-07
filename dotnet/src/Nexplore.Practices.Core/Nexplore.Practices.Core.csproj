@@ -11,22 +11,22 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
-        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.5" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.5" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
-        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.7" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.7" />
+        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.14" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.14" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
-        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="8.0.14" />
+        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="8.0.25" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.3" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Autofac" Version="9.0.0" />
+        <PackageReference Include="Autofac" Version="9.1.0" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
     </ItemGroup>
 
