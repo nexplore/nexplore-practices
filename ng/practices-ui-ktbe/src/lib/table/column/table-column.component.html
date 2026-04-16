@@ -1,4 +1,8 @@
-<div class="grid grid-cols-[auto_1fr] items-center gap-2">
+<div class="grid items-center gap-2" [ngClass]="{
+    'grid-cols-[1fr_auto]': this.align === 'right',
+    'grid-cols-[auto_1fr]': this.align === 'left',
+    'grid-cols-[auto_auto] justify-center': align === 'center'
+}">
     <button
         class="flex w-full items-center justify-items-stretch"
         [ngClass]="{ 
