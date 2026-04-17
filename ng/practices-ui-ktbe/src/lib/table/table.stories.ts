@@ -841,8 +841,12 @@ export const ColumnWithButton: Story = {
              <span>H2</span>
              <button slot="right" size="small" puibeButton><puibe-icon-search size="xs" /></button>
             </puibe-table-column>
-            <puibe-table-column align="right">
+            <puibe-table-column align="center">
              <span>H3</span>
+             <button slot="right" size="small" puibeButton><puibe-icon-search size="xs" /></button>
+            </puibe-table-column>
+            <puibe-table-column align="right">
+             <span>H4</span>
              <button slot="right" size="small" puibeButton><puibe-icon-search size="xs" /></button>
             </puibe-table-column>
         </puibe-table>`,
