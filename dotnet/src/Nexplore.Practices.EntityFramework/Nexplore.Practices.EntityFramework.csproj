@@ -15,23 +15,23 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
-        <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="10.0.5" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="10.0.5" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="10.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="10.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.6" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
-        <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="9.0.14" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.14" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.14" />
+        <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="9.0.15" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.15" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.15" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
-        <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="8.0.25" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.25" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.25" />
+        <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="8.0.26" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.26" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.26" />
     </ItemGroup>
-    
+
     <ItemGroup>
         <ProjectReference Include="..\Nexplore.Practices.Configuration\Nexplore.Practices.Configuration.csproj" />
         <ProjectReference Include="..\Nexplore.Practices.Core\Nexplore.Practices.Core.csproj" />
