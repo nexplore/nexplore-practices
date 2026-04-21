@@ -3,7 +3,7 @@
     'grid-cols-[auto_1fr]': this.align === 'left',
     'grid-cols-[auto_auto] justify-center': align === 'center'
 }">
-    <button
+    <div #button
         class="flex w-full items-center justify-items-stretch"
         [ngClass]="{ 
         'flex-row-reverse': this.align === 'right', 
@@ -11,8 +11,8 @@
         'justify-start': this.align === 'right' || this.align === 'left',
         'cursor-pointer': field.sortable,
      }"
-        [disabled]="!field.sortable"
-        (click)="toggleDir()"
+        [attr.role]="field.sortable ? 'button' : ''"
+        [tabindex]="field.sortable ? '0' : '-1'"
         [ariaDescription]="clickToSortLabel$ | async"
     >
         <span #contentWrapper>
@@ -42,6 +42,6 @@
                 *ngIf="field.sortDir != null && (busy$ | async)"
             ></puibe-icon-spinner>
         </div>
-    </button>
+    </div>
     <ng-content select="[slot='right']" />
 </div>
