@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [11.2.1](https://github.com/nexplore/nexplore-practices/releases/tag/11.2.1) - 2026-04-17
+
+### Changed
+
+- `Practices.*` Updated dependencies because of https://github.com/advisories/GHSA-w3x6-4m5h-cxqf
+
 ## [11.2.0](https://github.com/nexplore/nexplore-practices/releases/tag/11.2.0) - 2026-04-13
 
 ### Added
