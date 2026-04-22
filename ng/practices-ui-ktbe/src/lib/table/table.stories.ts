@@ -23,6 +23,7 @@ import { PuibeTablePaginationInfiniteScrollComponent } from './infinite-scroll/t
 import { PuibeTableCellDirective } from './cell/table-cell.directive';
 import { TranslateModule } from '@ngx-translate/core';
 import { PuibeTableColumnTranslateDirective } from './column/table-column-translate.directive';
+import { PuibeIconSearchComponent } from '../icons/icon-search.component';
 
 type Args = { showOptionsMenu?: boolean };
 
@@ -73,6 +74,7 @@ const meta: Meta<Args> = {
                 PuibeButtonDirective,
                 PuibeTableCellDirective,
                 TranslateModule,
+                PuibeIconSearchComponent,
                 PuibeTableColumnTranslateDirective,
             ],
         }),
@@ -826,6 +828,30 @@ export const Celspan2WithDirectiveTable: Story = {
                 <td puibeTableCell align='right'>B2</td>
                 <td puibeTableCell>B3</td>
             </puibe-table-row>
+        </puibe-table>`,
+    }),
+};
+
+export const ColumnWithButton: Story = {
+    render: (_args) => ({
+        template: `
+        <puibe-table class="w-full">
+            <puibe-table-column [sortable]="true">H1</puibe-table-column>
+            <puibe-table-column [sortable]="true">
+             <span>H2</span>
+             <button slot="right" size="small" puibeButton><puibe-icon-search size="xs" /></button>
+            </puibe-table-column>
+            <puibe-table-column align="center">
+             <span>H3</span>
+             <button slot="right" size="small" puibeButton><puibe-icon-search size="xs" /></button>
+            </puibe-table-column>
+            <puibe-table-column align="right">
+             <span>H4</span>
+             <button slot="right" size="small" puibeButton><puibe-icon-search size="xs" /></button>
+            </puibe-table-column>
+            <puibe-table-column align="right">
+             <span>H5</span>
+            </puibe-table-column>
         </puibe-table>`,
     }),
 };
