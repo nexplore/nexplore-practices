@@ -3,7 +3,6 @@
     "version": "0.0.0-VERSION",
     "peerDependencies": {
         "@nexplore/practices-ng-signals":"0.0.0-VERSION",
-        "@nx/dependency-checks":"0.0.0-VERSION",
         "@angular/animations": ">=18.0.0 <22.0.0",
         "@angular/cdk": ">=18.0.0 <22.0.0",
         "@angular/common": ">=18.0.0 <22.0.0",
