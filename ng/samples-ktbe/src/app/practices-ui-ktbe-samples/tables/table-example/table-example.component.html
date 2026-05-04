@@ -35,22 +35,13 @@
 >
     <puibe-table-column
         [field]="itemSource.columns.name"
-        [columnLabel]="'Name'"
-        [sortable]="true"
-        class="w-1/4"
-    ></puibe-table-column>
+        class="w-1/4" />
     <puibe-table-column
         [field]="itemSource.columns.type"
-        [columnLabel]="'Type'"
-        [sortable]="true"
-        class="w-1/4"
-    ></puibe-table-column>
+        class="w-1/4" />
     <puibe-table-column
         [field]="itemSource.columns.active"
-        [columnLabel]="'Active'"
-        [sortable]="true"
-        class="w-1/4"
-    ></puibe-table-column>
+        class="w-1/4" />
 
     <puibe-table-row puibeTableRowActionTrigger *ngFor="let item of itemSource.pageData$ | async">
         <puibe-table-cell>

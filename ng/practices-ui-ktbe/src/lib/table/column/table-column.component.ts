@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { DestroyService, OrderDirection } from '@nexplore/practices-ui';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { map, shareReplay, Subscription, switchMap, takeUntil } from 'rxjs';
+import { debounceTime, map, shareReplay, Subscription, switchMap, takeUntil, tap } from 'rxjs';
 
 import { A11yModule } from '@angular/cdk/a11y';
 import { PuibeIconArrowComponent } from '../../icons/icon-arrow.component';
@@ -27,7 +27,7 @@ import {
     sortDirToIconDir,
     sortDirToLabelKey,
 } from './table-column.util';
-import { subscriptionEffect } from '@nexplore/practices-ng-signals';
+import { computedPipe, subscriptionEffect } from '@nexplore/practices-ng-signals';
 
 @Component({
     standalone: true,
@@ -46,7 +46,6 @@ import { subscriptionEffect } from '@nexplore/practices-ng-signals';
     providers: [DestroyService],
 })
 export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterViewInit {
-    private readonly _sortableSignal = signal(false);    
     
     private _column: TableColumnItem<any>;
 
@@ -88,8 +87,6 @@ export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterVie
     @Input()
     set sortable(val: boolean) {
         this._table?.patchColumn(this.field, { sortable: val });
-
-        this._sortableSignal.set(val);
     }
 
     @Input()
@@ -134,13 +131,12 @@ export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterVie
         private _destroy$: DestroyService,
         _renderer: Renderer2
     ) {
+        const sortableSignal = computedPipe(this._column$, debounceTime(0), map((column) => column?.sortable ?? this.field?.sortable));
         subscriptionEffect(() => {
-            const sortable = this._sortableSignal();
-
+            const sortable = sortableSignal();
             // This is a workaround for accessibility reasons (if a element has a click handler, screen-reader emits "clickable", which we don't want, when its not sortable)
             if (sortable) {
                 const teardown = new Subscription();
-
                 teardown.add(
                     _renderer.listen(this.button.nativeElement, 'click', () => {
                         this.toggleDir();
