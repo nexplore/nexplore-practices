@@ -7,7 +7,6 @@ import {
     HostBinding,
     Input,
     Renderer2,
-    signal,
     ViewChild,
 } from '@angular/core';
 import { DestroyService, OrderDirection } from '@nexplore/practices-ui';
