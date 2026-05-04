@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { DestroyService, OrderDirection } from '@nexplore/practices-ui';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { debounceTime, map, shareReplay, Subscription, switchMap, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, shareReplay, Subscription, switchMap, takeUntil } from 'rxjs';
 
 import { A11yModule } from '@angular/cdk/a11y';
 import { PuibeIconArrowComponent } from '../../icons/icon-arrow.component';
@@ -46,8 +46,9 @@ import { computedPipe, subscriptionEffect } from '@nexplore/practices-ng-signals
     providers: [DestroyService],
 })
 export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterViewInit {
-    
+
     private _column: TableColumnItem<any>;
+    private readonly _fieldSubject = new BehaviorSubject<TableColumnItem<any> | undefined>(undefined);
 
     @HostBinding('class')
     public className = ClassNames.TABLE_COLUMN;
@@ -65,6 +66,7 @@ export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterVie
             this.fieldName = value;
         } else if (typeof value === 'object') {
             this._column = value;
+            this._fieldSubject.next(value);
         }
     }
 
@@ -109,8 +111,8 @@ export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterVie
 
     @Input() noPadding = false;
 
-    private _column$ = this._table.columns$.pipe(
-        map((_) => this._table.getColumn(this._column)),
+    private _column$ = combineLatest([this._table.columns$, this._fieldSubject]).pipe(
+        map(([_, field]) => this._table.getColumn(field ?? this._column)),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
 
@@ -131,7 +133,7 @@ export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterVie
         private _destroy$: DestroyService,
         _renderer: Renderer2
     ) {
-        const sortableSignal = computedPipe(this._column$, debounceTime(0), map((column) => column?.sortable ?? this.field?.sortable));
+        const sortableSignal = computedPipe(this._column$, map((column) => column?.sortable));
         subscriptionEffect(() => {
             const sortable = sortableSignal();
             // This is a workaround for accessibility reasons (if a element has a click handler, screen-reader emits "clickable", which we don't want, when its not sortable)
