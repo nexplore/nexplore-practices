@@ -6,11 +6,12 @@ import {
     ElementRef,
     HostBinding,
     Input,
+    Renderer2,
     ViewChild,
 } from '@angular/core';
 import { DestroyService, OrderDirection } from '@nexplore/practices-ui';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { map, shareReplay, switchMap, takeUntil } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, shareReplay, Subscription, switchMap, takeUntil } from 'rxjs';
 
 import { A11yModule } from '@angular/cdk/a11y';
 import { PuibeIconArrowComponent } from '../../icons/icon-arrow.component';
@@ -25,6 +26,7 @@ import {
     sortDirToIconDir,
     sortDirToLabelKey,
 } from './table-column.util';
+import { computedPipe, subscriptionEffect } from '@nexplore/practices-ng-signals';
 
 @Component({
     standalone: true,
@@ -43,15 +45,18 @@ import {
     providers: [DestroyService],
 })
 export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterViewInit {
+    private _column: TableColumnItem<any>;
+    private readonly _columnChangeSubject = new BehaviorSubject<TableColumnItem<any> | undefined>(undefined);
+
     @HostBinding('class')
-    className = ClassNames.TABLE_COLUMN;
+    public className = ClassNames.TABLE_COLUMN;
 
     @HostBinding('attr.role')
-    role = 'columnheader';
+    public role = 'columnheader';
 
-    @ViewChild('contentWrapper', { static: false }) content: ElementRef<HTMLElement>;
+    @ViewChild('button', { static: true }) protected button: ElementRef<HTMLElement>;
 
-    private _column: TableColumnItem<any>;
+    @ViewChild('contentWrapper', { static: false }) public content: ElementRef<HTMLElement>;
 
     @Input()
     set field(value: TableColumnItem<any> | string | undefined) {
@@ -59,6 +64,7 @@ export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterVie
             this.fieldName = value;
         } else if (typeof value === 'object') {
             this._column = value;
+            this._columnChangeSubject.next(value);
         }
     }
 
@@ -103,8 +109,8 @@ export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterVie
 
     @Input() noPadding = false;
 
-    private _column$ = this._table.columns$.pipe(
-        map((_) => this._table.getColumn(this._column)),
+    private _column$ = combineLatest([this._table.columns$, this._columnChangeSubject]).pipe(
+        map(([_, field]) => this._table.getColumn(field ?? this._column)),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
 
@@ -122,10 +128,37 @@ export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterVie
         private _table: PuibeTableComponent,
         private _elementRef: ElementRef<HTMLElement>,
         private _translate: TranslateService,
-        private _destroy$: DestroyService
-    ) {}
+        private _destroy$: DestroyService,
+        _renderer: Renderer2
+    ) {
+        const sortableSignal = computedPipe(this._column$, map((column) => column?.sortable));
+        subscriptionEffect(() => {
+            const sortable = sortableSignal();
+            // This is a workaround for accessibility reasons (if a element has a click handler, screen-reader emits "clickable", which we don't want, when its not sortable)
+            if (sortable) {
+                const teardown = new Subscription();
+                teardown.add(
+                    _renderer.listen(this.button.nativeElement, 'click', () => {
+                        this.toggleDir();
+                    })
+                );
+
+                teardown.add(
+                    _renderer.listen(this.button.nativeElement, 'keydown', (ev) => {
+                        if (ev.key === 'Enter' || ev.key === '') {
+                            ev.preventDefault();
+                            this.toggleDir();
+                        }
+                    })
+                );
+
+                return teardown;
+            }
+        });
+    }
 
     ngAfterViewInit(): void {
+        // TODO (Api smell): All inputs like align, noPadding, and sortable can technically be set dynamically, but this implementation in init handler does not support it. Refactor to signal based approach.
         setHostClassNames(
             {
                 ['text-center']: this.align === 'center',

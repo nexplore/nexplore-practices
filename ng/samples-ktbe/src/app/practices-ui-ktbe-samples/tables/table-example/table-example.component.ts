@@ -76,7 +76,20 @@ export class TableExampleComponent {
         { label: 'Type 3', value: SampleType.Type3 },
     ];
     protected readonly itemSource = tableViewSource.withType<SampleListEntry>().withFilterForm({
-        columns: ['type', 'name', 'active'],
+        columns: {
+            name: {
+                columnLabel: 'Name',
+                sortable: true,
+            },
+            type: {
+                columnLabel: 'Type',
+                sortable: true,
+            },
+            active: {
+                columnLabel: 'Active',
+                sortable: true,
+            },
+        },
         loadFn: (params) =>
             tableSampleLoadFn<SampleListEntry>(params, 250, (i) => ({
                 id: i.toString(),

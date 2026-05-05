@@ -13,6 +13,7 @@
         "@nexplore/practices-ng-forms": "0.0.0-VERSION",
         "@nexplore/practices-ng-list-view-source": "0.0.0-VERSION",
         "@nexplore/practices-ng-logging": "0.0.0-VERSION",
+        "@nexplore/practices-ng-signals":"0.0.0-VERSION",
         "@nexplore/practices-ng-status": "0.0.0-VERSION",
         "@nexplore/practices-ui": "0.0.0-VERSION",
         "@ng-select/ng-select": ">=13.0.0 <22.0.0",

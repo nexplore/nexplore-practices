@@ -5,6 +5,19 @@ All notable changes to this library will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- `practices-ui-ktbe` Added support for displaying buttons inside the `PuibeTableColumnComponent` via a slot that displays next to the sorting button
+
+### Changed
+
+- `practices-ui-ktbe` Changed the `PuibeTableColumnComponent` so that it no longer has a button at the root. Instead, there is a div with the role of a button, depending on if the column is sortable. This prevents accessibility issues. 
+
+### Fixed
+
+
 ## [11.2.1](https://github.com/nexplore/nexplore-practices/releases/tag/11.2.1) - 2026-04-17
 
 ### Changed
@@ -20,9 +33,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- `Practices.*` Updated Microsoft.Extensions.* dependencies
+- `Practices.*` Updated Microsoft.Extensions.\* dependencies
 - `Practices.Core` Updated Autofac to 9.1.0
-- `Practices.EntityFramework` Updated Microsoft.EntityFrameworkCore.*
+- `Practices.EntityFramework` Updated Microsoft.EntityFrameworkCore.\*
 - `Practices.Mail` Updated MailKit to 4.15.1
 - `Practices.Syncfusion.Excel` Updated Syncfusion.XlsIO.Net.Core to 31.2.18
 - `Practices.Syncfusion.Pdf` Updated Syncfusion.Pdf.Net.Core to 31.2.18
