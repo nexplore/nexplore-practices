@@ -45,9 +45,8 @@ import { computedPipe, subscriptionEffect } from '@nexplore/practices-ng-signals
     providers: [DestroyService],
 })
 export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterViewInit {
-
     private _column: TableColumnItem<any>;
-    private readonly _fieldSubject = new BehaviorSubject<TableColumnItem<any> | undefined>(undefined);
+    private readonly _columnChangeSubject = new BehaviorSubject<TableColumnItem<any> | undefined>(undefined);
 
     @HostBinding('class')
     public className = ClassNames.TABLE_COLUMN;
@@ -65,7 +64,7 @@ export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterVie
             this.fieldName = value;
         } else if (typeof value === 'object') {
             this._column = value;
-            this._fieldSubject.next(value);
+            this._columnChangeSubject.next(value);
         }
     }
 
@@ -110,7 +109,7 @@ export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterVie
 
     @Input() noPadding = false;
 
-    private _column$ = combineLatest([this._table.columns$, this._fieldSubject]).pipe(
+    private _column$ = combineLatest([this._table.columns$, this._columnChangeSubject]).pipe(
         map(([_, field]) => this._table.getColumn(field ?? this._column)),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
