@@ -10,13 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `practices-ui-ktbe` Added support for displaying buttons inside the `PuibeTableColumnComponent` via a slot that displays next to the sorting button
+- `practices-ui-ktbe` Added support for displaying subcaptions inside `PuibeExpansionPanelComponent` via a slot that displays after the optional caption
 
 ### Changed
 
-- `practices-ui-ktbe` Changed the `PuibeTableColumnComponent` so that it no longer has a button at the root. Instead, there is a div with the role of a button, depending on if the column is sortable. This prevents accessibility issues. 
+- `practices-ui-ktbe` Changed the `PuibeTableColumnComponent` so that it no longer has a button at the root. Instead, there is a div with the role of a button, depending on if the column is sortable. This prevents accessibility issues.
 
 ### Fixed
-
 
 ## [11.2.1](https://github.com/nexplore/nexplore-practices/releases/tag/11.2.1) - 2026-04-17
 
