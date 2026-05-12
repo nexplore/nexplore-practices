@@ -28,6 +28,7 @@
                         <ng-content select="[slot='heading-after']"></ng-content>
                     </div>
                     <p class="mt-1" *ngIf="caption">{{ caption }}</p>
+                    <ng-content select="[slot='caption-after']"></ng-content>
                 </div>
                 <div class="flex items-center gap-4">
                     <ng-content select="[slot='arrow-before']"></ng-content>
