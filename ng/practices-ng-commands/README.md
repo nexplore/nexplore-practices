@@ -120,7 +120,7 @@ In the template:
     <input formControlName="name" placeholder="Name" />
     <input formControlName="email" placeholder="Email" />
 
-    <button [puiClickCommand]="saveCommand" [disabled]="saveCommand.disabledSignal()">Save</button>
+    <button [puiClickCommand]="saveCommand">Save</button>
 </form>
 ```
 
