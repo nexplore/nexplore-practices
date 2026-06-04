@@ -1,8 +1,8 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
-import { PuibeExpansionPanelComponent } from './expansion-panel.component';
 import { PuibeIconEditComponent } from '../icons/icon-edit.component';
 import { PuibeIconInvalidComponent } from '../icons/icon-invalid.component';
+import { PuibeExpansionPanelComponent } from './expansion-panel.component';
 
 type Args = {
     heading?: string;
@@ -162,6 +162,41 @@ export const ScrollIntoView: Story = {
             <h1 class="bg-gray h-96">Test Content 3</h1>
         </puibe-expansion-panel>
         </div>
+        `,
+    }),
+};
+
+export const AccordeonWithLeftContentSlot: Story = {
+    args: {
+        heading: 'Invoice-File-Name.pdf',
+        isExpanded: false,
+        headingLevel: 1,
+        variant: 'white',
+        addItemPadding: false,
+    },
+    render: (args) => ({
+        props: {
+            ...args,
+        },
+        template: `
+        <puibe-expansion-panel
+            class="w-full max-w-[800px] border border-[#d9d9d9]"
+            [heading]="heading"
+            [headingLevel]="headingLevel"
+            [isExpanded]="isExpanded"
+            [variant]="variant"
+            [addItemPadding]="addItemPadding"
+        >
+            <puibe-icon-invalid slot="left-content" size="m" class="mr-4"></puibe-icon-invalid>
+
+            <span slot="caption-after" class="text-[#e30a17]">Rechnung benötigt Überarbeitung.</span>
+
+            <span slot="arrow-before" class="inline-flex items-center gap-2 whitespace-nowrap text-black">Entfernen </span>
+
+            <div>
+                Inhalt des Expansion Panels
+            </div>
+        </puibe-expansion-panel>
         `,
     }),
 };

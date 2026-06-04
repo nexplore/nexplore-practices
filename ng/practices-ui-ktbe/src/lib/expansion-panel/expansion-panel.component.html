@@ -12,7 +12,7 @@
                     'p-3': compact,
                     'bg-dark-sand aria-expanded:bg-sand hover:bg-sand-hover focus:bg-sand-hover aria-expanded:hover:bg-sand-hover aria-expanded:focus:bg-sand-hover':
                         isSand,
-                    'bg-sand aria-expanded:bg-light-sand hover:bg-sand focus:bg-sand aria-expanded:hover:bg-sand aria-expanded:focus:bg-sand': 
+                    'bg-sand aria-expanded:bg-light-sand hover:bg-sand focus:bg-sand aria-expanded:hover:bg-sand aria-expanded:focus:bg-sand':
                         isLightSand,
                     'hover:bg-very-light-gray focus:bg-very-light-gray aria-expanded:hover:bg-very-light-gray aria-expanded:focus:bg-very-light-gray bg-white aria-expanded:bg-white':
                         isWhite,
@@ -22,13 +22,18 @@
                 (click)="toggle(accordionItem)"
             >
                 <span class="sr-only">{{ 'Practices.Labels_ExpansionPanel' | translate }}</span>
-                <div class="mr-6 flex flex-col items-start">
-                    <div class="flex items-center gap-4">
-                        <p *ngIf="heading" [ngClass]="compact ? 'text-base' : 'text-h4'">{{ heading }}</p>
-                        <ng-content select="[slot='heading-after']"></ng-content>
+                <div class="mr-6 flex items-stretch">
+                    <div class="flex items-center self-stretch">
+                        <ng-content select="[slot='left-content']"></ng-content>
                     </div>
-                    <p class="mt-1" *ngIf="caption">{{ caption }}</p>
-                    <ng-content select="[slot='caption-after']"></ng-content>
+                    <div class="flex flex-col items-start">
+                        <div class="flex items-center gap-4">
+                            <p *ngIf="heading" [ngClass]="compact ? 'text-base' : 'text-h4'">{{ heading }}</p>
+                            <ng-content select="[slot='heading-after']"></ng-content>
+                        </div>
+                        <p class="mt-1" *ngIf="caption">{{ caption }}</p>
+                        <ng-content select="[slot='caption-after']"></ng-content>
+                    </div>
                 </div>
                 <div class="flex items-center gap-4">
                     <ng-content select="[slot='arrow-before']"></ng-content>
