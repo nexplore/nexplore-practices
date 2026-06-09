@@ -84,6 +84,12 @@ export class PuibeExpansionPanelComponent implements OnInit {
     compact = false;
 
     /**
+     * If `true`, truncates the heading text with ellipsis when it overflows.
+     */
+    @Input()
+    truncateHeading = false;
+
+    /**
      * By default, when expanding a panel, it will automaticly scroll into view. Also, when toggling a already expanded panel which is only barely visible on the screen, it will scroll into view INSTEAD of collapsing.
      * Set to `true` to disable this behavior.
      */

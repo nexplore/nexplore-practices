@@ -200,3 +200,40 @@ export const AccordeonWithContentBeforeSlot: Story = {
         `,
     }),
 };
+
+export const AccordeonWithContentBeforeSlotTruncatedHeading: Story = {
+    args: {
+        heading:
+            'Invoice-File-Name-This-Is-An-Extremely-Long-Heading-To-Verify-That-The-Expansion-Panel-Title-Is-Truncated-Correctly-Even-When-The-Available-Space-Is-Very-Limited-In-The-Header-Area.pdf',
+        isExpanded: false,
+        headingLevel: 1,
+        variant: 'white',
+        addItemPadding: false,
+    },
+    render: (args) => ({
+        props: {
+            ...args,
+        },
+        template: `
+        <puibe-expansion-panel
+            class="w-full max-w-[800px] border border-[#d9d9d9]"
+            [heading]="heading"
+            [headingLevel]="headingLevel"
+            [isExpanded]="isExpanded"
+            [variant]="variant"
+            [addItemPadding]="addItemPadding"
+            [truncateHeading]="true"
+        >
+            <puibe-icon-invalid slot="content-before" size="m" class="mr-4"></puibe-icon-invalid>
+
+            <span slot="caption-after" class="text-[#e30a17]">Rechnung benötigt Überarbeitung.</span>
+
+            <span slot="arrow-before" class="inline-flex items-center gap-2 whitespace-nowrap text-black">Entfernen </span>
+
+            <div>
+                Inhalt des Expansion Panels
+            </div>
+        </puibe-expansion-panel>
+        `,
+    }),
+};
