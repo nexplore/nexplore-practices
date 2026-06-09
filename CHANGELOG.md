@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `practices-ui-ktbe` Added support for displaying buttons inside the `PuibeTableColumnComponent` via a slot that displays next to the sorting button
 - `practices-ui-ktbe` Added support for displaying subcaptions inside `PuibeExpansionPanelComponent` via a slot that displays after the optional caption
-- `practices-ui-ktbe` Added support for displaying custom left content inside `PuibeExpansionPanelComponent` via a `left-content` slot
+- `practices-ui-ktbe` Added support for displaying custom left content inside `PuibeExpansionPanelComponent` via a `content-before` slot
 
 ### Changed
 

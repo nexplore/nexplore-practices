@@ -166,7 +166,7 @@ export const ScrollIntoView: Story = {
     }),
 };
 
-export const AccordeonWithLeftContentSlot: Story = {
+export const AccordeonWithContentBeforeSlot: Story = {
     args: {
         heading: 'Invoice-File-Name.pdf',
         isExpanded: false,
@@ -187,7 +187,7 @@ export const AccordeonWithLeftContentSlot: Story = {
             [variant]="variant"
             [addItemPadding]="addItemPadding"
         >
-            <puibe-icon-invalid slot="left-content" size="m" class="mr-4"></puibe-icon-invalid>
+            <puibe-icon-invalid slot="content-before" size="m" class="mr-4"></puibe-icon-invalid>
 
             <span slot="caption-after" class="text-[#e30a17]">Rechnung benötigt Überarbeitung.</span>
 
