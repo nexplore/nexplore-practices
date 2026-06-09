@@ -2,7 +2,8 @@ namespace Nexplore.Practices.Tests.Integration.Bootstrap.Domain
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
     using Nexplore.Practices.Core.Domain.Model;
     using Nexplore.Practices.Core.Domain.Model.Audit;
     using Nexplore.Practices.Core.Validation;
@@ -10,12 +11,7 @@ namespace Nexplore.Practices.Tests.Integration.Bootstrap.Domain
 
     public abstract class EntityBase : IEntity<Guid>, ITimestamped, IModificationMetadata, IValidatable<IValidationContext>, IAuditable
     {
-        protected EntityBase()
-        {
-            this.Id = Guid.NewGuid();
-        }
-
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         public string CreatedBy { get; set; }
 
@@ -31,9 +27,9 @@ namespace Nexplore.Practices.Tests.Integration.Bootstrap.Domain
 
         public byte[] Timestamp { get; set; }
 
-        public IEnumerable<EntityValidationError> Validate(IValidationContext context)
+        public async Task<IReadOnlyCollection<EntityValidationError>> ValidateAsync(IValidationContext context, CancellationToken cancellationToken)
         {
-            return Enumerable.Empty<EntityValidationError>();
+            return await Task.FromResult(Array.Empty<EntityValidationError>());
         }
 
         public string GetAuditKey()

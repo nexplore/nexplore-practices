@@ -3,6 +3,7 @@ namespace Nexplore.Practices.EntityFramework.Security
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using System.Xml.Linq;
     using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
     using Microsoft.AspNetCore.DataProtection.Repositories;
@@ -40,7 +41,7 @@ namespace Nexplore.Practices.EntityFramework.Security
                 };
 
                 unitOfWork.Dependent.Add(newKey);
-                unitOfWork.SaveChanges();
+                unitOfWork.SaveChangesAsync(CancellationToken.None).GetAwaiter().GetResult(); // No async interface available
             }
         }
 

@@ -6,6 +6,8 @@ namespace Nexplore.Practices.EntityFramework.Validation
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.ChangeTracking;
     using Microsoft.Extensions.Localization;
@@ -32,7 +34,7 @@ namespace Nexplore.Practices.EntityFramework.Validation
             this.validationLocalizer = stringLocalizerFactory.Create(typeof(ValidationResourceNames));
         }
 
-        public IEnumerable<EntityValidationResult> Validate(bool detectChangesOnChangeTracker = true)
+        public async Task<IReadOnlyCollection<EntityValidationResult>> ValidateAsync(bool detectChangesOnChangeTracker = true, CancellationToken cancellationToken = default)
         {
             if (detectChangesOnChangeTracker)
             {
@@ -40,7 +42,7 @@ namespace Nexplore.Practices.EntityFramework.Validation
             }
 
             var entriesToValidate = this.changeTracker.Entries<IValidatable<TValidationContext>>().Where(this.IsEntityEntryChanged).ToArray();
-            return this.ValidateMultipleEntities(entriesToValidate.Select(e => e.Entity));
+            return await this.ValidateMultipleEntitiesAsync(entriesToValidate.Select(e => e.Entity), cancellationToken).ConfigureAwait(false);
         }
 
         protected virtual bool IsEntityEntryChanged(EntityEntry<IValidatable<TValidationContext>> entry)
@@ -91,21 +93,29 @@ namespace Nexplore.Practices.EntityFramework.Validation
             return null;
         }
 
-        private IEnumerable<EntityValidationResult> ValidateMultipleEntities(IEnumerable<IValidatable<TValidationContext>> entities)
+        private async Task<IReadOnlyCollection<EntityValidationResult>> ValidateMultipleEntitiesAsync(IEnumerable<IValidatable<TValidationContext>> entities, CancellationToken cancellationToken)
         {
-            return entities.Select(this.ValidateSingleEntity).Where(result => result != null);
-        }
+            var result = new List<EntityValidationResult>();
 
-        private EntityValidationResult ValidateSingleEntity(IValidatable<TValidationContext> entity)
-        {
-            var unitedValidationErrors = this.ValidateDataAnnotationAttributes(entity).Union(this.ValidateValidatable(entity)).ToArray();
-            if (unitedValidationErrors.Length == 0)
+            foreach (var validatable in entities)
             {
-                return null;
+                var validationResult = await this.ValidateSingleEntityAsync(validatable, cancellationToken).ConfigureAwait(false);
+                if (validationResult != null)
+                {
+                    result.Add(validationResult);
+                }
             }
 
-            var validationErrors = new ReadOnlyCollection<EntityValidationError>(unitedValidationErrors);
-            return new EntityValidationResult(entity, validationErrors);
+            return result;
+        }
+
+        private async Task<EntityValidationResult> ValidateSingleEntityAsync(IValidatable<TValidationContext> entity, CancellationToken cancellationToken)
+        {
+            var validationErrors = new List<EntityValidationError>();
+            validationErrors.AddRange(this.ValidateDataAnnotationAttributes(entity));
+            validationErrors.AddRange(await entity.ValidateAsync(this.validationContext, cancellationToken).ConfigureAwait(false));
+
+            return validationErrors.Count == 0 ? null : new EntityValidationResult(entity, validationErrors);
         }
 
         private IEnumerable<EntityValidationError> ValidateDataAnnotationAttributes(IValidatable<TValidationContext> entity)
@@ -124,11 +134,6 @@ namespace Nexplore.Practices.EntityFramework.Validation
 
                 yield return new EntityValidationError(errorMessage, dataAnnotationResult.MemberNames.Single());
             }
-        }
-
-        private IEnumerable<EntityValidationError> ValidateValidatable(IValidatable<TValidationContext> entity)
-        {
-            return entity.Validate(this.validationContext);
         }
     }
 }
