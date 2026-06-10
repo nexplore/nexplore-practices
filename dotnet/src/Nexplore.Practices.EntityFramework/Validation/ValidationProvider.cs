@@ -113,7 +113,7 @@ namespace Nexplore.Practices.EntityFramework.Validation
         {
             var validationErrors = new List<EntityValidationError>();
 
-            if(entity is IValidatable<TValidationContext> syncValidatable)
+            if (entity is IValidatable<TValidationContext> syncValidatable)
             {
                 validationErrors.AddRange(this.ValidateDataAnnotationAttributes(syncValidatable));
             }
