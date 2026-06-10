@@ -41,11 +41,11 @@ namespace Nexplore.Practices.EntityFramework.Validation
                 this.changeTracker.DetectChanges();
             }
 
-            var entriesToValidate = this.changeTracker.Entries<IValidatable<TValidationContext>>().Where(this.IsEntityEntryChanged).ToArray();
+            var entriesToValidate = this.changeTracker.Entries<IValidatable>().Where(this.IsEntityEntryChanged).ToArray();
             return await this.ValidateMultipleEntitiesAsync(entriesToValidate.Select(e => e.Entity), cancellationToken).ConfigureAwait(false);
         }
 
-        protected virtual bool IsEntityEntryChanged(EntityEntry<IValidatable<TValidationContext>> entry)
+        protected virtual bool IsEntityEntryChanged(EntityEntry<IValidatable> entry)
         {
             switch (entry.State)
             {
@@ -93,7 +93,7 @@ namespace Nexplore.Practices.EntityFramework.Validation
             return null;
         }
 
-        private async Task<IReadOnlyCollection<EntityValidationResult>> ValidateMultipleEntitiesAsync(IEnumerable<IValidatable<TValidationContext>> entities, CancellationToken cancellationToken)
+        private async Task<IReadOnlyCollection<EntityValidationResult>> ValidateMultipleEntitiesAsync(IEnumerable<IValidatable> entities, CancellationToken cancellationToken)
         {
             var result = new List<EntityValidationResult>();
 
@@ -109,11 +109,19 @@ namespace Nexplore.Practices.EntityFramework.Validation
             return result;
         }
 
-        private async Task<EntityValidationResult> ValidateSingleEntityAsync(IValidatable<TValidationContext> entity, CancellationToken cancellationToken)
+        private async Task<EntityValidationResult> ValidateSingleEntityAsync(IValidatable entity, CancellationToken cancellationToken)
         {
             var validationErrors = new List<EntityValidationError>();
-            validationErrors.AddRange(this.ValidateDataAnnotationAttributes(entity));
-            validationErrors.AddRange(await entity.ValidateAsync(this.validationContext, cancellationToken).ConfigureAwait(false));
+
+            if(entity is IValidatable<TValidationContext> syncValidatable)
+            {
+                validationErrors.AddRange(this.ValidateDataAnnotationAttributes(syncValidatable));
+            }
+
+            if (entity is IAsyncValidatable<TValidationContext> asyncValidatable)
+            {
+                validationErrors.AddRange(await asyncValidatable.ValidateAsync(this.validationContext, cancellationToken).ConfigureAwait(false));
+            }
 
             return validationErrors.Count == 0 ? null : new EntityValidationResult(entity, validationErrors);
         }

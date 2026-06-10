@@ -3,36 +3,35 @@ namespace Nexplore.Practices.EntityFramework.Security
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading;
     using System.Xml.Linq;
     using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
     using Microsoft.AspNetCore.DataProtection.Repositories;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
-    using Nexplore.Practices.Core.Scopes;
+    using Nexplore.Practices.EntityFramework.Configuration;
 
     public class DataProtectionKeyRepository : IXmlRepository
     {
         private readonly ILogger<DataMisalignedException> logger;
-        private readonly IUnitOfWorkFactory<DbSet<DataProtectionKey>> unitOfWorkFactory;
+        private readonly IDbContextFactory dbContextFactory;
 
-        public DataProtectionKeyRepository(ILogger<DataMisalignedException> logger, IUnitOfWorkFactory<DbSet<DataProtectionKey>> unitOfWorkFactory)
+        public DataProtectionKeyRepository(ILogger<DataMisalignedException> logger, IDbContextFactory dbContextFactory)
         {
             this.logger = logger;
-            this.unitOfWorkFactory = unitOfWorkFactory;
+            this.dbContextFactory = dbContextFactory;
         }
 
         public virtual IReadOnlyCollection<XElement> GetAllElements()
         {
-            using (var unitOfWork = this.unitOfWorkFactory.Begin())
+            using (var dataContext = this.dbContextFactory.Create())
             {
-                return unitOfWork.Dependent.AsNoTracking().Select(key => TryParseKeyXml(key.Xml, this.logger)).ToList().AsReadOnly();
+                return dataContext.Set<DataProtectionKey>().AsNoTracking().Select(key => TryParseKeyXml(key.Xml, this.logger)).ToList().AsReadOnly();
             }
         }
 
         public virtual void StoreElement(XElement element, string friendlyName)
         {
-            using (var unitOfWork = this.unitOfWorkFactory.Begin())
+            using (var dataContext = this.dbContextFactory.Create())
             {
                 var newKey = new DataProtectionKey
                 {
@@ -40,8 +39,8 @@ namespace Nexplore.Practices.EntityFramework.Security
                     Xml = element.ToString(SaveOptions.DisableFormatting),
                 };
 
-                unitOfWork.Dependent.Add(newKey);
-                unitOfWork.SaveChangesAsync(CancellationToken.None).GetAwaiter().GetResult(); // No async interface available
+                dataContext.Set<DataProtectionKey>().Add(newKey);
+                dataContext.SaveChanges();
             }
         }
 
