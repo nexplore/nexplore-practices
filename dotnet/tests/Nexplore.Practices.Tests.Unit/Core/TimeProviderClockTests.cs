@@ -5,13 +5,13 @@ namespace Nexplore.Practices.Tests.Unit.Core
     using NUnit.Framework;
 
     [TestFixture]
-    public class LocalComputerClockTests
+    public class TimeProviderClockTests
     {
         [Test]
         public void Now_WithDefault_IsOfKindLocal()
         {
             // Arrange
-            var clock = new LocalComputerClock();
+            var clock = new TimeProviderClock(TimeProvider.System);
 
             // Act
             var result = clock.Now;
@@ -24,7 +24,7 @@ namespace Nexplore.Practices.Tests.Unit.Core
         public void UtcNow_WithDefault_IsOfKindUtc()
         {
             // Arrange
-            var clock = new LocalComputerClock();
+            var clock = new TimeProviderClock(TimeProvider.System);
 
             // Act
             var result = clock.UtcNow;
@@ -37,7 +37,7 @@ namespace Nexplore.Practices.Tests.Unit.Core
         public void Now_WithDefault_ContainsTimeInformation()
         {
             // Arrange
-            var clock = new LocalComputerClock();
+            var clock = new TimeProviderClock(TimeProvider.System);
 
             // Act
             var result = clock.Now;
@@ -50,7 +50,7 @@ namespace Nexplore.Practices.Tests.Unit.Core
         public void UtcNow_WithDefault_ContainsTimeInformation()
         {
             // Arrange
-            var clock = new LocalComputerClock();
+            var clock = new TimeProviderClock(TimeProvider.System);
 
             // Act
             var result = clock.UtcNow;
@@ -63,7 +63,7 @@ namespace Nexplore.Practices.Tests.Unit.Core
         public void NowOffset_ContainsTimeInformation()
         {
             // Arrange
-            var clock = new LocalComputerClock();
+            var clock = new TimeProviderClock(TimeProvider.System);
 
             // Act
             var result = clock.NowOffset;
@@ -76,7 +76,7 @@ namespace Nexplore.Practices.Tests.Unit.Core
         public void UtcNowOffset_ContainsTimeInformation()
         {
             // Arrange
-            var clock = new LocalComputerClock();
+            var clock = new TimeProviderClock(TimeProvider.System);
 
             // Act
             var result = clock.UtcNowOffset;

@@ -11,10 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `practices-ui-ktbe` Added support for displaying buttons inside the `PuibeTableColumnComponent` via a slot that displays next to the sorting button
 - `practices-ui-ktbe` Added support for displaying subcaptions inside `PuibeExpansionPanelComponent` via a slot that displays after the optional caption
+- `Practices.Core` Added NowOffset and UtcNowOffset to `IClock`
+- `Practices.Core` Added TimeProviderClock
 
 ### Changed
 
 - `practices-ui-ktbe` Changed the `PuibeTableColumnComponent` so that it no longer has a button at the root. Instead, there is a div with the role of a button, depending on if the column is sortable. This prevents accessibility issues.
+-  _BREAKING_`Practices.Core` Changed Today and UtcToday on `IClock` from DateTime to DateOnly
 
 ### Fixed
 
