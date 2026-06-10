@@ -1,32 +1,46 @@
 import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
 import { PuibeIconArrowBreadcrumbComponent } from './icon-arrow-breadcrumb.component';
-import { PuibeIconArrowComponent } from './icon-arrow.component';
-import { PuibeIconDatepickerComponent } from './icon-datepicker.component';
-import { PuibeIconInvalidComponent } from './icon-invalid.component';
-import { PuibeIconSpinnerComponent } from './icon-spinner.component';
-import { IconDirection, IconSize } from './icon.interface';
-import { PuibeIconEnumerationComponent } from './icon-enumeration.component';
-import { PuibeIconValidComponent } from './icon-valid.component';
-import { PuibeIconUploadComponent } from './icon-upload.component';
-import { PuibeIconArrowRightComponent } from './icon-arrow-right.component';
 import { PuibeIconArrowEndComponent } from './icon-arrow-end.component';
+import { PuibeIconArrowRightComponent } from './icon-arrow-right.component';
 import { PuibeIconArrowSlidingComponent } from './icon-arrow-sliding.component';
+import { PuibeIconArrowComponent } from './icon-arrow.component';
+import { PuibeIconChatBubbleWithMessageComponent } from './icon-chat-bubble-with-message.component';
+import { PuibeIconChatBubbleComponent } from './icon-chat-bubble.component';
 import { PuibeIconCloseComponent } from './icon-close.component';
+import { PuibeIconCollapseWidthComponent } from './icon-collapse-width.component';
+import { PuibeIconColumnsComponent } from './icon-columns.component';
 import { PuibeIconDatepickerTodayComponent } from './icon-datepicker-today.component';
+import { PuibeIconDatepickerComponent } from './icon-datepicker.component';
+import { PuibeIconDetailComponent } from './icon-detail.component';
 import { PuibeIconDownloadComponent } from './icon-download.component';
 import { PuibeIconEditComponent } from './icon-edit.component';
+import { PuibeIconEnumerationComponent } from './icon-enumeration.component';
+import { PuibeIconExpandWidthComponent } from './icon-expand-width.component';
 import { PuibeIconExplanationMarkComponent } from './icon-explanation-mark.component';
 import { PuibeIconFileComponent } from './icon-file.component';
 import { PuibeIconGoBackComponent } from './icon-go-back.component';
 import { PuibeIconGoNextComponent } from './icon-go-next.component';
 import { PuibeIconHamburgerComponent } from './icon-hamburger.component';
 import { PuibeIconHomeComponent } from './icon-home.component';
+import { PuibeIconInfoComponent } from './icon-info.component';
+import { PuibeIconInvalidComponent } from './icon-invalid.component';
 import { PuibeIconKtbeLogoComponent } from './icon-ktbe-logo.component';
+import { PuibeIconListItemRectComponent } from './icon-list-item-rect.component';
 import { PuibeIconLoginComponent } from './icon-login.component';
 import { PuibeIconLogoutComponent } from './icon-logout.component';
 import { PuibeIconOptionsComponent } from './icon-options.component';
+import { PuibeIconOrganizationComponent } from './icon-organization.component';
 import { PuibeIconSearchMobileComponent } from './icon-search-mobile.component';
 import { PuibeIconSearchComponent } from './icon-search.component';
+import { PuibeIconSettingsComponent } from './icon-settings.component';
+import { PuibeIconSpinnerComponent } from './icon-spinner.component';
+import { PuibeIconStarComponent } from './icon-star.component';
+import { PuibeIconTrashComponent } from './icon-trash.component';
+import { PuibeIconUploadComponent } from './icon-upload.component';
+import { PuibeIconValidComponent } from './icon-valid.component';
+import { PuibeIconWarningComponent } from './icon-warning.component';
+import { PuibeIconWithdrawComponent } from './icon-withdraw.component';
+import { IconDirection, IconSize } from './icon.interface';
 
 const icons = [
     'arrow-breadcrumb',
@@ -55,6 +69,20 @@ const icons = [
     'spinner',
     'upload',
     'valid',
+    'withdraw',
+    'star',
+    'chat-bubble-with-message',
+    'chat-bubble',
+    'collapse-width',
+    'columns',
+    'expand-width',
+    'detail',
+    'organization',
+    'list-item-rect',
+    'settings',
+    'warning',
+    'info',
+    'trash',
 ] as const;
 
 type Args = {
@@ -62,17 +90,21 @@ type Args = {
     dir: IconDirection;
     size?: IconSize;
     icon: (typeof icons)[number];
+    color: string;
 };
 
 function getTemplate(args: Args) {
     if (args.presentDirs) {
         return Object.values(IconDirection)
-            .map((dir) => `<puibe-icon-${args.icon} class="max-w-20 block" direction=${dir}></puibe-icon-${args.icon}>`)
+            .map(
+                (dir) =>
+                    `<puibe-icon-${args.icon} class="max-w-20 block" direction=${dir} style="color: ${args.color};" ></puibe-icon-${args.icon}>`
+            )
             .join('\n');
     } else {
-        return `<puibe-icon-${args.icon} class="max-w-20 block" ${args.dir ? `direction="${args.dir}"` : ''} ${
-            args.size ? `size="${args.size}"` : ''
-        }></puibe-icon-${args.icon}>`;
+        return `<puibe-icon-${args.icon} class="max-w-20 block" style="color: ${args.color};" ${
+            args.dir ? `direction="${args.dir}"` : ''
+        } ${args.size ? `size="${args.size}"` : ''}></puibe-icon-${args.icon}>`;
     }
 }
 
@@ -124,6 +156,20 @@ const meta: Meta<Args> = {
                 PuibeIconSpinnerComponent,
                 PuibeIconUploadComponent,
                 PuibeIconValidComponent,
+                PuibeIconWithdrawComponent,
+                PuibeIconStarComponent,
+                PuibeIconChatBubbleWithMessageComponent,
+                PuibeIconChatBubbleComponent,
+                PuibeIconCollapseWidthComponent,
+                PuibeIconColumnsComponent,
+                PuibeIconDetailComponent,
+                PuibeIconExpandWidthComponent,
+                PuibeIconListItemRectComponent,
+                PuibeIconOrganizationComponent,
+                PuibeIconSettingsComponent,
+                PuibeIconWarningComponent,
+                PuibeIconInfoComponent,
+                PuibeIconTrashComponent,
             ],
         }),
     ],
@@ -312,6 +358,105 @@ export const Search: Story = {
     },
 };
 
+export const Withdraw: Story = {
+    args: {
+        size: IconSize.FIT,
+        icon: 'withdraw',
+    },
+};
+
+export const Star: Story = {
+    args: {
+        size: IconSize.FIT,
+        icon: 'star',
+        color: '#EBD3AE',
+    },
+};
+
+export const ChatBubbleWithMessage: Story = {
+    args: {
+        size: IconSize.FIT,
+        icon: 'chat-bubble-with-message',
+    },
+};
+
+export const ChatBubble: Story = {
+    args: {
+        size: IconSize.FIT,
+        icon: 'chat-bubble',
+    },
+};
+
+export const CollapseWidth: Story = {
+    args: {
+        size: IconSize.FIT,
+        icon: 'collapse-width',
+    },
+};
+
+export const Columns: Story = {
+    args: {
+        size: IconSize.FIT,
+        icon: 'columns',
+    },
+};
+
+export const Detail: Story = {
+    args: {
+        size: IconSize.FIT,
+        icon: 'detail',
+    },
+};
+
+export const ExpandWidth: Story = {
+    args: {
+        size: IconSize.FIT,
+        icon: 'expand-width',
+    },
+};
+
+export const ListItemRect: Story = {
+    args: {
+        size: IconSize.FIT,
+        icon: 'list-item-rect',
+    },
+};
+
+export const Organization: Story = {
+    args: {
+        size: IconSize.FIT,
+        icon: 'organization',
+    },
+};
+
+export const Settings: Story = {
+    args: {
+        size: IconSize.FIT,
+        icon: 'settings',
+    },
+};
+
+export const Info: Story = {
+    args: {
+        size: IconSize.FIT,
+        icon: 'info',
+    },
+};
+
+export const Warning: Story = {
+    args: {
+        size: IconSize.FIT,
+        icon: 'warning',
+    },
+};
+
+export const Trash: Story = {
+    args: {
+        size: IconSize.FIT,
+        icon: 'trash',
+    },
+};
+
 export const Enumeration: Story = {
     render: (_args) => ({
         template: `
@@ -330,13 +475,13 @@ export const Enumeration: Story = {
             <puibe-icon-enumeration size="xxs" color="red">2</puibe-icon-enumeration>
             <puibe-icon-enumeration size="xxs" color="anthrazit">3</puibe-icon-enumeration>
             <puibe-icon-enumeration size="xxs" color="green">4</puibe-icon-enumeration>
-        </div>  
+        </div>
         <div class="flex gap-1">
             <puibe-icon-enumeration size="xs" color="sand">1</puibe-icon-enumeration>
             <puibe-icon-enumeration size="xs" color="red">2</puibe-icon-enumeration>
             <puibe-icon-enumeration size="xs" color="anthrazit">3</puibe-icon-enumeration>
             <puibe-icon-enumeration size="xs" color="green">4</puibe-icon-enumeration>
-        </div>  
+        </div>
         <div class="flex gap-1">
             <puibe-icon-enumeration size="s" color="sand">1</puibe-icon-enumeration>
             <puibe-icon-enumeration size="s" color="red">2</puibe-icon-enumeration>
@@ -348,13 +493,13 @@ export const Enumeration: Story = {
             <puibe-icon-enumeration size="m" color="red">2</puibe-icon-enumeration>
             <puibe-icon-enumeration size="m" color="anthrazit">3</puibe-icon-enumeration>
             <puibe-icon-enumeration size="m" color="green">4</puibe-icon-enumeration>
-        </div>  
+        </div>
         <div class="flex gap-1">
             <puibe-icon-enumeration size="l" color="sand">1</puibe-icon-enumeration>
             <puibe-icon-enumeration size="l" color="red">2</puibe-icon-enumeration>
             <puibe-icon-enumeration size="l" color="anthrazit">3</puibe-icon-enumeration>
             <puibe-icon-enumeration size="l" color="green">4</puibe-icon-enumeration>
-        </div>  
+        </div>
         </div>
         `,
     }),
