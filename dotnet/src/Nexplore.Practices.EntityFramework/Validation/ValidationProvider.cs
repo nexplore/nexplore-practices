@@ -113,9 +113,11 @@ namespace Nexplore.Practices.EntityFramework.Validation
         {
             var validationErrors = new List<EntityValidationError>();
 
+            validationErrors.AddRange(this.ValidateDataAnnotationAttributes(entity));
+
             if (entity is IValidatable<TValidationContext> syncValidatable)
             {
-                validationErrors.AddRange(this.ValidateDataAnnotationAttributes(syncValidatable));
+                validationErrors.AddRange(syncValidatable.Validate(this.validationContext));
             }
 
             if (entity is IAsyncValidatable<TValidationContext> asyncValidatable)
@@ -126,7 +128,7 @@ namespace Nexplore.Practices.EntityFramework.Validation
             return validationErrors.Count == 0 ? null : new EntityValidationResult(entity, validationErrors);
         }
 
-        private IEnumerable<EntityValidationError> ValidateDataAnnotationAttributes(IValidatable<TValidationContext> entity)
+        private IEnumerable<EntityValidationError> ValidateDataAnnotationAttributes(IValidatable entity)
         {
             var dataAnnotationValidationContext = new ValidationContext(entity);
             var dataAnnotationResults = new Collection<ValidationResult>();
