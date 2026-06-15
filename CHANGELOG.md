@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `practices-ui-ktbe` Added support for displaying buttons inside the `PuibeTableColumnComponent` via a slot that displays next to the sorting button
 - `practices-ui-ktbe` Added support for displaying subcaptions inside `PuibeExpansionPanelComponent` via a slot that displays after the optional caption
+- `practices-ui-ktbe` Added `PuibeTooltipComponent` for simple display of helper text or context information.
+- `practices-ui-ktbe` Added input on `PuibeRadioButtonComponent` to display `description` as a tooltip.
 
 ### Changed
 
