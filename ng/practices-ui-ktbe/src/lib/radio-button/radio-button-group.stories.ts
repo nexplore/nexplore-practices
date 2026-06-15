@@ -9,7 +9,7 @@ type Args = {
     legend: string;
     name?: string;
     hint?: string;
-    values?: { id: number; name: string; description?: string }[];
+    values?: { id: number; name: string; description?: string; descriptionAsTooltip?: boolean }[];
     defaultValue?: string | number;
     required?: boolean;
     disabled?: boolean;
@@ -69,7 +69,7 @@ const meta: Meta<Args> = {
         template: `
         <div [formGroup]="formGroup" class="w-full"  [puibeReadonly]="readonly">
             <puibe-radio-button-group class="w-full" [useSmallTextForReadonlyLabel]="useSmallTextForReadonlyLabel" [legend]="legend" [attr.name]="name" [hint]="hint" formControlName="radio" [displayInline]="displayInline" [hideGroupBorders]="hideGroupBorders" [gapVariant]="gapVariant" [hideOptional]="hideOptional" [legendAsLabel]="legendAsLabel" [readonlyEmptyValuePlaceholder]="readonlyEmptyValuePlaceholder">
-                <puibe-radio-button [value]="value.id" [label]="value.name" [description]="value.description" *ngFor="let value of values; index as i"></puibe-radio-button>
+                <puibe-radio-button [value]="value.id" [label]="value.name" [description]="value.description" [descriptionAsTooltip]="value.descriptionAsTooltip" *ngFor="let value of values; index as i"></puibe-radio-button>
             </puibe-radio-button-group>
         </div>`,
     }),
@@ -272,6 +272,40 @@ export const RadioButtonGroupWithDescription: Story = {
             { id: 1, name: 'Option 1', description: 'Beschreibungstext aus den Stammdaten' },
             { id: 2, name: 'Option 2 mit Zusatz Text', description: 'Beschreibungstext aus den Stammdaten' },
             { id: 3, name: 'Option 3', description: 'Beschreibungstext aus den Stammdaten' },
+        ],
+        defaultValue: null,
+        required: false,
+        disabled: false,
+        displayInline: false,
+        gapVariant: 'large',
+        asyncValidator: false,
+    },
+};
+
+export const RadioButtonGroupWithDescriptionAsTooltip: Story = {
+    args: {
+        legend: 'Label',
+        name: null,
+        hint: null,
+        values: [
+            {
+                id: 1,
+                name: 'Option 1',
+                description: 'Beschreibungstext aus den Stammdaten',
+                descriptionAsTooltip: true,
+            },
+            {
+                id: 2,
+                name: 'Option 2 mit Zusatz Text',
+                description: 'Beschreibungstext aus den Stammdaten. Sehr langer Text, der dann mal umbrechen sollte. ',
+                descriptionAsTooltip: true,
+            },
+            {
+                id: 3,
+                name: 'Option 3',
+                description: 'Beschreibungstext aus den Stammdaten',
+                descriptionAsTooltip: true,
+            },
         ],
         defaultValue: null,
         required: false,

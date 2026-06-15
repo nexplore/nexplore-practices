@@ -34,8 +34,14 @@
             ></div>
         </div>
     </div>
-    <div class="flex flex-col">
+    <div>
         {{ label }}
-        <span class="text-very-small" *ngIf="description">{{ description }}</span>
+        @if(description) { @if(descriptionAsTooltip) {
+        <puibe-tooltip class="ml-1">
+            <p class="text-small">{{ description }}</p>
+        </puibe-tooltip>
+        } @else {
+        <span class="text-very-small block">{{ description }}</span>
+        } }
     </div>
 </label>
