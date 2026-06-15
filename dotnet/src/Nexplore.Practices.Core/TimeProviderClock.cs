@@ -15,7 +15,7 @@ namespace Nexplore.Practices.Core
         public DateTime UtcNow => this.timeProvider.GetUtcNow().UtcDateTime;
 
         public DateTimeOffset NowOffset => this.timeProvider.GetLocalNow();
-        public DateTimeOffset UtcNowOffset => this.timeProvider.GetLocalNow();
+        public DateTimeOffset UtcNowOffset => this.timeProvider.GetUtcNow();
 
         public DateOnly Today => DateOnly.FromDateTime(this.Now);
         public DateOnly UtcToday => DateOnly.FromDateTime(this.UtcNow);
