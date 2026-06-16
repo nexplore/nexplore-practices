@@ -11,8 +11,8 @@ namespace Nexplore.Practices.Core
             this.timeProvider = timeProvider;
         }
 
-        public DateTime Now => this.timeProvider.GetLocalNow().LocalDateTime;
-        public DateTime UtcNow => this.timeProvider.GetUtcNow().UtcDateTime;
+        public DateTime Now => DateTime.SpecifyKind(this.NowOffset.DateTime, DateTimeKind.Local);
+        public DateTime UtcNow => this.UtcNowOffset.UtcDateTime;
 
         public DateTimeOffset NowOffset => this.timeProvider.GetLocalNow();
         public DateTimeOffset UtcNowOffset => this.timeProvider.GetUtcNow();
