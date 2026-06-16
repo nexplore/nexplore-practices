@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- `Practices.Syncfusion.Excel` Fixed registration for ExcelEngine (memory leak)
+
 ## [11.2.1](https://github.com/nexplore/nexplore-practices/releases/tag/11.2.1) - 2026-04-17
 
 ### Changed
