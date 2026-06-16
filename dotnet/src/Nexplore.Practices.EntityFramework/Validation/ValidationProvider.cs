@@ -34,7 +34,7 @@ namespace Nexplore.Practices.EntityFramework.Validation
             this.validationLocalizer = stringLocalizerFactory.Create(typeof(ValidationResourceNames));
         }
 
-        public async Task<IReadOnlyCollection<EntityValidationResult>> ValidateAsync(bool detectChangesOnChangeTracker = true, CancellationToken cancellationToken = default)
+        public async ValueTask<IReadOnlyCollection<EntityValidationResult>> ValidateAsync(bool detectChangesOnChangeTracker = true, CancellationToken cancellationToken = default)
         {
             if (detectChangesOnChangeTracker)
             {
@@ -93,7 +93,7 @@ namespace Nexplore.Practices.EntityFramework.Validation
             return null;
         }
 
-        private async Task<IReadOnlyCollection<EntityValidationResult>> ValidateMultipleEntitiesAsync(IEnumerable<IValidatable> entities, CancellationToken cancellationToken)
+        private async ValueTask<IReadOnlyCollection<EntityValidationResult>> ValidateMultipleEntitiesAsync(IEnumerable<IValidatable> entities, CancellationToken cancellationToken)
         {
             var result = new List<EntityValidationResult>();
 
@@ -109,7 +109,7 @@ namespace Nexplore.Practices.EntityFramework.Validation
             return result;
         }
 
-        private async Task<EntityValidationResult> ValidateSingleEntityAsync(IValidatable entity, CancellationToken cancellationToken)
+        private async ValueTask<EntityValidationResult> ValidateSingleEntityAsync(IValidatable entity, CancellationToken cancellationToken)
         {
             var validationErrors = new List<EntityValidationError>();
 

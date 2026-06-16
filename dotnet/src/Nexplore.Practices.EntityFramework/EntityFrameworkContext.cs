@@ -61,13 +61,13 @@ namespace Nexplore.Practices.EntityFramework
             }
         }
 
-        protected virtual Task PrepareSaveChangesAsync(CancellationToken cancellationToken)
+        protected virtual async ValueTask PrepareSaveChangesAsync(CancellationToken cancellationToken)
         {
             this.ChangeTracker.DetectChanges();
 
             this.EnrichMetadata();
 
-            return this.ValidateAsync(detectChangesOnChangeTracker: false, cancellationToken);
+            await this.ValidateAsync(detectChangesOnChangeTracker: false, cancellationToken).ConfigureAwait(false);
         }
 
         protected virtual void EnrichMetadata()
@@ -93,7 +93,7 @@ namespace Nexplore.Practices.EntityFramework
             this.auditHistoryProvider.Value.CreateAuditHistory();
         }
 
-        protected virtual async Task ValidateAsync(bool detectChangesOnChangeTracker, CancellationToken cancellationToken)
+        protected virtual async ValueTask ValidateAsync(bool detectChangesOnChangeTracker, CancellationToken cancellationToken)
         {
             var validationResults = await this.validationProvider.Value.ValidateAsync(detectChangesOnChangeTracker, cancellationToken).ConfigureAwait(false);
             if (validationResults.Count != 0)

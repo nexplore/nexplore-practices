@@ -7,6 +7,6 @@ namespace Nexplore.Practices.EntityFramework.Validation
 
     public interface IValidationProvider
     {
-        Task<IReadOnlyCollection<EntityValidationResult>> ValidateAsync(bool detectChangesOnChangeTracker = true, CancellationToken cancellationToken = default);
+        ValueTask<IReadOnlyCollection<EntityValidationResult>> ValidateAsync(bool detectChangesOnChangeTracker = true, CancellationToken cancellationToken = default);
     }
 }
