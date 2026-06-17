@@ -40,6 +40,7 @@
     },
     "devDependencies": {
         "@angular-devkit/core": "20.3.1",
+        "@angular-devkit/build-angular": "20.3.1",
         "@angular-devkit/schematics": "20.3.1",
         "@angular-devkit/schematics-cli": "20.3.1",
         "@angular-eslint/eslint-plugin": "20.3.0",
@@ -61,6 +62,7 @@
         "@nx/web": "21.5.2",
         "@nx/workspace": "21.5.2",
         "@schematics/angular": "20.3.1",
+        "@storybook/addon-docs": "9.1.16",
         "@storybook/addon-links": "^9.1.5",
         "@storybook/angular": "^9.1.5",
         "@storybook/testing-library": "^0.2.2",
@@ -96,6 +98,7 @@
         "prettier-plugin-tailwindcss": "0.6.14",
         "storybook": "^9.1.5",
         "tailwindcss": "^4.1.13",
+        "tailwindcss-ktbe": "npm:tailwindcss@3.4.17",
         "ts-jest": "^29.4.1",
         "typescript": "5.9.2",
         "typescript-eslint": "^8.43.0",
@@ -106,4 +109,3 @@
         "#base-styles": "./practices-ui-ktbe/src/styles.css"
     }
 }
-
