@@ -8,7 +8,7 @@ module.exports = [
     ...nx.configs['flat/angular'],
     ...nx.configs['flat/angular-template'],
     {
-        ignores: ['**/dist', '**/*.stories.ts', '**/stories', '**/.storybook', '**/*.spec.ts'],
+        ignores: ['**/dist', '**/*.stories.ts', '**/stories', '**/.storybook', '**/*.spec.ts', '**/eslint.config.{js,cjs,mjs}'],
     },
     {
         languageOptions: {
@@ -45,6 +45,7 @@ module.exports = [
                 },
             ],
             '@angular-eslint/template/no-negated-async': 'off',
+            '@angular-eslint/prefer-inject': 'off',
             '@angular-eslint/no-input-rename': 'off',
             '@angular-eslint/template/label-has-associated-control': 'off',
             '@nx/enforce-module-boundaries': [

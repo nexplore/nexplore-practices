@@ -39,6 +39,7 @@
           @if (caption) {
             <p class="mt-1">{{ caption }}</p>
           }
+          <ng-content select="[slot='caption-after']"></ng-content>
         </div>
         <div class="flex items-center gap-4">
           <ng-content select="[slot='arrow-before']"></ng-content>
@@ -73,4 +74,3 @@
     </div>
   </cdk-accordion-item>
 </cdk-accordion>
-

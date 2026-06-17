@@ -8,7 +8,6 @@ using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
-using Nuke.Common.Tools.Npm;
 
 namespace Nexplore.Practices.Build;
 
@@ -44,6 +43,14 @@ partial class Build : NukeBuild
 
     private readonly string[] NgAppProjects = ["samples", "samples-ktbe", "samples-tailwind"];
 
+    private void EnablePnpm() =>
+        ProcessTasks.StartProcess("corepack", "enable", NgDirectory)
+            .AssertZeroExitCode();
+
+    private void Pnpm(string arguments) =>
+        ProcessTasks.StartProcess("pnpm", arguments, NgDirectory, logger: LogHelpers.OverrideNpmLogger)
+            .AssertZeroExitCode();
+
     Target Clean => _ => _
         .Executes(() =>
         {
@@ -74,13 +81,10 @@ partial class Build : NukeBuild
         .After(BuildDotNet)
         .Executes(() =>
         {
-            NpmTasks.NpmCi(settings => settings
-                .SetProcessWorkingDirectory(NgDirectory));
+            EnablePnpm();
+            Pnpm("install --no-frozen-lockfile");
 
-            NpmTasks.NpmRun(settings => settings
-                   .SetCommand("build-all")
-                   .SetProcessLogger(LogHelpers.OverrideNpmLogger)
-                   .SetProcessWorkingDirectory(NgDirectory));
+            Pnpm("run build-all");
         });
 
     Target AnalyzeDotNet => _ => _
@@ -98,10 +102,7 @@ partial class Build : NukeBuild
         .After(AnalyzeDotNet)
         .Executes(() =>
         {
-            NpmTasks.NpmRun(settings => settings
-                .SetCommand("lint-all-errors")
-                .SetProcessLogger(LogHelpers.OverrideNpmLogger)
-                .SetProcessWorkingDirectory(NgDirectory));
+            Pnpm("run lint-all-errors");
         });
 
     Target TestDotNet => _ => _
@@ -125,10 +126,7 @@ partial class Build : NukeBuild
         {
             Environment.SetEnvironmentVariable("JEST_JUNIT_OUTPUT_DIR", TestResultDirectory);
 
-            NpmTasks.NpmRun(settings => settings
-                .SetCommand("test-ci")
-                .SetProcessLogger(LogHelpers.OverrideNpmLogger)
-                .SetProcessWorkingDirectory(NgDirectory));
+            Pnpm("run test-ci");
         });
 
     Target BuildKtBeStorybook => _ => _
@@ -136,10 +134,7 @@ partial class Build : NukeBuild
         .After(TestNg)
         .Executes(() =>
         {
-            NpmTasks.NpmRun(settings => settings
-                .SetCommand("build-storybook-ktbe")
-                .SetProcessLogger(LogHelpers.OverrideNpmLogger)
-                .SetProcessWorkingDirectory(NgDirectory));
+            Pnpm("run build-storybook-ktbe");
         });
 
     Target PackDotNet => _ => _
@@ -175,6 +170,9 @@ partial class Build : NukeBuild
             {
                 var projectDirectory = NgDistributionDirectory / project;
                 var packagesFile = projectDirectory / "package.json";
+                if (!File.Exists(packagesFile))
+                    continue;
+
                 packagesFile.ReplaceContent("0.0.0-VERSION", version);
 
                 var zipFile = npmDirectory / $"{project}.{version}.zip";

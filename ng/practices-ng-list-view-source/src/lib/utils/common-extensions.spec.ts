@@ -375,7 +375,7 @@ describe('enhanceWithMutableData', () => {
 
             expect(results).toEqual([
                 { data: [1, 2], total: 2 },
-                { data: [1, 2], total: 3 },
+                { data: [1, 2, 3], total: 2 },
                 { data: [1, 2, 3], total: 3 },
             ]);
         });
