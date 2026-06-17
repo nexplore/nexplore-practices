@@ -80,7 +80,7 @@ namespace Nexplore.Practices.Tests.Integration.EntityFramework
 
                 // Act
                 await unitOfWork.SaveChangesAsync();
-                unitOfWork.CommitDbTransaction();
+                await unitOfWork.CommitDbTransactionAsync();
 
                 entityId = entity.Id;
             }
@@ -128,7 +128,7 @@ namespace Nexplore.Practices.Tests.Integration.EntityFramework
                     Assert.That(entity.LastName, Is.EqualTo("Test Lastname"));
                 }
 
-                superUnit.CommitDbTransaction();
+                await superUnit.CommitDbTransactionAsync();
             }
         }
 
@@ -155,7 +155,7 @@ namespace Nexplore.Practices.Tests.Integration.EntityFramework
                 Assert.That(rightEntityTry, Is.Null);
 
                 // Act
-                leftUnit.CommitDbTransaction();
+                await leftUnit.CommitDbTransactionAsync();
 
                 // Assert
                 var rightEntitySecondTry = await rightUnit.Dependent.GetByIdOrDefaultAsync(entityId);

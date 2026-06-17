@@ -19,11 +19,6 @@ namespace Nexplore.Practices.EntityFramework.Scopes
             this.transaction = transaction;
         }
 
-        public void CommitDbTransaction()
-        {
-            this.transaction.Commit();
-        }
-
         public async Task CommitDbTransactionAsync(CancellationToken cancellationToken)
         {
             await this.transaction.CommitAsync(cancellationToken).ConfigureAwait(false);
