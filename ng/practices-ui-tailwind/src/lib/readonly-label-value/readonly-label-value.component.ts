@@ -11,7 +11,7 @@ import { FORM_CONFIG } from '../form/form.config';
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [NgClass, TranslateModule],
 })
-export class PuiReadonyLabelValueComponent {
+export class PuiReadonlyLabelValueComponent {
     readonly themeConfig = inject(FORM_CONFIG, { optional: true });
     readonly useSmallLabelFallback = this.themeConfig?.useSmallTextForReadonlyLabel;
 
@@ -22,3 +22,14 @@ export class PuiReadonyLabelValueComponent {
     useSmallLabel: boolean | null = null;
 }
 
+/**
+ * @deprecated Deprecated due to typo in name ('Readony' instead of 'Readonly'). Use `PuiReadonlyLabelValueComponent` instead.
+ */
+@Component({
+    standalone: true,
+    selector: 'pui-readonly-label-value',
+    templateUrl: './readonly-label-value.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [NgClass, TranslateModule],
+})
+export class PuiReadonyLabelValueComponent extends PuiReadonlyLabelValueComponent {}
