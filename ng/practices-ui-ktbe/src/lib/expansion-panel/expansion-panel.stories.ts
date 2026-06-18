@@ -8,13 +8,16 @@ type Args = {
     heading?: string;
     headingLevel?: number;
     caption?: string;
+    useHeadingBefore?: boolean;
     useHeadingAfter?: boolean;
+    useCaptionAfter?: boolean;
     useArrowBefore?: boolean;
     isExpanded?: boolean;
     addItemPadding?: boolean;
     variant?: 'sand' | 'white' | 'red';
     disableScrollIntoView?: boolean;
     enableContentScroll?: boolean;
+    truncateHeading?: boolean;
 };
 
 const meta: Meta<Args> = {
@@ -26,10 +29,14 @@ const meta: Meta<Args> = {
         headingLevel: { type: 'number', defaultValue: 2 },
         useHeadingAfter: { type: 'boolean', defaultValue: false },
         useArrowBefore: { type: 'boolean', defaultValue: false },
+        useHeadingBefore: { type: 'boolean', defaultValue: false },
+        useCaptionAfter: { type: 'boolean', defaultValue: false },
         isExpanded: { type: 'boolean', defaultValue: false },
         addItemPadding: { type: 'boolean', defaultValue: true },
         enableContentScroll: { type: 'boolean', defaultValue: false },
         variant: { type: { name: 'enum', value: ['sand', 'white', 'red'] }, defaultValue: 'sand' },
+        truncateHeading: { type: 'boolean', defaultValue: false },
+        caption: { type: 'string' },
     },
     decorators: [
         moduleMetadata({
@@ -46,19 +53,25 @@ const meta: Meta<Args> = {
             ...args,
         },
         template: `
-        <puibe-expansion-panel class="w-3/4" [heading]="heading" [disableScrollIntoView]="disableScrollIntoView" [enableContentScroll]="enableContentScroll" [headingLevel]="headingLevel" [caption]="caption" [isExpanded]="isExpanded" [variant]="variant" [addItemPadding]="addItemPadding">
+        <puibe-expansion-panel class="w-3/4" [heading]="heading" [disableScrollIntoView]="disableScrollIntoView" [enableContentScroll]="enableContentScroll" [headingLevel]="headingLevel" [caption]="caption" [isExpanded]="isExpanded" [variant]="variant" [addItemPadding]="addItemPadding" [truncateHeading]="truncateHeading" [caption]="caption">
             <span>Test Content</span>
+            ${
+                args.useHeadingBefore
+                    ? '<puibe-icon-invalid slot="heading-before" size="m" class="mr-4"></puibe-icon-invalid>'
+                    : ''
+            }
             ${
                 args.useHeadingAfter
                     ? '<a href="http://www.google.ch" target="_blank" slot="heading-after"><puibe-icon-edit class="w-[1.5em] inline-block translate-y-1"></puibe-icon-edit></a>'
                     : ''
             }
+            ${args.useCaptionAfter ? '<span slot="caption-after">Caption After</span>' : ''}
             ${
                 args.useArrowBefore
                     ? '<puibe-icon-invalid class="h-6 w-6 block" slot="arrow-before"></puibe-icon-invalid>'
                     : ''
             }
-        </puibe-expansion-panel>`,
+                </puibe-expansion-panel>`,
     }),
 };
 
@@ -166,37 +179,73 @@ export const ScrollIntoView: Story = {
     }),
 };
 
-export const AccordeonWithContentBeforeSlot: Story = {
+export const WithAllSlots: Story = {
     args: {
-        heading: 'Invoice-File-Name.pdf',
+        heading: 'Heading',
+        caption: 'A small caption',
+        useHeadingBefore: true,
+        useHeadingAfter: true,
+        useCaptionAfter: true,
+        useArrowBefore: true,
         isExpanded: false,
-        headingLevel: 1,
+        addItemPadding: true,
+        variant: 'white',
+        disableScrollIntoView: false,
+        enableContentScroll: false,
+        truncateHeading: false,
+    },
+};
+
+export const WithAllSlotNamesVisible: Story = {
+    args: {
+        heading: 'Heading',
+        isExpanded: false,
+        headingLevel: 2,
         variant: 'white',
         addItemPadding: false,
+        truncateHeading: false,
+        caption: 'Caption',
     },
     render: (args) => ({
-        props: {
-            ...args,
-        },
+        props: { ...args },
         template: `
-        <puibe-expansion-panel
-            class="w-full max-w-[800px] border border-[#d9d9d9]"
-            [heading]="heading"
-            [headingLevel]="headingLevel"
-            [isExpanded]="isExpanded"
-            [variant]="variant"
-            [addItemPadding]="addItemPadding"
-        >
-            <puibe-icon-invalid slot="content-before" size="m" class="mr-4"></puibe-icon-invalid>
+            <puibe-expansion-panel
+                class="w-full max-w-[800px]"
+                [heading]="heading"
+                [headingLevel]="headingLevel"
+                [isExpanded]="isExpanded"
+                [variant]="variant"
+                [addItemPadding]="addItemPadding"
+                [truncateHeading]="truncateHeading"
+                [caption]="caption"
+            >
+                <span slot="heading-before" class="mr-4">heading-before</span>
+                <span slot="heading-after">heading-after</span>
+                <span slot="caption-after">caption-after</span>
+                <span slot="arrow-before" class="whitespace-nowrap">arrow-before</span>
 
-            <span slot="caption-after" class="text-[#e30a17]">Rechnung benötigt Überarbeitung.</span>
-
-            <span slot="arrow-before" class="inline-flex items-center gap-2 whitespace-nowrap text-black">Entfernen </span>
-
-            <div>
-                Inhalt des Expansion Panels
-            </div>
-        </puibe-expansion-panel>
+                <div>Inhalt des Expansion Panels</div>
+            </puibe-expansion-panel>
         `,
     }),
+};
+
+export const WithLongHeadingWithoutTruncation: Story = {
+    args: {
+        ...WithAllSlots.args,
+        heading:
+            'Invoice-File-Name-This-Is-An-Extremely-Long-Heading-To-Verify-That-The-Expansion-Panel-Title-Can-Wrap-Correctly.pdf',
+        truncateHeading: false,
+    },
+    render: WithAllSlots.render,
+};
+
+export const WithLongHeadingAndTruncation: Story = {
+    args: {
+        ...WithAllSlots.args,
+        heading:
+            'Invoice-File-Name-This-Is-An-Extremely-Long-Heading-To-Verify-That-The-Expansion-Panel-Title-Is-Truncated-Correctly.pdf',
+        truncateHeading: true,
+    },
+    render: WithAllSlots.render,
 };

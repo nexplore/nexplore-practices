@@ -1,7 +1,19 @@
 import { animate, AnimationTriggerMetadata, state, style, transition, trigger } from '@angular/animations';
 import { CdkAccordionItem, CdkAccordionModule } from '@angular/cdk/accordion';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnInit, ViewChild } from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    HostBinding,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PuibeIconArrowComponent } from '../icons/icon-arrow.component';
 import { isElementVisibleInVerticalScrollView } from '../util/utils';
@@ -38,7 +50,7 @@ const bodyExpansionAnimation: AnimationTriggerMetadata = trigger('bodyExpansion'
     imports: [CdkAccordionModule, PuibeIconArrowComponent, CommonModule, TranslateModule],
     animations: [bodyExpansionAnimation],
 })
-export class PuibeExpansionPanelComponent implements OnInit {
+export class PuibeExpansionPanelComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
     @HostBinding('class')
     className = 'block';
 
@@ -47,6 +59,18 @@ export class PuibeExpansionPanelComponent implements OnInit {
 
     @ViewChild('content', { static: true })
     contentRef: ElementRef<HTMLElement>;
+
+    @ViewChild('headingText')
+    headingText?: ElementRef<HTMLElement>;
+
+    @ViewChild('headingAfterWrapper')
+    headingAfterWrapper?: ElementRef<HTMLElement>;
+
+    @ViewChild('headingAfterInlineHost')
+    headingAfterInlineHost?: ElementRef<HTMLElement>;
+
+    @ViewChild('headingAfterActionHost')
+    headingAfterActionHost?: ElementRef<HTMLElement>;
 
     private _id: string = (nextUniqueId++).toString();
     @Input()
@@ -96,6 +120,12 @@ export class PuibeExpansionPanelComponent implements OnInit {
     @Input()
     enableContentScroll = false;
 
+    /**
+     * If `true`, truncates the heading text with ellipsis when it overflows.
+     */
+    @Input()
+    truncateHeading = false;
+
     get isSand(): boolean {
         return this.variant === 'sand';
     }
@@ -116,10 +146,33 @@ export class PuibeExpansionPanelComponent implements OnInit {
     // `isInitiallyCollapsed` is only true, if `isExpanded` is initially false. As soon `isExpanded` gets changed, `isInitiallyCollapsed` gets reset to false.
     isInitiallyCollapsed?: boolean = undefined;
 
-    constructor(private elRef: ElementRef<HTMLElement>) {}
+    private resizeObserver?: ResizeObserver;
+
+    constructor(private elRef: ElementRef<HTMLElement>, private cdr: ChangeDetectorRef) {}
 
     ngOnInit(): void {
         this.isInitiallyCollapsed = !this.isExpanded;
+    }
+
+    ngAfterViewInit(): void {
+        this.resizeObserver = new ResizeObserver(() => this.updateHeadingAfterPosition());
+
+        queueMicrotask(() => {
+            if (this.headingText?.nativeElement) {
+                this.resizeObserver?.observe(this.headingText.nativeElement);
+            }
+
+            this.resizeObserver?.observe(this.elRef.nativeElement);
+            this.updateHeadingAfterPosition();
+        });
+    }
+
+    ngOnChanges(): void {
+        queueMicrotask(() => this.updateHeadingAfterPosition());
+    }
+
+    ngOnDestroy(): void {
+        this.resizeObserver?.disconnect();
     }
 
     _getExpandedState(): 'expanded' | 'collapsed' {
@@ -149,5 +202,26 @@ export class PuibeExpansionPanelComponent implements OnInit {
         setTimeout(() => {
             this.elRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }, timeout);
+    }
+
+    private updateHeadingAfterPosition(): void {
+        const heading = this.headingText?.nativeElement;
+        const wrapper = this.headingAfterWrapper?.nativeElement;
+        const inlineHost = this.headingAfterInlineHost?.nativeElement;
+        const actionHost = this.headingAfterActionHost?.nativeElement;
+
+        if (!heading || !wrapper || !inlineHost || !actionHost) {
+            return;
+        }
+
+        const lineHeight = parseFloat(getComputedStyle(heading).lineHeight);
+        const isWrapped = heading.clientHeight > lineHeight * 1.5;
+        const shouldMoveToActions = !this.truncateHeading && isWrapped;
+        const target = shouldMoveToActions ? actionHost : inlineHost;
+
+        if (wrapper.parentElement !== target) {
+            target.appendChild(wrapper);
+            this.cdr.markForCheck();
+        }
     }
 }
