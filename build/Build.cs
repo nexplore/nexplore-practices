@@ -82,7 +82,7 @@ partial class Build : NukeBuild
         .Executes(() =>
         {
             EnablePnpm();
-            Pnpm("install --no-frozen-lockfile");
+            Pnpm("install --frozen-lockfile");
 
             Pnpm("run build-all");
         });

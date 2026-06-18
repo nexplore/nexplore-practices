@@ -20,7 +20,6 @@ import { PuiIconInvalidComponent } from './icon-invalid.component';
 import { PuiIconLoginComponent } from './icon-login.component';
 import { PuiIconLogoutComponent } from './icon-logout.component';
 import { PuiIconOptionsComponent } from './icon-options.component';
-import { PuiIconTailwindLogoComponent } from './icon-pui-logo.component';
 import { PuiIconSearchMobileComponent } from './icon-search-mobile.component';
 import { PuiIconSearchComponent } from './icon-search.component';
 import { PuiIconSpinnerComponent } from './icon-spinner.component';
@@ -46,7 +45,6 @@ const icons = [
     'hamburger',
     'home',
     'invalid',
-    'pui-logo',
     'login',
     'logout',
     'options',
@@ -115,7 +113,6 @@ const meta: Meta<Args> = {
                 PuiIconHamburgerComponent,
                 PuiIconHomeComponent,
                 PuiIconInvalidComponent,
-                PuiIconTailwindLogoComponent,
                 PuiIconLoginComponent,
                 PuiIconLogoutComponent,
                 PuiIconOptionsComponent,
@@ -275,12 +272,6 @@ export const Home: Story = {
         icon: 'home',
     },
 };
-export const TailwindLogo: Story = {
-    args: {
-        size: IconSize.FIT,
-        icon: 'pui-logo',
-    },
-};
 export const Login: Story = {
     args: {
         size: IconSize.FIT,
@@ -359,4 +350,3 @@ export const Enumeration: Story = {
         `,
     }),
 };
-
