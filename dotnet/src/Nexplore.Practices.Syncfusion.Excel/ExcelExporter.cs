@@ -46,6 +46,7 @@ namespace Nexplore.Practices.Syncfusion.Excel
         {
             var workbook = await this.ConvertToExcelAsync(entities, config, localizer, cancellationToken).ConfigureAwait(false);
             workbook.SaveAs(outputStream);
+            workbook.Close();
         }
 
         public async Task<Stream> ExportAsync<TEntity>(IAsyncEnumerable<TEntity> entities, IExportConfig<TEntity> config, IStringLocalizer localizer, CancellationToken cancellationToken)
@@ -60,6 +61,7 @@ namespace Nexplore.Practices.Syncfusion.Excel
         {
             var workbook = await this.ConvertToExcelAsync(entities, config, localizer, cancellationToken).ConfigureAwait(false);
             workbook.SaveAs(outputStream);
+            workbook.Close();
         }
 
         private Task<IWorkbook> ConvertToExcelAsync<TEntity>(IEnumerable<TEntity> entities, IExportConfig<TEntity> config, IStringLocalizer localizer, CancellationToken cancellationToken)
@@ -174,6 +176,7 @@ namespace Nexplore.Practices.Syncfusion.Excel
         {
             var stream = new MemoryStream();
             workbook.SaveAs(stream);
+            workbook.Close();
 
             Guard.ArgumentAssert(stream.CanSeek, "stream.CanSeek", nameof(stream));
             stream.Position = 0;

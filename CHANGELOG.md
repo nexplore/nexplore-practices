@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [11.2.2](https://github.com/nexplore/nexplore-practices/releases/tag/11.2.2) - 2026-06-17
+
 ### Added
 
 - `practices-ui-ktbe` Added support for displaying buttons inside the `PuibeTableColumnComponent` via a slot that displays next to the sorting button
@@ -19,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - `practices-ui-ktbe` Fixed KTBE Storybook styling by correcting Tailwind content paths in `samples-ktbe` and mapping Storybook static assets so font files under `/assets/fonts` are served correctly.
+- `Practices.Syncfusion.Excel` Fixed registration for ExcelEngine (memory leak)
 
 ## [11.2.1](https://github.com/nexplore/nexplore-practices/releases/tag/11.2.1) - 2026-04-17
 
