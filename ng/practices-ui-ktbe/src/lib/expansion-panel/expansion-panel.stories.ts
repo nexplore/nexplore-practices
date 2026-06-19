@@ -53,7 +53,7 @@ const meta: Meta<Args> = {
             ...args,
         },
         template: `
-        <puibe-expansion-panel class="w-3/4" [heading]="heading" [disableScrollIntoView]="disableScrollIntoView" [enableContentScroll]="enableContentScroll" [headingLevel]="headingLevel" [caption]="caption" [isExpanded]="isExpanded" [variant]="variant" [addItemPadding]="addItemPadding" [truncateHeading]="truncateHeading" [caption]="caption">
+        <puibe-expansion-panel class="w-3/4" [heading]="heading" [disableScrollIntoView]="disableScrollIntoView" [enableContentScroll]="enableContentScroll" [headingLevel]="headingLevel" [caption]="caption" [isExpanded]="isExpanded" [variant]="variant" [addItemPadding]="addItemPadding" [truncateHeading]="truncateHeading">
             <span>Test Content</span>
             ${
                 args.useHeadingBefore
@@ -71,7 +71,7 @@ const meta: Meta<Args> = {
                     ? '<puibe-icon-invalid class="h-6 w-6 block" slot="arrow-before"></puibe-icon-invalid>'
                     : ''
             }
-                </puibe-expansion-panel>`,
+        </puibe-expansion-panel>`,
     }),
 };
 
