@@ -10,7 +10,7 @@
         "build": "nx build",
         "build-all": "nx run-many -t build --all --exclude practices-ui-clarity,samples,practices-ui-ktbe,samples-ktbe --configuration production && nx run-many -t build:schematics",
         "test": "nx run-many -t test --all --exclude practices-ui-clarity,samples,practices-ui-ktbe,samples-ktbe",
-        "test-ci": "nx run-many -t test --all --exclude practices-ui-clarity,samples,practices-ui-ktbe,samples-ktbe --ci --run-in-band",
+        "test-ci": "nx run-many -t test test-schematics --all --exclude practices-ui-clarity,samples,practices-ui-ktbe,samples-ktbe --ci --run-in-band",
         "lint": "nx run-many -t lint",
         "lint-all-autofix": "nx run-many -t lint --fix",
         "lint-all-errors": "nx run-many -t lint --all --exclude practices-ui-clarity,samples,practices-ui-ktbe,samples-ktbe  --quiet",
