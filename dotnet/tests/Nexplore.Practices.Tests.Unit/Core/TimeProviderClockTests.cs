@@ -94,7 +94,7 @@ namespace Nexplore.Practices.Tests.Unit.Core
             var localTimeZone = TimeZoneInfo.CreateCustomTimeZone("Test/UTC+02", TimeSpan.FromHours(2), "Test/UTC+02", "Test/UTC+02");
             var timeProvider = NSubstitute.Substitute.For<TimeProvider>();
             timeProvider.GetUtcNow().Returns(utcNow);
-            timeProvider.LocalTimeZone.Returns( localTimeZone);
+            timeProvider.LocalTimeZone.Returns(localTimeZone);
             var clock = new TimeProviderClock(timeProvider);
 
             // Act & Assert
