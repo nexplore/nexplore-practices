@@ -2,6 +2,7 @@ namespace Nexplore.Practices.Tests.Unit.Core
 {
     using System;
     using Nexplore.Practices.Core;
+    using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
@@ -83,6 +84,29 @@ namespace Nexplore.Practices.Tests.Unit.Core
 
             // Assert
             Assert.That(result.TimeOfDay, Is.Not.EqualTo(TimeSpan.Zero));
+        }
+
+        [Test]
+        public void Values_WithCustomLocalTimeZone_AreDerivedFromTimeProvider()
+        {
+            // Arrange
+            var utcNow = new DateTimeOffset(2024, 1, 1, 23, 30, 0, TimeSpan.Zero);
+            var localTimeZone = TimeZoneInfo.CreateCustomTimeZone("Test/UTC+02", TimeSpan.FromHours(2), "Test/UTC+02", "Test/UTC+02");
+            var timeProvider = NSubstitute.Substitute.For<TimeProvider>();
+            timeProvider.GetUtcNow().Returns(utcNow);
+            timeProvider.LocalTimeZone.Returns( localTimeZone);
+            var clock = new TimeProviderClock(timeProvider);
+
+            // Act & Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(clock.UtcNowOffset, Is.EqualTo(utcNow));
+                Assert.That(clock.NowOffset, Is.EqualTo(new DateTimeOffset(2024, 1, 2, 1, 30, 0, TimeSpan.FromHours(2))));
+                Assert.That(clock.UtcNow, Is.EqualTo(new DateTime(2024, 1, 1, 23, 30, 0, DateTimeKind.Utc)));
+                Assert.That(clock.Now, Is.EqualTo(new DateTime(2024, 1, 2, 1, 30, 0, DateTimeKind.Local)));
+                Assert.That(clock.UtcToday, Is.EqualTo(new DateOnly(2024, 1, 1)));
+                Assert.That(clock.Today, Is.EqualTo(new DateOnly(2024, 1, 2)));
+            });
         }
     }
 }
