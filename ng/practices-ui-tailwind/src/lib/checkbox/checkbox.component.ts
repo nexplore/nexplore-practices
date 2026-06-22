@@ -20,7 +20,7 @@ import {
 import { PuiFormFieldDirective, PuiFormFieldService, PuiReadonlyDirective } from '@nexplore/practices-ng-forms';
 import { DestroyService } from '@nexplore/practices-ui';
 import { TranslateModule } from '@ngx-translate/core';
-import { BehaviorSubject, combineLatest, delay, filter, map, merge, of, shareReplay, startWith, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, delay, EMPTY, filter, map, merge, of, shareReplay, startWith, switchMap } from 'rxjs';
 import { FormFieldStatus } from '../form-field/form-field.service';
 import { FORM_CONFIG, FormConfig } from '../form/form.config';
 import { PuiReadonyLabelValueComponent } from '../readonly-label-value/readonly-label-value.component';
@@ -92,9 +92,15 @@ export class PuiCheckboxComponent implements ControlValueAccessor, AfterViewInit
     readonly isRequired$ = this._formFieldService.isRequired$;
 
     readonly touched$ = this._ngControl$.pipe(
-        switchMap((ngControl) => ngControl.control?.events ?? []),
-        filter((event) => event instanceof TouchedChangeEvent),
-        map((event) => event.touched),
+        switchMap((ngControl) =>
+            merge(
+                of(ngControl.control?.touched ?? ngControl.touched ?? false),
+                (ngControl.control?.events ?? EMPTY).pipe(
+                    filter((event) => event instanceof TouchedChangeEvent),
+                    map((event) => event.touched),
+                ),
+            ),
+        ),
     );
 
     readonly isReadonly$ = this._readonlyDirective?.isReadonly$ ?? of(false);
