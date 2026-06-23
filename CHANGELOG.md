@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `Nexplore.Practices.EntityFramework` Introduced `IAsyncValidatable` for async validations
+- _BREAKING_ `Nexplore.Practices.EntityFramework` Removed sync version of SaveChanges for `IUnitOfWork`
+- _BREAKING_ `Nexplore.Practices.EntityFramework` Removed sync version of CommitDbTransaction for `IUnitOfWorkWithSingleDbTransaction`
+
 ## [11.2.2](https://github.com/nexplore/nexplore-practices/releases/tag/11.2.2) - 2026-06-17
 
 ### Added
@@ -17,10 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - `practices-ui-ktbe` Changed the `PuibeTableColumnComponent` so that it no longer has a button at the root. Instead, there is a div with the role of a button, depending on if the column is sortable. This prevents accessibility issues.
-- `Nexplore.Practices.EntityFramework` Introduced `IAsyncValidatable` for async validations
-- _BREAKING_ `Nexplore.Practices.EntityFramework` Removed sync version of SaveChanges for `IUnitOfWork`
-- _BREAKING_ `Nexplore.Practices.EntityFramework` Removed sync version of CommitDbTransaction for `IUnitOfWorkWithSingleDbTransaction`
-
+- 
 ### Fixed
 
 - `Practices.Syncfusion.Excel` Fixed registration for ExcelEngine (memory leak)
