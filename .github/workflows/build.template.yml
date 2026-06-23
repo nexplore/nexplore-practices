@@ -20,9 +20,9 @@ jobs:
           check-latest: true
       - run: chmod +x ./build.sh
       - run: |
-          mkdir -p .nuke/temp/test-results
+          mkdir -p .ci-logs
           set -o pipefail
-          ./build.sh BuildPackAll 2>&1 | tee .nuke/temp/test-results/build.log
+          ./build.sh BuildPackAll 2>&1 | tee .ci-logs/build.log
       - if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -30,4 +30,5 @@ jobs:
           path: |
             .nuke/temp/output
             .nuke/temp/test-results
+            .ci-logs/build.log
           if-no-files-found: warn
