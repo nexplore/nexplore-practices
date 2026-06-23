@@ -11,7 +11,7 @@
         "moduleResolution": "node",
         "importHelpers": true,
         "target": "ES2022",
-        "typeRoots": ["node_modules/@types"],
+        "typeRoots": ["types", "node_modules/@types"],
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
         "lib": ["es2022", "dom"],
