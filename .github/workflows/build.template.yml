@@ -19,10 +19,16 @@ jobs:
           node-version: "22.14.0"
           check-latest: true
       - run: chmod +x ./build.sh
-      - run: ./build.sh BuildPackAll
+      - run: |
+          mkdir -p .ci-logs
+          set -o pipefail
+          ./build.sh BuildPackAll 2>&1 | tee .ci-logs/build.log
       - if: always()
         uses: actions/upload-artifact@v4
         with:
           name: build-output
-          path: .nuke/temp/output
+          path: |
+            .nuke/temp/output
+            .nuke/temp/test-results
+            .ci-logs/build.log
           if-no-files-found: warn
