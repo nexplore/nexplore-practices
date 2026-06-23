@@ -25,7 +25,7 @@ import { BehaviorSubject, combineLatest, delay, filter, map, merge, of, shareRep
 import { PuibeReadonlyDirective } from '../common/readonly.directive';
 import { FormFieldStatus } from '../form-field/form-field.service';
 import { FORM_CONFIG, FormConfig } from '../form/form.config';
-import { PuibeReadonyLabelValueComponent } from '../readonly-label-value/readonly-label-value.component';
+import { PuibeReadonlyLabelValueComponent } from '../readonly-label-value/readonly-label-value.component';
 import { getElementFormStates$ } from '../util/form.utils';
 import { PuibeCheckboxGroupComponent } from './checkbox-group.component';
 
@@ -36,7 +36,7 @@ let nextUniqueId = 0;
     selector: 'puibe-checkbox',
     templateUrl: './checkbox.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, AsyncPipe, NgFor, TranslateModule, NgIf, PuibeReadonyLabelValueComponent],
+    imports: [NgClass, AsyncPipe, NgFor, TranslateModule, NgIf, PuibeReadonlyLabelValueComponent],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -86,9 +86,13 @@ export class PuibeCheckboxComponent implements ControlValueAccessor, AfterViewIn
     readonly isRequired$ = this._formFieldService.isRequired$;
 
     readonly touched$ = this._ngControl$.pipe(
-        switchMap((ngControl) => ngControl.control.events),
-        filter((event) => event instanceof TouchedChangeEvent),
-        map((event) => event.touched)
+        switchMap((ngControl) =>
+            ngControl.control.events.pipe(
+                filter((event) => event instanceof TouchedChangeEvent),
+                map((event) => event.touched),
+                startWith(ngControl.touched)
+            )
+        )
     );
 
     readonly isReadonly$ = this._readonlyDirective?.isReadonly$ ?? of(false);

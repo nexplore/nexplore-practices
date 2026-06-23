@@ -108,3 +108,7 @@ export type FormControlValueMonNull<TControl extends AbstractControl<any, any>> 
 export type FormValueSignalsRecord<TFormValue> = {
     [key in keyof TFormValue as key extends string ? `${key}Signal` : never]: Signal<TFormValue[key]>;
 };
+
+export type FormValueSignalsRecordWithoutPostfix<TFormValue> = {
+    [key in keyof TFormValue]: Signal<TFormValue[key]>;
+};

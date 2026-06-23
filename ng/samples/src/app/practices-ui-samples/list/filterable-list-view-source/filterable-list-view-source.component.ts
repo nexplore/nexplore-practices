@@ -20,6 +20,7 @@ interface ISampleFilter {
 @Component({
     selector: 'app-filterable-list-view-source',
     templateUrl: './filterable-list-view-source.component.html',
+    standalone: false
 })
 export class FilterableListViewSourceComponent implements OnDestroy {
     lastRequestedApiUrl: string;

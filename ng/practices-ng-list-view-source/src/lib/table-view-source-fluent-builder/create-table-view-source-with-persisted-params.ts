@@ -10,7 +10,7 @@ import { IListResult, IQueryParams, TypedQueryParamsWithFilter } from '../types'
 import { HasTypedQueryParams } from '../types-internal';
 import { getDefaultQueryParams } from '../utils/internal-util';
 import { createExtendableTableViewSource, Extensions, ExtractDataTypeFrom, ExtractFilterTypeFrom } from './extensions';
-import { TableViewSourceWithSignals, TypedTableViewSourceConfig } from './types';
+import { TableViewSourceWithSignals, TypedTableViewSourceConfig, TypedTableViewSourceConfigPartial } from './types';
 
 export type PersistParamsConfig<TFilter, TData> = {
     /**
@@ -93,13 +93,17 @@ export function createTableViewSourceWithPersistedParams<
     return tableViewSource;
 }
 
-export function createdTypedWithPersistedParamsFactory<TData>() {
-    return <
-        TFilter,
-        TResult extends Partial<IListResult<TData>>,
-        TOrdering = TData
-    >(config: PersistParamsConfig<TFilter, TData> & TypedTableViewSourceConfig<TData, TResult, TFilter, TOrdering>) =>
-        createTableViewSourceWithPersistedParams(config);
+export function createdTypedWithPersistedParamsFactory<TData, TPartialConfig extends Record<string, any> = {}>(
+    partialConfig?: TPartialConfig
+) {
+    return <TFilter, TResult extends Partial<IListResult<TData>>, TOrdering = TData>(
+        config: PersistParamsConfig<TFilter, TData> &
+            TypedTableViewSourceConfigPartial<TData, TResult, TFilter, TOrdering, TPartialConfig>
+    ): TableViewSourceWithSignals<TData, TFilter> & Extensions =>
+        createTableViewSourceWithPersistedParams({
+            ...partialConfig,
+            ...config,
+        } as any);
 }
 
 /**
@@ -139,23 +143,25 @@ export function extendWithPersistedParams<TTableViewSource extends TableViewSour
         const destroyRef = inject(DestroyRef);
         subscribeAndForget(
             defer(async () => {
-                if (this.defaults.take) {
-                    await firstValueFrom(timer(0)); // First timer is needed so that the ui notices the change
-                    trace('tableViewSourceWithPersistedParams', 'apply page settings from defaults', {
-                        defaults: this.defaults,
-                    });
-                    this.page(this.defaults.skip ?? 0, this.defaults.take!);
-
-                    await firstValueFrom(timer(0)); // Second timer is needed so the queryParams$ subscription below doesn't get triggered unnecessarily.
-                }
-
                 // Get initial list state
                 const latestPersistedParams: IQueryParams | null = await firstValueFromMaybeAsync(
                     config.persistParams.load()
                 );
-                trace('tableViewSourceWithPersistedParams', 'loaded initial query params', latestPersistedParams);
+                trace(
+                    'ListViewSource',
+                    'tableViewSourceWithPersistedParams',
+                    'loading initial query params',
+                    latestPersistedParams,
+                    this
+                );
                 if (latestPersistedParams) {
                     await firstValueFrom(timer(0)); // First timer is needed so that the ui notices the change
+
+                    trace('ListViewSource', 'tableViewSourceWithPersistedParams', 'apply loaded query params', {
+                        latestPersistedParams,
+                        current: this.getQueryParams(),
+                    });
+
                     this.update(latestPersistedParams);
                     await firstValueFrom(timer(0)); // Second timer is needed so the queryParams$ subscription below doesn't get triggered unnecessarily.
                 }
@@ -169,7 +175,7 @@ export function extendWithPersistedParams<TTableViewSource extends TableViewSour
                         debounceTime(100),
                         switchMap((queryParams) => {
                             if (!isObjDeepEqual(queryParams, latestPersistedParams, { maximumDepth: 3 })) {
-                                trace('tableViewSourceWithPersistedParams', 'persist query params', {
+                                trace('ListViewSource', 'tableViewSourceWithPersistedParams', 'persist query params', {
                                     queryParams,
                                     latestPersistedParams,
                                 });

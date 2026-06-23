@@ -110,15 +110,15 @@ export class TableViewSource<TData, TFilter = TData>
 
     constructor(
         config: Omit<TableViewSourceConfig<TData>, 'columns'> & {
-            columns: Array<keyof TData> | Array<TableColumnItem<TData>> | TableColumnDefinitions<Partial<TData>>;
+            columns?: Array<keyof TData> | Array<TableColumnItem<TData>> | TableColumnDefinitions<Partial<TData>>;
         },
         loadFn: (params: IQueryParamsWithFilter<TFilter>) => Observable<IListResult<TData>>,
         public readonly defaults: Partial<IQueryParamsWithFilter<TFilter>> = {}
     ) {
         super(loadFn, { filter: {} as TFilter, ...defaults });
         Object.assign(this, config);
-        this.columns = config.columns;
-        this.patchSortableColumnWithDefaultOrdering(defaults);
+        this.columns = config.columns ?? [];
+        this._patchSortableColumnOrderingByQueryParams(defaults);
     }
 
     protected override getQueryParams$(queryParams$: Observable<IQueryParams>): Observable<IQueryParams> {
@@ -153,9 +153,19 @@ export class TableViewSource<TData, TFilter = TData>
         return updatedField;
     }
 
-    private patchSortableColumnWithDefaultOrdering(defaults: Partial<IQueryParamsWithFilter<TFilter>>) {
-        if (defaults && defaults.orderings && defaults.orderings.length === 1) {
-            const ordering = defaults.orderings[0];
+    override update(params: Partial<IQueryParamsWithFilter<TFilter>>): void {
+        super.update(params);
+
+        // If orderings were updated, we need to patch the columns accordingly
+        this._patchSortableColumnOrderingByQueryParams(params);
+    }
+
+    /**
+     *  Only the first ordering will be applied
+     */
+    private _patchSortableColumnOrderingByQueryParams(queryParams: Partial<IQueryParamsWithFilter<TFilter>>) {
+        if (queryParams && queryParams.orderings && queryParams.orderings.length === 1) {
+            const ordering = queryParams.orderings[0];
             const orderingFieldNameNormalized = firstCharToLower(ordering.field);
             const existingColumn =
                 this.columnsArray.find((c) => c.orderingFieldName === ordering.field) ?? // Try to find the field by the orderingFieldName

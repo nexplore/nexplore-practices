@@ -1,10 +1,15 @@
 import { signal, untracked } from '@angular/core';
 import { AbstractCommand } from '@nexplore/practices-ng-commands';
-import { StringKeyOf, unwrapSignalLike, ValueOrGetter } from '@nexplore/practices-ng-common-util';
+import { unwrapSignalLike, ValueOrGetter } from '@nexplore/practices-ng-common-util';
 import { tap } from 'rxjs/operators';
 import { commandToListResultObservable, refreshListViewSourceWhenCommandTriggered } from '../utils/command-list-util';
 import { createSelectViewSourceInternal } from './extensions';
-import { SelectViewSourceWithSignals, TypedSelectViewSourceConfig } from './types';
+import {
+    SelectViewSourceFilterType,
+    SelectViewSourceLabelKey,
+    SelectViewSourceWithSignals,
+    TypedSelectViewSourceConfig,
+} from './types';
 
 type AdditionalConfig = {
     /**
@@ -42,12 +47,12 @@ type AdditionalConfig = {
 export function createSelectViewSourceFromCommand<
     TData,
     TArgs,
-    TLabelKey extends StringKeyOf<TData> = StringKeyOf<TData>,
+    TLabelKey extends SelectViewSourceLabelKey<TData> = SelectViewSourceLabelKey<TData>,
     TQueryParams = TData,
-    TFilter extends Pick<TData, TLabelKey> = Pick<TData, TLabelKey>
+    TFilter extends SelectViewSourceFilterType<TData, TLabelKey> = SelectViewSourceFilterType<TData, TLabelKey>
 >(
     command: ValueOrGetter<AbstractCommand<TArgs, TData[] | null | undefined>>,
-    config: AdditionalConfig & Omit<TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams>, 'loadFn'>
+    config?: AdditionalConfig & Omit<TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams>, 'loadFn'>
 ): SelectViewSourceWithSignals<TData, TFilter> {
     const isBeingTriggerredByListViewSourceSignal = signal(false);
     const selectViewSource = createSelectViewSourceInternal<TData, TLabelKey, TQueryParams, TFilter>({

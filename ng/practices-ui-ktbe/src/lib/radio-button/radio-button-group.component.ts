@@ -20,7 +20,7 @@ import { combineLatestWith, map, of, skip, takeUntil } from 'rxjs';
 import { PuibeReadonlyDirective } from '../common/readonly.directive';
 import { PuibeIconInvalidComponent } from '../icons/icon-invalid.component';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
-import { PuibeReadonyLabelValueComponent } from '../readonly-label-value/readonly-label-value.component';
+import { PuibeReadonlyLabelValueComponent } from '../readonly-label-value/readonly-label-value.component';
 import { RadioButtonGroupService } from './radio-button-group.service';
 import { PuibeRadioButtonComponent } from './radio-button.component';
 
@@ -38,7 +38,7 @@ import { PuibeRadioButtonComponent } from './radio-button.component';
         TranslateModule,
         PuibeIconSpinnerComponent,
         NgIf,
-        PuibeReadonyLabelValueComponent,
+        PuibeReadonlyLabelValueComponent,
     ],
     providers: [
         {

@@ -184,6 +184,10 @@ export class PuibeTableComponent implements Partial<TableViewSourceConfig<any>> 
     }
 
     getColumn(column: TableColumnItem<any>) {
+        if (!column) {
+            return column ?? {};
+        }
+
         let existingColumn: TableColumnItem<any>;
         if (this.tableViewSource) {
             existingColumn = column.fieldName

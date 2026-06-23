@@ -18,69 +18,66 @@ import { delay } from 'rxjs';
     animations: [
         trigger('enterAnimation', [
             transition(':leave', [
-                animate(
-                    '300ms cubic-bezier(.61,-0.25,.34,1.35)', // slight bounce
-                    keyframes([
-                        style({
-                            offset: 0,
-                            opacity: 1,
-                            clipPath: 'circle(100%)',
-                        }),
-                        style({
-                            offset: 0.7,
-                            opacity: 0.5,
-                            clipPath: 'circle(1%)',
-                        }),
-                        style({
-                            offset: 0.71,
-                            overflow: 'hidden',
-                            width: '*',
-                            maxWidth: '*',
-                        }),
-                        style({
-                            offset: 1,
-                            opacity: 0,
-                            width: 0,
-                            maxWidth: 0,
-                            transform: 'scale(0)',
-                            overflow: 'hidden',
-                            display: 'none',
-                        }),
-                    ])
-                ),
+                animate('300ms cubic-bezier(.61,-0.25,.34,1.35)', // slight bounce
+                keyframes([
+                    style({
+                        offset: 0,
+                        opacity: 1,
+                        clipPath: 'circle(100%)',
+                    }),
+                    style({
+                        offset: 0.7,
+                        opacity: 0.5,
+                        clipPath: 'circle(1%)',
+                    }),
+                    style({
+                        offset: 0.71,
+                        overflow: 'hidden',
+                        width: '*',
+                        maxWidth: '*',
+                    }),
+                    style({
+                        offset: 1,
+                        opacity: 0,
+                        width: 0,
+                        maxWidth: 0,
+                        transform: 'scale(0)',
+                        overflow: 'hidden',
+                        display: 'none',
+                    }),
+                ])),
             ]),
             transition(':enter', [
-                animate(
-                    '450ms cubic-bezier(.43,-0.31,.29,1.35)', // slight bounce
-                    keyframes([
-                        style({
-                            offset: 0,
-                            display: 'none',
-                            opacity: 0,
-                            width: 0,
-                        }),
-                        style({
-                            display: '*',
-                            offset: 1 / 3,
-                            opacity: 0,
-                            width: 0,
-                            transform: 'scale(0.9)',
-                            overflow: 'hidden',
-                            transformOrigin: 'center',
-                        }),
-                        style({
-                            offset: 2 / 3,
-                            opacity: 0,
-                            width: '*',
-                            transform: 'scale(0.9)',
-                            overflow: '*',
-                        }),
-                        style({ offset: 1, opacity: 1, display: '*', width: '*', transform: 'scale(1)' }),
-                    ])
-                ),
+                animate('450ms cubic-bezier(.43,-0.31,.29,1.35)', // slight bounce
+                keyframes([
+                    style({
+                        offset: 0,
+                        display: 'none',
+                        opacity: 0,
+                        width: 0,
+                    }),
+                    style({
+                        display: '*',
+                        offset: 1 / 3,
+                        opacity: 0,
+                        width: 0,
+                        transform: 'scale(0.9)',
+                        overflow: 'hidden',
+                        transformOrigin: 'center',
+                    }),
+                    style({
+                        offset: 2 / 3,
+                        opacity: 0,
+                        width: '*',
+                        transform: 'scale(0.9)',
+                        overflow: '*',
+                    }),
+                    style({ offset: 1, opacity: 1, display: '*', width: '*', transform: 'scale(1)' }),
+                ])),
             ]),
         ]),
     ],
+    standalone: false
 })
 export class ComponentWithEntraceAnimation {
     show = input<boolean>(true);

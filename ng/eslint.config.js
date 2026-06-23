@@ -77,13 +77,6 @@ module.exports = [
     {
         files: ['**/*.json'],
         rules: {
-            '@nx/dependency-checks': ['error', { ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs}'] }],
-        },
-        languageOptions: { parser: require('jsonc-eslint-parser') },
-    },
-    {
-        files: ['**/*.json'],
-        rules: {
             '@nx/dependency-checks': [
                 'error',
                 {
@@ -93,6 +86,12 @@ module.exports = [
         },
         languageOptions: {
             parser: require('jsonc-eslint-parser'),
+        },
+    },
+    {
+        files: ['samples/**/*.ts', 'samples/**/*.tsx'],
+        rules: {
+            '@angular-eslint/prefer-standalone': 'off',
         },
     },
 ];

@@ -1,7 +1,6 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Validators } from '@angular/forms';
-import { describe, expect, it } from '@jest/globals';
 import { formGroup } from './api';
 import { createFormGroupWithResetFromSignal } from './create-form-group-with-reset-from-signal';
 
@@ -16,7 +15,7 @@ describe('withResetFromSignal', () => {
             });
             const formGroup = createFormGroupWithResetFromSignal(sourceSignal, { firstName: '', lastName: null });
 
-            formGroup.value.lastNameSignal();
+            formGroup.valueSignal.lastName();
             results.push(formGroup.value.firstName);
 
             TestBed.flushEffects();

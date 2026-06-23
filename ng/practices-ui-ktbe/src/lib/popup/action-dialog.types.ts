@@ -43,6 +43,16 @@ export type PuibeDialogActionMapUntyped = {
     [key: string | symbol | number]: CombinedCommandInput<any, any> | unknown;
 };
 
+export type PuibeDialogActionMapWeaklyTyped<TResult = unknown, TArgs = void> = {
+    [key: string | symbol | number]: CombinedCommandInput<TResult, TArgs> | unknown;
+};
+
+export type PuibeDialogActionMapOfDefaultActions<TResult = unknown, TArgs = void> = PuibeDialogActionMap<
+    typeof PUIBE_DIALOG_ACTIONS,
+    TResult,
+    TArgs
+>;
+
 export type PuibeActionDialogConfigBasics = {
     title?: DialogContent;
 
@@ -85,13 +95,28 @@ export type PuibeActionDialogConfigBasics = {
     hideCloseButton?: boolean;
 };
 
-export type PuibeActionDialogConfigUntyped = PuibeActionDialogConfigBasics & {
-    actionTemplates?: PuibeDialogActionsTemplates;
+export type PuibeActionDialogConfigWithDefaultActions<TResult = unknown, TArgs = void> = PuibeActionDialogConfigBasics &
+    (
+        | {
+              /**
+               * Definition for the button actions and their associated commands or static results
+               */
+              actions: PuibeDialogActionMapOfDefaultActions<TResult, TArgs>;
+          }
+        | {
+              /**
+               * Definition for the button actions and their associated commands or static results
+               */
+              actions: PuibeDialogActionTemplate<TResult, TArgs>[];
 
-    actions?: PuibeDialogActionMapUntyped | PuibeDialogActionTemplate<any, any>[];
-
-    command?: CombinedCommandInput<any, any>;
-};
+              /**
+               * If provided, defines a main command, that is called when any action is triggered, with the action as parameter.
+               *
+               * Note, will not get called for actions which have a command defined directly on them.
+               */
+              command?: CombinedCommandInput<PuibeDialogActionTemplate<TResult, TArgs>, TResult>;
+          }
+    );
 
 export interface PuibeActionDialogConfig<
     TAction extends PuibeDialogActionTemplate<TResult, TArgs>,
@@ -105,8 +130,16 @@ export interface PuibeActionDialogConfig<
      */
     actionTemplates?: TActionTemplates;
 
+    /**
+     * Definition for the button actions and their associated commands or static results
+     */
     actions?: TActions;
 
+    /**
+     * If provided, defines a main command, that is called when any action is triggered, with the action as parameter.
+     *
+     * Note, will not get called for actions which have a command defined directly on them.
+     */
     command?: CombinedCommandInput<TAction, TResult>;
 }
 

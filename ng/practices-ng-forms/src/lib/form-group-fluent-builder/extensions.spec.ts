@@ -1,7 +1,7 @@
-import { effect, signal } from '@angular/core';
+import { computed, effect, isSignal, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Validators } from '@angular/forms';
-import { describe, expect, it } from '@jest/globals';
+import { firstValueFrom, of } from 'rxjs';
 import { createExtendedFormGroup } from './extensions';
 
 describe('formGroup', () => {
@@ -36,11 +36,76 @@ describe('formGroup', () => {
         });
     });
 
+    it('should reset nullable control to null', () => {
+        TestBed.runInInjectionContext(() => {
+            const formGroup = createExtendedFormGroup({ name: { value: '', nullable: true } });
+
+            formGroup.controls.name.setValue('Temp');
+            formGroup.reset();
+
+            const name: string | null = formGroup.value.name;
+            expect(name).toEqual(null);
+        });
+    });
+
+    it('should reset non-nullable control to initial value', () => {
+        TestBed.runInInjectionContext(() => {
+            const formGroup = createExtendedFormGroup({ name: { value: 'initial', nullable: false } });
+
+            formGroup.controls.name.setValue('Temp');
+            formGroup.reset();
+
+            const name: string | null = formGroup.value.name;
+            expect(name).toEqual('initial');
+        });
+    });
+
+    it('should reset non-nullable control to initial value by default', () => {
+        TestBed.runInInjectionContext(() => {
+            const formGroup = createExtendedFormGroup({ name: { value: 'initial' } });
+
+            formGroup.controls.name.setValue('Temp');
+            formGroup.reset();
+
+            const name: string | null = formGroup.value.name;
+            expect(name).toEqual('initial');
+        });
+    });
+
+    it('should apply all control option properties', async () => {
+        await TestBed.runInInjectionContext(async () => {
+            const asyncValidator = () => of(null);
+            const formGroup = createExtendedFormGroup({
+                name: {
+                    value: '',
+                    validators: [Validators.required],
+                    asyncValidators: [asyncValidator],
+                    updateOn: 'blur',
+                    nullable: false,
+                },
+            });
+
+            const control = formGroup.controls.name;
+            control.setValue('');
+            control.updateValueAndValidity();
+
+            expect(control.updateOn).toEqual('blur');
+            expect(control.hasError('required')).toEqual(true);
+
+            control.setValue('Temp');
+            formGroup.reset();
+            expect(control.value).toEqual('');
+            expect(control.asyncValidator).toBeDefined();
+            const asyncResult = await firstValueFrom((control.asyncValidator as any)(control));
+            expect(asyncResult).toEqual(null);
+        });
+    });
+
     it('should create a form group whose values have signal properties', () => {
         TestBed.runInInjectionContext(() => {
             const formGroup = createExtendedFormGroup({ name: 'John Doe' });
 
-            expect(formGroup.value.nameSignal).toBeDefined();
+            expect(formGroup.valueSignal.name).toBeDefined();
         });
     });
 
@@ -215,7 +280,7 @@ describe('formGroup', () => {
             const results: string[] = [];
 
             effect(() => {
-                const name = formGroup.value.nameSignal();
+                const name = formGroup.valueSignal.name();
                 results.push(name);
             });
 
@@ -246,6 +311,77 @@ describe('formGroup', () => {
             const obj = Object.assign({}, formGroup.value);
 
             expect(obj).toEqual({ name: 'John Doe' });
+        });
+    });
+
+    it('should expose full value updates through valueSignal', () => {
+        TestBed.runInInjectionContext(() => {
+            const formGroup = createExtendedFormGroup({ firstName: 'John', lastName: 'Doe' });
+
+            const results: string[] = [];
+
+            effect(() => {
+                const value = formGroup.valueSignal();
+                results.push(`${value.firstName} ${value.lastName}`);
+            });
+
+            TestBed.flushEffects();
+
+            formGroup.patchValue({ firstName: 'Lara', lastName: 'Croft' });
+
+            TestBed.flushEffects();
+
+            expect(results).toEqual(['John Doe', 'Lara Croft']);
+        });
+    });
+
+    it('should expose control signals through valueSignal property access', () => {
+        TestBed.runInInjectionContext(() => {
+            const formGroup = createExtendedFormGroup({ firstName: 'John', lastName: 'Doe' });
+
+            const results: string[] = [];
+
+            effect(() => {
+                const firstName = formGroup.valueSignal.firstName();
+                const lastName = formGroup.valueSignal.lastName();
+                results.push(`${firstName} ${lastName}`);
+            });
+
+            TestBed.flushEffects();
+
+            formGroup.patchValue({ firstName: 'Lara', lastName: 'Croft' });
+
+            TestBed.flushEffects();
+
+            expect(results).toEqual(['John Doe', 'Lara Croft']);
+        });
+    });
+
+    it('should behave like an Angular signal when using valueSignal helpers', () => {
+        TestBed.runInInjectionContext(() => {
+            const formGroup = createExtendedFormGroup({ firstName: 'John', lastName: 'Doe' });
+
+            expect(isSignal(formGroup.valueSignal)).toBe(true);
+            expect(typeof formGroup.valueSignal).toBe('function');
+
+            const fullName = computed(() => {
+                const value = formGroup.valueSignal();
+                return `${value.firstName} ${value.lastName}`;
+            });
+
+            const results: string[] = [];
+
+            effect(() => {
+                results.push(fullName());
+            });
+
+            TestBed.flushEffects();
+
+            formGroup.patchValue({ firstName: 'Lara', lastName: 'Croft' });
+
+            TestBed.flushEffects();
+
+            expect(results).toEqual(['John Doe', 'Lara Croft']);
         });
     });
 

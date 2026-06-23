@@ -1,6 +1,6 @@
 import { registerLocaleData } from '@angular/common';
 import localeDECH from '@angular/common/locales/de-CH';
-import { APP_INITIALIZER, importProvidersFrom, LOCALE_ID } from '@angular/core';
+import { importProvidersFrom, LOCALE_ID, inject, provideAppInitializer } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
@@ -28,7 +28,10 @@ function InitializeAppFactory(translateService: TranslateService): () => Observa
 bootstrapApplication(AppComponent, {
     providers: [
         { provide: LOCALE_ID, useFactory: InitializeLanguage },
-        { provide: APP_INITIALIZER, useFactory: InitializeAppFactory, deps: [TranslateService], multi: true },
+        provideAppInitializer(() => {
+            const initializerFn = (InitializeAppFactory)(inject(TranslateService));
+            return initializerFn();
+        }),
         provideConsoleLogging(),
         provideRouter(APP_ROUTES),
         importProvidersFrom(TranslateModule.forRoot(), BrowserAnimationsModule, PracticesKtbeShellModule),

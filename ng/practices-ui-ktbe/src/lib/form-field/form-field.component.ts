@@ -27,7 +27,7 @@ import { PuibeReadonlyDirective } from '../common/readonly.directive';
 import { PuibeIconCloseComponent } from '../icons/icon-close.component';
 import { PuibeIconInvalidComponent } from '../icons/icon-invalid.component';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
-import { PuibeReadonyLabelValueComponent } from '../readonly-label-value/readonly-label-value.component';
+import { PuibeReadonlyLabelValueComponent } from '../readonly-label-value/readonly-label-value.component';
 import { FormFieldIconConfig, FormFieldService } from './form-field.service';
 import { PuibeLabelDirective } from './label.directive';
 
@@ -53,7 +53,7 @@ const overlayTextEmptyClassName = 'text-opacity-60';
         PuibeIconInvalidComponent,
         PuibeIconSpinnerComponent,
         PuibeIconCloseComponent,
-        PuibeReadonyLabelValueComponent,
+        PuibeReadonlyLabelValueComponent,
         NgIf,
         NgFor,
         NgClass,

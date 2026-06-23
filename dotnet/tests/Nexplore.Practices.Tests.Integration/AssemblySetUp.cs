@@ -29,7 +29,7 @@ namespace Nexplore.Practices.Tests.Integration
             container = CreateContainer();
             UnitOfWorkFactory = container.Resolve<IUnitOfWorkFactory<ILifetimeScope>>();
 
-            msSqlContainer = new MsSqlBuilder()
+            msSqlContainer = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-CU14-ubuntu-22.04")
                 .Build();
             await msSqlContainer.StartAsync();
 
