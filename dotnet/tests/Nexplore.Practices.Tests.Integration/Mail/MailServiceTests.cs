@@ -1,6 +1,5 @@
 namespace Nexplore.Practices.Tests.Integration.Mail
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using MailKit.Security;
