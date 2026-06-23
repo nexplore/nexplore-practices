@@ -1,6 +1,8 @@
 namespace Nexplore.Practices.Tests.Integration.Mail
 {
+    using System;
     using System.Threading;
+    using System.Threading.Tasks;
     using MailKit.Security;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
@@ -13,7 +15,7 @@ namespace Nexplore.Practices.Tests.Integration.Mail
     {
         [Test]
         [Ignore("Manual tests -> If you want to execute the test, verify the mail settings within the test first")]
-        public void SendEmail_WithFullConfiguration_SendsEmailAndStoresOnFilesystem()
+        public async Task SendEmail_WithFullConfiguration_SendsEmailAndStoresOnFilesystem()
         {
             // Arrange
             var mailOptions = Substitute.For<IOptions<MailOptions>>();
@@ -40,10 +42,10 @@ namespace Nexplore.Practices.Tests.Integration.Mail
             var service = new MailService(mailOptions, logger);
 
             // Act
-            AsyncTestDelegate act = async () => await service.SendMailAsync(subject, contentAsPlain, contentAsHtml, recipient, false, CancellationToken.None);
+            var act = async () => await service.SendMailAsync(subject, contentAsPlain, contentAsHtml, recipient, false, CancellationToken.None);
 
             // Assert
-            Assert.That(act, Throws.Nothing);
+            await Assert.ThatAsync(act, Throws.Nothing);
         }
     }
 }

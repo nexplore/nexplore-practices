@@ -101,7 +101,7 @@ namespace Nexplore.Practices.Tests.Unit.EntityFramework.Generators
         }
 
         [Test]
-        public void Visit_WithSelfReferencedGenerator_ThrowsException()
+        public async Task Visit_WithSelfReferencedGenerator_ThrowsException()
         {
             // Arrange
             var scope = this.container.BeginLifetimeScope();
@@ -109,14 +109,14 @@ namespace Nexplore.Practices.Tests.Unit.EntityFramework.Generators
             var node = new GeneratorDependencyNode<TestSelfReferenceGenerator>(scope);
 
             // Act
-            AsyncTestDelegate act = async () => await node.VisitAsync(visitor, CancellationToken.None);
+            var act = async () => await node.VisitAsync(visitor, CancellationToken.None);
 
             // Act
-            Assert.That(act, Throws.Exception.TypeOf<InvalidOperationException>());
+            await Assert.ThatAsync(act, Throws.Exception.TypeOf<InvalidOperationException>());
         }
 
         [Test]
-        public void Visit_WithCycleDependent_ThrowsException()
+        public async Task Visit_WithCycleDependent_ThrowsException()
         {
             // Arrange
             var scope = this.container.BeginLifetimeScope();
@@ -124,10 +124,10 @@ namespace Nexplore.Practices.Tests.Unit.EntityFramework.Generators
             var node = new GeneratorDependencyNode<TestCycleGenerator1>(scope);
 
             // Act
-            AsyncTestDelegate act = async () => await node.VisitAsync(visitor, CancellationToken.None);
+            var act = async () => await node.VisitAsync(visitor, CancellationToken.None);
 
             // Act
-            Assert.That(act, Throws.Exception.TypeOf<InvalidOperationException>());
+            await Assert.ThatAsync(act, Throws.Exception.TypeOf<InvalidOperationException>());
         }
 
         [Test]
