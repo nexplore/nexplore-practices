@@ -10,6 +10,10 @@ import {
     test as jestTest,
 } from '@jest/globals';
 
+type JestGlobalWithLooseMocks = Omit<typeof jestObject, 'fn'> & {
+    fn<T extends (...args: any[]) => any = (...args: any[]) => any>(implementation?: T): any;
+};
+
 declare global {
     const afterAll: typeof jestAfterAll;
     const afterEach: typeof jestAfterEach;
@@ -18,7 +22,7 @@ declare global {
     const describe: typeof jestDescribe;
     const expect: typeof jestExpect;
     const it: typeof jestIt;
-    const jest: typeof jestObject;
+    const jest: JestGlobalWithLooseMocks;
     const test: typeof jestTest;
 }
 
