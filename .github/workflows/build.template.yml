@@ -19,7 +19,10 @@ jobs:
           node-version: "22.14.0"
           check-latest: true
       - run: chmod +x ./build.sh
-      - run: ./build.sh BuildPackAll
+      - run: |
+          mkdir -p .nuke/temp/test-results
+          set -o pipefail
+          ./build.sh BuildPackAll 2>&1 | tee .nuke/temp/test-results/build.log
       - if: always()
         uses: actions/upload-artifact@v4
         with:
