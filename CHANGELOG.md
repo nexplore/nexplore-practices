@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Practices.Core` Updated Autofac to 9.3.0
 - `Practices.EntityFramework` Updated Microsoft.EntityFrameworkCore.\* dependencies
 - `Practices.Mail` Updated MailKit to 4.17.0
-- `Practices.Serlilog` Serilog.Settings.Configuration to 10.0.1
+- `Practices.Serilog` Updated Serilog.Settings.Configuration to 10.0.1
 - `Practices.Syncfusion.Excel` Updated Syncfusion.XlsIO.Net.Core to 33.2.15
 - `Practices.Syncfusion.Pdf` Updated Syncfusion.Pdf.Net.Core to 33.2.15
 
