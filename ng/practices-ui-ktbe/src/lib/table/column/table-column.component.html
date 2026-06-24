@@ -5,8 +5,8 @@
 }">
     <div #button
         class="flex w-full items-center justify-items-stretch"
-        [ngClass]="{ 
-        'flex-row-reverse': this.align === 'right', 
+        [ngClass]="{
+        'flex-row-reverse': this.align === 'right',
         'justify-center': this.align === 'center',
         'justify-start': this.align === 'right' || this.align === 'left',
         'cursor-pointer': field.sortable,
@@ -19,7 +19,7 @@
             <span #content><ng-content></ng-content></span>
             <span
                 *ngIf="content.children.length === 0"
-                [ngClass]="{ 
+                [ngClass]="{
                 'text-center': this.align === 'center',
                 'text-right': this.align === 'right',
                 'text-left': this.align === 'left',

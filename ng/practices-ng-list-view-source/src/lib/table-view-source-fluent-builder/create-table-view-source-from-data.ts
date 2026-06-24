@@ -96,4 +96,3 @@ function createTableViewSourceFactoryFluentApi<TData>(
         ),
     };
 }
-

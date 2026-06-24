@@ -11,4 +11,3 @@ export type FormValueSignalsRecordDeprecated<TFormValue> = {
 
 export type FormGroupValueWithSignals<TControls extends FormControls<TControls>> = FormGroupControlsValues<TControls> &
     FormValueSignalsRecordDeprecated<FormGroupControlsValues<TControls>>;
-

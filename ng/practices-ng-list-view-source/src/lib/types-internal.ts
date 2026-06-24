@@ -5,7 +5,7 @@ export type HasTypedQueryParams<TFilter, TQueryParams> =
     | {
           /**
            * The default ordering.
-           * 
+           *
            * Examples:
            * ```ts
            *  { orderBy: 'name' } // orders by 'name' ascending
