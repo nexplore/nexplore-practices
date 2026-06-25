@@ -16,11 +16,10 @@
         [class]="signCssClasses[signpostDirection]"
         aria-live="polite"
     >
-        <div class="border bg-white p-3" [ngClass]="noMaxWidth() ? '' : 'max-w-md'">
+        <div class="border bg-white p-3" [ngClass]="overlayMaxWidthClass()">
             <ng-content></ng-content>
         </div>
 
         <puibe-tooltip-icon [style]="postTranslationCssStyle"></puibe-tooltip-icon>
     </div>
 </ng-template>
-

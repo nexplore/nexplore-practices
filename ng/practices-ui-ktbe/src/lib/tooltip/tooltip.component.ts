@@ -6,14 +6,13 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
-    HostBinding,
     HostListener,
     OnDestroy,
     TemplateRef,
-    ViewChild,
     ViewContainerRef,
     inject,
     input,
+    viewChild,
 } from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
 import { TranslateModule } from '@ngx-translate/core';
@@ -74,54 +73,57 @@ const SIGNPOST_POST_CSS_STYLES: { [K in TooltipDirection]: string } = {
 let nextUniqueId = 0;
 
 @Component({
-    selector: 'puibe-tooltip',
+    selector: 'puibe-tooltip-button',
     imports: [CommonModule, OverlayModule, TranslateModule, PuibeTooltipIconComponent],
     providers: [DestroyService],
     templateUrl: './tooltip.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'inline',
+    },
 })
-export class PuibeTooltipComponent implements AfterViewInit, OnDestroy {
-    private readonly document = inject<Document>(DOCUMENT);
-    readonly overlayService = inject(Overlay);
-    private readonly destroy$ = inject(DestroyService);
-    readonly viewContainerRef = inject(ViewContainerRef);
-    private readonly cdr = inject(ChangeDetectorRef);
+export class PuibeTooltipButtonComponent implements AfterViewInit, OnDestroy {
+    private readonly _document = inject<Document>(DOCUMENT);
+    private readonly _overlayService = inject(Overlay);
+    private readonly _destroy$ = inject(DestroyService);
+    private readonly _viewContainerRef = inject(ViewContainerRef);
+    private readonly _cdr = inject(ChangeDetectorRef);
 
-    @ViewChild(CdkOverlayOrigin) private readonly origin: CdkOverlayOrigin | undefined;
-    @ViewChild(TemplateRef) private readonly signpostRef: TemplateRef<HTMLDivElement> | undefined;
+    public readonly overlayMaxWidthClass = input<string>('max-w-md');
 
-    public readonly signCssClasses: { [K in TooltipDirection]: string } = SIGNPOST_SIGN_CSS_CLASSES;
-    public readonly tooltipId = `tooltip-${nextUniqueId++}`;
-    public signpostDirection: TooltipDirection = 'top';
-    public postTranslationCssStyle = '';
+    private readonly _origin = viewChild(CdkOverlayOrigin);
+    private readonly _signpostRef = viewChild(TemplateRef<HTMLDivElement>);
 
-    private overlayRef: OverlayRef | undefined;
-    private templatePortal: TemplatePortal<HTMLDivElement> | undefined;
-    private overlayObserver: MutationObserver | undefined;
+    protected readonly signCssClasses: { [K in TooltipDirection]: string } = SIGNPOST_SIGN_CSS_CLASSES;
+    protected readonly tooltipId = `tooltip-${nextUniqueId++}`;
+    protected signpostDirection: TooltipDirection = 'top';
+    protected postTranslationCssStyle = '';
 
-    @HostBinding('class') protected hostClass = 'inline';
+    private _overlayRef: OverlayRef | undefined;
+    private _templatePortal: TemplatePortal<HTMLDivElement> | undefined;
+    private _overlayObserver: MutationObserver | undefined;
+
     @HostListener('document:keydown.escape') onKeydownHandler() {
-        this.overlayRef?.detach();
+        this._overlayRef?.detach();
     }
 
-    public readonly noMaxWidth = input(false);
-
     public toggle() {
-        if (this.overlayRef?.hasAttached()) {
-            this.overlayRef?.detach();
+        if (this._overlayRef?.hasAttached()) {
+            this._overlayRef?.detach();
             return;
         }
-        this.overlayRef?.attach(this.templatePortal);
+        this._overlayRef?.attach(this._templatePortal);
     }
 
     public ngAfterViewInit(): void {
-        if (!this.signpostRef) {
+        const signpostRef = this._signpostRef();
+        if (!signpostRef) {
             return;
         }
 
-        this.templatePortal = new TemplatePortal(this.signpostRef, this.viewContainerRef);
+        this._templatePortal = new TemplatePortal(signpostRef, this._viewContainerRef);
 
-        const scrollStrategy = this.overlayService.scrollStrategies.close();
+        const scrollStrategy = this._overlayService.scrollStrategies.close();
 
         const overlayConfig = {
             hasBackdrop: true,
@@ -129,15 +131,15 @@ export class PuibeTooltipComponent implements AfterViewInit, OnDestroy {
             scrollStrategy,
         };
 
-        this.overlayRef = this.overlayService.create(overlayConfig);
+        this._overlayRef = this._overlayService.create(overlayConfig);
 
-        this.overlayRef
+        this._overlayRef
             .backdropClick()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => this.overlayRef?.detach());
+            .pipe(takeUntil(this._destroy$))
+            .subscribe(() => this._overlayRef?.detach());
 
-        this.overlayObserver = new MutationObserver(() => this.setOverlayDirection());
-        this.overlayObserver.observe(this.overlayRef.overlayElement, {
+        this._overlayObserver = new MutationObserver(() => this.setOverlayDirection());
+        this._overlayObserver.observe(this._overlayRef.overlayElement, {
             attributes: false,
             childList: true,
             subtree: false,
@@ -145,38 +147,39 @@ export class PuibeTooltipComponent implements AfterViewInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        this.overlayRef?.dispose();
-        this.overlayObserver?.disconnect();
+        this._overlayRef?.dispose();
+        this._overlayObserver?.disconnect();
     }
 
     private setOverlayDirection() {
-        if (!this.origin || !this.overlayRef) {
+        const origin = this._origin();
+        if (!origin || !this._overlayRef) {
             return;
         }
-        if (!this.overlayRef.hasAttached()) {
+        if (!this._overlayRef.hasAttached()) {
             return;
         }
 
-        this.findOverlayDirection(this.origin, this.overlayRef);
+        this.findOverlayDirection(origin, this._overlayRef);
 
-        const positionStrategy = this.overlayService
+        const positionStrategy = this._overlayService
             .position()
-            .flexibleConnectedTo(this.origin.elementRef)
+            .flexibleConnectedTo(origin.elementRef)
             .withFlexibleDimensions(true)
             .withPush(true)
             .withGrowAfterOpen(true)
             .withPositions([OVERLAY_POSITIONS[this.signpostDirection]]);
 
-        this.overlayRef.updatePositionStrategy(positionStrategy);
-        this.overlayRef.updatePosition();
+        this._overlayRef.updatePositionStrategy(positionStrategy);
+        this._overlayRef.updatePosition();
 
-        this.setPostOffset(this.origin, this.overlayRef);
+        this.setPostOffset(origin, this._overlayRef);
 
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
     }
 
     private findOverlayDirection(origin: CdkOverlayOrigin, overlayRef: OverlayRef) {
-        const defaultWindow = this.document.defaultView;
+        const defaultWindow = this._document.defaultView;
         if (defaultWindow) {
             // Determine the direction of the signpost, based on the space around the origin and the size of the overlay
             const { top, left, width, height } = origin.elementRef.nativeElement.getBoundingClientRect();
@@ -224,4 +227,3 @@ export class PuibeTooltipComponent implements AfterViewInit, OnDestroy {
             }[this.signpostDirection] + SIGNPOST_POST_CSS_STYLES[this.signpostDirection];
     }
 }
-
