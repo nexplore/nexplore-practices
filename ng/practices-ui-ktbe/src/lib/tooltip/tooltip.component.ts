@@ -89,10 +89,10 @@ export class PuibeTooltipButtonComponent implements AfterViewInit, OnDestroy {
     private readonly _viewContainerRef = inject(ViewContainerRef);
     private readonly _cdr = inject(ChangeDetectorRef);
 
-    public readonly overlayMaxWidthClass = input<string>('max-w-md');
+    public readonly overlayMaxWidthClassSignal = input<string>('max-w-md', { alias: 'overlayMaxWidthClass' });
 
-    private readonly _origin = viewChild(CdkOverlayOrigin);
-    private readonly _signpostRef = viewChild(TemplateRef<HTMLDivElement>);
+    private readonly _originSignal = viewChild(CdkOverlayOrigin);
+    private readonly _signpostRefSignal = viewChild(TemplateRef<HTMLDivElement>);
 
     protected readonly signCssClasses: { [K in TooltipDirection]: string } = SIGNPOST_SIGN_CSS_CLASSES;
     protected readonly tooltipId = `tooltip-${nextUniqueId++}`;
@@ -116,7 +116,7 @@ export class PuibeTooltipButtonComponent implements AfterViewInit, OnDestroy {
     }
 
     public ngAfterViewInit(): void {
-        const signpostRef = this._signpostRef();
+        const signpostRef = this._signpostRefSignal();
         if (!signpostRef) {
             return;
         }
@@ -152,7 +152,7 @@ export class PuibeTooltipButtonComponent implements AfterViewInit, OnDestroy {
     }
 
     private setOverlayDirection() {
-        const origin = this._origin();
+        const origin = this._originSignal();
         if (!origin || !this._overlayRef) {
             return;
         }
