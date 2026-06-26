@@ -47,6 +47,11 @@ namespace Nexplore.Practices.EntityFramework
             this.modelCreator.OnModelCreating(modelBuilder);
         }
 
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            throw new NotSupportedException("Synchronous save is not supported anymore, use SaveChangesAsync.");
+        }
+
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             await this.PrepareSaveChangesAsync(cancellationToken).ConfigureAwait(false);
