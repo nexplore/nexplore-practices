@@ -24,7 +24,7 @@ npm install @nexplore/practices-ng-list-view-source
 
 ## Features and Usage Examples
 
-### Fluent API Builders - [`tableViewSource`](./src/lib/table-view-source/table-view-source.factory.ts) & [`selectViewSource`](./src/lib/select-view-source/select-view-source.factory.ts)
+### Fluent API Builders - [`tableViewSource`](./src/lib/table-view-source-fluent-builder/index.ts) & [`selectViewSource`](./src/lib/select-view-source-fluent-builder/index.ts)
 
 The library provides two main view source builders with a fluent API for chainable configuration:
 

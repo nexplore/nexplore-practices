@@ -16,7 +16,7 @@ npm install @nexplore/practices-ui
 
 ## Features and Usage Examples
 
-### Title Management - [`TitleService`](./src/lib/title/title.service.ts)
+### Title Management - [`TitleService`](./src/lib/services/title.service.ts)
 
 A service implementing Angular's `TitleStrategy` for managing the page title with breadcrumb support:
 
@@ -33,31 +33,35 @@ export class AppComponent {
     this._titleService.setTitle('My Application');
 
     // Set page title with breadcrumb
-    this._titleService.setBreadcrumbs([
-      { label: 'Home', route: '/' },
-      { label: 'Users', route: '/users' },
-      { label: 'User Details' }
-    ]);
+    this._titleService.setBreadcrumbTitle('User Details');
   }
 }
 ```
 
-### Translation Support - [`RewriteTranslateParser`](./src/lib/translate/rewrite-translate-parser.ts)
+### Translation Support - [`RewriteMissingTranslationHandler`](./src/lib/services/missing-translation.handler.ts)
 
-A custom `TranslateParser` which rewrites resource types for translations to work well with .NET resource file format:
+A custom `MissingTranslationHandler` which rewrites resource types for translations to work well with .NET resource file format:
 
 ```typescript
-import { provideTranslateParser } from '@nexplore/practices-ui';
+import { providePractices } from '@nexplore/practices-ui';
 import { TranslateModule } from '@ngx-translate/core';
 
 // In your app providers
-const providers = [provideTranslateParser()];
+const providers = [
+    providePractices({
+        rewriteResourceConfig: {
+            rewriteTypeConfig: {
+                Common: { rewriteTo: 'Shared' },
+            },
+        },
+    }),
+];
 
 // This allows using .NET resource format in translations
 // For example: "Common.Buttons_Save" instead of requiring "Common.Buttons.Save"
 ```
 
-### Component Lifecycle - [`DestroyService`](./src/lib/destroy/destroy.service.ts)
+### Component Lifecycle - [`DestroyService`](./src/lib/services/destroy.service.ts)
 
 A service for handling the `ngOnDestroy` lifecycle hook (deprecated in favor of Angular's `DestroyRef`):
 
