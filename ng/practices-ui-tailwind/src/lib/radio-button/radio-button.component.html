@@ -34,10 +34,16 @@
       ></div>
     </div>
   </div>
-  <div class="flex flex-col">
+  <div>
     {{ label }}
     @if (description) {
-      <span class="text-very-small">{{ description }}</span>
+      @if (descriptionAsTooltip) {
+        <pui-tooltip-button class="ml-1" ariaLabel="More information">
+          <p class="text-small">{{ description }}</p>
+        </pui-tooltip-button>
+      } @else {
+        <span class="block text-very-small">{{ description }}</span>
+      }
     }
   </div>
 </label>

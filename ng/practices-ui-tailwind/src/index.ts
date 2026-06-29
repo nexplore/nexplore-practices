@@ -103,6 +103,8 @@ export * from './lib/date-input/date-input.directive';
 export * from './lib/date-input/month-input.directive';
 export * from './lib/date-input/year-input.directive';
 
+export * from './lib/tooltip/tooltip.component';
+
 export * from './lib/radio-button/radio-button-group.component';
 export * from './lib/radio-button/radio-button.component';
 
@@ -198,4 +200,3 @@ export * from './lib/command/command-from-legacy-command-util';
 export * from './select.module';
 export * from './shell.module';
 export * from './table.module';
-
