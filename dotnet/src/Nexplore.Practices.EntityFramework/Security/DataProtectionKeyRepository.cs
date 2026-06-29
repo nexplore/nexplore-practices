@@ -40,7 +40,7 @@ namespace Nexplore.Practices.EntityFramework.Security
                 };
 
                 dataContext.Set<DataProtectionKey>().Add(newKey);
-                dataContext.SaveChanges();
+                dataContext.SaveChangesAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
         }
 
