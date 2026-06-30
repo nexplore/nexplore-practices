@@ -51,7 +51,7 @@ namespace Nexplore.Practices.EntityFramework.Generators
                         }
                     }
 
-                    var now = this.clock.Now;
+                    var now = this.clock.NowOffset;
                     foreach (var migrationToApply in migrationsToApply)
                     {
                         migrationToApply.GeneratorsApplied = now;

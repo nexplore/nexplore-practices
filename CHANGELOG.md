@@ -5,7 +5,26 @@ All notable changes to this library will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [11.3.0](https://github.com/nexplore/nexplore-practices/releases/tag/11.3.0) - 2026-06-24
+
+### Changed
+
+- `Practices.*` Updated Microsoft.Extensions.\* dependencies
+- `Practices.Core` Updated Autofac to 9.3.0
+- `Practices.EntityFramework` Updated Microsoft.EntityFrameworkCore.\* dependencies
+- `Practices.Mail` Updated MailKit to 4.17.0
+- `Practices.Serilog` Updated Serilog.Settings.Configuration to 10.0.1
+- `Practices.Syncfusion.Excel` Updated Syncfusion.XlsIO.Net.Core to 33.2.15
+- `Practices.Syncfusion.Pdf` Updated Syncfusion.Pdf.Net.Core to 33.2.15
+
+### Added
+
+- `Practices.Core` Added NowOffset and UtcNowOffset to `IClock`
+- `Practices.Core` Added TimeProviderClock
+
+### Changed
+
+-  _BREAKING_`Practices.Core` Changed Today and UtcToday on `IClock` from DateTime to DateOnly
 
 ## [11.2.2](https://github.com/nexplore/nexplore-practices/releases/tag/11.2.2) - 2026-06-17
 
@@ -13,6 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `practices-ui-ktbe` Added support for displaying buttons inside the `PuibeTableColumnComponent` via a slot that displays next to the sorting button
 - `practices-ui-ktbe` Added support for displaying subcaptions inside `PuibeExpansionPanelComponent` via a slot that displays after the optional caption
+- `practices-ui-ktbe` Added `PuibeTooltipComponent` for simple display of helper text or context information.
+- `practices-ui-ktbe` Added input on `PuibeRadioButtonComponent` to display `description` as a tooltip.
 
 ### Changed
 

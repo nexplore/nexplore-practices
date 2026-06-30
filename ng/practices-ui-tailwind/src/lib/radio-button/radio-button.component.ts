@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PuiFormFieldService } from '@nexplore/practices-ng-forms';
 import { map } from 'rxjs';
 import { RadioButtonGroupService } from './radio-button-group.service';
+import { PuiTooltipButtonComponent } from '../tooltip/tooltip.component';
 
 let nextUniqueId = 0;
 
@@ -12,7 +13,7 @@ let nextUniqueId = 0;
     selector: 'pui-radio-button',
     templateUrl: './radio-button.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, ReactiveFormsModule, AsyncPipe],
+    imports: [NgClass, ReactiveFormsModule, AsyncPipe, PuiTooltipButtonComponent],
 })
 export class PuiRadioButtonComponent {
     private _radioButtonGroupService = inject(RadioButtonGroupService);
@@ -26,6 +27,9 @@ export class PuiRadioButtonComponent {
 
     @Input()
     description: string;
+
+    @Input()
+    descriptionAsTooltip = false;
 
     uniqueId = `radio-button-${nextUniqueId++}`;
 
@@ -48,4 +52,3 @@ export class PuiRadioButtonComponent {
         this._radioButtonGroupService.setValue(this.value);
     }
 }
-

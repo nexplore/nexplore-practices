@@ -46,7 +46,7 @@ namespace Nexplore.Practices.Tests.Unit.Core.Security.Cryptography
             var encryptedData = service.EncryptDataAes(inputData, encryptPassword, out byte[] iv);
 
             // Act
-            TestDelegate act = () => service.DecryptDataAes(encryptedData, decryptPassword, iv);
+            Action act = () => service.DecryptDataAes(encryptedData, decryptPassword, iv);
 
             // Assert
             Assert.Throws<CryptographicException>(act);
@@ -71,7 +71,7 @@ namespace Nexplore.Practices.Tests.Unit.Core.Security.Cryptography
             var encryptedData = service1.EncryptDataAes(inputData, password, out byte[] iv);
 
             // Act
-            TestDelegate act = () => service2.DecryptDataAes(encryptedData, password, iv);
+            Action act = () => service2.DecryptDataAes(encryptedData, password, iv);
 
             // Assert
             Assert.Throws<CryptographicException>(act);
@@ -86,10 +86,10 @@ namespace Nexplore.Practices.Tests.Unit.Core.Security.Cryptography
 
             var service = new EncryptionService(new StaticSaltGenerationService());
 
-            var encryptedData = service.EncryptDataAes(inputData, password, out byte[] iv);
+            var encryptedData = service.EncryptDataAes(inputData, password, out byte[] _);
 
             // Act
-            TestDelegate act = () => service.DecryptDataAes(encryptedData, password, Array.Empty<byte>());
+            Action act = () => service.DecryptDataAes(encryptedData, password, Array.Empty<byte>());
 
             // Assert
             Assert.Throws<CryptographicException>(act);

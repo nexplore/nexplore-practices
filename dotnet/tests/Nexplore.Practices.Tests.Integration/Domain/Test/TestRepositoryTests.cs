@@ -36,16 +36,16 @@ namespace Nexplore.Practices.Tests.Integration.Domain.Test
         }
 
         [Test]
-        public void GetByIdAsync_WithNonExistingEntityId_ThrowsEntityNotFoundException()
+        public async Task GetByIdAsync_WithNonExistingEntityId_ThrowsEntityNotFoundException()
         {
             // Arrange
             using (var unitOfWork = this.unitOfWorkFactory.Begin())
             {
                 // Act
-                AsyncTestDelegate act = async () => await unitOfWork.Dependent.GetByIdAsync(Guid.NewGuid());
+                var act = async () => await unitOfWork.Dependent.GetByIdAsync(Guid.NewGuid());
 
                 // Assert
-                Assert.That(act, Throws.Exception.InstanceOf<EntityNotFoundException>());
+                await Assert.ThatAsync(act, Throws.Exception.InstanceOf<EntityNotFoundException>());
             }
         }
 

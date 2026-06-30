@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PuiFormFieldService } from '@nexplore/practices-ng-forms';
 import { map } from 'rxjs';
+import { PuibeTooltipButtonComponent } from '../tooltip/tooltip.component';
 import { RadioButtonGroupService } from './radio-button-group.service';
 
 let nextUniqueId = 0;
@@ -12,7 +13,7 @@ let nextUniqueId = 0;
     selector: 'puibe-radio-button',
     templateUrl: './radio-button.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, ReactiveFormsModule, AsyncPipe, NgIf],
+    imports: [NgClass, ReactiveFormsModule, AsyncPipe, NgIf, PuibeTooltipButtonComponent],
 })
 export class PuibeRadioButtonComponent {
     @Input()
@@ -23,6 +24,9 @@ export class PuibeRadioButtonComponent {
 
     @Input()
     description: string;
+
+    @Input()
+    descriptionAsTooltip = false;
 
     uniqueId = `radio-button-${nextUniqueId++}`;
 
