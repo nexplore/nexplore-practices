@@ -14,8 +14,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-### Changed
-
 - `Nexplore.Practices.EntityFramework` Introduced `IAsyncValidatable` for async validations
 - _BREAKING_ `Nexplore.Practices.EntityFramework` Removed sync version of SaveChanges for `IUnitOfWork`
 - _BREAKING_ `Nexplore.Practices.EntityFramework` Removed sync version of CommitDbTransaction for `IUnitOfWorkWithSingleDbTransaction`
