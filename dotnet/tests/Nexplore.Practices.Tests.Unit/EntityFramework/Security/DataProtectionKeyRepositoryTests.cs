@@ -1,30 +1,30 @@
 namespace Nexplore.Practices.Tests.Unit.EntityFramework.Security
 {
     using System;
-    using System.Threading;
-    using System.Threading.Tasks;
     using System.Xml.Linq;
     using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Storage;
     using Microsoft.Extensions.Logging.Abstractions;
+    using Microsoft.Extensions.Options;
     using Nexplore.Practices.EntityFramework.Configuration;
     using Nexplore.Practices.EntityFramework.Security;
-    using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
     public class DataProtectionKeyRepositoryTests
     {
         [Test]
-        public void StoreElement_WithAsyncOnlyDbContext_PersistsKey()
+        public void StoreElement_WithPlainDataProtectionContext_PersistsKeySynchronously()
         {
             // Arrange
             var databaseName = Guid.NewGuid().ToString();
-            var dbContextFactory = Substitute.For<IDbContextFactory>();
-            dbContextFactory.Create(Arg.Any<IDbContextTransaction>()).Returns(_ => CreateDataProtectionContext(databaseName));
-
-            var repository = new DataProtectionKeyRepository(NullLogger<DataMisalignedException>.Instance, dbContextFactory);
+            var contextOptionsProvider = new InMemoryContextOptionsProvider(databaseName);
+            var modelCreator = new DataProtectionTestModelCreator();
+            var repository = new DataProtectionKeyRepository(
+                NullLogger<DataMisalignedException>.Instance,
+                contextOptionsProvider,
+                modelCreator,
+                Options.Create(new DatabaseOptions()));
             var element = XElement.Parse("<key id=\"test-key\" />");
 
             // Act
@@ -49,6 +49,33 @@ namespace Nexplore.Practices.Tests.Unit.EntityFramework.Security
             return new TestDataProtectionContext(options);
         }
 
+        private sealed class InMemoryContextOptionsProvider : IDbContextOptionsProvider
+        {
+            private readonly string databaseName;
+
+            public InMemoryContextOptionsProvider(string databaseName)
+            {
+                this.databaseName = databaseName;
+            }
+
+            public void OnConfiguring(DbContextOptionsBuilder builder)
+            {
+                builder.UseInMemoryDatabase(this.databaseName);
+            }
+        }
+
+        private sealed class DataProtectionTestModelCreator : IDbModelCreator
+        {
+            public void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+            {
+            }
+
+            public void OnModelCreating(ModelBuilder builder)
+            {
+                builder.Entity<DataProtectionKey>();
+            }
+        }
+
         private sealed class TestDataProtectionContext : DbContext, IDataProtectionKeyContext
         {
             public TestDataProtectionContext(DbContextOptions<TestDataProtectionContext> options)
@@ -57,16 +84,6 @@ namespace Nexplore.Practices.Tests.Unit.EntityFramework.Security
             }
 
             public DbSet<DataProtectionKey> DataProtectionKeys { get; set; }
-
-            public override int SaveChanges(bool acceptAllChangesOnSuccess)
-            {
-                throw new NotSupportedException("Synchronous save is not supported anymore, use SaveChangesAsync.");
-            }
-
-            public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-            {
-                return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-            }
         }
     }
 }
