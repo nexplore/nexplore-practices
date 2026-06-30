@@ -5,11 +5,12 @@ namespace Nexplore.Practices.Core
     public class LocalComputerClock : IClock
     {
         public DateTime Now => DateTime.Now;
-
         public DateTime UtcNow => DateTime.UtcNow;
 
-        public DateTime Today => DateTime.Now.Date;
+        public DateTimeOffset NowOffset => DateTimeOffset.Now;
+        public DateTimeOffset UtcNowOffset => DateTimeOffset.UtcNow;
 
-        public DateTime UtcToday => DateTime.UtcNow.Date;
+        public DateOnly Today => DateOnly.FromDateTime(DateTime.Now);
+        public DateOnly UtcToday => DateOnly.FromDateTime(DateTime.UtcNow);
     }
 }
