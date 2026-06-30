@@ -7,11 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `Practices.Core` Added NowOffset and UtcNowOffset to `IClock`
+- `Practices.Core` Added TimeProviderClock
+
+### Changed
+
 ### Changed
 
 - `Nexplore.Practices.EntityFramework` Introduced `IAsyncValidatable` for async validations
 - _BREAKING_ `Nexplore.Practices.EntityFramework` Removed sync version of SaveChanges for `IUnitOfWork`
 - _BREAKING_ `Nexplore.Practices.EntityFramework` Removed sync version of CommitDbTransaction for `IUnitOfWorkWithSingleDbTransaction`
+- _BREAKING_ `Practices.Core` Changed Today and UtcToday on `IClock` from DateTime to DateOnly 
 
 ## [11.3.0](https://github.com/nexplore/nexplore-practices/releases/tag/11.3.0) - 2026-06-24
 
@@ -24,15 +32,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Practices.Serilog` Updated Serilog.Settings.Configuration to 10.0.1
 - `Practices.Syncfusion.Excel` Updated Syncfusion.XlsIO.Net.Core to 33.2.15
 - `Practices.Syncfusion.Pdf` Updated Syncfusion.Pdf.Net.Core to 33.2.15
-
-### Added
-
-- `Practices.Core` Added NowOffset and UtcNowOffset to `IClock`
-- `Practices.Core` Added TimeProviderClock
-- 
-### Changed
-
--  _BREAKING_`Practices.Core` Changed Today and UtcToday on `IClock` from DateTime to DateOnly
 
 ## [11.2.2](https://github.com/nexplore/nexplore-practices/releases/tag/11.2.2) - 2026-06-17
 
