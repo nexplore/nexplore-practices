@@ -25,12 +25,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Practices.Syncfusion.Excel` Updated Syncfusion.XlsIO.Net.Core to 33.2.15
 - `Practices.Syncfusion.Pdf` Updated Syncfusion.Pdf.Net.Core to 33.2.15
 
+### Added
+
+- `Practices.Core` Added NowOffset and UtcNowOffset to `IClock`
+- `Practices.Core` Added TimeProviderClock
+- 
+### Changed
+
+-  _BREAKING_`Practices.Core` Changed Today and UtcToday on `IClock` from DateTime to DateOnly
+
 ## [11.2.2](https://github.com/nexplore/nexplore-practices/releases/tag/11.2.2) - 2026-06-17
 
 ### Added
 
 - `practices-ui-ktbe` Added support for displaying buttons inside the `PuibeTableColumnComponent` via a slot that displays next to the sorting button
 - `practices-ui-ktbe` Added support for displaying subcaptions inside `PuibeExpansionPanelComponent` via a slot that displays after the optional caption
+- `practices-ui-ktbe` Added `PuibeTooltipComponent` for simple display of helper text or context information.
+- `practices-ui-ktbe` Added input on `PuibeRadioButtonComponent` to display `description` as a tooltip.
 
 ### Changed
 

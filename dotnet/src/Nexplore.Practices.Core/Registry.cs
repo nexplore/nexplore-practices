@@ -1,5 +1,6 @@
 namespace Nexplore.Practices.Core
 {
+    using System;
     using Autofac;
     using Autofac.Core.Lifetime;
     using Nexplore.Practices.Core.Administration;
@@ -12,7 +13,8 @@ namespace Nexplore.Practices.Core
         protected override void Load(ContainerBuilder builder)
         {
             // Configure global services
-            builder.RegisterType<LocalComputerClock>().As<IClock>().SingleInstance();
+            builder.RegisterInstance(TimeProvider.System).As<TimeProvider>().SingleInstance();
+            builder.RegisterType<TimeProviderClock>().As<IClock>().SingleInstance();
             builder.RegisterType<EncryptionService>().As<IEncryptionService>().SingleInstance();
             builder.RegisterType<StaticSaltGenerationService>().As<ISaltGenerationService>().SingleInstance();
             builder.RegisterType<ValidationHelper>().As<IValidationHelper>().SingleInstance();
