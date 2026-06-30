@@ -40,7 +40,7 @@ namespace Nexplore.Practices.Tests.Unit.File
         public void GetContentTypeFromFilename_WithoutEmptyFilename_ShouldThrowException()
         {
             // Act
-            TestDelegate act = () => this.mimeTypeMapping.GetContentTypeFromFileName(string.Empty);
+            var act = () => this.mimeTypeMapping.GetContentTypeFromFileName(string.Empty);
 
             // Assert
             Assert.That(act, Throws.Exception.InstanceOf<ArgumentException>());
@@ -50,7 +50,7 @@ namespace Nexplore.Practices.Tests.Unit.File
         public void GetContentTypeFromFilename_WithoutNullFilename_ShouldThrowException()
         {
             // Act
-            TestDelegate act = () => this.mimeTypeMapping.GetContentTypeFromFileName(null);
+            var act = () => this.mimeTypeMapping.GetContentTypeFromFileName(null);
 
             // Assert
             Assert.That(act, Throws.Exception.InstanceOf<ArgumentNullException>());
@@ -61,7 +61,7 @@ namespace Nexplore.Practices.Tests.Unit.File
             yield return new TestCaseData("unknown").Returns(MimeTypeMapping.DEFAULT_MIME_TYPE);
             yield return new TestCaseData("unknown.extension").Returns(MimeTypeMapping.DEFAULT_MIME_TYPE);
             yield return new TestCaseData("pdf").Returns(MimeTypeMapping.DEFAULT_MIME_TYPE);
-            yield return new TestCaseData("with.muliple.points.pdf").Returns("application/pdf");
+            yield return new TestCaseData("with.multiple.points.pdf").Returns("application/pdf");
             yield return new TestCaseData("file.test").Returns(TEST_MIME_TYPE);
         }
     }
