@@ -2,8 +2,8 @@
 # Categorizes merged PRs by the impact:* / type:* labels applied by the labeler.
 # Used by .github/workflows/release-drafter.yaml.
 
-name-template: 'v$RESOLVED_VERSION'
-tag-template: 'v$RESOLVED_VERSION'
+name-template: '$RESOLVED_VERSION'
+tag-template: '$RESOLVED_VERSION'
 commitish: refs/heads/main
 filter-by-commitish: true
 
@@ -13,7 +13,7 @@ template: |
   $CHANGES
 
   Packages are hosted here: https://github.com/orgs/nexplore/packages?repo_name=nexplore-practices
-  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
+  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...$RESOLVED_VERSION
 
 categories:
   - title: '⚠️ Breaking Changes'
