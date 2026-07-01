@@ -12,25 +12,43 @@
                     'p-3': compact,
                     'bg-dark-sand aria-expanded:bg-sand hover:bg-sand-hover focus:bg-sand-hover aria-expanded:hover:bg-sand-hover aria-expanded:focus:bg-sand-hover':
                         isSand,
-                    'bg-sand aria-expanded:bg-light-sand hover:bg-sand focus:bg-sand aria-expanded:hover:bg-sand aria-expanded:focus:bg-sand': 
+                    'bg-sand aria-expanded:bg-light-sand hover:bg-sand focus:bg-sand aria-expanded:hover:bg-sand aria-expanded:focus:bg-sand':
                         isLightSand,
                     'hover:bg-very-light-gray focus:bg-very-light-gray aria-expanded:hover:bg-very-light-gray aria-expanded:focus:bg-very-light-gray bg-white aria-expanded:bg-white':
                         isWhite,
                     'hover:bg-red-hover focus:bg-red-hover aria-expanded:hover:bg-red-hover aria-expanded:focus:bg-red-hover bg-red text-white':
-                        isRed,
+                        isRed
                 }"
                 (click)="toggle(accordionItem)"
             >
                 <span class="sr-only">{{ 'Practices.Labels_ExpansionPanel' | translate }}</span>
-                <div class="mr-6 flex flex-col items-start">
-                    <div class="flex items-center gap-4">
-                        <p *ngIf="heading" [ngClass]="compact ? 'text-base' : 'text-h4'">{{ heading }}</p>
-                        <ng-content select="[slot='heading-after']"></ng-content>
+                <div class="mr-6 flex min-w-0 flex-1 items-stretch">
+                    <div class="flex shrink-0 items-center self-stretch">
+                        <ng-content select="[slot='heading-before']"></ng-content>
                     </div>
-                    <p class="mt-1" *ngIf="caption">{{ caption }}</p>
-                    <ng-content select="[slot='caption-after']"></ng-content>
+                    <div class="flex min-w-0 flex-1 flex-col items-start">
+                        <div class="flex min-w-0 max-w-full items-center gap-4">
+                            <p
+                                #headingText
+                                *ngIf="heading"
+                                class="min-w-0"
+                                [ngClass]="[
+                                    compact ? 'text-base' : 'text-h4',
+                                    truncateHeading ? 'truncate' : 'whitespace-normal'
+                                ]"
+                                [attr.title]="truncateHeading ? heading : null"
+                            >
+                                {{ heading }}
+                            </p>
+
+                            <span #headingAfterInlineHost class="inline-flex shrink-0 items-center"></span>
+                        </div>
+                        <p class="mt-1" *ngIf="caption">{{ caption }}</p>
+                        <ng-content select="[slot='caption-after']"></ng-content>
+                    </div>
                 </div>
-                <div class="flex items-center gap-4">
+                <div class="flex shrink-0 items-center gap-4">
+                    <span #headingAfterActionHost class="inline-flex shrink-0 items-center"></span>
                     <ng-content select="[slot='arrow-before']"></ng-content>
                     <puibe-icon-arrow
                         direction="down"
@@ -38,6 +56,13 @@
                         class="rotate-0 transition-all duration-[250ms] ease-in-out group-hover:-rotate-90 group-aria-expanded:-rotate-180 group-aria-expanded:group-hover:-rotate-90"
                     ></puibe-icon-arrow>
                 </div>
+
+                <span
+                    #headingAfterWrapper
+                    class="inline-flex shrink-0 items-center whitespace-nowrap text-current [&_*]:text-current"
+                >
+                    <ng-content select="[slot='heading-after']"></ng-content>
+                </span>
             </button>
         </div>
         <div

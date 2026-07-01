@@ -1,3 +1,7 @@
+# NOTE: CHANGELOG.md is deprecated
+
+After the release of v11.3.0, please see the [GitHub release notes](https://github.com/nexplore/nexplore-practices/releases) for the practices in order to view the most up-to-date changes.
+
 # Changelog
 
 All notable changes to this library will be documented in this file.
@@ -19,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - _BREAKING_ `Nexplore.Practices.EntityFramework` Calling SaveChanges throws NotSupportedException
 - _BREAKING_ `Nexplore.Practices.EntityFramework` Removed sync version of CommitDbTransaction for `IUnitOfWorkWithSingleDbTransaction`
 - _BREAKING_ `Practices.Core` Changed Today and UtcToday on `IClock` from DateTime to DateOnly
+- `practices-ui-ktbe` Added support for displaying custom left heading inside `PuibeExpansionPanelComponent` via a `heading-before` slot
+- `practices-ui-ktbe` Added `truncateHeading` input to `PuibeExpansionPanelComponent` to truncate long headings with ellipsis.
 
 ## [11.3.0](https://github.com/nexplore/nexplore-practices/releases/tag/11.3.0) - 2026-06-24
 
