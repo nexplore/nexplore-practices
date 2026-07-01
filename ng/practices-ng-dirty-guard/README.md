@@ -24,7 +24,7 @@ npm install @nexplore/practices-ng-dirty-guard
 
 ## Features and Usage Examples
 
-### Navigation Guard - [`PuiDirtyGuardDirective`](./src/lib/directives/dirty-guard.directive.ts)
+### Navigation Guard - [`PuiGlobalDirtyGuardDirective`](./src/lib/directives/dirty-guard.directive.ts)
 
 Prevents accidental navigation when forms have unsaved changes. Apply the directive to your router-outlet:
 
@@ -47,7 +47,7 @@ bootstrapApplication(AppComponent, {
 Then, in your app component template:
 
 ```html
-<router-outlet puiDirtyGuard></router-outlet>
+<router-outlet puiGlobalDirtyGuard></router-outlet>
 ```
 
 ### Multiple Form Support
@@ -64,7 +64,7 @@ The dirty guard can track multiple forms in the same view, aggregating their dir
 </form>
 ```
 
-### Nested Routes Support - [`PuiNestedDirtyGuardDirective`](./src/lib/directives/nested-dirty-guard.directive.ts)
+### Nested Routes Support - [`PuiNestedDirtyGuardDirective`](./src/lib/directives/dirty-guard-nested.directive.ts)
 
 For applications using nested router-outlets, use the `PuiNestedDirtyGuardDirective` to ensure the dirty guard works properly in child routes:
 
