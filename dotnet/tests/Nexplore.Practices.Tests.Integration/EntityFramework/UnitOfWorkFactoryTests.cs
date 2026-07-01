@@ -42,7 +42,7 @@ namespace Nexplore.Practices.Tests.Integration.EntityFramework
         {
             // Arrange
             var entityId = Guid.Empty;
-            using (var unitOfWork = this.unitOfWorkFactory.BeginWithSingleDbTransaction())
+            using (var unitOfWork = await this.unitOfWorkFactory.BeginWithSingleDbTransactionAsync())
             {
                 var entity = unitOfWork.Dependent.Create();
                 entity.FirstName = "Test Firstname";
@@ -70,7 +70,7 @@ namespace Nexplore.Practices.Tests.Integration.EntityFramework
         {
             // Arrange
             var entityId = Guid.Empty;
-            using (var unitOfWork = this.unitOfWorkFactory.BeginWithSingleDbTransaction())
+            using (var unitOfWork = await this.unitOfWorkFactory.BeginWithSingleDbTransactionAsync())
             {
                 var entity = unitOfWork.Dependent.Create();
                 entity.FirstName = "Test Firstname";
@@ -80,7 +80,7 @@ namespace Nexplore.Practices.Tests.Integration.EntityFramework
 
                 // Act
                 await unitOfWork.SaveChangesAsync();
-                unitOfWork.CommitDbTransaction();
+                await unitOfWork.CommitDbTransactionAsync();
 
                 entityId = entity.Id;
             }
@@ -100,7 +100,7 @@ namespace Nexplore.Practices.Tests.Integration.EntityFramework
         [Test]
         public async Task BeginWithSingleDbTransaction_WithChildUnitOfWork_ShareTransaction()
         {
-            using (var superUnit = this.unitOfWorkFactory.BeginWithSingleDbTransaction())
+            using (var superUnit = await this.unitOfWorkFactory.BeginWithSingleDbTransactionAsync())
             {
                 // Arrange
                 var entityId = Guid.Empty;
@@ -128,7 +128,7 @@ namespace Nexplore.Practices.Tests.Integration.EntityFramework
                     Assert.That(entity.LastName, Is.EqualTo("Test Lastname"));
                 }
 
-                superUnit.CommitDbTransaction();
+                await superUnit.CommitDbTransactionAsync();
             }
         }
 
@@ -136,8 +136,8 @@ namespace Nexplore.Practices.Tests.Integration.EntityFramework
         public async Task BeginWithSingleDbTransaction_InSeparatedUnitOfWorks_AreIsolatedUntilCommitDbTransaction()
         {
             // Arrange
-            using (var leftUnit = this.unitOfWorkFactory.BeginWithSingleDbTransaction())
-            using (var rightUnit = this.unitOfWorkFactory.BeginWithSingleDbTransaction())
+            using (var leftUnit = await this.unitOfWorkFactory.BeginWithSingleDbTransactionAsync())
+            using (var rightUnit = await this.unitOfWorkFactory.BeginWithSingleDbTransactionAsync())
             {
                 var entity = leftUnit.Dependent.Create();
                 entity.FirstName = "Test Firstname";
@@ -155,7 +155,7 @@ namespace Nexplore.Practices.Tests.Integration.EntityFramework
                 Assert.That(rightEntityTry, Is.Null);
 
                 // Act
-                leftUnit.CommitDbTransaction();
+                await leftUnit.CommitDbTransactionAsync();
 
                 // Assert
                 var rightEntitySecondTry = await rightUnit.Dependent.GetByIdOrDefaultAsync(entityId);

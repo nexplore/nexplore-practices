@@ -1,7 +1,6 @@
 namespace Nexplore.Practices.EntityFramework
 {
     using System;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
@@ -50,21 +49,12 @@ namespace Nexplore.Practices.EntityFramework
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
-            this.PrepareSaveChanges();
-
-            try
-            {
-                return base.SaveChanges(acceptAllChangesOnSuccess);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw new ConcurrencyException();
-            }
+            throw new NotSupportedException("Synchronous save is not supported anymore, use SaveChangesAsync.");
         }
 
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
-            this.PrepareSaveChanges();
+            await this.PrepareSaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             try
             {
@@ -76,13 +66,13 @@ namespace Nexplore.Practices.EntityFramework
             }
         }
 
-        protected virtual void PrepareSaveChanges()
+        protected virtual async ValueTask PrepareSaveChangesAsync(CancellationToken cancellationToken)
         {
             this.ChangeTracker.DetectChanges();
 
             this.EnrichMetadata();
 
-            this.Validate(detectChangesOnChangeTracker: false);
+            await this.ValidateAsync(detectChangesOnChangeTracker: false, cancellationToken).ConfigureAwait(false);
         }
 
         protected virtual void EnrichMetadata()
@@ -108,10 +98,10 @@ namespace Nexplore.Practices.EntityFramework
             this.auditHistoryProvider.Value.CreateAuditHistory();
         }
 
-        protected virtual void Validate(bool detectChangesOnChangeTracker)
+        protected virtual async ValueTask ValidateAsync(bool detectChangesOnChangeTracker, CancellationToken cancellationToken)
         {
-            var validationResults = this.validationProvider.Value.Validate(detectChangesOnChangeTracker).ToArray();
-            if (validationResults.Length != 0)
+            var validationResults = await this.validationProvider.Value.ValidateAsync(detectChangesOnChangeTracker, cancellationToken).ConfigureAwait(false);
+            if (validationResults.Count != 0)
             {
                 throw new EntityValidationException(validationResults);
             }

@@ -8,8 +8,6 @@ namespace Nexplore.Practices.Core.Scopes
     /// </summary>
     public interface IUnitOfWork : IChildScope
     {
-        void SaveChanges();
-
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 
