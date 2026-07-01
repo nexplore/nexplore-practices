@@ -1,0 +1,91 @@
+# Minimal release-drafter config, inspired by OpenDevicePartnership/patina.
+# Categorizes merged PRs by the impact:* / type:* labels applied by the labeler.
+# Used by .github/workflows/release-drafter.yaml.
+
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+commitish: refs/heads/main
+filter-by-commitish: true
+
+template: |
+  # What's Changed
+
+  $CHANGES
+
+  Packages are hosted here: https://github.com/orgs/nexplore/packages?repo_name=nexplore-practices
+  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
+
+categories:
+  - title: '⚠️ Breaking Changes'
+    when:
+      labels:
+        - 'impact:breaking-change'
+  - title: '🚀 Features & ✨ Enhancements'
+    when:
+      labels:
+        - 'type:enhancement'
+        - 'type:feature-request'
+  - title: '🐛 Bug Fixes'
+    when:
+      labels:
+        - 'type:bug'
+  - title: '🔐 Security Impacting'
+    when:
+      labels:
+        - 'impact:security'
+  - title: '📖 Documentation'
+    when:
+      labels:
+        - 'type:documentation'
+  - title: '🧪 Tests'
+    when:
+      labels:
+        - 'impact:testing'
+
+  # type: version-resolver categories only affect the bump, not the changelog.
+  - type: version-resolver
+    semver-increment: major
+    when:
+      labels:
+        - 'semver:major'
+        - 'impact:breaking-change'
+  - type: version-resolver
+    semver-increment: minor
+    when:
+      labels:
+        - 'semver:minor'
+        - 'type:enhancement'
+        - 'type:feature-request'
+  - type: version-resolver
+    semver-increment: patch
+    when:
+      labels:
+        - 'semver:patch'
+        - 'impact:non-functional'
+        - 'type:bug'
+        - 'type:documentation'
+  # No `when` → default increment when nothing else matches (was `default: patch`).
+  - type: version-resolver
+    semver-increment: patch
+
+change-template: >-
+  <ul>
+    <li>
+      $TITLE @$AUTHOR (#$NUMBER)
+      <br>
+      <details>
+        <summary>Change Details</summary>
+        <blockquote>
+          <!-- Non-breaking space to have content if body is empty -->
+          &nbsp; $BODY
+        </blockquote>
+        <hr>
+      </details>
+    </li>
+  </ul>
+
+change-title-escapes: '\<*_&@' # Note: @ is added to disable mentions
+
+exclude-contributors:
+  - 'github-actions[bot]'
+  - 'dependabot[bot]'

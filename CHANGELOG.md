@@ -1,3 +1,7 @@
+# NOTE: CHANGELOG.md is deprecated
+
+After the release of v11.3.0, please see the [GitHub release notes](https://github.com/nexplore/nexplore-practices/releases) for the practices in order to view the most up-to-date changes.
+
 # Changelog
 
 All notable changes to this library will be documented in this file.
