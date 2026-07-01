@@ -98,7 +98,7 @@ namespace Nexplore.Practices.Tests.Unit.Web.Localization
             this.localizationOptionsMock.Value.Returns(localizationOptions);
 
             // Act
-            TestDelegate act = () => this.clientLocalizationService.GetLocalizationsForCulture(CultureInfo.InvariantCulture);
+            var act = () => this.clientLocalizationService.GetLocalizationsForCulture(CultureInfo.InvariantCulture);
 
             // Assert
             Assert.That(act, Throws.ArgumentException);
