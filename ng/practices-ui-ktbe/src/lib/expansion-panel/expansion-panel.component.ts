@@ -22,6 +22,13 @@ let nextUniqueId = 0;
 
 const ANIMATION_DURATION_MS = 225;
 
+type HeadingAfterLayout = {
+    heading: HTMLElement;
+    headingAfterWrapper: HTMLElement;
+    headingAfterInlineHost: HTMLElement;
+    headingAfterActionHost: HTMLElement;
+};
+
 const bodyExpansionAnimation: AnimationTriggerMetadata = trigger('bodyExpansion', [
     state(
         'collapsed',
@@ -205,22 +212,73 @@ export class PuibeExpansionPanelComponent implements OnInit, AfterViewInit, OnCh
     }
 
     private updateHeadingAfterPosition(): void {
-        const heading = this.headingText?.nativeElement;
-        const wrapper = this.headingAfterWrapper?.nativeElement;
-        const inlineHost = this.headingAfterInlineHost?.nativeElement;
-        const actionHost = this.headingAfterActionHost?.nativeElement;
+        const layout = this.getHeadingAfterLayout();
 
-        if (!heading || !wrapper || !inlineHost || !actionHost) {
+        if (!layout) {
             return;
         }
 
-        const lineHeight = parseFloat(getComputedStyle(heading).lineHeight);
-        const isWrapped = heading.clientHeight > lineHeight * 1.5;
-        const shouldMoveToActions = !this.truncateHeading && isWrapped;
-        const target = shouldMoveToActions ? actionHost : inlineHost;
+        const shouldRenderInActionArea = this.shouldRenderHeadingAfterInActionArea(layout.heading);
+        const targetHost = shouldRenderInActionArea ? layout.headingAfterActionHost : layout.headingAfterInlineHost;
 
-        if (wrapper.parentElement !== target) {
-            target.appendChild(wrapper);
+        this.updateInlineHostReservation(
+            layout.headingAfterInlineHost,
+            layout.headingAfterWrapper,
+            shouldRenderInActionArea
+        );
+        this.moveHeadingAfterWrapper(layout.headingAfterWrapper, targetHost);
+    }
+
+    private getHeadingAfterLayout(): HeadingAfterLayout | undefined {
+        const heading = this.headingText?.nativeElement;
+        const headingAfterWrapper = this.headingAfterWrapper?.nativeElement;
+        const headingAfterInlineHost = this.headingAfterInlineHost?.nativeElement;
+        const headingAfterActionHost = this.headingAfterActionHost?.nativeElement;
+
+        if (!heading || !headingAfterWrapper || !headingAfterInlineHost || !headingAfterActionHost) {
+            return undefined;
+        }
+
+        return {
+            heading,
+            headingAfterWrapper,
+            headingAfterInlineHost,
+            headingAfterActionHost,
+        };
+    }
+
+    private shouldRenderHeadingAfterInActionArea(heading: HTMLElement): boolean {
+        if (this.truncateHeading) {
+            return false;
+        }
+
+        // If heading wraps to more than one line (> 1.5× line height),
+        // render the heading-after content in the action area (left to arrow-before).
+        const computedLineHeight = parseFloat(getComputedStyle(heading).lineHeight);
+        return heading.clientHeight > computedLineHeight * 1.5;
+    }
+
+    private updateInlineHostReservation(
+        inlineHost: HTMLElement,
+        headingAfterWrapper: HTMLElement,
+        shouldReserveInlineSpace: boolean
+    ): void {
+        // Reserve inline space for the heading-after wrapper to prevent DOM oscillation:
+        // When moving the wrapper to the action area, we keep the inline area width reserved
+        // so the heading doesn't reflow and become single-line again, which would cause
+        // the wrapper to move back inline on the next resize, creating a flicker loop.
+        if (shouldReserveInlineSpace) {
+            const wrapperWidth = Math.ceil(headingAfterWrapper.getBoundingClientRect().width);
+            inlineHost.style.minWidth = `${wrapperWidth}px`;
+        } else {
+            inlineHost.style.minWidth = '';
+        }
+    }
+
+    private moveHeadingAfterWrapper(headingAfterWrapper: HTMLElement, targetHost: HTMLElement): void {
+        // Only move if the DOM parent actually changed to avoid unnecessary reflows.
+        if (headingAfterWrapper.parentElement !== targetHost) {
+            targetHost.appendChild(headingAfterWrapper);
             this.cdr.markForCheck();
         }
     }
