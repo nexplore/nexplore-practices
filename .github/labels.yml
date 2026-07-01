@@ -1,0 +1,49 @@
+# Canonical label definitions, synced to the repo by .github/workflows/label-sync.yaml.
+# Format: https://github.com/crazy-max/ghaction-github-labeler
+
+- name: impact:breaking-change
+  description: Requires integration attention
+  color: 'a54418'
+  aliases: []
+- name: impact:non-functional
+  description: Does not have a functional impact
+  color: 'c2e0c6'
+  aliases: []
+- name: impact:security
+  description: Has a security impact
+  color: '31df8c'
+  aliases: []
+- name: impact:testing
+  description: Affects testing
+  color: 'd4c5f9'
+  aliases: []
+
+- name: type:bug
+  description: Something isn't working
+  color: 'd73a4a'
+  aliases: []
+- name: type:documentation
+  description: Improvements or additions to documentation
+  color: '0075ca'
+  aliases: []
+- name: type:enhancement
+  description: New feature or pull request
+  color: 'a2eeef'
+  aliases: []
+- name: type:feature-request
+  description: A new feature proposal
+  color: 'a9dfbf'
+  aliases: []
+
+- name: semver:major
+  description: Pull requests that should increment the release major version
+  color: '000000'
+  aliases: []
+- name: semver:minor
+  description: Pull requests that should increment the release minor version
+  color: '000000'
+  aliases: []
+- name: semver:patch
+  description: Pull requests that should increment the release patch version
+  color: '000000'
+  aliases: []

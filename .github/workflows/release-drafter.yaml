@@ -1,0 +1,25 @@
+name: "release-drafter"
+
+# Maintains a draft GitHub release, updating its notes on every push to main
+# based on merged pull requests and their impact:* / type:* labels.
+# Config: .github/release-draft-config.yml
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  draft:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Update release draft
+        uses: release-drafter/release-drafter@4d75298e00d9e34c483e5ff8c68d0ea1c1940c1e # v7.5.1
+        with:
+          config-name: release-draft-config.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
