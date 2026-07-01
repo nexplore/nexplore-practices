@@ -1,7 +1,19 @@
 import { animate, AnimationTriggerMetadata, state, style, transition, trigger } from '@angular/animations';
 import { CdkAccordionItem, CdkAccordionModule } from '@angular/cdk/accordion';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnInit, ViewChild } from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    HostBinding,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PuibeIconArrowComponent } from '../icons/icon-arrow.component';
 import { isElementVisibleInVerticalScrollView } from '../util/utils';
@@ -9,6 +21,13 @@ import { isElementVisibleInVerticalScrollView } from '../util/utils';
 let nextUniqueId = 0;
 
 const ANIMATION_DURATION_MS = 225;
+
+type HeadingAfterLayout = {
+    heading: HTMLElement;
+    headingAfterWrapper: HTMLElement;
+    headingAfterInlineHost: HTMLElement;
+    headingAfterActionHost: HTMLElement;
+};
 
 const bodyExpansionAnimation: AnimationTriggerMetadata = trigger('bodyExpansion', [
     state(
@@ -38,7 +57,7 @@ const bodyExpansionAnimation: AnimationTriggerMetadata = trigger('bodyExpansion'
     imports: [CdkAccordionModule, PuibeIconArrowComponent, CommonModule, TranslateModule],
     animations: [bodyExpansionAnimation],
 })
-export class PuibeExpansionPanelComponent implements OnInit {
+export class PuibeExpansionPanelComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
     @HostBinding('class')
     className = 'block';
 
@@ -47,6 +66,18 @@ export class PuibeExpansionPanelComponent implements OnInit {
 
     @ViewChild('content', { static: true })
     contentRef: ElementRef<HTMLElement>;
+
+    @ViewChild('headingText')
+    headingText?: ElementRef<HTMLElement>;
+
+    @ViewChild('headingAfterWrapper')
+    headingAfterWrapper?: ElementRef<HTMLElement>;
+
+    @ViewChild('headingAfterInlineHost')
+    headingAfterInlineHost?: ElementRef<HTMLElement>;
+
+    @ViewChild('headingAfterActionHost')
+    headingAfterActionHost?: ElementRef<HTMLElement>;
 
     private _id: string = (nextUniqueId++).toString();
     @Input()
@@ -96,6 +127,12 @@ export class PuibeExpansionPanelComponent implements OnInit {
     @Input()
     enableContentScroll = false;
 
+    /**
+     * If `true`, truncates the heading text with ellipsis when it overflows.
+     */
+    @Input()
+    truncateHeading = false;
+
     get isSand(): boolean {
         return this.variant === 'sand';
     }
@@ -116,10 +153,33 @@ export class PuibeExpansionPanelComponent implements OnInit {
     // `isInitiallyCollapsed` is only true, if `isExpanded` is initially false. As soon `isExpanded` gets changed, `isInitiallyCollapsed` gets reset to false.
     isInitiallyCollapsed?: boolean = undefined;
 
-    constructor(private elRef: ElementRef<HTMLElement>) {}
+    private resizeObserver?: ResizeObserver;
+
+    constructor(private elRef: ElementRef<HTMLElement>, private cdr: ChangeDetectorRef) {}
 
     ngOnInit(): void {
         this.isInitiallyCollapsed = !this.isExpanded;
+    }
+
+    ngAfterViewInit(): void {
+        this.resizeObserver = new ResizeObserver(() => this.updateHeadingAfterPosition());
+
+        queueMicrotask(() => {
+            if (this.headingText?.nativeElement) {
+                this.resizeObserver?.observe(this.headingText.nativeElement);
+            }
+
+            this.resizeObserver?.observe(this.elRef.nativeElement);
+            this.updateHeadingAfterPosition();
+        });
+    }
+
+    ngOnChanges(): void {
+        queueMicrotask(() => this.updateHeadingAfterPosition());
+    }
+
+    ngOnDestroy(): void {
+        this.resizeObserver?.disconnect();
     }
 
     _getExpandedState(): 'expanded' | 'collapsed' {
@@ -149,5 +209,77 @@ export class PuibeExpansionPanelComponent implements OnInit {
         setTimeout(() => {
             this.elRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }, timeout);
+    }
+
+    private updateHeadingAfterPosition(): void {
+        const layout = this.getHeadingAfterLayout();
+
+        if (!layout) {
+            return;
+        }
+
+        const shouldRenderInActionArea = this.shouldRenderHeadingAfterInActionArea(layout.heading);
+        const targetHost = shouldRenderInActionArea ? layout.headingAfterActionHost : layout.headingAfterInlineHost;
+
+        this.updateInlineHostReservation(
+            layout.headingAfterInlineHost,
+            layout.headingAfterWrapper,
+            shouldRenderInActionArea
+        );
+        this.moveHeadingAfterWrapper(layout.headingAfterWrapper, targetHost);
+    }
+
+    private getHeadingAfterLayout(): HeadingAfterLayout | undefined {
+        const heading = this.headingText?.nativeElement;
+        const headingAfterWrapper = this.headingAfterWrapper?.nativeElement;
+        const headingAfterInlineHost = this.headingAfterInlineHost?.nativeElement;
+        const headingAfterActionHost = this.headingAfterActionHost?.nativeElement;
+
+        if (!heading || !headingAfterWrapper || !headingAfterInlineHost || !headingAfterActionHost) {
+            return undefined;
+        }
+
+        return {
+            heading,
+            headingAfterWrapper,
+            headingAfterInlineHost,
+            headingAfterActionHost,
+        };
+    }
+
+    private shouldRenderHeadingAfterInActionArea(heading: HTMLElement): boolean {
+        if (this.truncateHeading) {
+            return false;
+        }
+
+        // If heading wraps to more than one line (> 1.5× line height),
+        // render the heading-after content in the action area (left to arrow-before).
+        const computedLineHeight = parseFloat(getComputedStyle(heading).lineHeight);
+        return heading.clientHeight > computedLineHeight * 1.5;
+    }
+
+    private updateInlineHostReservation(
+        inlineHost: HTMLElement,
+        headingAfterWrapper: HTMLElement,
+        shouldReserveInlineSpace: boolean
+    ): void {
+        // Reserve inline space for the heading-after wrapper to prevent DOM oscillation:
+        // When moving the wrapper to the action area, we keep the inline area width reserved
+        // so the heading doesn't reflow and become single-line again, which would cause
+        // the wrapper to move back inline on the next resize, creating a flicker loop.
+        if (shouldReserveInlineSpace) {
+            const wrapperWidth = Math.ceil(headingAfterWrapper.getBoundingClientRect().width);
+            inlineHost.style.minWidth = `${wrapperWidth}px`;
+        } else {
+            inlineHost.style.minWidth = '';
+        }
+    }
+
+    private moveHeadingAfterWrapper(headingAfterWrapper: HTMLElement, targetHost: HTMLElement): void {
+        // Only move if the DOM parent actually changed to avoid unnecessary reflows.
+        if (headingAfterWrapper.parentElement !== targetHost) {
+            targetHost.appendChild(headingAfterWrapper);
+            this.cdr.markForCheck();
+        }
     }
 }
