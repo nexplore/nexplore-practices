@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - _BREAKING_ `Nexplore.Practices.EntityFramework` Removed sync version of SaveChanges for `IUnitOfWork`
 - _BREAKING_ `Nexplore.Practices.EntityFramework` Calling SaveChanges throws NotSupportedException
 - _BREAKING_ `Nexplore.Practices.EntityFramework` Removed sync version of CommitDbTransaction for `IUnitOfWorkWithSingleDbTransaction`
-- _BREAKING_ `Practices.Core` Changed Today and UtcToday on `IClock` from DateTime to DateOnly 
+- _BREAKING_ `Practices.Core` Changed Today and UtcToday on `IClock` from DateTime to DateOnly
 
 ## [11.3.0](https://github.com/nexplore/nexplore-practices/releases/tag/11.3.0) - 2026-06-24
 
