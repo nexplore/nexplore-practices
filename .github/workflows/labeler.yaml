@@ -1,0 +1,32 @@
+name: "labeler"
+
+on:
+  pull_request_target:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  label:
+    name: Label PRs
+    runs-on: ubuntu-slim
+    steps:
+      - name: Apply Labels Based on PR File Paths
+        uses: actions/labeler@f27b608878404679385c85cfa523b85ccb86e213 # v6.1.0
+        with:
+          configuration-path: .github/workflows/labeler/branches.yml
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          sync-labels: false # Whether or not to remove labels when matching files are reverted or no longer changed by the PR
+
+      - name: Label pull request from description
+        uses: github/issue-labeler@c1b0f9f52a63158c4adc09425e858e87b32e9685 # v3.4
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/workflows/labeler/regex-pull-requests.yml
+          enable-versioned-regex: 0
+          include-title: 0
+          include-body: 1
+          sync-labels: 1

@@ -1,0 +1,22 @@
+# Labels applied to pull requests based on the checkboxes in the PR description.
+# Used by .github/workflows/labeler.yaml via github/issue-labeler.
+# See: https://github.com/github/issue-labeler
+#
+# These labels drive the Release notes categories in .github/release.yml.
+#
+# Keep labels in ascending alphabetical order.
+
+impact:breaking-change:
+  - '\s*-\s*\[\s*[xX]\s*\] Breaking change\?'
+
+impact:non-functional:
+  - '\s*-\s*\[\s*(?![xX])\s*\] Impacts functionality\?'
+
+impact:security:
+  - '\s*-\s*\[\s*[xX]\s*\] Impacts security\?'
+
+impact:testing:
+  - '\s*-\s*\[\s*[xX]\s*\] Includes tests\?'
+
+type:documentation:
+  - '\s*-\s*\[\s*[xX]\s*\] Includes documentation\?'
