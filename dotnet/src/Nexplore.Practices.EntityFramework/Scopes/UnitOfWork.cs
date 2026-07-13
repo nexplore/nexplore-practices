@@ -19,11 +19,6 @@ namespace Nexplore.Practices.EntityFramework.Scopes
             this.lifetimeScope = lifetimeScope;
         }
 
-        public void SaveChanges()
-        {
-            this.context.SaveChanges();
-        }
-
         public Task SaveChangesAsync(CancellationToken cancellationToken)
         {
             return this.context.SaveChangesAsync(cancellationToken);

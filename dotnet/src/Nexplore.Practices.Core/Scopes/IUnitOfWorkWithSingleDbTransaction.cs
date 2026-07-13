@@ -8,8 +8,6 @@ namespace Nexplore.Practices.Core.Scopes
     /// </summary>
     public interface IUnitOfWorkWithSingleDbTransaction : IUnitOfWork
     {
-        void CommitDbTransaction();
-
         Task CommitDbTransactionAsync(CancellationToken cancellationToken = default);
     }
 
