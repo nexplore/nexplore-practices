@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `Nexplore.Practices.EntityFramework` Made `QuerySplittingBehaviour` configurable (SingleQuery stays the default)
+
+## [12.0.0](https://github.com/nexplore/nexplore-practices/releases/tag/12.0.0) - 2026-06-24
+
 ### Added
 
 - `Practices.Core` Added NowOffset and UtcNowOffset to `IClock`
