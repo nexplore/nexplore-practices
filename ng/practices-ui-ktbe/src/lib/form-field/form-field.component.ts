@@ -1,13 +1,17 @@
 import { AsyncPipe, NgClass, NgComponentOutlet, NgFor, NgIf } from '@angular/common';
 import {
-    AfterViewInit,
     ChangeDetectionStrategy,
     Component,
-    ContentChild,
-    HostBinding,
+    computed,
+    contentChild,
+    effect,
+    ElementRef,
     Input,
     Optional,
+    signal,
+    viewChild,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { PuiFormFieldDirective } from '@nexplore/practices-ng-forms';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -32,6 +36,8 @@ import { FormFieldIconConfig, FormFieldService } from './form-field.service';
 import { PuibeLabelDirective } from './label.directive';
 
 const className = 'block';
+const fieldTopSpacingPx = 20;
+const labelBadgeGapPx = 8;
 
 const iconContainerDefaultClassName = 'absolute right-[2px] top-[2px] z-10 flex h-[56px] items-center';
 const iconDefaultClassName = 'h-8 w-8 mb-[2px] mr-4';
@@ -65,10 +71,13 @@ const overlayTextEmptyClassName = 'text-opacity-60';
     selector: 'puibe-form-field',
     standalone: true,
     templateUrl: './form-field.component.html',
+    host: {
+        class: className,
+        '[style.padding-top]': 'hostPaddingTopSignal()',
+    },
 })
-export class PuibeFormFieldComponent implements AfterViewInit {
+export class PuibeFormFieldComponent {
     isReadonly$ = this._readonlyDirective?.isReadonly$ ?? of(false);
-    labelString: string;
     readonly ngControlValue$ = this._formFieldService.readonlyValue$;
 
     private readonly _hideOptionalSubject = new BehaviorSubject<boolean>(false);
@@ -88,10 +97,16 @@ export class PuibeFormFieldComponent implements AfterViewInit {
     @Input()
     readonlyEmptyValuePlaceholder: string;
 
-    @ContentChild(PuibeLabelDirective) label: PuibeLabelDirective;
+    readonly labelSignal = contentChild(PuibeLabelDirective);
 
-    @HostBinding('class')
-    className = className;
+    get label(): PuibeLabelDirective | undefined {
+        return this.labelSignal();
+    }
+
+    readonly optionalBadgeSignal = viewChild<ElementRef<HTMLElement>>('optionalBadge');
+
+    private readonly _labelStringSignal = signal('');
+    protected readonly labelStringSignal = this._labelStringSignal.asReadonly();
 
     id$ = this._formFieldService.id$;
     isOptional$ = this._formFieldService.isRequired$.pipe(
@@ -191,13 +206,50 @@ export class PuibeFormFieldComponent implements AfterViewInit {
         shareReplay({ refCount: true, bufferSize: 1 })
     );
 
+    private readonly _shouldShowLabelAboveFieldSignal = toSignal(this.shouldShowLabelAboveField$, {
+        initialValue: false,
+    });
+    protected readonly hostPaddingTopSignal = computed(() => {
+        const label = this.labelSignal();
+        if (!label) {
+            return '';
+        }
+        const floating = !!this._shouldShowLabelAboveFieldSignal() || label.alwaysVisibleSignal();
+        const reserved = floating ? Math.max(fieldTopSpacingPx, label.heightSignal()) : fieldTopSpacingPx;
+        return `${reserved}px`;
+    });
+
     constructor(
         private _formFieldService: FormFieldService,
+        private readonly _elementRef: ElementRef<HTMLElement>,
         @Optional() private readonly _readonlyDirective: PuibeReadonlyDirective
-    ) {}
+    ) {
+        effect(() => {
+            const label = this.labelSignal();
+            if (label) {
+                this._labelStringSignal.set(label.labelTextSignal());
+            }
+        });
 
-    ngAfterViewInit() {
-        this.labelString = this.label?.getLabel();
+        effect(() => {
+            this.labelSignal()?.setShouldShowAbove(!!this._shouldShowLabelAboveFieldSignal());
+        });
+
+        effect((onCleanup) => {
+            const badge = this.optionalBadgeSignal()?.nativeElement;
+            const label = this.labelSignal();
+            if (!badge || !label) {
+                label?.setBoundaryRight(null);
+                return;
+            }
+
+            const update = () => label.setBoundaryRight(badge.offsetLeft - labelBadgeGapPx);
+            update();
+
+            const observer = new ResizeObserver(update);
+            observer.observe(this._elementRef.nativeElement);
+            onCleanup(() => observer.disconnect());
+        });
     }
 
     onClear() {

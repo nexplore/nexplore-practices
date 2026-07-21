@@ -338,3 +338,98 @@ export const ReadonlyTextareaWithCustomEmptyPlaceholder: Story = {
         readonlyEmptyValuePlaceholder: 'Custom Value',
     },
 };
+
+const LONG_LABEL = 'Hier können Sie das selbstverletzende Verhalten qualitativ beschreiben (inkl. Auslösefaktoren)';
+const VERY_LONG_LABEL =
+    'Weitere selbstverletzende Verhaltensweisen, die in J1 nicht aufgeführt sind, sowie ergänzende Beobachtungen und Hinweise für die weitere Begleitung und Betreuung im Alltag';
+
+export const LongLabelTextInput: Story = {
+    name: 'Long label – text input (filled)',
+    args: {
+        value: 'Ein bereits eingegebener Wert',
+        label: LONG_LABEL,
+        inputType: 'text',
+    },
+};
+
+export const LongLabelTextInputEmpty: Story = {
+    name: 'Long label – text input (empty / placeholder)',
+    args: {
+        label: LONG_LABEL,
+        inputType: 'text',
+    },
+};
+
+export const LongLabelAlwaysVisible: Story = {
+    name: 'Long label – always visible',
+    args: {
+        label: VERY_LONG_LABEL,
+        inputType: 'text',
+        labelAlwaysVisible: true,
+    },
+};
+
+export const LongLabelTextarea: Story = {
+    name: 'Long label – textarea (filled)',
+    args: {
+        value: 'sdfsdf',
+        label: VERY_LONG_LABEL,
+        inputType: 'textarea',
+    },
+};
+
+export const LongLabelWithError: Story = {
+    name: 'Long label – required with error',
+    render: () => {
+        const control = new FormControl('', Validators.required);
+        control.markAsTouched();
+        return {
+            props: { formGroup: new FormGroup({ value: control }) },
+            template: `
+                <puibe-form-field class="w-1/2" [formGroup]="formGroup">
+                    <label puibeLabel>${LONG_LABEL}</label>
+                    <input puibeInput type="text" formControlName="value" />
+                </puibe-form-field>`,
+        };
+    },
+};
+
+export const LongLabelWithErrorAlwaysVisible: Story = {
+    name: 'Long label – required with error (always visible)',
+    render: () => {
+        const control = new FormControl('', Validators.required);
+        control.markAsTouched();
+        return {
+            props: { formGroup: new FormGroup({ value: control }) },
+            template: `
+                <puibe-form-field class="w-1/2" [formGroup]="formGroup">
+                    <label puibeLabel [alwaysVisible]="true">${LONG_LABEL}</label>
+                    <input puibeInput type="text" formControlName="value" />
+                </puibe-form-field>`,
+        };
+    },
+};
+
+export const LongLabelsStacked: Story = {
+    name: 'Long labels – stacked (no overlap between fields)',
+    render: () => ({
+        props: {
+            formGroup: new FormGroup({
+                first: new FormControl('Erster Wert'),
+                second: new FormControl('Zweiter Wert'),
+            }),
+        },
+        template: `
+            <div class="flex w-1/2 flex-col gap-4" [formGroup]="formGroup">
+                <p>Two stacked fields with long labels, the lower label grows upwards and does not overlap the field above it.</p>
+                <puibe-form-field>
+                    <label puibeLabel>${VERY_LONG_LABEL}</label>
+                    <textarea puibeInput formControlName="first"></textarea>
+                </puibe-form-field>
+                <puibe-form-field>
+                    <label puibeLabel>${LONG_LABEL}</label>
+                    <input puibeInput type="text" formControlName="second" />
+                </puibe-form-field>
+            </div>`,
+    }),
+};
