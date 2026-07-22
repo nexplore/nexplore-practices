@@ -77,7 +77,7 @@ const overlayTextEmptyClassName = 'text-opacity-60';
     },
 })
 export class PuibeFormFieldComponent {
-    readonly isReadonly$ = this._readonlyDirective?.isReadonly$ ?? of(false);
+    isReadonly$ = this._readonlyDirective?.isReadonly$ ?? of(false);
     readonly ngControlValue$ = this._formFieldService.readonlyValue$;
 
     private readonly _hideOptionalSubject = new BehaviorSubject<boolean>(false);
