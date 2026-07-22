@@ -97,7 +97,7 @@ export class PuibeFormFieldComponent {
     @Input()
     public readonlyEmptyValuePlaceholder: string;
 
-    public readonly labelSignal = contentChild(PuibeLabelDirective);
+    protected readonly labelSignal = contentChild(PuibeLabelDirective);
 
     public get label(): PuibeLabelDirective | undefined {
         return this.labelSignal();
@@ -106,7 +106,7 @@ export class PuibeFormFieldComponent {
     private readonly _optionalBadgeSignal = viewChild<ElementRef<HTMLElement>>('optionalBadge');
 
     private readonly _labelStringSignal = signal('');
-    protected readonly labelStringSignal = this._labelStringSignal.asReadonly();
+    public readonly labelStringSignal = this._labelStringSignal.asReadonly();
 
     /**
      * @deprecated Use {@link labelStringSignal} instead. Kept for backwards compatibility.
@@ -188,7 +188,7 @@ export class PuibeFormFieldComponent {
             }
 
             return Object.entries(errors)
-                .map(([key, value]) => [this.capitalizeFirstLetter(key), value] as const)
+                .map(([key, value]) => [this._capitalizeFirstLetter(key), value] as const)
                 .map(([key, value]) => ({
                     key: `Messages.Validation_${key}`,
                     param: value,
@@ -317,7 +317,7 @@ export class PuibeFormFieldComponent {
         );
     }
 
-    private capitalizeFirstLetter(value: string) {
+    private _capitalizeFirstLetter(value: string) {
         return value.charAt(0).toUpperCase() + value.slice(1);
     }
 }
