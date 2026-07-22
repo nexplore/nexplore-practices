@@ -92,6 +92,13 @@ export class PuibeLabelDirective implements OnInit {
         this._shouldShowAboveSignal.set(value);
     }
 
+    /**
+     * @deprecated Use {@link labelTextSignal} instead. Kept for backwards compatibility.
+     */
+    public getLabel(): string {
+        return this._elementRef.nativeElement.innerText;
+    }
+
     private _observeHeight() {
         const el = this._elementRef.nativeElement;
         const observer = new ResizeObserver(() => this._heightSignal.set(el.offsetHeight));

@@ -108,6 +108,13 @@ export class PuibeFormFieldComponent {
     private readonly _labelStringSignal = signal('');
     protected readonly labelStringSignal = this._labelStringSignal.asReadonly();
 
+    /**
+     * @deprecated Use {@link labelStringSignal} instead. Kept for backwards compatibility.
+     */
+    public get labelString(): string {
+        return this._labelStringSignal();
+    }
+
     public id$ = this._formFieldService.id$;
     public isOptional$ = this._formFieldService.isRequired$.pipe(
         combineLatestWith(this._hideOptionalSubject),
