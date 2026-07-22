@@ -95,7 +95,7 @@ export class PuibeLabelDirective implements OnInit {
     /**
      * @deprecated Use {@link labelTextSignal} instead. Kept for backwards compatibility.
      */
-    public getLabel(): string {
+    getLabel(): string {
         return this._elementRef.nativeElement.innerText;
     }
 
