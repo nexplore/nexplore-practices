@@ -77,8 +77,8 @@ const overlayTextEmptyClassName = 'text-opacity-60';
     },
 })
 export class PuibeFormFieldComponent {
-    isReadonly$ = this._readonlyDirective?.isReadonly$ ?? of(false);
-    readonly ngControlValue$ = this._formFieldService.readonlyValue$;
+    public readonly isReadonly$ = this._readonlyDirective?.isReadonly$ ?? of(false);
+    public readonly ngControlValue$ = this._formFieldService.readonlyValue$;
 
     private readonly _hideOptionalSubject = new BehaviorSubject<boolean>(false);
     private readonly _inputEvent$ = this._formFieldService.element$.pipe(
@@ -87,77 +87,77 @@ export class PuibeFormFieldComponent {
     );
 
     @Input()
-    useSmallTextForReadonlyLabel: boolean | null = null;
+    public useSmallTextForReadonlyLabel: boolean | null = null;
 
     @Input()
-    set hideOptional(value: boolean) {
+    public set hideOptional(value: boolean) {
         this._hideOptionalSubject.next(value);
     }
 
     @Input()
-    readonlyEmptyValuePlaceholder: string;
+    public readonlyEmptyValuePlaceholder: string;
 
-    readonly labelSignal = contentChild(PuibeLabelDirective);
+    public readonly labelSignal = contentChild(PuibeLabelDirective);
 
-    get label(): PuibeLabelDirective | undefined {
+    public get label(): PuibeLabelDirective | undefined {
         return this.labelSignal();
     }
 
-    readonly optionalBadgeSignal = viewChild<ElementRef<HTMLElement>>('optionalBadge');
+    private readonly _optionalBadgeSignal = viewChild<ElementRef<HTMLElement>>('optionalBadge');
 
     private readonly _labelStringSignal = signal('');
     protected readonly labelStringSignal = this._labelStringSignal.asReadonly();
 
-    id$ = this._formFieldService.id$;
-    isOptional$ = this._formFieldService.isRequired$.pipe(
+    public id$ = this._formFieldService.id$;
+    public isOptional$ = this._formFieldService.isRequired$.pipe(
         combineLatestWith(this._hideOptionalSubject),
         map(([isRequired, hideOptional]) => !isRequired && !hideOptional)
     );
-    invalid$ = this._formFieldService.status$.pipe(map((status) => status === 'INVALID'));
-    displayAsInvalid$ = this._formFieldService.displayAsInvalid$;
-    disabled$ = this._formFieldService.status$.pipe(map((status) => status === 'DISABLED'));
-    pending$ = this._formFieldService.status$.pipe(
+    public invalid$ = this._formFieldService.status$.pipe(map((status) => status === 'INVALID'));
+    public displayAsInvalid$ = this._formFieldService.displayAsInvalid$;
+    public disabled$ = this._formFieldService.status$.pipe(map((status) => status === 'DISABLED'));
+    public pending$ = this._formFieldService.status$.pipe(
         combineLatestWith(this._formFieldService.loading$),
         map(([status, loading]) => status === 'PENDING' || loading === true)
     );
 
-    iconComponent$ = this._formFieldService.icon$.pipe(map((cf) => cf?.component));
+    public iconComponent$ = this._formFieldService.icon$.pipe(map((cf) => cf?.component));
 
-    showCustomIcon$ = this._formFieldService.icon$.pipe(
+    public showCustomIcon$ = this._formFieldService.icon$.pipe(
         combineLatestWith(this.invalid$, this.pending$),
         map(([cf, invalid, pending]) => cf && (cf.showOnlyIfValid ? !invalid && !pending : true))
     );
 
-    iconClickable$ = this._formFieldService.icon$.pipe(
+    public iconClickable$ = this._formFieldService.icon$.pipe(
         combineLatestWith(this.showCustomIcon$, this.disabled$),
         map(([cf, showCustomIcon, disabled]) => showCustomIcon && !disabled && cf && cf.clickable)
     );
 
-    isClearable$ = this._formFieldService.clearable$.pipe(
+    public isClearable$ = this._formFieldService.clearable$.pipe(
         combineLatestWith(this.disabled$),
         map(([clearable, disabled]) => clearable && !disabled)
     );
 
-    iconClassName = iconDefaultClassName;
+    public iconClassName = iconDefaultClassName;
 
-    isCustomIconFilled$ = this._formFieldService.icon$.pipe(map((cf) => cf?.fill));
+    public isCustomIconFilled$ = this._formFieldService.icon$.pipe(map((cf) => cf?.fill));
 
-    customIconClassName$ = this._formFieldService.icon$.pipe(
+    public customIconClassName$ = this._formFieldService.icon$.pipe(
         combineLatestWith(this.showCustomIcon$, this.displayAsInvalid$, this.disabled$),
         map(([cf, canShow, displayAsInvalid, disabled]) =>
             canShow && cf ? this._getCustomIconClassName(displayAsInvalid, disabled, cf) : ''
         )
     );
 
-    customIconClickable$ = this._formFieldService.icon$.pipe(map((icon) => icon?.clickable));
+    public customIconClickable$ = this._formFieldService.icon$.pipe(map((icon) => icon?.clickable));
 
-    customIconTitle$ = this._formFieldService.icon$.pipe(map((icon) => icon?.title));
+    public customIconTitle$ = this._formFieldService.icon$.pipe(map((icon) => icon?.title));
 
-    overlayTextValue$ = this._formFieldService.overlayText$.pipe(map((cf) => cf?.text));
+    public overlayTextValue$ = this._formFieldService.overlayText$.pipe(map((cf) => cf?.text));
 
-    ariaDescription$ = this._formFieldService.ariaDescription$;
+    public ariaDescription$ = this._formFieldService.ariaDescription$;
 
-    overlayTextClassName$ = combineLatest([
+    public overlayTextClassName$ = combineLatest([
         this._formFieldService.overlayText$,
         this._formFieldService.value$,
         this.displayAsInvalid$,
@@ -168,11 +168,13 @@ export class PuibeFormFieldComponent {
         )
     );
 
-    iconContainerClassName$ = combineLatest([this.displayAsInvalid$, this.customIconClickable$, this.disabled$]).pipe(
-        map(([invalid, clickable, disabled]) => this._getIconContainerClassName(invalid, clickable, disabled))
-    );
+    public iconContainerClassName$ = combineLatest([
+        this.displayAsInvalid$,
+        this.customIconClickable$,
+        this.disabled$,
+    ]).pipe(map(([invalid, clickable, disabled]) => this._getIconContainerClassName(invalid, clickable, disabled)));
 
-    errors$ = this._formFieldService.errors$.pipe(
+    public errors$ = this._formFieldService.errors$.pipe(
         map((errors) => {
             if (errors == null) {
                 return [];
@@ -187,13 +189,13 @@ export class PuibeFormFieldComponent {
         })
     );
 
-    readonly dirty$ = this._formFieldService.dirty$;
-    readonly touched$ = this._formFieldService.touched$;
+    public readonly dirty$ = this._formFieldService.dirty$;
+    public readonly touched$ = this._formFieldService.touched$;
 
     /**
      * Returns true if the label should be shown above the form field, while the field has a value or if has a custom placeholder
      */
-    readonly shouldShowLabelAboveField$ = combineLatest([
+    public readonly shouldShowLabelAboveField$ = combineLatest([
         this._formFieldService.value$.pipe(startWith(null)),
         this._inputEvent$.pipe(startWith(null)),
         this._formFieldService.placeholder$,
@@ -236,7 +238,7 @@ export class PuibeFormFieldComponent {
         });
 
         effect((onCleanup) => {
-            const badge = this.optionalBadgeSignal()?.nativeElement;
+            const badge = this._optionalBadgeSignal()?.nativeElement;
             const label = this.labelSignal();
             if (!badge || !label) {
                 label?.setBoundaryRight(null);
@@ -252,7 +254,7 @@ export class PuibeFormFieldComponent {
         });
     }
 
-    onClear() {
+    public onClear() {
         this.isClearable$.pipe(take(1)).subscribe((clearable) => {
             if (clearable) {
                 this._formFieldService.emitClear();
@@ -260,7 +262,7 @@ export class PuibeFormFieldComponent {
         });
     }
 
-    onIconClick(event: MouseEvent) {
+    public onIconClick(event: MouseEvent) {
         this.iconClickable$.pipe(take(1)).subscribe((clickable) => {
             if (clickable) {
                 this._formFieldService.emitIconClick(event);

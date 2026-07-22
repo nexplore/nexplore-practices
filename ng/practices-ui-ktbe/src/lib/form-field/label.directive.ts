@@ -20,7 +20,7 @@ const hiddenClassName = 'translate-y-7 opacity-0';
 })
 export class PuibeLabelDirective implements OnInit {
     private readonly _alwaysVisibleSignal = signal(false);
-    readonly alwaysVisibleSignal = this._alwaysVisibleSignal.asReadonly();
+    public readonly alwaysVisibleSignal = this._alwaysVisibleSignal.asReadonly();
 
     @Input()
     set alwaysVisible(value: boolean) {
@@ -28,10 +28,10 @@ export class PuibeLabelDirective implements OnInit {
     }
 
     private readonly _heightSignal = signal(0);
-    readonly heightSignal = this._heightSignal.asReadonly();
+    public readonly heightSignal = this._heightSignal.asReadonly();
 
     private readonly _labelTextSignal = signal('');
-    readonly labelTextSignal = this._labelTextSignal.asReadonly();
+    public readonly labelTextSignal = this._labelTextSignal.asReadonly();
 
     private readonly _boundaryRightSignal = signal<number | null>(null);
 
