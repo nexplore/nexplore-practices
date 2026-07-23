@@ -1,4 +1,4 @@
-import { Directive, effect, ElementRef, Input, OnInit, signal } from '@angular/core';
+import { Directive, effect, ElementRef, inject, input, OnInit, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { DestroyService } from '@nexplore/practices-ui';
 import { Observable, shareReplay, takeUntil } from 'rxjs';
@@ -19,13 +19,11 @@ const hiddenClassName = 'translate-y-7 opacity-0';
     host: { class: className },
 })
 export class PuibeLabelDirective implements OnInit {
-    private readonly _alwaysVisibleSignal = signal(false);
-    public readonly alwaysVisibleSignal = this._alwaysVisibleSignal.asReadonly();
+    private readonly _elementRef = inject(ElementRef<HTMLLabelElement>);
+    private readonly _formFieldService = inject(FormFieldService);
+    private readonly _destroy$ = inject(DestroyService);
 
-    @Input()
-    set alwaysVisible(value: boolean) {
-        this._alwaysVisibleSignal.set(value);
-    }
+    public readonly alwaysVisibleSignal = input(false, { alias: 'alwaysVisible' });
 
     private readonly _heightSignal = signal(0);
     public readonly heightSignal = this._heightSignal.asReadonly();
@@ -33,25 +31,21 @@ export class PuibeLabelDirective implements OnInit {
     private readonly _labelTextSignal = signal('');
     public readonly labelTextSignal = this._labelTextSignal.asReadonly();
 
-    private readonly _boundaryRightSignal = signal<number | null>(null);
+    private readonly _rightBoundarySignal = signal<number | null>(null);
 
-    private readonly _shouldShowAboveSignal = signal(false);
+    private readonly _shouldShowAboveFieldSignal = signal(false);
 
     private readonly _alwaysVisible$ = toObservable(this.alwaysVisibleSignal);
 
-    constructor(
-        private _elementRef: ElementRef<HTMLLabelElement>,
-        private _formFieldService: FormFieldService,
-        private _destroy$: DestroyService
-    ) {
+    constructor() {
         effect(() => {
-            const boundary = this._boundaryRightSignal();
+            const boundary = this._rightBoundarySignal();
             const el = this._elementRef.nativeElement;
             el.style.maxWidth = boundary == null ? '' : `${Math.max(0, boundary - el.offsetLeft)}px`;
         });
 
         effect(() => {
-            const hidden = !this._shouldShowAboveSignal() && !this.alwaysVisibleSignal();
+            const hidden = !this._shouldShowAboveFieldSignal() && !this.alwaysVisibleSignal();
             setHostClassNames({ [hiddenClassName]: hidden, [visibleClassName]: !hidden }, this._elementRef);
         });
     }
@@ -84,12 +78,12 @@ export class PuibeLabelDirective implements OnInit {
         this._observeHeight();
     }
 
-    public setBoundaryRight(rightBoundaryPx: number | null): void {
-        this._boundaryRightSignal.set(rightBoundaryPx);
+    public setRightBoundary(rightBoundaryPx: number | null): void {
+        this._rightBoundarySignal.set(rightBoundaryPx);
     }
 
-    public setShouldShowAbove(value: boolean): void {
-        this._shouldShowAboveSignal.set(value);
+    public setShouldShowAboveField(value: boolean): void {
+        this._shouldShowAboveFieldSignal.set(value);
     }
 
     /**
@@ -101,9 +95,12 @@ export class PuibeLabelDirective implements OnInit {
 
     private _observeHeight() {
         const el = this._elementRef.nativeElement;
-        const observer = new ResizeObserver(() => this._heightSignal.set(el.offsetHeight));
+
+        const update = () => this._heightSignal.set(el.offsetHeight);;
+        update();
+
+        const observer = new ResizeObserver(update);
         observer.observe(el);
-        this._heightSignal.set(el.offsetHeight);
 
         this._destroy$.subscribe(() => observer.disconnect());
     }

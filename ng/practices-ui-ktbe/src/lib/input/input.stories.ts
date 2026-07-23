@@ -339,12 +339,12 @@ export const ReadonlyTextareaWithCustomEmptyPlaceholder: Story = {
     },
 };
 
-const LONG_LABEL = 'Hier können Sie das selbstverletzende Verhalten qualitativ beschreiben (inkl. Auslösefaktoren)';
+const LONG_LABEL = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut';
 const VERY_LONG_LABEL =
-    'Weitere selbstverletzende Verhaltensweisen, die in J1 nicht aufgeführt sind, sowie ergänzende Beobachtungen und Hinweise für die weitere Begleitung und Betreuung im Alltag';
+    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et';
 
 export const LongLabelTextInput: Story = {
-    name: 'Long label – text input (filled)',
+    name: 'Long label - text input (filled)',
     args: {
         value: 'Ein bereits eingegebener Wert',
         label: LONG_LABEL,
@@ -353,7 +353,7 @@ export const LongLabelTextInput: Story = {
 };
 
 export const LongLabelTextInputEmpty: Story = {
-    name: 'Long label – text input (empty / placeholder)',
+    name: 'Long label - text input (empty / placeholder)',
     args: {
         label: LONG_LABEL,
         inputType: 'text',
@@ -361,7 +361,7 @@ export const LongLabelTextInputEmpty: Story = {
 };
 
 export const LongLabelAlwaysVisible: Story = {
-    name: 'Long label – always visible',
+    name: 'Long label - always visible',
     args: {
         label: VERY_LONG_LABEL,
         inputType: 'text',
@@ -370,16 +370,16 @@ export const LongLabelAlwaysVisible: Story = {
 };
 
 export const LongLabelTextarea: Story = {
-    name: 'Long label – textarea (filled)',
+    name: 'Long label - textarea (filled)',
     args: {
-        value: 'sdfsdf',
+        value: 'Bereits eingegeben',
         label: VERY_LONG_LABEL,
         inputType: 'textarea',
     },
 };
 
 export const LongLabelWithError: Story = {
-    name: 'Long label – required with error',
+    name: 'Long label - required with error',
     render: () => {
         const control = new FormControl('', Validators.required);
         control.markAsTouched();
@@ -395,7 +395,7 @@ export const LongLabelWithError: Story = {
 };
 
 export const LongLabelWithErrorAlwaysVisible: Story = {
-    name: 'Long label – required with error (always visible)',
+    name: 'Long label - required with error (always visible)',
     render: () => {
         const control = new FormControl('', Validators.required);
         control.markAsTouched();
@@ -411,7 +411,7 @@ export const LongLabelWithErrorAlwaysVisible: Story = {
 };
 
 export const LongLabelsStacked: Story = {
-    name: 'Long labels – stacked (no overlap between fields)',
+    name: 'Long labels - stacked (no overlap between fields)',
     render: () => ({
         props: {
             formGroup: new FormGroup({

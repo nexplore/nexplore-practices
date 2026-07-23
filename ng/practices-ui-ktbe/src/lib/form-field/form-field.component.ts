@@ -6,8 +6,8 @@ import {
     contentChild,
     effect,
     ElementRef,
+    inject,
     Input,
-    Optional,
     signal,
     viewChild,
 } from '@angular/core';
@@ -77,6 +77,10 @@ const overlayTextEmptyClassName = 'text-opacity-60';
     },
 })
 export class PuibeFormFieldComponent {
+    private readonly _formFieldService = inject(FormFieldService);
+    private readonly _readonlyDirective = inject(PuibeReadonlyDirective, { optional: true })
+    private readonly _elementRef = inject(ElementRef<HTMLElement>);
+
     isReadonly$ = this._readonlyDirective?.isReadonly$ ?? of(false);
     readonly ngControlValue$ = this._formFieldService.readonlyValue$;
 
@@ -95,12 +99,12 @@ export class PuibeFormFieldComponent {
     }
 
     @Input()
-    readonlyEmptyValuePlaceholder: string;
+    readonlyEmptyValuePlaceholder: string | null = null;
 
-    protected readonly labelSignal = contentChild(PuibeLabelDirective);
+    private readonly _labelSignal = contentChild(PuibeLabelDirective);
 
     get label(): PuibeLabelDirective | undefined {
-        return this.labelSignal();
+        return this._labelSignal();
     }
 
     private readonly _optionalBadgeSignal = viewChild<ElementRef<HTMLElement>>('optionalBadge');
@@ -219,40 +223,36 @@ export class PuibeFormFieldComponent {
         initialValue: false,
     });
     protected readonly hostPaddingTopSignal = computed(() => {
-        const label = this.labelSignal();
+        const label = this._labelSignal();
         if (!label) {
-            return '';
+            return `${fieldTopSpacingPx}px`;
         }
-        const floating = !!this._shouldShowLabelAboveFieldSignal() || label.alwaysVisibleSignal();
-        const reserved = floating ? Math.max(fieldTopSpacingPx, label.heightSignal()) : fieldTopSpacingPx;
-        return `${reserved}px`;
+
+        const reservedTopSpacingPx = Math.max(fieldTopSpacingPx, label.heightSignal());
+        return `${reservedTopSpacingPx}px`;
     });
 
-    constructor(
-        private _formFieldService: FormFieldService,
-        private readonly _elementRef: ElementRef<HTMLElement>,
-        @Optional() private readonly _readonlyDirective: PuibeReadonlyDirective
-    ) {
+    constructor() {
         effect(() => {
-            const label = this.labelSignal();
+            const label = this._labelSignal();
             if (label) {
                 this._labelStringSignal.set(label.labelTextSignal());
             }
         });
 
         effect(() => {
-            this.labelSignal()?.setShouldShowAbove(!!this._shouldShowLabelAboveFieldSignal());
+            this._labelSignal()?.setShouldShowAboveField(!!this._shouldShowLabelAboveFieldSignal());
         });
 
         effect((onCleanup) => {
             const badge = this._optionalBadgeSignal()?.nativeElement;
-            const label = this.labelSignal();
+            const label = this._labelSignal();
             if (!badge || !label) {
-                label?.setBoundaryRight(null);
+                label?.setRightBoundary(null);
                 return;
             }
 
-            const update = () => label.setBoundaryRight(badge.offsetLeft - labelBadgeGapPx);
+            const update = () => label.setRightBoundary(badge.offsetLeft - labelBadgeGapPx);
             update();
 
             const observer = new ResizeObserver(update);
