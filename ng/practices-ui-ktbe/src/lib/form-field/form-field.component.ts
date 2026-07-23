@@ -8,7 +8,6 @@ import {
     ElementRef,
     inject,
     Input,
-    signal,
     viewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -78,7 +77,7 @@ const overlayTextEmptyClassName = 'text-opacity-60';
 })
 export class PuibeFormFieldComponent {
     private readonly _formFieldService = inject(FormFieldService);
-    private readonly _readonlyDirective = inject(PuibeReadonlyDirective, { optional: true })
+    private readonly _readonlyDirective = inject(PuibeReadonlyDirective, { optional: true });
     private readonly _elementRef = inject(ElementRef<HTMLElement>);
 
     isReadonly$ = this._readonlyDirective?.isReadonly$ ?? of(false);
@@ -109,14 +108,13 @@ export class PuibeFormFieldComponent {
 
     private readonly _optionalBadgeSignal = viewChild<ElementRef<HTMLElement>>('optionalBadge');
 
-    private readonly _labelStringSignal = signal('');
-    public readonly labelStringSignal = this._labelStringSignal.asReadonly();
+    public readonly labelStringSignal = computed(() => this._labelSignal()?.labelTextSignal() ?? '');
 
     /**
      * @deprecated Use {@link labelStringSignal} instead. Kept for backwards compatibility.
      */
     get labelString(): string {
-        return this._labelStringSignal();
+        return this.labelStringSignal();
     }
 
     id$ = this._formFieldService.id$;
@@ -233,13 +231,6 @@ export class PuibeFormFieldComponent {
     });
 
     constructor() {
-        effect(() => {
-            const label = this._labelSignal();
-            if (label) {
-                this._labelStringSignal.set(label.labelTextSignal());
-            }
-        });
-
         effect(() => {
             this._labelSignal()?.setShouldShowAboveField(!!this._shouldShowLabelAboveFieldSignal());
         });
