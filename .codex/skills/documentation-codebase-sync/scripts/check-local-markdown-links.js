@@ -212,6 +212,16 @@ function main() {
   const files = [];
   const targets = inputs.length ? inputs : ["."];
 
+  if (inputs.length) {
+    const missingInputs = inputs.filter((input) => !fs.existsSync(path.resolve(root, input)));
+    if (missingInputs.length) {
+      for (const input of missingInputs) {
+        console.error(`Input path does not exist: ${input}`);
+      }
+      process.exit(2);
+    }
+  }
+
   for (const input of targets) {
     walkMarkdown(path.resolve(root, input), files);
   }
