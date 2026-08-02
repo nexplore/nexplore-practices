@@ -1,13 +1,16 @@
 import { AsyncPipe, NgClass, NgComponentOutlet, NgFor, NgIf } from '@angular/common';
 import {
-    AfterViewInit,
     ChangeDetectionStrategy,
     Component,
-    ContentChild,
-    HostBinding,
+    computed,
+    contentChild,
+    effect,
+    ElementRef,
+    inject,
     Input,
-    Optional,
+    viewChild,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { PuiFormFieldDirective } from '@nexplore/practices-ng-forms';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -32,6 +35,8 @@ import { FormFieldIconConfig, FormFieldService } from './form-field.service';
 import { PuibeLabelDirective } from './label.directive';
 
 const className = 'block';
+const fieldTopSpacingPx = 20;
+const labelBadgeGapPx = 8;
 
 const iconContainerDefaultClassName = 'absolute right-[2px] top-[2px] z-10 flex h-[56px] items-center';
 const iconDefaultClassName = 'h-8 w-8 mb-[2px] mr-4';
@@ -65,10 +70,17 @@ const overlayTextEmptyClassName = 'text-opacity-60';
     selector: 'puibe-form-field',
     standalone: true,
     templateUrl: './form-field.component.html',
+    host: {
+        class: className,
+        '[style.padding-top]': 'hostPaddingTopSignal()',
+    },
 })
-export class PuibeFormFieldComponent implements AfterViewInit {
+export class PuibeFormFieldComponent {
+    private readonly _formFieldService = inject(FormFieldService);
+    private readonly _readonlyDirective = inject(PuibeReadonlyDirective, { optional: true });
+    private readonly _elementRef = inject(ElementRef<HTMLElement>);
+
     isReadonly$ = this._readonlyDirective?.isReadonly$ ?? of(false);
-    labelString: string;
     readonly ngControlValue$ = this._formFieldService.readonlyValue$;
 
     private readonly _hideOptionalSubject = new BehaviorSubject<boolean>(false);
@@ -86,12 +98,24 @@ export class PuibeFormFieldComponent implements AfterViewInit {
     }
 
     @Input()
-    readonlyEmptyValuePlaceholder: string;
+    readonlyEmptyValuePlaceholder: string | null = null;
 
-    @ContentChild(PuibeLabelDirective) label: PuibeLabelDirective;
+    private readonly _labelSignal = contentChild(PuibeLabelDirective);
 
-    @HostBinding('class')
-    className = className;
+    get label(): PuibeLabelDirective | undefined {
+        return this._labelSignal();
+    }
+
+    private readonly _optionalBadgeSignal = viewChild<ElementRef<HTMLElement>>('optionalBadge');
+
+    public readonly labelStringSignal = computed(() => this._labelSignal()?.labelTextSignal() ?? '');
+
+    /**
+     * @deprecated Use {@link labelStringSignal} instead. Kept for backwards compatibility.
+     */
+    get labelString(): string {
+        return this.labelStringSignal();
+    }
 
     id$ = this._formFieldService.id$;
     isOptional$ = this._formFieldService.isRequired$.pipe(
@@ -153,9 +177,11 @@ export class PuibeFormFieldComponent implements AfterViewInit {
         )
     );
 
-    iconContainerClassName$ = combineLatest([this.displayAsInvalid$, this.customIconClickable$, this.disabled$]).pipe(
-        map(([invalid, clickable, disabled]) => this._getIconContainerClassName(invalid, clickable, disabled))
-    );
+    iconContainerClassName$ = combineLatest([
+        this.displayAsInvalid$,
+        this.customIconClickable$,
+        this.disabled$,
+    ]).pipe(map(([invalid, clickable, disabled]) => this._getIconContainerClassName(invalid, clickable, disabled)));
 
     errors$ = this._formFieldService.errors$.pipe(
         map((errors) => {
@@ -164,7 +190,7 @@ export class PuibeFormFieldComponent implements AfterViewInit {
             }
 
             return Object.entries(errors)
-                .map(([key, value]) => [this.capitalizeFirstLetter(key), value] as const)
+                .map(([key, value]) => [this._capitalizeFirstLetter(key), value] as const)
                 .map(([key, value]) => ({
                     key: `Messages.Validation_${key}`,
                     param: value,
@@ -191,13 +217,39 @@ export class PuibeFormFieldComponent implements AfterViewInit {
         shareReplay({ refCount: true, bufferSize: 1 })
     );
 
-    constructor(
-        private _formFieldService: FormFieldService,
-        @Optional() private readonly _readonlyDirective: PuibeReadonlyDirective
-    ) {}
+    private readonly _shouldShowLabelAboveFieldSignal = toSignal(this.shouldShowLabelAboveField$, {
+        initialValue: false,
+    });
+    protected readonly hostPaddingTopSignal = computed(() => {
+        const label = this._labelSignal();
+        if (!label) {
+            return `${fieldTopSpacingPx}px`;
+        }
 
-    ngAfterViewInit() {
-        this.labelString = this.label?.getLabel();
+        const reservedTopSpacingPx = Math.max(fieldTopSpacingPx, label.heightSignal());
+        return `${reservedTopSpacingPx}px`;
+    });
+
+    constructor() {
+        effect(() => {
+            this._labelSignal()?.setShouldShowAboveField(!!this._shouldShowLabelAboveFieldSignal());
+        });
+
+        effect((onCleanup) => {
+            const badge = this._optionalBadgeSignal()?.nativeElement;
+            const label = this._labelSignal();
+            if (!badge || !label) {
+                label?.setRightBoundary(null);
+                return;
+            }
+
+            const update = () => label.setRightBoundary(badge.offsetLeft - labelBadgeGapPx);
+            update();
+
+            const observer = new ResizeObserver(update);
+            observer.observe(this._elementRef.nativeElement);
+            onCleanup(() => observer.disconnect());
+        });
     }
 
     onClear() {
@@ -256,7 +308,7 @@ export class PuibeFormFieldComponent implements AfterViewInit {
         );
     }
 
-    private capitalizeFirstLetter(value: string) {
+    private _capitalizeFirstLetter(value: string) {
         return value.charAt(0).toUpperCase() + value.slice(1);
     }
 }
