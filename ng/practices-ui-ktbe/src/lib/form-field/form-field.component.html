@@ -1,4 +1,4 @@
-<div *ngIf="!(isReadonly$ | async); else readonly" class="relative mt-5">
+<div *ngIf="!(isReadonly$ | async); else readonly" class="relative">
     <ng-content select="label[puibeLabel]"></ng-content>
     <div
         *ngIf="overlayTextValue$ | async as overlayTextValue"
@@ -62,6 +62,7 @@
         } as context"
     >
         <span
+            #optionalBadge
             class="text-very-small absolute -top-5 z-10 translate-y-2 rounded-lg bg-white px-1 py-0.5"
             [ngClass]="{ 'right-[75px]': context.isCustomIconFilled, 'right-3': !context.isCustomIconFilled }"
             [class.text-red]="context.displayAsInvalid"
@@ -89,7 +90,7 @@
     <ng-content></ng-content>
 </div>
 <ng-template #readonly>
-    <puibe-readonly-label-value [label]="labelString" [useSmallLabel]="useSmallTextForReadonlyLabel">
+    <puibe-readonly-label-value [label]="labelStringSignal()" [useSmallLabel]="useSmallTextForReadonlyLabel">
         <ng-container *ngIf="ngControlValue$ | async as value; else noEntry">
             <ng-container *ngIf="value || value === 0; else noEntry">
                 <ng-content select="[slot='readonly-prefix']"/>

@@ -1,6 +1,7 @@
 # NOTE: CHANGELOG.md is deprecated
 
-After the release of v11.3.0, please see the [GitHub release notes](https://github.com/nexplore/nexplore-practices/releases) for the practices in order to view the most up-to-date changes.
+> [!IMPORTANT]
+> After the release of v11.3.0, please see the [GitHub release notes](https://github.com/nexplore/nexplore-practices/releases) for the practices in order to view the most up-to-date changes.
 
 # Changelog
 
@@ -8,29 +9,6 @@ All notable changes to this library will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [Unreleased]
-
-### Changed
-
-- `Nexplore.Practices.EntityFramework` Made `QuerySplittingBehaviour` configurable (SingleQuery stays the default)
-
-## [12.0.0](https://github.com/nexplore/nexplore-practices/releases/tag/12.0.0) - 2026-06-24
-
-### Added
-
-- `Practices.Core` Added NowOffset and UtcNowOffset to `IClock`
-- `Practices.Core` Added TimeProviderClock
-
-### Changed
-
-- `Nexplore.Practices.EntityFramework` Introduced `IAsyncValidatable` for async validations
-- _BREAKING_ `Nexplore.Practices.EntityFramework` Removed sync version of SaveChanges for `IUnitOfWork`
-- _BREAKING_ `Nexplore.Practices.EntityFramework` Calling SaveChanges throws NotSupportedException
-- _BREAKING_ `Nexplore.Practices.EntityFramework` Removed sync version of CommitDbTransaction for `IUnitOfWorkWithSingleDbTransaction`
-- _BREAKING_ `Practices.Core` Changed Today and UtcToday on `IClock` from DateTime to DateOnly
-- `practices-ui-ktbe` Added support for displaying custom left heading inside `PuibeExpansionPanelComponent` via a `heading-before` slot
-- `practices-ui-ktbe` Added `truncateHeading` input to `PuibeExpansionPanelComponent` to truncate long headings with ellipsis.
 
 ## [11.3.0](https://github.com/nexplore/nexplore-practices/releases/tag/11.3.0) - 2026-06-24
 
