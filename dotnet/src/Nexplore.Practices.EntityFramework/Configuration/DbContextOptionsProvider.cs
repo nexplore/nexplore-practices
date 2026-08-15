@@ -53,8 +53,8 @@ namespace Nexplore.Practices.EntityFramework.Configuration
             var historySchema = this.options.Value.MigrationHistorySchema;
 
             builder.MigrationsHistoryTable(historyTable, historySchema);
-
             builder.MigrationsAssembly(this.options.Value.MigrationAssembly);
+            builder.UseQuerySplittingBehavior(this.options.Value.QuerySplittingBehavior);
         }
 
         protected virtual void ConfigureInterceptors(DbContextOptionsBuilder builder)
