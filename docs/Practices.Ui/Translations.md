@@ -112,7 +112,7 @@ export class SampleComponent implements OnInit {
 
     ngOnInit(): void {
         this.titleService.setTitle('My Custom Title', { localize: false, autoSetBreadcrumbTitle: false }); // <-- Set a custom title, which is not localized and does not set the breadcrumb title
-        this.titleService.setBreadcrumbTitle('My Custom Breadcrumbs Title', { localize: false }, this.router.url); // <-- Set a custom breadcrumb title without localization for a specific route
+        this.titleService.setBreadcrumbTitle('My Custom Breadcrumbs Title', { localize: false, breadcrumbUrl: this.router.url }); // <-- Set a custom breadcrumb title without localization for a specific route
     }
 }
 ```
