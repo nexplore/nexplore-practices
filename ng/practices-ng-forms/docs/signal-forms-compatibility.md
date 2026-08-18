@@ -54,51 +54,57 @@ is not a percentage compatibility claim.
 
 | Surface | Existing `practices-ng-forms` | Angular Signal Forms | Status and consequence |
 | --- | --- | --- | --- |
-| Factory and builder | `formGroup.withBuilder`, `withType`, `withResetFromSignal`, plus direct factory functions. | `form(modelSignal, schemaOrOptions?)` returns a `FieldTree`. | **Intentional model difference.** Preserve the fluent API; do not invent a `formSignal.withBuilder` name. |
-| Source of truth | `FormGroup`/`FormControl` own the value; `valueSignal` and control signals are projections. | A user-owned writable signal owns the model; field writes update that signal. | **Not drop-in.** An adapter must define ownership and write-back rules first. |
-| Controls and groups | Strongly typed `FormGroup`/`FormControl` definitions and nested group typing. | A field tree mirrors plain object structure and exposes callable field state. | **Partial parity.** Nested object paths are conceptually mappable, but the runtime objects and mutation APIs differ. |
+| Factory and builder | `formGroup.withBuilder`, `withType`, `withResetFromSignal`, plus direct factory functions. | `form(modelSignal, schemaOrOptions?)` returns a `FieldTree`. | **Compatibility shim required.** Keep the existing names and call shapes; translate their definitions to a Signal Forms model/schema internally. Do not invent a parallel `formSignal.withBuilder` migration API. |
+| Source of truth | `FormGroup`/`FormControl` own the value; `valueSignal` and control signals are projections. | A user-owned writable signal owns the model; field writes update that signal. | **Drop-in requirement.** Signal ownership may change internally, but existing reads, writes, resets, and signal projections must retain their current behavior. |
+| Controls and groups | Strongly typed `FormGroup`/`FormControl` definitions and nested group typing. | A field tree mirrors plain object structure and exposes callable field state. | **Compatibility facade.** Translate existing nested definitions to a field tree while preserving the current builder return shape and methods. |
 | Arrays | `FormControlArrayValues` exists as a type helper, but the builder and validator paths are FormGroup-oriented; no public FormArray factory is exported. | Arrays are first-class field-tree nodes with stable field identity for iteration. | **Gap.** Array creation, replacement, identity, and validation need explicit contract tests. |
-| Initial values and reset | `value`, `nullable`, `nonNullable`, dynamic definition updates, and `reset()` on Reactive Forms controls. | Initial model is a writable signal; field state exposes signal-based value mutation and reset behavior. | **Intentional difference to measure.** Define whether reset means model replacement, field-state reset, or both. |
-| Disabled and availability | `disabled` is a control-definition option; runtime uses `disable()`/`enable()`. Disabled controls follow Reactive Forms aggregation rules. | `disabled()`, `hidden()`, and `readonly()` are schema rules with field-state signals; non-interactive fields have distinct parent-state behavior. | **Semantic difference.** Do not map these by name alone; test value inclusion and parent validity/state. |
-| Dirty and touched | `dirtySignal`, `pristineSignal`, `touchedSignal`, and `untouchedSignal` are derived from Reactive Forms status/events. | `dirty()` and `touched()` are field-state signals with documented interaction semantics and programmatic marking. | **Likely adapter surface, not parity yet.** Test programmatic marking, disabled/readonly fields, and edit-then-revert behavior. |
+| Initial values and reset | `value`, `nullable`, `nonNullable`, dynamic definition updates, and `reset()` on Reactive Forms controls. | Initial model is a writable signal; field state exposes signal-based value mutation and reset behavior. | **Legacy behavior is authoritative.** Preserve current reset, nullability, and dynamic-definition semantics while synchronizing the Signal Forms model. |
+| Disabled and availability | `disabled` is a control-definition option; runtime uses `disable()`/`enable()`. Disabled controls follow Reactive Forms aggregation rules. | `disabled()`, `hidden()`, and `readonly()` are schema rules with field-state signals; non-interactive fields have distinct parent-state behavior. | **Compatibility mapping.** Keep existing `disable()`/`enable()` and aggregate-value behavior for old callers; map the richer Signal Forms availability state without surprising them. |
+| Dirty and touched | `dirtySignal`, `pristineSignal`, `touchedSignal`, and `untouchedSignal` are derived from Reactive Forms status/events. | `dirty()` and `touched()` are field-state signals with documented interaction semantics and programmatic marking. | **Compatibility mapping.** Existing state transitions and programmatic methods remain authoritative; add contract tests for disabled/readonly fields and edit-then-revert behavior. |
 | Validity and pending state | `statusSignal`, `validSignal`, and `invalidSignal`; async validators use Angular `AsyncValidatorFn`. | `valid()`, `invalid()`, `pending()`, and `errors()` live on `FieldState`. | **Partial parity.** Pending and error-shape conversion are required before any compatibility claim. |
-| Validators | Validator arrays plus `conditional`, `dependent`, `async`, `asyncConditional`, and multi-field validation extensions. | Schema/path rules such as `required`, `email`, `validate`, conditional logic, and field-context access (`valueOf`, `stateOf`, `fieldTreeOf`). | **Conceptual overlap with different binding model.** Make validator translation explicit and preserve message/error provenance. |
+| Validators | Validator arrays plus `conditional`, `dependent`, `async`, `asyncConditional`, and multi-field validation extensions. | Schema/path rules such as `required`, `email`, `validate`, conditional logic, and field-context access (`valueOf`, `stateOf`, `fieldTreeOf`). | **Dual-input requirement.** The compatibility layer must accept existing `ValidatorFn`/`AsyncValidatorFn` functions and new Signal Forms schema/path validators, including mixed definitions, while preserving error/message provenance. |
 | Async validation | Supported through `AsyncValidatorFn` and conditional effect helpers. | Signal Forms documents pending state and schema-based async validation behavior. | **Unknown until measured.** Test cancellation, pending transitions, stale responses, and error routing independently. |
-| Submission | Submission is composed with `practices-ng-commands` and `PuiFormStateService`; the forms package has no `submit()`/`FormRoot` equivalent. | `submit()` validates, marks interactive fields touched, runs an action, routes returned errors, and returns `Promise<boolean>`; `FormRoot` wires form submission. | **Gap.** Submission behavior should be a separate focused slice, not hidden inside a builder adapter. |
+| Submission | Submission is composed with `practices-ng-commands` and `PuiFormStateService`; the forms package has no `submit()`/`FormRoot` equivalent. | `submit()` validates, marks interactive fields touched, runs an action, routes returned errors, and returns `Promise<boolean>`; `FormRoot` wires form submission. | **Additive compatibility.** Keep existing command/service submission behavior unchanged and expose Signal Forms submission as an additive path. |
 | Template directives | `[formGroup][puiForm]`, `[puiFormField]`, readonly behavior, and CVA-oriented wrapper providers. | `[formField]` binds a `FieldTree`; `[formRoot]` handles form submission; custom controls prefer Signal Forms control interfaces while CVA is supported for backwards compatibility. | **Separate template surface.** Existing directives must remain unchanged; adapters need explicit imports and examples. |
-| Errors | Angular `ValidationErrors | null`, control-level errors, and DOM-oriented invalid-control lookup. | `errors()` returns field-state error objects, including messages and targets for submission errors. | **Representation difference.** Define a lossless mapping or document intentional loss; do not silently stringify errors. |
+| Errors | Angular `ValidationErrors | null`, control-level errors, and DOM-oriented invalid-control lookup. | `errors()` returns field-state error objects, including messages and targets for submission errors. | **Compatibility mapping.** Preserve `ValidationErrors` for existing callers while retaining Signal Forms messages and targets for new callers. |
 | Value/status observation | RxJS `valueChanges`/`statusChanges` are converted with `toSignal`; utilities also expose filtered/debounced signals and RxJS interop. | Model and field state are signal-first; RxJS is not the source-of-truth contract. | **Optional interop.** Keep RxJS support for the existing package; do not make it a hidden Signal Forms requirement. |
 | Custom controls | `provideWrappedFormControlAccessors` combines CVA and validator providers around an underlying Reactive Forms control. | `FormField` supports native controls, Signal Forms control interfaces, and CVA for backwards compatibility. | **Integration point.** A wrapper can be useful, but interface and lifecycle behavior require dedicated tests. |
-| Angular/compiler support | Package peers currently stop before Angular 22; development/test dependencies are Angular 19.2.18. | Stable APIs are documented from Angular 22.0; the overview requires Angular 21+. | **Boundary blocker.** A single package cannot honestly promise existing Angular 18-21 support and stable Signal Forms support without an isolated build/version contract. |
+| Angular/compiler support | Package peers currently stop before Angular 22; development/test dependencies are Angular 19.2.18. | Stable APIs are documented from Angular 22.0; the overview requires Angular 21+. | **Compatibility constraint.** Keep the package and migration path unified; use an internal isolated entrypoint/build only if the compiler cannot support both lanes, and prove the peer/version contract before changing metadata. |
 
 ## Package-boundary decision
 
-The evidence does not support adding Signal Forms directly to the existing root
-API in the next implementation slice. The package already has a forms-related
-home and already uses signals, but three boundaries are material:
+The migration target is an in-package compatibility layer, not a new migration
+package. The existing `@nexplore/practices-ng-forms` root API remains the public
+entrypoint and the existing fluent builder remains the preferred user-facing
+path. Its implementation may be refactored so that `withBuilder`, `withType`,
+and `withResetFromSignal` construct and operate on Signal Forms equivalents while
+preserving the current return shape and behavior.
 
-1. The current public contract is built around Reactive Forms objects and must
-   keep its fluent builder behavior.
-2. The current peer range includes Angular 18-21 but excludes Angular 22, while
-   the stable Signal Forms APIs are documented from Angular 22. A static import
-   of `@angular/forms/signals` cannot be compiled and tested against the current
-   Angular 19 workspace without changing that baseline.
-3. Signal Forms changes the source of truth, template directives, error model,
-   submission lifecycle, and availability semantics. These are package-level
-   contracts, not a small internal refactor.
+The compatibility layer must provide both lanes:
 
-Therefore, a parallel Signal Forms package or an explicitly isolated secondary
-build is currently safer than changing `@nexplore/practices-ng-forms` in place.
-The exact package name and whether a secondary entrypoint can provide equivalent
-dependency isolation remain open design decisions. The existing package root
-and its fluent Reactive Forms API must remain stable either way.
+1. Existing Reactive Forms callers keep using the current validator functions,
+   including `ValidatorFn`, `AsyncValidatorFn`, `Validators.*`, conditional and
+   dependent helpers, without migration edits.
+2. Signal Forms callers can use schema/path validators and field-context logic,
+   including alongside legacy validators in one form definition. The adapter
+   normalizes the resulting state and errors without silently dropping messages,
+   async pending state, or field targets.
+
+Angular 19 development dependencies and the current peer range remain a real
+compiler/version constraint, but they are not by themselves a reason to force a
+parallel package. First prove an in-package build and secondary-entrypoint
+strategy that preserves the old Angular support lane. A separate package is a
+last-resort fallback only if compiler, public API, or peer-dependency isolation
+cannot be solved without increasing migration effort or breaking existing users.
 
 ## Next bounded slice
 
 Before implementation, add contract fixtures that exercise the matrix's highest-
-risk rows: arrays, disabled/readonly state, async validation cancellation,
+risk rows: the unchanged `withBuilder` call shape, mixed legacy and Signal Forms
+validators, arrays, disabled/readonly state, async validation cancellation,
 error mapping, and submission. The fixture must compile against the intended
-Angular 21/22 boundary and be isolated from the current Angular 19 workspace.
-Only after those contracts pass should a separate implementation PR choose a
-package name and add peer/build metadata. No runtime Signal Forms dependency is
-introduced by this matrix.
+Angular 21/22 boundary while proving that the existing Angular 18-20 lane still
+accepts the old API. Only after those contracts pass should the implementation
+refactor the existing package internals and, if necessary, add an isolated
+secondary entrypoint/build. No runtime Signal Forms dependency is introduced by
+this matrix.
