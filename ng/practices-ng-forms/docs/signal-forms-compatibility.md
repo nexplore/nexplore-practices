@@ -4,7 +4,7 @@ Status: design evidence only. This document does not add a Signal Forms runtime
 dependency or claim API compatibility.
 
 Baseline: `origin/main` at `0027e3bfe58bf6447030b8850970c024bf3b559c`, inspected
-2026-08-18.
+2026-08-19.
 
 ## Official Angular position
 
@@ -42,6 +42,12 @@ or `markAsPending()`. Those differences must remain explicit compatibility bound
 Angular's release documentation treats `next` and release-candidate builds as previews
 that may change outside the normal stability policy. Preview-only forms behavior must not
 become a required package contract.
+
+Angular `22.1.0` is now the latest stable minor in the v22 line. The Angular release
+listing also shows a forms change, "allow permanent hidden fields", in `22.2.0-next.0`.
+That change is a preview-only signal, so this package must not depend on it or describe it
+as part of the compatibility target until it reaches a stable release and the repository
+has a focused contract for the behavior.
 
 ## Repository baseline
 
