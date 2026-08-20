@@ -4,7 +4,7 @@ Status: design evidence only. This document does not add a Signal Forms runtime
 dependency or claim API compatibility.
 
 Baseline: `origin/main` at `0027e3bfe58bf6447030b8850970c024bf3b559c`, inspected
-2026-08-19.
+2026-08-20.
 
 ## Official Angular position
 
@@ -29,6 +29,7 @@ Sources:
 - [Signal Forms comparison](https://angular.dev/guide/forms/signals/comparison)
 - [Angular version compatibility](https://angular.dev/reference/versions)
 - [Angular versioning and releases](https://angular.dev/reference/releases)
+- [Angular 22.1.3 release](https://github.com/angular/angular/releases/tag/22.1.3)
 
 The migration guide now documents two stable v22 compatibility primitives. `compatForm`
 can wrap a model signal containing existing `FormControl` or `FormGroup` instances while
@@ -43,11 +44,13 @@ Angular's release documentation treats `next` and release-candidate builds as pr
 that may change outside the normal stability policy. Preview-only forms behavior must not
 become a required package contract.
 
-Angular `22.1.0` is now the latest stable minor in the v22 line. The Angular release
-listing also shows a forms change, "allow permanent hidden fields", in `22.2.0-next.0`.
-That change is a preview-only signal, so this package must not depend on it or describe it
-as part of the compatibility target until it reaches a stable release and the repository
-has a focused contract for the behavior.
+Angular `22.1.3` is the latest stable v22 release inspected for this checkpoint. Its
+Forms changes include reporting forbidden two-way bindings when `FormField` is applied;
+the compatibility layer must preserve that one-way `formField` binding contract and must
+not introduce a mixed `[(ngModel)]`/`[formField]` example. The release listing currently
+shows `22.2.0-next.3` as a pre-release, so preview-only Forms behavior in that line must
+not become a required package contract until it reaches a stable release and the
+repository has a focused contract for the behavior.
 
 ## Repository baseline
 
@@ -88,7 +91,7 @@ is not a percentage compatibility claim.
 | Validators | Validator arrays plus `conditional`, `dependent`, `async`, `asyncConditional`, and multi-field validation extensions. | Schema/path rules such as `required`, `email`, `validate`, conditional logic, and field-context access (`valueOf`, `stateOf`, `fieldTreeOf`). `compatForm` preserves validators on wrapped Reactive Forms controls. | **Interop first.** Preserve existing `ValidatorFn`/`AsyncValidatorFn` functions on existing controls and allow Signal Forms rules on other schema paths. Do not require same-control dual registration or rewrite every legacy validator until a measured contract proves it is necessary. |
 | Async validation | Supported through `AsyncValidatorFn` and conditional effect helpers. | Signal Forms documents pending state and schema-based async validation behavior. | **Unknown until measured.** Test cancellation, pending transitions, stale responses, and error routing independently. |
 | Submission | Submission is composed with `practices-ng-commands` and `PuiFormStateService`; the forms package has no `submit()`/`FormRoot` equivalent. | `submit()` validates, marks interactive fields touched, runs an action, routes returned errors, and returns `Promise<boolean>`; `FormRoot` wires form submission. | **Additive compatibility.** Keep existing command/service submission behavior unchanged and expose Signal Forms submission as an additive path. |
-| Template directives | `[formGroup][puiForm]`, `[puiFormField]`, readonly behavior, and CVA-oriented wrapper providers. | `[formField]` binds a `FieldTree`; `[formRoot]` handles form submission; custom controls prefer Signal Forms control interfaces while CVA is supported for backwards compatibility. | **Separate template surface.** Existing directives must remain unchanged; adapters need explicit imports and examples. |
+| Template directives | `[formGroup][puiForm]`, `[puiFormField]`, readonly behavior, and CVA-oriented wrapper providers. | `[formField]` binds a `FieldTree`; `[formRoot]` handles form submission; custom controls prefer Signal Forms control interfaces while CVA is supported for backwards compatibility. Angular 22.1.3 reports forbidden two-way bindings when `FormField` is applied. | **Separate template surface.** Existing directives must remain unchanged; adapters need explicit imports and examples. Signal Forms examples must use one-way `[formField]` binding and must not combine it with `[(ngModel)]`. |
 | Errors | Angular `ValidationErrors | null`, control-level errors, and DOM-oriented invalid-control lookup. | `errors()` returns field-state error objects, including messages and targets for submission errors. | **Compatibility mapping.** Preserve `ValidationErrors` for existing callers while retaining Signal Forms messages and targets for new callers. |
 | Value/status observation | RxJS `valueChanges`/`statusChanges` are converted with `toSignal`; utilities also expose filtered/debounced signals and RxJS interop. | Model and field state are signal-first; RxJS is not the source-of-truth contract. | **Optional interop.** Keep RxJS support for the existing package; do not make it a hidden Signal Forms requirement. |
 | Custom controls | `provideWrappedFormControlAccessors` combines CVA and validator providers around an underlying Reactive Forms control. | `FormField` supports native controls, Signal Forms control interfaces, and CVA for backwards compatibility. | **Integration point.** A wrapper can be useful, but interface and lifecycle behavior require dedicated tests. |
