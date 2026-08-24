@@ -29,7 +29,7 @@ Sources:
 - [Signal Forms comparison](https://angular.dev/guide/forms/signals/comparison)
 - [Angular version compatibility](https://angular.dev/reference/versions)
 - [Angular versioning and releases](https://angular.dev/reference/releases)
-- [Angular 22.1.3 release](https://github.com/angular/angular/releases/tag/22.1.3)
+- [Angular 22.1.3 release](https://github.com/angular/angular/releases/tag/v22.1.3)
 
 The migration guide now documents two stable v22 compatibility primitives. `compatForm`
 can wrap a model signal containing existing `FormControl` or `FormGroup` instances while
