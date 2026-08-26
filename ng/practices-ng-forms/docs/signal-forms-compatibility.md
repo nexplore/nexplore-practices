@@ -134,7 +134,7 @@ a `SignalFormControl` leaf inside a `FormGroup`, bidirectional value/state/error
 observation, and the documented imperative-API limitations. Then cover the unchanged
 `withBuilder` call shape, arrays, disabled/readonly state, async cancellation, error
 mapping, and submission. The fixture must compile against the intended Angular 21/22
-boundary while proving that the existing Angular 18-20 lane still accepts the old API.
+boundary while proving that the existing Angular 18-21 lane still accepts the old API.
 Only after those contracts pass should the implementation add a narrow adapter around
 the existing package internals or, if necessary, an isolated secondary entrypoint/build.
 No runtime Signal Forms dependency is introduced by this matrix.
