@@ -48,6 +48,15 @@ function toFormControlOptions<T>(
     };
 }
 
+function toFormControlState<T>(
+    controlDef: FormControlDefinition<T> | FormControlDefinitionValueOmitted
+): { value: T | undefined; disabled: boolean } {
+    return {
+        value: 'value' in controlDef ? controlDef.value : undefined,
+        disabled: !!controlDef.disabled,
+    };
+}
+
 function updateFormGroupDefinition(
     controlDefs: FormGroupDefinitionRecord<any> | undefined,
     formGroup: FormGroup,
@@ -75,9 +84,13 @@ function updateFormGroupDefinition(
                     const value = 'value' in controlDef ? controlDef.value : existingControl.value;
 
                     if (needsToRecreateControl) {
-                        formGroup.setControl(key, formBuilder.control(value, controlDef), {
-                            emitEvent: options.emitChangeEvents,
-                        });
+                        formGroup.setControl(
+                            key,
+                            formBuilder.control(toFormControlState(controlDef), toFormControlOptions(controlDef)),
+                            {
+                                emitEvent: options.emitChangeEvents,
+                            }
+                        );
                     } else {
                         if (existingControl.value !== value) {
                             existingControl.reset(value);
@@ -95,7 +108,7 @@ function updateFormGroupDefinition(
                     formGroup.addControl(
                         key,
                         formBuilder.control(
-                            'value' in controlDef ? controlDef.value : undefined,
+                            toFormControlState(controlDef),
                             toFormControlOptions(controlDef)
                         ),
                         { emitEvent: options.emitChangeEvents }
@@ -199,7 +212,10 @@ export function createExtendedFormGroup<TDefinition extends FormGroupDefinition<
         const controls = Object.keys(definition).reduce((acc, key) => {
             if (isFormControlDefinition(definition[key])) {
                 const controlDef = definition[key] as FormControlDefinition<any>;
-                (acc as any)[key] = new FormControl(controlDef.value, toFormControlOptions(controlDef));
+                (acc as any)[key] = new FormControl(
+                    toFormControlState(controlDef),
+                    toFormControlOptions(controlDef)
+                );
             } else {
                 (acc as any)[key] = new FormControl(definition[key]);
             }

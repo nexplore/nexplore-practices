@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ValidationErrors, Validators } from '@angular/forms';
 import { createExtendedFormGroup } from './extensions';
@@ -26,6 +27,33 @@ describe('Reactive Forms compatibility contract', () => {
                 { name: 'John Doe', internalId: 'id-1' },
                 { name: 'John Doe', internalId: 'id-1' },
                 { internalId: 'id-1' },
+            ]);
+        });
+    });
+
+    it('preserves disabled control value aggregation for factory definitions', () => {
+        TestBed.runInInjectionContext(() => {
+            const disabled = signal(true);
+            const formGroup = createExtendedFormGroup(() => ({
+                name: { value: 'John Doe' },
+                internalId: { value: 'id-1', disabled: disabled() },
+            }));
+
+            const results = [formGroup.value, formGroup.getRawValue()];
+
+            disabled.set(false);
+            TestBed.flushEffects();
+            results.push(formGroup.value);
+
+            disabled.set(true);
+            TestBed.flushEffects();
+            results.push(formGroup.value);
+
+            expect(results).toEqual([
+                { name: 'John Doe' },
+                { name: 'John Doe', internalId: 'id-1' },
+                { name: 'John Doe', internalId: 'id-1' },
+                { name: 'John Doe' },
             ]);
         });
     });
