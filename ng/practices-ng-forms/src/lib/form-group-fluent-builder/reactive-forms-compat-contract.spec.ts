@@ -58,6 +58,22 @@ describe('Reactive Forms compatibility contract', () => {
         });
     });
 
+    it('preserves an omitted control value when a factory changes updateOn', () => {
+        TestBed.runInInjectionContext(() => {
+            const updateOn = signal<'change' | 'blur'>('change');
+            const formGroup = createExtendedFormGroup(() => ({
+                name: { value: 'initial', updateOn: updateOn() },
+            }));
+
+            formGroup.controls.name.setValue('edited');
+            updateOn.set('blur');
+            TestBed.flushEffects();
+
+            expect(formGroup.controls.name.value).toBe('edited');
+            expect(formGroup.controls.name.updateOn).toBe('blur');
+        });
+    });
+
     it('preserves ValidationErrors round-tripping through the control API', () => {
         TestBed.runInInjectionContext(() => {
             const formGroup = createExtendedFormGroup({

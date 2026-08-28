@@ -86,7 +86,10 @@ function updateFormGroupDefinition(
                     if (needsToRecreateControl) {
                         formGroup.setControl(
                             key,
-                            formBuilder.control(toFormControlState(controlDef), toFormControlOptions(controlDef)),
+                            formBuilder.control(
+                                { value, disabled: !!controlDef.disabled },
+                                toFormControlOptions(controlDef)
+                            ),
                             {
                                 emitEvent: options.emitChangeEvents,
                             }
