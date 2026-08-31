@@ -50,11 +50,12 @@ function toFormControlOptions<T>(
 
 function toFormControlState<T>(
     controlDef: FormControlDefinition<T> | FormControlDefinitionValueOmitted
-): { value: T | undefined; disabled: boolean } {
-    return {
-        value: 'value' in controlDef ? controlDef.value : undefined,
-        disabled: !!controlDef.disabled,
-    };
+): T | undefined | { value: T | undefined; disabled: true } {
+    const value = 'value' in controlDef ? controlDef.value : undefined;
+
+    // Preserve Angular's existing omitted-value normalization for enabled controls.
+    // The state-object overload is only needed when a control starts disabled.
+    return controlDef.disabled ? { value, disabled: true } : value;
 }
 
 function updateFormGroupDefinition(
@@ -87,7 +88,7 @@ function updateFormGroupDefinition(
                         formGroup.setControl(
                             key,
                             formBuilder.control(
-                                { value, disabled: !!controlDef.disabled },
+                                controlDef.disabled ? { value, disabled: true } : value,
                                 toFormControlOptions(controlDef)
                             ),
                             {
