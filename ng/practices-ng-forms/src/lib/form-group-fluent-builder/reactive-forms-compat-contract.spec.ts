@@ -39,6 +39,7 @@ describe('Reactive Forms compatibility contract', () => {
                 internalId: { value: 'id-1', disabled: disabled() },
             }));
 
+            TestBed.flushEffects();
             const results = [formGroup.value, formGroup.getRawValue()];
 
             disabled.set(false);
@@ -65,6 +66,7 @@ describe('Reactive Forms compatibility contract', () => {
                 name: { value: 'initial', updateOn: updateOn() },
             }));
 
+            TestBed.flushEffects();
             formGroup.controls.name.setValue('edited');
             updateOn.set('blur');
             TestBed.flushEffects();
