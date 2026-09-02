@@ -76,8 +76,8 @@ function updateFormGroupDefinition(
             if (controlDef instanceof AbstractControl) {
                 formGroup.addControl(key, controlDef, { emitEvent: options.emitChangeEvents });
             } else {
-                if (formGroup.contains(key)) {
-                    const existingControl = formGroup.get(key)!;
+                const existingControl = formGroup.get(key);
+                if (existingControl) {
 
                     const needsToRecreateControl =
                         (controlDef.updateOn ?? existingControl.updateOn) !== existingControl.updateOn;
