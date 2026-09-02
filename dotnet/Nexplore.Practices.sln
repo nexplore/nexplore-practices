@@ -42,6 +42,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexplore.Practices.CommandL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexplore.Practices.CommandLine.Database", "src\Nexplore.Practices.CommandLine.Database\Nexplore.Practices.CommandLine.Database.csproj", "{51D3B13E-271B-44D0-AE7B-C9A4C33872CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexplore.Practices.CommandLine.Resx", "src\Nexplore.Practices.CommandLine.Resx\Nexplore.Practices.CommandLine.Resx.csproj", "{84F35C2B-03EA-4CDA-BE9C-728E528E7168}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,6 +102,10 @@ Global
 		{51D3B13E-271B-44D0-AE7B-C9A4C33872CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51D3B13E-271B-44D0-AE7B-C9A4C33872CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51D3B13E-271B-44D0-AE7B-C9A4C33872CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84F35C2B-03EA-4CDA-BE9C-728E528E7168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84F35C2B-03EA-4CDA-BE9C-728E528E7168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84F35C2B-03EA-4CDA-BE9C-728E528E7168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84F35C2B-03EA-4CDA-BE9C-728E528E7168}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
