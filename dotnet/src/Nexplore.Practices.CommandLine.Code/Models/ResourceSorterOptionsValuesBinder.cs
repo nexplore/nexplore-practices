@@ -1,9 +1,9 @@
-namespace Nexplore.Practices.CommandLine.Resx.Models
+namespace Nexplore.Practices.CommandLine.Code.Models
 {
     using System.Collections.Generic;
+    using Nexplore.Practices.CommandLine.Code.Options;
     using Nexplore.Practices.CommandLine.Options;
     using Nexplore.Practices.CommandLine.Options.Model;
-    using Nexplore.Practices.CommandLine.Resx.Options;
 
     public class ResourceSorterOptionsValuesBinder : ModelBinderBase<ResourceSorterOptionsValues>
     {

@@ -1,13 +1,13 @@
-namespace Nexplore.Practices.CommandLine.Resx.Commands
+namespace Nexplore.Practices.CommandLine.Code.Commands
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Nexplore.Practices.CommandLine.Attributes;
+    using Nexplore.Practices.CommandLine.Code.Models;
+    using Nexplore.Practices.CommandLine.Code.Options;
     using Nexplore.Practices.CommandLine.Commands;
-    using Nexplore.Practices.CommandLine.Resx;
-    using Nexplore.Practices.CommandLine.Resx.Models;
-    using Nexplore.Practices.CommandLine.Resx.Options;
+    using Nexplore.Practices.CommandLine.Code;
 
 #pragma warning disable CA1010
     [HasParentCliCommand(typeof(CodeCommand))]

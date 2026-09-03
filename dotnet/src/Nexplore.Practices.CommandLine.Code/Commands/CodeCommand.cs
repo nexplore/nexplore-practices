@@ -1,4 +1,4 @@
-namespace Nexplore.Practices.CommandLine.Resx.Commands
+namespace Nexplore.Practices.CommandLine.Code.Commands
 {
     using System;
     using System.Threading;

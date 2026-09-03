@@ -1,4 +1,4 @@
-namespace Nexplore.Practices.CommandLine.Resx.Models
+namespace Nexplore.Practices.CommandLine.Code.Models
 {
     using System.IO;
 

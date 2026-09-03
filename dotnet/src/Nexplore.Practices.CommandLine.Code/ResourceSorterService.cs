@@ -1,11 +1,11 @@
-namespace Nexplore.Practices.CommandLine.Resx
+namespace Nexplore.Practices.CommandLine.Code
 {
     using System;
     using System.IO;
     using System.Xml;
     using System.Xml.Linq;
     using Microsoft.Extensions.Logging;
-    using Nexplore.Practices.CommandLine.Resx.Exceptions;
+    using Nexplore.Practices.CommandLine.Code.Exceptions;
 
     public class ResourceSorterService : IResourceSorterService
     {

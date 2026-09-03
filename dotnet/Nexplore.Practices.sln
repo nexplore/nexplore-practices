@@ -42,7 +42,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexplore.Practices.CommandL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexplore.Practices.CommandLine.Database", "src\Nexplore.Practices.CommandLine.Database\Nexplore.Practices.CommandLine.Database.csproj", "{51D3B13E-271B-44D0-AE7B-C9A4C33872CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexplore.Practices.CommandLine.Resx", "src\Nexplore.Practices.CommandLine.Resx\Nexplore.Practices.CommandLine.Resx.csproj", "{84F35C2B-03EA-4CDA-BE9C-728E528E7168}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexplore.Practices.CommandLine.Code", "src\Nexplore.Practices.CommandLine.Code\Nexplore.Practices.CommandLine.Code.csproj", "{84F35C2B-03EA-4CDA-BE9C-728E528E7168}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

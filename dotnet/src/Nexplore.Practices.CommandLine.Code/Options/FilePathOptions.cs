@@ -1,4 +1,4 @@
-namespace Nexplore.Practices.CommandLine.Resx.Options
+namespace Nexplore.Practices.CommandLine.Code.Options
 {
     using System.IO;
     using Nexplore.Practices.CommandLine.Options;

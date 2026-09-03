@@ -1,4 +1,4 @@
-namespace Nexplore.Practices.CommandLine.Resx.Exceptions
+namespace Nexplore.Practices.CommandLine.Code.Exceptions
 {
     using System;
 
