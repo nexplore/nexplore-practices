@@ -62,9 +62,15 @@ describe('Reactive Forms compatibility contract', () => {
     it('preserves an omitted control value when a factory changes updateOn', () => {
         TestBed.runInInjectionContext(() => {
             const updateOn = signal<'change' | 'blur'>('change');
-            const formGroup = createExtendedFormGroup(() => ({
-                name: { value: 'initial', updateOn: updateOn() },
-            }));
+            const formGroup = createExtendedFormGroup(() => {
+                const currentUpdateOn = updateOn();
+                return {
+                    name:
+                        currentUpdateOn === 'change'
+                            ? { value: 'initial', updateOn: currentUpdateOn }
+                            : { updateOn: currentUpdateOn },
+                };
+            });
 
             TestBed.flushEffects();
             formGroup.controls.name.setValue('edited');
