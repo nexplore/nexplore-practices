@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
-        <ProjectReference Include="..\Nexplore.Practices.Commandline\Nexplore.Practices.Commandline.csproj" />
+        <ProjectReference Include="..\Nexplore.Practices.CommandLine\Nexplore.Practices.CommandLine.csproj" />
     </ItemGroup>
 
 </Project>
