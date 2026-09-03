@@ -1,5 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <PropertyGroup>
+        <Description>This package provides a powerful IoC enabling api for System.CommandLine.</Description>
+        <PackageTags>Nexplore.Practices Practices CommandLine CLI</PackageTags>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="System.CommandLine" Version="2.0.11" />
     </ItemGroup>

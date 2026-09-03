@@ -1,5 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <PropertyGroup>
+        <Description>This package provides an extension to Nexplore.Practices.CommandLine for code generation or manipulation through your custom CLI.</Description>
+        <PackageTags>Nexplore.Practices Practices CommandLine CLI Code generation manupulation</PackageTags>
+    </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\Nexplore.Practices.CommandLine\Nexplore.Practices.CommandLine.csproj" />
     </ItemGroup>
