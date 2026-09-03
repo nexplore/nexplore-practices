@@ -15,7 +15,7 @@ namespace Nexplore.Practices.CommandLine.Resx
         /// <param name="resx"></param>
         public static XDocument Sort(XDocument resx)
         {
-            if(resx.Root == null)
+            if (resx.Root == null)
             {
                 throw new ArgumentException("The input document must not be null.");
             }
