@@ -1,6 +1,6 @@
 # What it contains
 
-The library works as an addition to `Practices.CommandLine`. It contains commands to execute an alphabetical sort of the content of one or multiple resex files.
+The library works as an addition to `Practices.CommandLine`. It contains commands and functionality to generate or manipulate code, such as executing an alphabetical sort of the content of one or multiple resex files.
 
 ## Commands and Options
 
