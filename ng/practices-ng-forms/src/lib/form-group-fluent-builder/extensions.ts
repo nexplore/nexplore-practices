@@ -48,6 +48,16 @@ function toFormControlOptions<T>(
     };
 }
 
+function toFormControlState<T>(
+    controlDef: FormControlDefinition<T> | FormControlDefinitionValueOmitted
+): T | undefined | { value: T | undefined; disabled: true } {
+    const value = 'value' in controlDef ? controlDef.value : undefined;
+
+    // Preserve Angular's existing omitted-value normalization for enabled controls.
+    // The state-object overload is only needed when a control starts disabled.
+    return controlDef.disabled ? { value, disabled: true } : value;
+}
+
 function updateFormGroupDefinition(
     controlDefs: FormGroupDefinitionRecord<any> | undefined,
     formGroup: FormGroup,
@@ -66,8 +76,8 @@ function updateFormGroupDefinition(
             if (controlDef instanceof AbstractControl) {
                 formGroup.addControl(key, controlDef, { emitEvent: options.emitChangeEvents });
             } else {
-                if (formGroup.contains(key)) {
-                    const existingControl = formGroup.get(key)!;
+                const existingControl = formGroup.get(key);
+                if (existingControl) {
 
                     const needsToRecreateControl =
                         (controlDef.updateOn ?? existingControl.updateOn) !== existingControl.updateOn;
@@ -75,9 +85,16 @@ function updateFormGroupDefinition(
                     const value = 'value' in controlDef ? controlDef.value : existingControl.value;
 
                     if (needsToRecreateControl) {
-                        formGroup.setControl(key, formBuilder.control(value, controlDef), {
-                            emitEvent: options.emitChangeEvents,
-                        });
+                        formGroup.setControl(
+                            key,
+                            formBuilder.control(
+                                controlDef.disabled ? { value, disabled: true } : value,
+                                toFormControlOptions(controlDef)
+                            ),
+                            {
+                                emitEvent: options.emitChangeEvents,
+                            }
+                        );
                     } else {
                         if (existingControl.value !== value) {
                             existingControl.reset(value);
@@ -95,7 +112,7 @@ function updateFormGroupDefinition(
                     formGroup.addControl(
                         key,
                         formBuilder.control(
-                            'value' in controlDef ? controlDef.value : undefined,
+                            toFormControlState(controlDef),
                             toFormControlOptions(controlDef)
                         ),
                         { emitEvent: options.emitChangeEvents }
@@ -199,7 +216,10 @@ export function createExtendedFormGroup<TDefinition extends FormGroupDefinition<
         const controls = Object.keys(definition).reduce((acc, key) => {
             if (isFormControlDefinition(definition[key])) {
                 const controlDef = definition[key] as FormControlDefinition<any>;
-                (acc as any)[key] = new FormControl(controlDef.value, toFormControlOptions(controlDef));
+                (acc as any)[key] = new FormControl(
+                    toFormControlState(controlDef),
+                    toFormControlOptions(controlDef)
+                );
             } else {
                 (acc as any)[key] = new FormControl(definition[key]);
             }
