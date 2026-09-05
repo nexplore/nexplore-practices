@@ -4,6 +4,7 @@ namespace Nexplore.Practices.CommandLine
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using Autofac;
     using Nexplore.Practices.CommandLine.Attributes;
     using Nexplore.Practices.CommandLine.Commands;
     using Nexplore.Practices.CommandLine.Options;
@@ -34,6 +35,16 @@ namespace Nexplore.Practices.CommandLine
                 this.RegisterCommand(cliCommand);
                 this.RegisterOptions(cliCommand);
             }
+        }
+
+        public static void ContainerBuildCallbackToBuildCliStructure(ILifetimeScope lifetimeScope)
+        {
+            var commandInvoker = lifetimeScope.Resolve<ICliCommandInvoker>();
+            var commands = lifetimeScope.Resolve<IEnumerable<ICliCommand>>();
+            var options = lifetimeScope.Resolve<IEnumerable<ICliOption>>();
+
+            var structureBuilder = new CliStructureBuilder(commandInvoker, [.. commands], [.. options]);
+            structureBuilder.Build();
         }
 
         private void RegisterCommand(ICliCommand cliCommand)
