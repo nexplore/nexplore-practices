@@ -5,7 +5,8 @@ To correctly initialize the library you need to register the module in your Auto
 ```csharp
 ...
 
-builder.RegisterModule<Practices.CommandLine.Code.Registry>();
+// Command line commands and options
+builder.RegisterModule<Nexplore.Practices.CommandLine.Code.Registry>();
 
 ...
 ```
