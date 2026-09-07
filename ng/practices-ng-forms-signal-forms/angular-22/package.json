@@ -1,0 +1,28 @@
+{
+    "name": "practices-ng-forms-signal-forms-angular-22-verification",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "build": "NODE_PATH=./node_modules ng-packagr -p ../ng-package.json -c ./tsconfig.lib.json",
+        "test": "NODE_PATH=./node_modules jest --config ./jest.config.ts --runInBand"
+    },
+    "devDependencies": {
+        "@angular/compiler": "22.1.5",
+        "@angular/common": "22.1.5",
+        "@angular/compiler-cli": "22.1.5",
+        "@angular/core": "22.1.5",
+        "@angular/forms": "22.1.5",
+        "@angular/platform-browser": "22.1.5",
+        "@angular/platform-browser-dynamic": "22.1.5",
+        "@types/jest": "^30.0.0",
+        "@types/node": "^22.0.0",
+        "jest": "^30.0.0",
+        "jest-environment-jsdom": "^30.0.0",
+        "jest-preset-angular": "16.2.0",
+        "ng-packagr": "22.1.1",
+        "rxjs": "^7.8.0",
+        "ts-node": "^10.9.2",
+        "typescript": "6.0.3",
+        "zone.js": "~0.15.0"
+    }
+}
