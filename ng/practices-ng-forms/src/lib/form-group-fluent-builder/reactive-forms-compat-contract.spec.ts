@@ -80,6 +80,21 @@ describe('Reactive Forms compatibility contract', () => {
         });
     });
 
+    it('updates a disabled control whose name contains a dot', () => {
+        TestBed.runInInjectionContext(() => {
+            const value = signal('initial');
+            const formGroup = createExtendedFormGroup(() => ({
+                'profile.name': { value: value(), disabled: true },
+            }));
+
+            TestBed.flushEffects();
+            value.set('updated');
+            TestBed.flushEffects();
+
+            expect(formGroup.controls['profile.name'].value).toBe('updated');
+        });
+    });
+
     it('preserves ValidationErrors round-tripping through the control API', () => {
         TestBed.runInInjectionContext(() => {
             const formGroup = createExtendedFormGroup({
