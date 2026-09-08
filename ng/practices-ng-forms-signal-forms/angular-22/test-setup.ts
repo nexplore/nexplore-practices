@@ -8,6 +8,6 @@ const angularGlobal = globalThis as typeof globalThis & {
 };
 
 angularGlobal.ng ??= {};
-angularGlobal.ng.ɵcompilerFacade ??= new CompilerFacadeImpl();
+angularGlobal.ng.ɵcompilerFacade = new CompilerFacadeImpl();
 
 setupZoneTestEnv();
