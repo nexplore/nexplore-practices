@@ -5,11 +5,11 @@
         <IsPackable>false</IsPackable>
         <!-- Set MSBuild property 'GenerateDocumentationFile' to 'true' in project file to enable IDE0005 (Remove unnecessary usings/imports) on build (https://github.com/dotnet/roslyn/issues/41640) -->
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <DocumentationFile></DocumentationFile>
+        <DocumentationFile> </DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.6.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
         <PackageReference Include="NSubstitute" Version="5.3.0" />
         <PackageReference Include="NSubstitute.Analyzers.CSharp" Version="1.0.17">
             <PrivateAssets>all</PrivateAssets>
@@ -20,6 +20,6 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="NUnit3TestAdapter" Version="6.2.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="6.3.0" />
     </ItemGroup>
 </Project>
