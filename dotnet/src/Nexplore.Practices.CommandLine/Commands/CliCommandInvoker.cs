@@ -9,7 +9,7 @@ namespace Nexplore.Practices.CommandLine.Commands
     public class CliCommandInvoker : RootCommand, ICliCommandInvoker
     {
 #pragma warning disable CA2211
-        public static string CliDescription = "A Nexplore.Practices.CommandLine CLI";
+        public static string CliDescription { get; set; } = "A Nexplore.Practices.CommandLine CLI";
 #pragma warning restore CA2211
 
         public CliCommandInvoker()

@@ -10,3 +10,13 @@ builder.RegisterModule<Nexplore.Practices.CommandLine.Registry>();
 
 ...
 ```
+
+To override the default CLI description set the static `CliDescription` property on `CliCommandInvoker`.
+
+```csharp
+...
+
+CliCommandInvoker.CliDescription = "My CLI description";
+
+...
+```
