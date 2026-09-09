@@ -8,8 +8,12 @@ namespace Nexplore.Practices.CommandLine.Commands
 #pragma warning disable CA2007
     public class CliCommandInvoker : RootCommand, ICliCommandInvoker
     {
+#pragma warning disable CA2211
+        public static string CliDescription = "A Nexplore.Practices.CommandLine CLI";
+#pragma warning restore CA2211
+
         public CliCommandInvoker()
-            : base("CLI for ALSA to execute development and deployment tasks")
+            : base(CliDescription)
         {
         }
 
