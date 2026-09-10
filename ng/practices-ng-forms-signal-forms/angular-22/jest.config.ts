@@ -9,10 +9,12 @@ const config: Config = {
     rootDir: '..',
     testEnvironment: 'jsdom',
     testMatch: ['<rootDir>/src/**/*.spec.ts'],
-    // Register Angular's compiler facade before any Signal Forms ESM module is evaluated.
-    // SignalFormControl contains partial declarations that call the facade during module load.
-    setupFiles: ['<rootDir>/angular-22/compiler-facade.cjs'],
-    setupFilesAfterEnv: ['<rootDir>/angular-22/test-setup.ts'],
+    // Register the matching Angular compiler facade after jest-preset-angular's bundled
+    // transformer has loaded, but before Signal Forms' partial declarations are evaluated.
+    setupFilesAfterEnv: [
+        '<rootDir>/angular-22/test-setup.ts',
+        '<rootDir>/angular-22/compiler-facade.cjs',
+    ],
 };
 
 export default config;
