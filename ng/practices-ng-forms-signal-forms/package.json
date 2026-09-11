@@ -1,0 +1,10 @@
+{
+    "name": "@nexplore/practices-ng-forms-signal-forms",
+    "version": "0.0.0-VERSION",
+    "peerDependencies": {
+        "@angular/common": ">=22.0.0 <23.0.0",
+        "@angular/core": ">=22.0.0 <23.0.0",
+        "@angular/forms": ">=22.0.0 <23.0.0"
+    },
+    "sideEffects": false
+}
