@@ -9,8 +9,9 @@ const config: Config = {
     rootDir: '..',
     testEnvironment: 'jsdom',
     testMatch: ['<rootDir>/src/**/*.spec.ts'],
-    // Register the matching Angular compiler facade after jest-preset-angular's bundled
-    // transformer has loaded, but before Signal Forms' partial declarations are evaluated.
+    // Register before and after the preset environment: Angular core is imported by
+    // test-setup.ts, while partial Signal Forms declarations are evaluated by the spec.
+    setupFiles: ['<rootDir>/angular-22/compiler-facade.cjs'],
     setupFilesAfterEnv: [
         '<rootDir>/angular-22/test-setup.ts',
         '<rootDir>/angular-22/compiler-facade.cjs',
