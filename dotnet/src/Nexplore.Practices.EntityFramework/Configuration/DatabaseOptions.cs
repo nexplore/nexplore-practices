@@ -1,5 +1,7 @@
 namespace Nexplore.Practices.EntityFramework.Configuration
 {
+    using Microsoft.EntityFrameworkCore;
+
     public class DatabaseOptions
     {
         public const string NAME = "Database";
@@ -23,5 +25,7 @@ namespace Nexplore.Practices.EntityFramework.Configuration
         public string DataProtectionEncryptionPassword { get; set; }
 
         public bool AutoDetectChangesEnabled { get; set; } = true;
+
+        public QuerySplittingBehavior QuerySplittingBehavior { get; set; } = QuerySplittingBehavior.SingleQuery;
     }
 }
