@@ -27,6 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\src\Nexplore.Practices.CommandLine.Code\Nexplore.Practices.CommandLine.Code.csproj" />
         <ProjectReference Include="..\..\src\Nexplore.Practices.Configuration\Nexplore.Practices.Configuration.csproj" />
         <ProjectReference Include="..\..\src\Nexplore.Practices.Core\Nexplore.Practices.Core.csproj" />
         <ProjectReference Include="..\..\src\Nexplore.Practices.EntityFramework\Nexplore.Practices.EntityFramework.csproj" />
@@ -65,6 +66,10 @@
         <EmbeddedResource Include="Syncfusion.Pdf\Assets\LiberationMono-Italic.ttf" />
         <EmbeddedResource Include="Syncfusion.Pdf\Assets\LiberationMono-Regular.ttf" />
         <EmbeddedResource Include="Syncfusion.Pdf\Components\Assets\test_image.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="CommandLine.Code\" />
     </ItemGroup>
 
 </Project>
