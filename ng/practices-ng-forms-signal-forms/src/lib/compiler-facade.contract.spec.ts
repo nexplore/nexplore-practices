@@ -3,7 +3,7 @@ type CompilerFacade = {
 };
 
 describe('Angular 22 compiler facade setup', () => {
-    it('keeps an older preset facade from replacing the Signal Forms facade', () => {
+    it('keeps a preset facade from replacing the Angular 22 facade', () => {
         const angularGlobal = globalThis as typeof globalThis & {
             ng?: {
                 ɵcompilerFacade?: CompilerFacade;
@@ -14,6 +14,12 @@ describe('Angular 22 compiler facade setup', () => {
         expect(typeof facade?.compileServiceDeclaration).toBe('function');
 
         angularGlobal.ng!.ɵcompilerFacade = {};
+
+        expect(angularGlobal.ng?.ɵcompilerFacade).toBe(facade);
+
+        angularGlobal.ng!.ɵcompilerFacade = {
+            compileServiceDeclaration: () => undefined,
+        };
 
         expect(angularGlobal.ng?.ɵcompilerFacade).toBe(facade);
     });
