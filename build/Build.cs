@@ -26,6 +26,11 @@ partial class Build : NukeBuild
     private readonly AbsolutePath NgDirectory = RootDirectory / "ng";
     private AbsolutePath NgDistributionDirectory => NgDirectory / "dist";
 
+    // The Angular 22 verification package lives next to the root Angular 19 Nx workspace and
+    // ships its own package-lock.json. The target chain below installs, builds and tests it
+    // in isolation so its Angular 22 dependencies never leak into the root ng/ Nx workspace.
+    private readonly AbsolutePath SignalFormsAngular22Directory = RootDirectory / "ng" / "practices-ng-forms-signal-forms" / "angular-22";
+
     private readonly string[] NgLibProjects = [
         "practices-ui",
         "practices-ui-clarity",
@@ -129,6 +134,40 @@ partial class Build : NukeBuild
                 .SetProcessWorkingDirectory(NgDirectory));
         });
 
+    Target BuildSignalFormsAngular22 => _ => _
+        .DependsOn(Clean)
+        .Executes(() =>
+        {
+            // Installs the Angular 22 toolchain into the nested node_modules and runs ng-packagr
+            // against the package's own ng-package.json. Working directory is the nested package
+            // so npm resolves only the Angular 22 dependency tree.
+            NpmTasks.NpmCi(settings => settings
+                .SetProcessWorkingDirectory(SignalFormsAngular22Directory));
+
+            NpmTasks.NpmRun(settings => settings
+                .SetCommand("build")
+                .SetProcessLogger(LogHelpers.OverrideNpmLogger)
+                .SetProcessWorkingDirectory(SignalFormsAngular22Directory));
+        });
+
+    Target TestSignalFormsAngular22 => _ => _
+        .DependsOn(BuildSignalFormsAngular22)
+        .Executes(() =>
+        {
+            // Runs the Jest specs declared by the Angular 22 verification package. Reusing the
+            // JEST_JUNIT_OUTPUT_DIR keeps any future junit reporter aligned with the root Nx lane
+            // without forcing the nested jest.config.ts to opt in.
+            Environment.SetEnvironmentVariable("JEST_JUNIT_OUTPUT_DIR", TestResultDirectory);
+
+            NpmTasks.NpmRun(settings => settings
+                .SetCommand("test")
+                .SetProcessLogger(LogHelpers.OverrideNpmLogger)
+                .SetProcessWorkingDirectory(SignalFormsAngular22Directory));
+        });
+
+    Target VerifySignalFormsAngular22 => _ => _
+        .DependsOn(BuildSignalFormsAngular22, TestSignalFormsAngular22);
+
     Target BuildKtBeStorybook => _ => _
         .DependsOn(BuildNg)
         .After(TestNg)
@@ -194,5 +233,5 @@ partial class Build : NukeBuild
         });
 
     Target BuildPackAll => _ => _
-        .DependsOn(PackDotNet, PackNg, PackKtBeStorybook);
+        .DependsOn(PackDotNet, PackNg, PackKtBeStorybook, VerifySignalFormsAngular22);
 }
