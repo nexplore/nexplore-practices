@@ -9,6 +9,13 @@ const config: Config = {
     rootDir: '..',
     testEnvironment: 'jsdom',
     testMatch: ['<rootDir>/src/**/*.spec.ts'],
+    moduleNameMapper: {
+        '^@angular/core$': '<rootDir>/angular-22/node_modules/@angular/core/fesm2022/core.mjs',
+        '^@angular/core/testing$': '<rootDir>/angular-22/node_modules/@angular/core/fesm2022/testing.mjs',
+        '^@angular/forms$': '<rootDir>/angular-22/node_modules/@angular/forms/fesm2022/forms.mjs',
+        '^@angular/forms/signals$': '<rootDir>/angular-22/node_modules/@angular/forms/fesm2022/signals.mjs',
+        '^@angular/forms/signals/compat$': '<rootDir>/angular-22/node_modules/@angular/forms/fesm2022/signals-compat.mjs',
+    },
     // Register before and after the preset environment: Angular core is imported by
     // test-setup.ts, while partial Signal Forms declarations are evaluated by the spec.
     setupFiles: ['<rootDir>/angular-22/compiler-facade.cjs'],
