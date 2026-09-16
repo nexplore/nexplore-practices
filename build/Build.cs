@@ -42,7 +42,8 @@ partial class Build : NukeBuild
         "practices-ng-dirty-guard",
         "practices-ng-common-util",
         "practices-ng-commands",
-        "practices-ng-list-view-source"
+        "practices-ng-list-view-source",
+        "practices-ng-forms-signal-forms"
     ];
 
     private readonly string[] NgAppProjects = ["samples", "samples-ktbe"];
@@ -199,7 +200,7 @@ partial class Build : NukeBuild
         });
 
     Target PackNg => _ => _
-        .DependsOn(TestNg)
+        .DependsOn(TestNg, VerifySignalFormsAngular22)
         .After(PackDotNet)
         .Executes(() =>
         {
