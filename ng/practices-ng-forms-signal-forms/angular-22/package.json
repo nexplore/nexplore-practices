@@ -3,8 +3,8 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "build": "NODE_PATH=./node_modules ng-packagr -p ../ng-package.json -c ./tsconfig.lib.json",
-        "test": "NODE_PATH=./node_modules jest --config ./jest.config.ts --runInBand"
+        "build": "ng-packagr -p ../ng-package.json -c ./tsconfig.lib.json",
+        "test": "jest --config ./jest.config.ts --runInBand"
     },
     "devDependencies": {
         "@angular/compiler": "22.1.5",
