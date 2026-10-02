@@ -21,7 +21,7 @@ jobs:
           - task: UseNode@1
             displayName: 'Prepare Node.js Environment'
             inputs:
-                version: '22.14.0'
+                version: '22.22.3'
 
           - task: CmdLine@2
             displayName: Run Build
