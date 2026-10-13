@@ -33,8 +33,8 @@ namespace Nexplore.Practices.Syncfusion.Pdf.ReportBuilder.Components
 
         public void WithImage(byte[] data)
         {
-            using var image = new MagickImage(data);
-            this.image = image.ToByteArray(MagickFormat.Png);
+            using var magickImage = new MagickImage(data);
+            this.image = magickImage.ToByteArray(MagickFormat.Png);
 
             this.layoutRectangle = null;
             this.layoutWidth = null;
