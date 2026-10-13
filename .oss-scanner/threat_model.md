@@ -43,19 +43,23 @@ Lower priority (still in scope):
 - `Nexplore.Practices.Syncfusion.Excel` / `.Pdf` (export only; check formula/CSV injection and image decoding of
   untrusted bytes), `Nexplore.Practices.File`, `Nexplore.Practices.Serilog`, `Nexplore.Practices.Configuration`,
   the other `ng/practices-ng-*` utility libraries.
+- The sample apps `ng/samples` and `ng/samples-ktbe`. They are not deployed for production, but developers copy their
+  patterns into applications, so an insecure usage pattern demonstrated there matters. Report the sample issue
+  together with the library behavior it relies on.
 
 Out of scope:
 - `Nexplore.Practices.CommandLine*`: developer and deployment-time CLI tools (code generation, resx sorting, DB
   migrations). Whoever runs them is trusted.
-- `ng/samples`, `ng/samples-ktbe`, Storybook stories, `ng/tools` (Nx generators), `build/` (NUKE build),
+- Storybook stories, `ng/tools` (Nx generators), `build/` (NUKE build),
   `.github/`, `docs/`, and test projects, except as a place to put reproducers.
 - Vulnerabilities in third-party dependencies (Syncfusion, MailKit, ImageSharp, Angular, EF Core …), unless this
   code uses them in an insecure way.
 
 ## How to exercise it
 
-- The image builds the whole .NET solution (Debug) and all Angular libraries. Source is in `/src`.
-- `practices-test-dotnet` rebuilds the solution offline and runs `dotnet/tests/Nexplore.Practices.Tests.Unit`
+- The image builds the whole .NET solution (Debug) and all Angular projects, including the sample apps. Source is in
+  `/src`.
+- `practices-test-dotnet` rebuilds and runs `dotnet/tests/Nexplore.Practices.Tests.Unit` offline
   (pass extra `dotnet test` arguments, e.g. `--filter`, `--framework net10.0`).
 - `practices-test-ng` runs the Jest tests of all Angular projects offline (pass extra Nx arguments, e.g.
   `--projects=practices-ui-ktbe`).
@@ -99,4 +103,4 @@ working.
   updates are handled separately).
 - Missing security features that belong to the consuming application (authentication setup, CORS policy,
   CSP/security headers, rate limiting), unless a library component actively weakens them.
-- Hard-coded test credentials, keys or connection strings inside `dotnet/tests/` and `ng/samples*`.
+- Hard-coded test credentials, keys or connection strings inside `dotnet/tests/`.
