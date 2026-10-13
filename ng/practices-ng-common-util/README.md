@@ -25,7 +25,7 @@ npm install @nexplore/practices-ng-common-util
 
 ## Features and Usage Examples
 
-### Object and Array Comparison - [`isObjShallowEqual`](./src/lib/comparison/object-comparison.ts), [`isObjDeepEqual`](./src/lib/comparison/object-comparison.ts), [`isArrayEqual`](./src/lib/comparison/array-comparison.ts)
+### Object and Array Comparison - [`isObjShallowEqual`](./src/lib/is-obj-shallow-equal.ts), [`isObjDeepEqual`](./src/lib/is-obj-deep-equal.ts), [`isArrayEqual`](./src/lib/is-array-equal.ts)
 
 Utilities for comparing objects and arrays with different levels of strictness:
 
@@ -61,7 +61,7 @@ const array2 = [1, 2, 3];
 const arraysEqual = isArrayEqual(array1, array2); // true
 ```
 
-### Property Access - [`tryGetUntyped`](./src/lib/object/object-utils.ts), [`trySetUntyped`](./src/lib/object/object-utils.ts)
+### Property Access - [`tryGetUntyped`](./src/lib/try-get-untyped.ts), [`trySetUntyped`](./src/lib/try-set-untyped.ts)
 
 Safely access or modify properties on objects that may be null or undefined:
 
@@ -79,7 +79,7 @@ const email = profileData ? tryGetUntyped<string>(profileData, 'email') : undefi
 trySetUntyped(data, 'user', { profile: { email: 'updated@example.com' } });
 ```
 
-### Signal Handling - [`unwrapSignal`](./src/lib/signal/signal-utils.ts), [`unwrapSignalLike`](./src/lib/signal/signal-utils.ts)
+### Signal Handling - [`unwrapSignal`](./src/lib/unwrap-signal.ts), [`unwrapSignalLike`](./src/lib/unwrap-signal-like.ts)
 
 Utilities for working with Angular signals in flexible ways:
 
@@ -116,7 +116,7 @@ const staticNameSignal = computeFormattedName('mary');
 console.log(staticNameSignal()); // "MARY"
 ```
 
-### Observable and Async Utilities - [`isAsyncOrObservable`](./src/lib/observable/observable-utils.ts), [`firstValueFromMaybeAsync`](./src/lib/observable/observable-utils.ts)
+### Observable and Async Utilities - [`isAsyncOrObservable`](./src/lib/is-async-or-observable.ts), [`firstValueFromMaybeAsync`](./src/lib/first-value-from-maybe-async.ts)
 
 Utilities for working with Observables, Promises, and direct values uniformly:
 
@@ -158,7 +158,7 @@ const observable = maybeAsyncToObservable('hello world');
 subscribeAndForget(of('fire and forget'));
 ```
 
-### AbstractStatefulPipe - [`AbstractStatefulPipe`](./src/lib/angular/pipes.ts)
+### AbstractStatefulPipe - [`AbstractStatefulPipe`](./src/lib/abstract-stateful.pipe.ts)
 
 Base class for creating stateful pipes that handle async transformations:
 
@@ -186,7 +186,7 @@ export class CustomFormatPipe extends AbstractStatefulPipe<string, string> {
 }
 ```
 
-### Object Manipulation - [`deepMerge`](./src/lib/object/object-utils.ts), [`enhance`](./src/lib/object/object-utils.ts)
+### Object Manipulation - [`deepMerge`](./src/lib/deep-merge.util.ts), [`enhance`](./src/lib/enhance-util.ts)
 
 Utilities for combining and enhancing objects:
 
@@ -210,7 +210,7 @@ const enhancedUser = enhance(user, {
 console.log(enhancedUser.fullName); // 'Alice (ID: 1)'
 ```
 
-### Array and String Utilities - [`wrapArrayAndFilterFalsyValues`](./src/lib/array/array-utils.ts), [`firstCharToUpper`](./src/lib/string/string-utils.ts)
+### Array and String Utilities - [`wrapArrayAndFilterFalsyValues`](./src/lib/array.util.ts), [`firstCharToUpper`](./src/lib/string.util.ts)
 
 Helper functions for array and string manipulation:
 
@@ -227,7 +227,7 @@ const uppercase = firstCharToUpper('hello'); // 'Hello'
 const lowercase = firstCharToLower('Hello'); // 'hello'
 ```
 
-### Type Utilities - [`StringKeyOf`](./src/lib/types/type-utils.ts)
+### Type Utilities - [`StringKeyOf`](./src/lib/types.ts)
 
 Type helpers for improved type safety:
 
