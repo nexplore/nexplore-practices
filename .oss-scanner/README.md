@@ -5,6 +5,7 @@ in an isolated VM and then audits it for security issues without network access.
 
 - `Dockerfile`: builds the .NET solution and the Angular libraries and restores every dependency while the network
   is still available.
+- `practices-test-dotnet`, `practices-test-ng`: offline test runners, installed on the image's `PATH`.
 - `threat_model.md`: scope, trust boundaries and severity guidance that the scanner reads before it starts.
 
 ## Enrollment
@@ -30,6 +31,7 @@ docker run --rm --network none practices-oss-scan practices-test-dotnet --framew
 docker run --rm --network none practices-oss-scan practices-test-ng
 ```
 
-Build from a clean clone so that local `node_modules`, `bin` and `obj` folders are not copied into the image.
-The integration tests (`Nexplore.Practices.Tests.Integration`) need SQL Server via Testcontainers and therefore do
+The root `.dockerignore` keeps local `node_modules`, `bin`/`obj`, `dist` and Nx caches out of the build context.
+The image build fails if the baseline unit tests fail. On Windows, build from a clone made with
+`git clone --config core.autocrlf=false ...`: with CRLF checkouts the exception snapshot tests fail on Linux. The integration tests (`Nexplore.Practices.Tests.Integration`) need SQL Server via Testcontainers and therefore do
 not run in the scanner.
