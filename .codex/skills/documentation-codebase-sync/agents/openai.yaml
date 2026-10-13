@@ -1,0 +1,4 @@
+interface:
+  display_name: "Documentation Codebase Sync"
+  short_description: "Sync documentation against real code"
+  default_prompt: "Use $documentation-codebase-sync to verify and improve Markdown docs against the local codebase."
