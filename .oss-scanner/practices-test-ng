@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Usage: practices-test-ng [nx args...]  e.g. --projects=practices-ui-ktbe
+set -euo pipefail
+cd /src/ng
+npm run test-ci -- --skip-nx-cache "$@"

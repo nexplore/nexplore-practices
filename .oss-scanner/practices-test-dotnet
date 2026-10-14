@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Unit tests only: the integration tests need SQL Server via Testcontainers (Docker), unavailable offline.
+# Usage: practices-test-dotnet [dotnet test args...]  e.g. --framework net10.0 --filter Name~QueryParams
+set -euo pipefail
+cd /src
+
+project=dotnet/tests/Nexplore.Practices.Tests.Unit/Nexplore.Practices.Tests.Unit.csproj
+build_args=()
+args=("$@")
+for ((i = 0; i < ${#args[@]}; i++)); do
+    case "${args[i]}" in
+        -f | --framework) build_args+=(--framework "${args[i + 1]}") ;;
+    esac
+done
+
+dotnet build "$project" --no-restore --configuration Debug --disable-build-servers "${build_args[@]}"
+dotnet test "$project" --no-build --no-restore --configuration Debug "$@"
