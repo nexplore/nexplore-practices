@@ -4,7 +4,8 @@
     "private": true,
     "scripts": {
         "build": "ng-packagr -p ../ng-package.json -c ./tsconfig.lib.json",
-        "test": "jest --config ./jest.config.ts --runInBand"
+        "typecheck": "tsc -p ./tsconfig.types-test.json",
+        "test": "npm run typecheck && jest --config ./jest.config.ts --runInBand"
     },
     "devDependencies": {
         "@angular/compiler": "22.2.1",

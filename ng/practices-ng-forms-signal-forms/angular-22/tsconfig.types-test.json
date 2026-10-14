@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "ES2022",
+        "moduleResolution": "bundler",
+        "baseUrl": ".",
+        "paths": {
+            "@angular/core": ["../angular-22/node_modules/@angular/core"],
+            "@angular/core/*": ["../angular-22/node_modules/@angular/core/*"],
+            "@angular/forms": ["../angular-22/node_modules/@angular/forms"],
+            "@angular/forms/signals": [
+                "../angular-22/node_modules/@angular/forms/types/signals.d.ts"
+            ],
+            "@angular/forms/signals/compat": [
+                "../angular-22/node_modules/@angular/forms/types/signals-compat.d.ts"
+            ],
+            "rxjs": ["../angular-22/node_modules/rxjs"],
+            "rxjs/*": ["../angular-22/node_modules/rxjs/*"]
+        },
+        "ignoreDeprecations": "6.0",
+        "strict": true,
+        "noEmit": true,
+        "skipLibCheck": true,
+        "types": []
+    },
+    "files": ["../type-tests/consumer.types-test.ts"]
+}
