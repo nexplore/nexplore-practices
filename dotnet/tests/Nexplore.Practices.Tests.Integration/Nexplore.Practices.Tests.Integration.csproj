@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Testcontainers.MsSql" Version="4.15.0" />
+      <PackageReference Include="Testcontainers.MsSql" Version="4.16.0" />
     </ItemGroup>
 
     <ItemGroup>

@@ -11,7 +11,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="MailKit" Version="4.17.0" />
+        <PackageReference Include="MailKit" Version="4.18.1" />
+        <!--Explicit dependency because MailKit does not offer an updated version-->
+        <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
     </ItemGroup>
 
     <ItemGroup>
