@@ -10,6 +10,9 @@ The documentation for Practices can be found [here](./docs/Documentation.md).
 
 The following backend packages are available:
 
+- [Nexplore.Practices.CommandLine](./dotnet/src/Nexplore.Practices.CommandLine/) - System.CommandLine DI enabling extension
+- [Nexplore.Practices.CommandLine.Code](./dotnet/src/Nexplore.Practices.CommandLine.Code/) - Practices.CommandLine extensions for code generation/manupulation extensions to
+- [Nexplore.Practices.CommandLine.Database](./dotnet/src/Nexplore.Practices.CommandLine.Database/) - Practices.CommandLine extensions for database management
 - [Nexplore.Practices.Configuration](./dotnet/src/Nexplore.Practices.Configuration/) - Configuration utilities
 - [Nexplore.Practices.Core](./dotnet/src/Nexplore.Practices.Core/) - Core utilities and base functionality
 - [Nexplore.Practices.EntityFramework](./dotnet/src/Nexplore.Practices.EntityFramework/) - Entity Framework extensions and utilities
