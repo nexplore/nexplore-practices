@@ -551,7 +551,7 @@ export const SCENARIOS: ParityScenario[] = [
             if (implementation === 'reactive') {
                 return 'not available';
             }
-            const { serverError } = await import('../index');
+            const { serverError } = await import('../src/index');
             let duringSubmitting = false;
             const ok = await fg.submit(async () => {
                 duringSubmitting = fg.submitting;

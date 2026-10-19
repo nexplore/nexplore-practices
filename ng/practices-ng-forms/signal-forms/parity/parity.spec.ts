@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { createFormGroup as createReactive, formGroup as reactiveFormGroup } from '@nexplore/practices-ng-forms';
-import { createFormGroup as createSignal, formGroup as signalFormGroup } from '../index';
+import { createFormGroup as createSignal, formGroup as signalFormGroup } from '../src/index';
 import { recordParity } from './parity-report';
 import type { ParityContext } from './parity-types';
 import { SCENARIOS } from './scenarios';
