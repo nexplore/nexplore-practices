@@ -1,5 +1,5 @@
 const nx = require('@nx/eslint-plugin');
-const rxjs = require('eslint-plugin-rxjs');
+const rxjs = require('eslint-plugin-rxjs-x');
 
 module.exports = [
     ...nx.configs['flat/base'],
