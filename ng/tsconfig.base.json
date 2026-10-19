@@ -13,7 +13,7 @@
         "typeRoots": ["node_modules/@types"],
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
-        "lib": ["es2020", "dom"],
+        "lib": ["es2022", "dom"],
         "paths": {
             "@nexplore/practices-ng-commands": ["./practices-ng-commands/src/index.ts"],
             "@nexplore/practices-ng-common-util": ["./practices-ng-common-util/src/index.ts"],
