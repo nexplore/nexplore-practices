@@ -93,7 +93,7 @@ export function formControlChangeEffect<TValue>(
 ): EffectRef {
     const injector = inject(Injector);
     let currentInjector: Injector;
-    let currentValue: TValue;
+    let currentValue: TValue | undefined;
     let currentFormRef: AbstractControl;
     const INITIAL = {};
     let currentSignal: Signal<TValue | typeof INITIAL>;

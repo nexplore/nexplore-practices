@@ -86,7 +86,7 @@ export function formGroupCurrentValueMappedSignal<
                                 const bEntries = Object.entries(b);
                                 return (
                                     aEntries.length === bEntries.length &&
-                                    aEntries.every(([key, value]) => value === b[key])
+                                    aEntries.every(([key, value]) => value === (b as Record<string, unknown>)[key])
                                 );
                             })
                     ),
