@@ -8,6 +8,8 @@ Angular's Reactive Forms provide a powerful foundation for managing form state, 
 
 ## Features
 
+-   **Two implementations** - Reactive Forms (this entry point) and Signal Forms (`@nexplore/practices-ng-forms/signal-forms`), same fluent API
+
 -   **Fluent Form Builder API** - Create and configure forms with a chainable, TypeScript-friendly API
 -   **Signal Integration** - Built-in integration with Angular Signals for reactive state management
 -   **Dependent Validation** - Define validators that depend on other form fields' values
@@ -435,6 +437,122 @@ const saveCommand = command.actionSaveForm(
 ### practices-ng-signals
 
 The library leverages [`@nexplore/practices-ng-signals`](../practices-ng-signals/README.md) for signal-based reactivity.
+
+## Signal Forms - `@nexplore/practices-ng-forms/signal-forms`
+
+The secondary entry point `@nexplore/practices-ng-forms/signal-forms` provides the same fluent API on top of Angular's
+[Signal Forms](https://angular.dev/guide/forms/signals) (`@angular/forms/signals`, Angular 22). The primary entry point
+(Reactive Forms) is unchanged, so both can be used side by side and forms can be migrated one at a time.
+
+The signal form tree owns everything: value, validation (sync and async), disabled/readonly/hidden, touched/dirty, errors,
+pending and submission. The `formGroup` you get is a thin typed facade that reads this state through signals and writes to it;
+it keeps no state of its own. The underlying field tree is available as `fieldTree` (`field`) of every node, so Angular's `[formField]`
+directive and all signal forms features can be used directly.
+
+### Usage
+
+```typescript
+import { formGroup, PuiValidators } from '@nexplore/practices-ng-forms/signal-forms';
+import { FormField } from '@angular/forms/signals';
+import { Validators } from '@angular/forms';
+
+@Component({
+    imports: [FormField],
+    template: `
+        <form [formGroup]="form" puiForm>
+            <input [formField]="form.controls.email.field" />
+            @if (form.controls.email.invalid) { ... }
+        </form>
+    `,
+})
+export class UserFormComponent {
+    protected readonly isEmailRequired = signal(false);
+
+    protected readonly form = formGroup
+        .withBuilder(({ control, group, array }) => ({
+            email: control(''),
+            password: control(''),
+            confirm: control(''),
+            address: group({ street: control('') }),
+            tags: array([control('', [Validators.required])]),
+        }))
+        .withValidation(({ conditional, dependent }) => ({
+            email: [Validators.email, conditional(() => this.isEmailRequired() && Validators.required)],
+            confirm: [dependent(({ password, confirm }) => password !== confirm && { mismatch: true })],
+        }))
+        .withMultiFieldValidation(({ password, confirm }) => !password && !confirm && { eitherRequired: true })
+        .withValueChangeEffect(({ email }) => console.log(email));
+}
+```
+
+The call shapes are the same as for Reactive Forms: `formGroup.withBuilder / withType / withResetFromSignal`, `createFormGroup`,
+`createFormGroupWithType`, `createFormGroupWithResetFromSignal`, `.withValidation` (including `conditional`, `dependent`, `async`,
+`asyncConditional`), `.withMultiFieldValidation`, `.withValueChangeEffect`, `.withEffect`, `.withResetFromSignal`, `valueSignal`,
+`valueSignal.x`, `statusSignal`, `dirtySignal`, `pristineSignal`, `touchedSignal`, `untouchedSignal`, `validSignal`, `invalidSignal`,
+`valueChanges`, `statusChanges`, `controls`, `get(path)`, `setValue`, `patchValue`, `reset`, `markAs...`, `disable`/`enable`,
+`errors`, `hasError`, `getError`, `addValidators`... The builder passed to definition functions has `control`, `group` and `array` like `FormBuilder`.
+
+What is new:
+
+| Feature | API |
+| --- | --- |
+| Submission | `form.submit(async (value) => serverErrors, { onInvalid, ignoreValidators })`, `form.submitting` / `submittingSignal`, `serverError(control, kind, payload?, message?)` |
+| Arrays | `SignalFormArray`: `push`, `insert`, `removeAt`, `clear`, `at`, `length`; items get the validators of the first item definition |
+| Readonly / hidden | `node.setReadonly(bool)`, `node.setHidden(bool)`, `node.readonly`; readonly fields are not validated |
+| Native rule metadata | `PuiValidators.min/max/minLength/maxLength/pattern` (and `Validators.required`) also publish `state.min()`, `state.minLength()`, `state.pattern()`, `state.required()` |
+| Field tree access | `node.fieldTree` / `node.field` / `node.fieldState`, bind with `[formField]` |
+| Pending / async | `pending`, `pendingSignal`; async validators are cancelled by newer values and only run while sync validators pass |
+
+Template directives: `puiForm` (`[formGroup][puiForm]`), `puiFormField` with `PuiFormFieldService`, `puiReadonly`, and the `[formField]` extension
+`PuiFormFieldControlDirective` (registers a bound control with the closest `puiFormField`). `providePuiSignalFormsStatusClasses()` adds the
+`ng-invalid` / `ng-dirty` / ... classes to bound controls, so existing styles and `focusFirstInvalidControl` keep working.
+`PuiFormStateService`, `provideFormStateConfig`, `PuiReadonlyDirective`, `PuiMarkControlService` and the dto utilities are shared with the primary entry point.
+
+### Error model
+
+Validators are written as before: Angular `Validators.*`, `ValidatorFn`, `AsyncValidatorFn`, `ValidationErrors` literals and the `conditional` /
+`dependent` helpers. They are translated into signal forms rules (`validate`, `validateAsync`, `validateTree`, metadata) that read a reactive rule registry,
+so adding validators with `withValidation` or `addValidators` re-validates immediately and `conditional` / `dependent` need no effects.
+
+- A key of a `ValidationErrors` record becomes the `kind` of a signal forms error (`PuiValidationError`, payload = value of the record entry). `required` and `email` become the native errors.
+- `node.errors` converts back to a `ValidationErrors` record (`null` if none), including native errors: `required` -> `{ required: true }`,
+  `min`/`max` -> `{ min: { min, actual } }`, `minLength`/`maxLength` -> `{ minlength|maxlength: { requiredLength, actualLength } }`,
+  `pattern` -> `{ pattern: { requiredPattern, actualValue } }`. Existing error rendering (`Messages.Validation_Minlength`, ...) keeps working.
+- `node.errorList` / `errorSummary` expose the signal forms errors (with `message` and target `fieldTree`).
+- Errors of a multi-field validation are placed on every involved control (tree validation with targeted errors).
+- Validators receive the node as their control: `value`, `parent`, `root`, `get()`, `dirty`, `touched`, `disabled` work, so validators that look at siblings keep working.
+  They must not read the validity of the control they validate.
+
+### Migration notes
+
+1. Change the import to `@nexplore/practices-ng-forms/signal-forms`; `formGroup`, `createFormGroup...` and `Validators` stay as they are.
+2. Replace `[formControl]` / `formControlName` with `[formField]="form.controls.x.field"` (import `FormField` from `@angular/forms/signals`) and
+   `[formGroup]` stays on the `form` element together with `puiForm`.
+3. `new FormControl(...)` / `new FormGroup(...)` inside definition functions must become `control(...)` / `group(...)` / `array(...)` of the builder.
+4. `FormArray.push(new FormControl(x))` becomes `array.push(x)`.
+5. Custom controls: use `FormValueControl` / `FormCheckboxControl` of signal forms, or keep `ControlValueAccessor`s (supported by `[formField]`).
+6. Add `providePuiSignalFormsStatusClasses()` if styles or DOM helpers rely on the `ng-*` classes.
+
+### Intentional differences to Reactive Forms
+
+These are covered by tests that assert both behaviours (see `signal-forms/parity`):
+
+- Validators registered with `withValidation` are effective immediately (not after an effect flush).
+- `valueChanges` / `statusChanges` are derived from signals: emissions are coalesced and delivered when effects flush; `statusChanges` only emits real changes.
+- Disabled fields do not contribute to touched/dirty and validity, and report `dirty`/`touched` as `false`.
+- New array items follow the array's schema (validators of the first item definition); `reset(value)` resizes an array.
+- `submit`, `submitting`, server errors and readonly are signal forms features without Reactive Forms counterpart.
+- `disabled: true` in a definition is honored on creation.
+- `updateOn: 'blur'` uses the signal forms blur debounce; `'submit'` behaves like `'change'`.
+
+### Not carried over
+
+- The deprecated `formGroup.value.nameSignal` accessors (use `valueSignal.name`).
+- `WrapperFormControlAccessor` / control wrapper provider (ControlValueAccessor wrapper); use signal forms custom controls.
+- `valueChanges`-based helpers keep their names but read signals (`formGroupValueChangesSignal` has no debounce).
+- `withValueChangeEffect` with `debounceTime` depends on all values (not only the read ones).
+- Dynamic definition functions can add, update and retire controls; added controls are leaf controls (new nested groups/arrays are not supported).
+- `puiForm` reads validity/dirtiness from the form state instead of the rendered DOM.
 
 ## Running unit tests
 

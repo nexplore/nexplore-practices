@@ -686,6 +686,19 @@ export const SCENARIOS: ParityScenario[] = [
         },
     },
     {
+        id: 'disabled-short-syntax',
+        title: 'short syntax { value, disabled: true } on creation',
+        run: ({ formGroup }) => {
+            const fg = formGroup.withBuilder(() => ({ a: { value: 'a', disabled: true }, b: { value: 'b' } }));
+            return { aDisabled: fg.controls.a.disabled, value: fg.value };
+        },
+        intentionalDifference: {
+            reactive: { aDisabled: false, value: { a: 'a', b: 'b' } },
+            signal: { aDisabled: true, value: { b: 'b' } },
+            note: 'The `disabled` flag of a short-syntax control definition is only applied by the Reactive Forms builder when a re-evaluated definition updates an existing control; the signal implementation honors it on creation.',
+        },
+    },
+    {
         id: 'set-errors-manual',
         title: 'manually set errors make the control invalid until the value changes',
         run: ({ formGroup }) => {
