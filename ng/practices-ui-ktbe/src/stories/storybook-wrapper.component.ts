@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { translations } from './translations';
 
@@ -7,6 +7,7 @@ import { translations } from './translations';
     selector: 'puibe-storybook-wrapper',
     template: `<ng-content></ng-content>`,
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.Eager,
     styles: [
         `
             #storybook-root,

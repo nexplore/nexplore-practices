@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { DialogAction, DialogService } from '@nexplore/practices-ui-clarity';
 import { TranslateService } from '@ngx-translate/core';
 import { timer } from 'rxjs';
@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 @Component({
     selector: 'app-dialog-view',
     templateUrl: './dialog-view.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DialogViewComponent {

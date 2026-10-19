@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { StatusService } from '@nexplore/practices-ui';
 import { interval, of } from 'rxjs';
 import { delay, map, take } from 'rxjs/operators';
@@ -6,6 +6,7 @@ import { delay, map, take } from 'rxjs/operators';
 @Component({
     selector: 'app-status-view',
     templateUrl: './status-view.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class StatusViewComponent {

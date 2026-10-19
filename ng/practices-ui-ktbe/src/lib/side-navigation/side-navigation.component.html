@@ -96,8 +96,8 @@
                                 <puibe-side-navigation-item
                                     [routerLink]="child.pathFromRoot"
                                     [href]="child.data?.link ? child.data.link.href ?? child.redirectTo : null"
-                                    [rel]="child.data?.link?.rel"
-                                    [target]="child.data?.link?.target"
+                                    [rel]="$safeNavigationMigration(child.data?.link?.rel)"
+                                    [target]="$safeNavigationMigration(child.data?.link?.target)"
                                     [canExpand]="canExpand(child)"
                                     [expanded]="isExpanded(child, parents)"
                                     [active]="isActiveRoute(child, parents)"

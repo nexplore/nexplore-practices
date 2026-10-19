@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     standalone: true,
     selector: 'puibe-icon-options',
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: `<svg viewBox="-9 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <g>
             <path

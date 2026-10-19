@@ -1,4 +1,4 @@
-import { Component, Input, TemplateRef } from '@angular/core';
+import { Component, Input, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 import { NgComponentOutlet, NgIf, NgTemplateOutlet } from '@angular/common';
 import { DialogContent } from './action-dialog.types';
 
@@ -6,6 +6,7 @@ import { DialogContent } from './action-dialog.types';
     selector: 'puibe-dialog-template-content',
     standalone: true,
     imports: [NgIf, NgComponentOutlet, NgTemplateOutlet],
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: `
         <ng-container *ngIf="isContentString; else tmpl">{{ content }}</ng-container>
         <ng-template #tmpl>

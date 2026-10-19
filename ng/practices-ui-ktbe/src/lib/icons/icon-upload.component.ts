@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { PuibeIconDirectiveBase } from './icon.directive';
 
 @Component({
     standalone: true,
     selector: 'puibe-icon-upload',
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59 59">
         <g transform="translate(-848 -1910)">
             <g transform="translate(-383 -881)">

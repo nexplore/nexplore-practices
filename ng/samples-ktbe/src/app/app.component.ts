@@ -1,5 +1,5 @@
 import { AsyncPipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, ChangeDetectionStrategy } from '@angular/core';
 import { NavigationStart, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TitleService } from '@nexplore/practices-ui';
 import {
@@ -39,6 +39,7 @@ import { translations } from './translations';
     standalone: true,
     selector: 'app-root',
     templateUrl: './app.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         RouterLink,
         RouterLinkActive,

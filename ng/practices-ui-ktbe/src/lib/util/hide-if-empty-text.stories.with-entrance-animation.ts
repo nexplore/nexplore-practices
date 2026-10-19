@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { delay } from 'rxjs';
 
@@ -77,6 +77,7 @@ import { delay } from 'rxjs';
             ]),
         ]),
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ComponentWithEntraceAnimation {

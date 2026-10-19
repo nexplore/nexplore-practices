@@ -1,11 +1,12 @@
 import { NgClass } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { PuibeIconDirectiveBase } from './icon.directive';
 
 @Component({
     standalone: true,
     selector: 'puibe-icon-explanation-mark',
     imports: [NgClass],
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4.731 21.563">
         <path
             [ngClass]="fillClassName"

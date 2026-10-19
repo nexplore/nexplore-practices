@@ -1,6 +1,6 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { NgFor, NgIf } from '@angular/common';
-import { Component, inject, Injector, Input, model, runInInjectionContext } from '@angular/core';
+import { Component, inject, Injector, Input, model, runInInjectionContext, ChangeDetectionStrategy } from '@angular/core';
 import { Command, command, isCommand } from '@nexplore/practices-ng-commands';
 import { CombinedCommandInput } from '@nexplore/practices-ui';
 import { TranslateModule } from '@ngx-translate/core';
@@ -19,6 +19,7 @@ import { PuibeModalComponent } from './modal.component';
     selector: 'puibe-action-dialog',
     standalone: true,
     templateUrl: './action-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         PuibeModalComponent,
         PuibeModalContentDirective,

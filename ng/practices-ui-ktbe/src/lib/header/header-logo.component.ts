@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PuibeIconKtbeLogoComponent } from '../icons/icon-ktbe-logo.component';
 
@@ -7,6 +7,7 @@ import { PuibeIconKtbeLogoComponent } from '../icons/icon-ktbe-logo.component';
     standalone: true,
     selector: 'puibe-header-logo',
     templateUrl: './header-logo.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgIf, RouterLink, PuibeIconKtbeLogoComponent],
 })
 export class PuibeHeaderLogoComponent {

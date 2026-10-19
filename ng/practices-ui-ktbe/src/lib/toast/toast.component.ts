@@ -1,6 +1,6 @@
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { NgClass, NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { A11yModule } from '@angular/cdk/a11y';
@@ -60,6 +60,7 @@ export const toastAnimation = trigger('displayToastAnimation', [
         TranslateModule,
         A11yModule,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     animations: [toastAnimation],
 })
 export class PuibeToastComponent {

@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import {
     FilterableListViewSource,
     IFilterableListViewSource,
@@ -20,6 +20,7 @@ interface ISampleFilter {
 @Component({
     selector: 'app-filterable-list-view-source',
     templateUrl: './filterable-list-view-source.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class FilterableListViewSourceComponent implements OnDestroy {
