@@ -1,12 +1,6 @@
 import type { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import type { AnyDef, ArrayDef, ControlDef, GroupDef, SignalFormBuilder, UpdateOn } from './definition';
-import type {
-    ControlsValues,
-    NodeValue,
-    SignalFormArray,
-    SignalFormControl,
-    SignalFormGroup,
-} from './nodes/nodes';
+import type { ControlsValues, NodeValue, SignalFormArray, SignalFormControl, SignalFormGroup } from './nodes/nodes';
 
 export type { NodeValue, ControlsValues };
 
@@ -155,8 +149,7 @@ export type FormControlsOfValues<TValues> = TValues extends Record<string, any>
 export type AllPropsAMustBeInB<A, B> = keyof A extends keyof B ? A : never;
 
 /** A form group with the signals and fluent `with...()` methods. */
-export type FormGroupEnhancedWithSignals<TControls extends object = any> =
-    SignalFormGroup<TControls>;
+export type FormGroupEnhancedWithSignals<TControls extends object = any> = SignalFormGroup<TControls>;
 
 export type TypedExtendedFormGroup<
     TDefinition extends FormGroupDefinition<FormGroupValueBase> = FormGroupDefinition<FormGroupValueBase>,

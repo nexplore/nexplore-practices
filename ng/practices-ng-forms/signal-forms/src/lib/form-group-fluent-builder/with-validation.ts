@@ -1,7 +1,12 @@
 import { runInInjectionContext } from '@angular/core';
 import type { SignalFormGroup } from '../nodes/nodes';
 import type { BoundValidators, ValidatorDefinition } from '../validation/validation-types';
-import { validateAsync, validateAsyncConditional, validateConditional, validateDependent } from '../validation/validators';
+import {
+    validateAsync,
+    validateAsyncConditional,
+    validateConditional,
+    validateDependent,
+} from '../validation/validators';
 
 /**
  * Adds validators to the controls of a form group.

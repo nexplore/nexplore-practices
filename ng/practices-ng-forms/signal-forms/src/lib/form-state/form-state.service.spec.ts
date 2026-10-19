@@ -25,16 +25,16 @@ describe('PuiFormStateService with signal forms', () => {
 
     const build = () =>
         TestBed.runInInjectionContext(() =>
-            formGroup
-                .withBuilder(({ control }) => ({ a: control('') }))
-                .withValidation({ a: [Validators.required] })
+            formGroup.withBuilder(({ control }) => ({ a: control('') })).withValidation({ a: [Validators.required] })
         );
 
     it('throws PuiFormularInvalidError for an invalid form and touches all fields afterwards', async () => {
         jest.useFakeTimers();
         try {
             const fg = build();
-            await expect(service.runWithFormValidityCheck(fg, () => 'saved')).rejects.toBeInstanceOf(PuiFormularInvalidError);
+            await expect(service.runWithFormValidityCheck(fg, () => 'saved')).rejects.toBeInstanceOf(
+                PuiFormularInvalidError
+            );
             jest.advanceTimersByTime(250);
             expect(fg.controls.a.touched).toBe(true);
         } finally {

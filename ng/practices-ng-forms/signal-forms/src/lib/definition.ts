@@ -64,10 +64,7 @@ export class ControlDef<T> {
     readonly kind = 'control' as const;
     readonly options: NormalizedOptions;
 
-    constructor(
-        readonly initialValue: T,
-        options?: ControlOptions | NormalizedOptions
-    ) {
+    constructor(readonly initialValue: T, options?: ControlOptions | NormalizedOptions) {
         this.options = normalizeOptions(options as ControlOptions);
     }
 }
@@ -77,10 +74,7 @@ export class GroupDef<TControls extends Record<string, AnyDef>> {
     readonly kind = 'group' as const;
     readonly options: NormalizedOptions;
 
-    constructor(
-        readonly controls: TControls,
-        options?: ControlOptions
-    ) {
+    constructor(readonly controls: TControls, options?: ControlOptions) {
         this.options = normalizeOptions(options);
     }
 }
@@ -90,10 +84,7 @@ export class ArrayDef<TItem extends AnyDef> {
     readonly kind = 'array' as const;
     readonly options: NormalizedOptions;
 
-    constructor(
-        readonly items: TItem[],
-        options?: ControlOptions
-    ) {
+    constructor(readonly items: TItem[], options?: ControlOptions) {
         this.options = normalizeOptions(options);
     }
 }
@@ -145,8 +136,14 @@ export class SignalFormBuilder {
         return new GroupDef(controls, options ?? undefined);
     }
 
-    array<TDef extends AnyDef>(items: TDef[], validatorOrOpts?: ValidatorFn | ValidatorFn[] | ControlOptions | null): ArrayDef<TDef>;
-    array<T>(items: T[], validatorOrOpts?: ValidatorFn | ValidatorFn[] | ControlOptions | null): ArrayDef<ControlDef<T | null>>;
+    array<TDef extends AnyDef>(
+        items: TDef[],
+        validatorOrOpts?: ValidatorFn | ValidatorFn[] | ControlOptions | null
+    ): ArrayDef<TDef>;
+    array<T>(
+        items: T[],
+        validatorOrOpts?: ValidatorFn | ValidatorFn[] | ControlOptions | null
+    ): ArrayDef<ControlDef<T | null>>;
     array(items: unknown[], validatorOrOpts?: ValidatorFn | ValidatorFn[] | ControlOptions | null): ArrayDef<AnyDef> {
         return new ArrayDef(
             items.map((item) => (isDef(item) ? item : new ControlDef(item))),
@@ -156,5 +153,11 @@ export class SignalFormBuilder {
 }
 
 function isControlState(value: unknown): value is ControlState<unknown> {
-    return typeof value === 'object' && value !== null && Object.keys(value).length === 2 && 'value' in value && 'disabled' in value;
+    return (
+        typeof value === 'object' &&
+        value !== null &&
+        Object.keys(value).length === 2 &&
+        'value' in value &&
+        'disabled' in value
+    );
 }

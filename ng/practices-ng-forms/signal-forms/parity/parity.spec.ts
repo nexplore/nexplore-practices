@@ -107,7 +107,14 @@ describe('Reactive Forms vs Signal Forms parity', () => {
 
             if (scenario.intentionalDifference) {
                 const { intentionalDifference } = scenario;
-                recordParity({ id: scenario.id, title: scenario.title, reactive, signal, parity: 'differs-intentionally', note: intentionalDifference.note });
+                recordParity({
+                    id: scenario.id,
+                    title: scenario.title,
+                    reactive,
+                    signal,
+                    parity: 'differs-intentionally',
+                    note: intentionalDifference.note,
+                });
                 expect(reactive).toEqual(intentionalDifference.reactive);
                 expect(signal).toEqual(intentionalDifference.signal);
                 expect(signal).not.toEqual(reactive);

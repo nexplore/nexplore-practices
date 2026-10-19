@@ -57,7 +57,7 @@ export class RuleRegistry {
 
     /** Adds validators; async-flavored specs (`async`, `asyncConditional`) go to the async list. */
     add(pattern: string, ...fns: ValidatorFn[]): void {
-        const sync = [...this._sync().get(pattern) ?? []];
+        const sync = [...(this._sync().get(pattern) ?? [])];
         let syncChanged = false;
         for (const fn of fns) {
             if (this.has(pattern, fn)) {

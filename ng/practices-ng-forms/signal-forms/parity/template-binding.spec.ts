@@ -14,7 +14,11 @@ const build = (formGroup: any) =>
 @Component({
     selector: 'pui-test-reactive-host',
     imports: [ReactiveFormsModule],
-    template: `<input id="name" [formControl]="form.controls.name" /><input id="age" type="number" [formControl]="form.controls.age" />`,
+    template: `<input id="name" [formControl]="form.controls.name" /><input
+            id="age"
+            type="number"
+            [formControl]="form.controls.age"
+        />`,
 })
 class ReactiveHostComponent {
     readonly form = build(reactiveFormGroup);
@@ -23,7 +27,11 @@ class ReactiveHostComponent {
 @Component({
     selector: 'pui-test-signal-host',
     imports: [FormField],
-    template: `<input id="name" [formField]="form.controls.name.field" /><input id="age" type="number" [formField]="form.controls.age.field" />`,
+    template: `<input id="name" [formField]="form.controls.name.field" /><input
+            id="age"
+            type="number"
+            [formField]="form.controls.age.field"
+        />`,
 })
 class SignalHostComponent {
     readonly form = build(signalFormGroup);
@@ -114,4 +122,3 @@ describe('template binding parity ([formControl] vs [formField])', () => {
         expect(signal.disabledFlags).toEqual({ dirty: false, touched: false });
     });
 });
-

@@ -57,7 +57,10 @@ describe('signal form nodes', () => {
 
         it('honors disabled in definitions and enable() overrides it', () =>
             inContext(() => {
-                const fg = formGroup.withBuilder(({ control }) => ({ a: control({ value: 'a', disabled: true }), b: control('b') }));
+                const fg = formGroup.withBuilder(({ control }) => ({
+                    a: control({ value: 'a', disabled: true }),
+                    b: control('b'),
+                }));
                 expect(fg.controls.a.disabled).toBe(true);
                 fg.controls.a.enable();
                 expect(fg.controls.a.disabled).toBe(false);
@@ -142,7 +145,9 @@ describe('signal form nodes', () => {
 
         it('push() without value uses the item template; push(definition) registers it', () =>
             inContext(() => {
-                const fg = formGroup.withBuilder(({ control, array }) => ({ items: array([control('tpl', { nonNullable: true })]) }));
+                const fg = formGroup.withBuilder(({ control, array }) => ({
+                    items: array([control('tpl', { nonNullable: true })]),
+                }));
                 fg.controls.items.push();
                 expect(fg.value.items).toEqual(['tpl', 'tpl']);
             }));
@@ -299,7 +304,9 @@ describe('signal form nodes', () => {
                         range: group({ from: control(5), to: control(1) }),
                     }))
                     .withValidation({ top: [Validators.required] });
-                fg.controls.range.withMultiFieldValidation(({ from, to }) => (from ?? 0) > (to ?? 0) && { badRange: true });
+                fg.controls.range.withMultiFieldValidation(
+                    ({ from, to }) => (from ?? 0) > (to ?? 0) && { badRange: true }
+                );
                 expect(fg.controls.range.controls.from.errors).toEqual({ badRange: true });
                 expect(fg.controls.range.controls.to.errors).toEqual({ badRange: true });
                 expect(fg.controls.top.errors).toEqual({ required: true });
@@ -335,7 +342,9 @@ describe('signal form nodes', () => {
                 const on = signal(false);
                 const fg = formGroup
                     .withBuilder(({ control }) => ({ a: control('taken') }))
-                    .withValidation(({ asyncConditional }) => ({ a: [asyncConditional(() => on() && [slowTaken(5)])] }));
+                    .withValidation(({ asyncConditional }) => ({
+                        a: [asyncConditional(() => on() && [slowTaken(5)])],
+                    }));
                 await wait(30);
                 expect(fg.valid).toBe(true);
                 on.set(true);
@@ -377,7 +386,14 @@ describe('signal form nodes', () => {
             inContext(async () => {
                 const fg = formGroup.withBuilder(({ control }) => ({
                     a: control('x', {
-                        asyncValidators: [() => timer(2).pipe(map(() => { throw new Error('boom'); }))],
+                        asyncValidators: [
+                            () =>
+                                timer(2).pipe(
+                                    map(() => {
+                                        throw new Error('boom');
+                                    })
+                                ),
+                        ],
                     }),
                 }));
                 await wait(30);

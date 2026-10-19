@@ -43,7 +43,8 @@ describe('signal forms form field directives', () => {
     let host: HostComponent;
     let nameInput: HTMLInputElement;
 
-    const service = () => fixture.debugElement.query((d) => d.attributes['puiFormField'] !== undefined).injector.get(PuiFormFieldService);
+    const service = () =>
+        fixture.debugElement.query((d) => d.attributes['puiFormField'] !== undefined).injector.get(PuiFormFieldService);
     const settle = async () => {
         fixture.detectChanges();
         await fixture.whenStable();
@@ -124,7 +125,9 @@ describe('signal forms form field directives', () => {
     });
 
     it('the form directive marks all controls and form fields as touched, and reads validity and dirtiness from the form', async () => {
-        const directive = fixture.debugElement.query((d) => d.attributes['puiForm'] !== undefined).injector.get(PuiFormDirective);
+        const directive = fixture.debugElement
+            .query((d) => d.attributes['puiForm'] !== undefined)
+            .injector.get(PuiFormDirective);
         expect(directive.getIfAllRenderedControlsAreValid()).toBe(false);
         expect(directive.getIfAllRenderedControlsArePristine()).toBe(true);
         directive.markAsTouched();
@@ -142,7 +145,12 @@ describe('signal forms form field directives', () => {
         const deactivate = jest.fn();
         TestBed.resetTestingModule();
         TestBed.configureTestingModule({
-            providers: [{ provide: PuiDirtyGuardService, useValue: { activateComponent: activate, deactivateComponent: deactivate } }],
+            providers: [
+                {
+                    provide: PuiDirtyGuardService,
+                    useValue: { activateComponent: activate, deactivateComponent: deactivate },
+                },
+            ],
         });
         fixture = TestBed.createComponent(HostComponent);
         host = fixture.componentInstance;

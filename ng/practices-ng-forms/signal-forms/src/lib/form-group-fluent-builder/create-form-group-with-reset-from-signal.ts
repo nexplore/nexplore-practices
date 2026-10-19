@@ -16,9 +16,10 @@ import { createExtendedFormGroup } from './extensions';
 import { extendWithResetFromSignal, ResetWithSignalConfig } from './with-reset-from-signal';
 
 /** Makes sure that all properties of the definition are present in the signal value. */
-type DefinitionSatisfyingSignalValue<TSignalValue extends FormGroupValueBase, TDefinition> = TDefinition extends FormGroupDefinition<
-    infer TValue
->
+type DefinitionSatisfyingSignalValue<
+    TSignalValue extends FormGroupValueBase,
+    TDefinition
+> = TDefinition extends FormGroupDefinition<infer TValue>
     ? TDefinition extends FormGroupDefinition<AllPropsAMustBeInB<TValue, TSignalValue>>
         ? TDefinition
         : never
@@ -46,7 +47,10 @@ export function createFormGroupWithResetFromSignal<
 ): SignalFormGroup<
     FormControlsOfValues<
         TDefinition extends FormGroupDefinitionRecord<any>
-            ? ExtractActualValueFromDefinition<DefinitionWithNullValuesInferredFromValue<TDefinition, TSignalValue>, TSignalValue>
+            ? ExtractActualValueFromDefinition<
+                  DefinitionWithNullValuesInferredFromValue<TDefinition, TSignalValue>,
+                  TSignalValue
+              >
             : TDefinition extends PartialNullable<TSignalValue>
             ? ValueSatisfyingType<TSignalValue, TDefinition>
             : never

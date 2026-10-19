@@ -55,10 +55,7 @@ export class SignalFormRuntime implements FormRuntime {
     readonly rootNode: SignalFormGroup<any>;
     private readonly itemDefs = new Map<string, AnyDef>();
 
-    constructor(
-        readonly injector: Injector,
-        private readonly rootDef: GroupDef<any>
-    ) {
+    constructor(readonly injector: Injector, private readonly rootDef: GroupDef<any>) {
         this.registerDefinition(rootDef, '');
         this.model = signal(this.initialModel(rootDef));
         this.root = form(this.model, (path: any) => this.buildSchema(path, rootDef), { injector });
@@ -260,9 +257,7 @@ export class SignalFormRuntime implements FormRuntime {
                 const fieldTree = target.split('.').reduce((tree: any, key) => tree?.[key], ctx.fieldTree);
                 for (const validator of validators) {
                     for (const error of fromValidationErrors(validator(node as any))) {
-                        errors.push(
-                            Object.assign(Object.create(Object.getPrototypeOf(error)), error, { fieldTree })
-                        );
+                        errors.push(Object.assign(Object.create(Object.getPrototypeOf(error)), error, { fieldTree }));
                     }
                 }
             }

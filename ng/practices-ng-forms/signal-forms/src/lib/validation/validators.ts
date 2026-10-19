@@ -22,9 +22,18 @@ export type NativeRuleMeta = {
 /** @internal */
 export type ValidatorSpec =
     | { type: 'conditional'; compute: () => ConditionalValidatorResult }
-    | { type: 'dependent'; form: ValueOrGetter<SignalFormGroup<any>>; compute: (values: any) => ConditionalValidatorResult }
+    | {
+          type: 'dependent';
+          form: ValueOrGetter<SignalFormGroup<any>>;
+          compute: (values: any) => ConditionalValidatorResult;
+      }
     | { type: 'asyncConditional'; compute: () => ConditionalAsyncValidatorResult }
-    | { type: 'multi'; form: ValueOrGetter<SignalFormGroup<any>>; compute: (values: any) => ConditionalValidatorResult; controlNames?: string[] }
+    | {
+          type: 'multi';
+          form: ValueOrGetter<SignalFormGroup<any>>;
+          compute: (values: any) => ConditionalValidatorResult;
+          controlNames?: string[];
+      }
     | { type: 'native'; meta: NativeRuleMeta };
 
 const SPEC = Symbol('puiSignalFormsValidatorSpec');
@@ -128,7 +137,7 @@ export function resolveValidatorsOfResult(result: ConditionalValidatorResult): V
     return items
         .filter((item): item is Exclude<typeof item, false | 0 | '' | null | undefined | 0n> => !!item)
         .flatMap((item) => (Array.isArray(item) ? (item as ValidatorFn[]) : [item]))
-        .map((item) => (typeof item === 'function' ? (item as ValidatorFn) : (() => item as ValidationErrors)));
+        .map((item) => (typeof item === 'function' ? (item as ValidatorFn) : () => item as ValidationErrors));
 }
 
 /** @internal */
@@ -155,7 +164,12 @@ export const PuiValidators = {
     pattern: (pattern: string | RegExp): ValidatorFn =>
         tag(Validators.pattern(pattern), {
             type: 'native',
-            meta: { pattern: typeof pattern === 'string' ? new RegExp(pattern.startsWith('^') ? pattern : `^${pattern}$`) : pattern },
+            meta: {
+                pattern:
+                    typeof pattern === 'string'
+                        ? new RegExp(pattern.startsWith('^') ? pattern : `^${pattern}$`)
+                        : pattern,
+            },
         }),
 } as const;
 

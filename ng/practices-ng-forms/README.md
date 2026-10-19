@@ -494,14 +494,14 @@ The call shapes are the same as for Reactive Forms: `formGroup.withBuilder / wit
 
 What is new:
 
-| Feature | API |
-| --- | --- |
-| Submission | `form.submit(async (value) => serverErrors, { onInvalid, ignoreValidators })`, `form.submitting` / `submittingSignal`, `serverError(control, kind, payload?, message?)` |
-| Arrays | `SignalFormArray`: `push`, `insert`, `removeAt`, `clear`, `at`, `length`; items get the validators of the first item definition |
-| Readonly / hidden | `node.setReadonly(bool)`, `node.setHidden(bool)`, `node.readonly`; readonly fields are not validated |
-| Native rule metadata | `PuiValidators.min/max/minLength/maxLength/pattern` (and `Validators.required`) also publish `state.min()`, `state.minLength()`, `state.pattern()`, `state.required()` |
-| Field tree access | `node.fieldTree` / `node.field` / `node.fieldState`, bind with `[formField]` |
-| Pending / async | `pending`, `pendingSignal`; async validators are cancelled by newer values and only run while sync validators pass |
+| Feature              | API                                                                                                                                                                     |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Submission           | `form.submit(async (value) => serverErrors, { onInvalid, ignoreValidators })`, `form.submitting` / `submittingSignal`, `serverError(control, kind, payload?, message?)` |
+| Arrays               | `SignalFormArray`: `push`, `insert`, `removeAt`, `clear`, `at`, `length`; items get the validators of the first item definition                                         |
+| Readonly / hidden    | `node.setReadonly(bool)`, `node.setHidden(bool)`, `node.readonly`; readonly fields are not validated                                                                    |
+| Native rule metadata | `PuiValidators.min/max/minLength/maxLength/pattern` (and `Validators.required`) also publish `state.min()`, `state.minLength()`, `state.pattern()`, `state.required()`  |
+| Field tree access    | `node.fieldTree` / `node.field` / `node.fieldState`, bind with `[formField]`                                                                                            |
+| Pending / async      | `pending`, `pendingSignal`; async validators are cancelled by newer values and only run while sync validators pass                                                      |
 
 Template directives: `puiForm` (`[formGroup][puiForm]`), `puiFormField` with `PuiFormFieldService`, `puiReadonly`, and the `[formField]` extension
 `PuiFormFieldControlDirective` (registers a bound control with the closest `puiFormField`). `providePuiSignalFormsStatusClasses()` adds the
@@ -514,14 +514,14 @@ Validators are written as before: Angular `Validators.*`, `ValidatorFn`, `AsyncV
 `dependent` helpers. They are translated into signal forms rules (`validate`, `validateAsync`, `validateTree`, metadata) that read a reactive rule registry,
 so adding validators with `withValidation` or `addValidators` re-validates immediately and `conditional` / `dependent` need no effects.
 
-- A key of a `ValidationErrors` record becomes the `kind` of a signal forms error (`PuiValidationError`, payload = value of the record entry). `required` and `email` become the native errors.
-- `node.errors` converts back to a `ValidationErrors` record (`null` if none), including native errors: `required` -> `{ required: true }`,
-  `min`/`max` -> `{ min: { min, actual } }`, `minLength`/`maxLength` -> `{ minlength|maxlength: { requiredLength, actualLength } }`,
-  `pattern` -> `{ pattern: { requiredPattern, actualValue } }`. Existing error rendering (`Messages.Validation_Minlength`, ...) keeps working.
-- `node.errorList` / `errorSummary` expose the signal forms errors (with `message` and target `fieldTree`).
-- Errors of a multi-field validation are placed on every involved control (tree validation with targeted errors).
-- Validators receive the node as their control: `value`, `parent`, `root`, `get()`, `dirty`, `touched`, `disabled` work, so validators that look at siblings keep working.
-  They must not read the validity of the control they validate.
+-   A key of a `ValidationErrors` record becomes the `kind` of a signal forms error (`PuiValidationError`, payload = value of the record entry). `required` and `email` become the native errors.
+-   `node.errors` converts back to a `ValidationErrors` record (`null` if none), including native errors: `required` -> `{ required: true }`,
+    `min`/`max` -> `{ min: { min, actual } }`, `minLength`/`maxLength` -> `{ minlength|maxlength: { requiredLength, actualLength } }`,
+    `pattern` -> `{ pattern: { requiredPattern, actualValue } }`. Existing error rendering (`Messages.Validation_Minlength`, ...) keeps working.
+-   `node.errorList` / `errorSummary` expose the signal forms errors (with `message` and target `fieldTree`).
+-   Errors of a multi-field validation are placed on every involved control (tree validation with targeted errors).
+-   Validators receive the node as their control: `value`, `parent`, `root`, `get()`, `dirty`, `touched`, `disabled` work, so validators that look at siblings keep working.
+    They must not read the validity of the control they validate.
 
 ### Migration notes
 
@@ -537,22 +537,22 @@ so adding validators with `withValidation` or `addValidators` re-validates immed
 
 These are covered by tests that assert both behaviours (see `signal-forms/parity`):
 
-- Validators registered with `withValidation` are effective immediately (not after an effect flush).
-- `valueChanges` / `statusChanges` are derived from signals: emissions are coalesced and delivered when effects flush; `statusChanges` only emits real changes.
-- Disabled fields do not contribute to touched/dirty and validity, and report `dirty`/`touched` as `false`.
-- New array items follow the array's schema (validators of the first item definition); `reset(value)` resizes an array.
-- `submit`, `submitting`, server errors and readonly are signal forms features without Reactive Forms counterpart.
-- `disabled: true` in a definition is honored on creation.
-- `updateOn: 'blur'` uses the signal forms blur debounce; `'submit'` behaves like `'change'`.
+-   Validators registered with `withValidation` are effective immediately (not after an effect flush).
+-   `valueChanges` / `statusChanges` are derived from signals: emissions are coalesced and delivered when effects flush; `statusChanges` only emits real changes.
+-   Disabled fields do not contribute to touched/dirty and validity, and report `dirty`/`touched` as `false`.
+-   New array items follow the array's schema (validators of the first item definition); `reset(value)` resizes an array.
+-   `submit`, `submitting`, server errors and readonly are signal forms features without Reactive Forms counterpart.
+-   `disabled: true` in a definition is honored on creation.
+-   `updateOn: 'blur'` uses the signal forms blur debounce; `'submit'` behaves like `'change'`.
 
 ### Not carried over
 
-- The deprecated `formGroup.value.nameSignal` accessors (use `valueSignal.name`).
-- `WrapperFormControlAccessor` / control wrapper provider (ControlValueAccessor wrapper); use signal forms custom controls.
-- `valueChanges`-based helpers keep their names but read signals (`formGroupValueChangesSignal` has no debounce).
-- `withValueChangeEffect` with `debounceTime` depends on all values (not only the read ones).
-- Dynamic definition functions can add, update and retire controls; added controls are leaf controls (new nested groups/arrays are not supported).
-- `puiForm` reads validity/dirtiness from the form state instead of the rendered DOM.
+-   The deprecated `formGroup.value.nameSignal` accessors (use `valueSignal.name`).
+-   `WrapperFormControlAccessor` / control wrapper provider (ControlValueAccessor wrapper); use signal forms custom controls.
+-   `valueChanges`-based helpers keep their names but read signals (`formGroupValueChangesSignal` has no debounce).
+-   `withValueChangeEffect` with `debounceTime` depends on all values (not only the read ones).
+-   Dynamic definition functions can add, update and retire controls; added controls are leaf controls (new nested groups/arrays are not supported).
+-   `puiForm` reads validity/dirtiness from the form state instead of the rendered DOM.
 
 ## Running unit tests
 

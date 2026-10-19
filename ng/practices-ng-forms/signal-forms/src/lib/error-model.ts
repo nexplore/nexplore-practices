@@ -73,10 +73,7 @@ const NATIVE_KEY_MAP: Record<string, string> = {
  * @param errors The errors of one field.
  * @param value The current value of the field (used to fill in the `actual...` details).
  */
-export function toValidationErrors(
-    errors: ReadonlyArray<ValidationError>,
-    value: unknown
-): ValidationErrors | null {
+export function toValidationErrors(errors: ReadonlyArray<ValidationError>, value: unknown): ValidationErrors | null {
     if (!errors.length) {
         return null;
     }
@@ -100,7 +97,12 @@ export function toValidationErrors(
         } else if (error instanceof PatternValidationError) {
             result['pattern'] = { requiredPattern: String(error.pattern), actualValue: value };
         } else {
-            const { kind, fieldTree: _fieldTree, formField: _formField, ...details } = error as ValidationError & {
+            const {
+                kind,
+                fieldTree: _fieldTree,
+                formField: _formField,
+                ...details
+            } = error as ValidationError & {
                 fieldTree?: unknown;
                 formField?: unknown;
             };

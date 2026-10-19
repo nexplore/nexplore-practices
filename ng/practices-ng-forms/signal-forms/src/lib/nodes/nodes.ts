@@ -520,12 +520,18 @@ export class SignalFormControl<TValue = unknown> extends SignalFormNode<TValue> 
 }
 
 /** A node with named children. */
-export class SignalFormGroup<TControls extends object = Record<string, AnyNode>> extends SignalFormNode<ControlsValues<TControls>> {
+export class SignalFormGroup<TControls extends object = Record<string, AnyNode>> extends SignalFormNode<
+    ControlsValues<TControls>
+> {
     readonly kind = 'group' as const;
     readonly controls: TControls = {} as TControls;
 
     /** @internal */
-    constructor(runtime: FormRuntime, pathKeys: readonly Key[], parentNode: SignalFormGroup<any> | SignalFormArray<any> | null) {
+    constructor(
+        runtime: FormRuntime,
+        pathKeys: readonly Key[],
+        parentNode: SignalFormGroup<any> | SignalFormArray<any> | null
+    ) {
         super(runtime, pathKeys, parentNode);
     }
 
@@ -554,11 +560,17 @@ export class SignalFormGroup<TControls extends object = Record<string, AnyNode>>
     }
 
     override get valueSignal(): ValueSignalWithChildren<TControls> {
-        return this.withChildSignals(this.cached('value', () => this.computeValue()), 'valueSignal');
+        return this.withChildSignals(
+            this.cached('value', () => this.computeValue()),
+            'valueSignal'
+        );
     }
 
     override get rawValueSignal(): ValueSignalWithChildren<TControls> {
-        return this.withChildSignals(this.cached('rawValue', () => this.rawValue), 'rawValueSignal');
+        return this.withChildSignals(
+            this.cached('rawValue', () => this.rawValue),
+            'rawValueSignal'
+        );
     }
 
     private computeValue(): ControlsValues<TControls> {
@@ -576,7 +588,10 @@ export class SignalFormGroup<TControls extends object = Record<string, AnyNode>>
      * Makes a value signal usable as a record of the signals of its controls:
      * `valueSignal()` is the group value, `valueSignal.name()` the value of the control `name`.
      */
-    private withChildSignals(signal: Signal<any>, property: 'valueSignal' | 'rawValueSignal'): ValueSignalWithChildren<TControls> {
+    private withChildSignals(
+        signal: Signal<any>,
+        property: 'valueSignal' | 'rawValueSignal'
+    ): ValueSignalWithChildren<TControls> {
         return new Proxy(signal, {
             get: (target, prop, receiver) => {
                 if (typeof prop === 'string' && prop in this.controls) {
@@ -636,7 +651,10 @@ export class SignalFormGroup<TControls extends object = Record<string, AnyNode>>
     }
 
     /** Runs an effect when the values it reads change, see `extendWithValueChangeEffect`. */
-    withValueChangeEffect(effectFn: (value: ControlsValues<TControls>) => void, options?: { debounceTime?: number }): this {
+    withValueChangeEffect(
+        effectFn: (value: ControlsValues<TControls>) => void,
+        options?: { debounceTime?: number }
+    ): this {
         return extendWithValueChangeEffect.call(this as any, effectFn as any, options) as this;
     }
 
@@ -668,13 +686,20 @@ export class SignalFormGroup<TControls extends object = Record<string, AnyNode>>
      * Resolves with `true` if the action ran and returned no errors.
      */
     submit(
-        action: (value: ControlsValues<TControls>, form: SignalFormGroup<TControls>) => Promise<TreeValidationResult> | Promise<void>,
+        action: (
+            value: ControlsValues<TControls>,
+            form: SignalFormGroup<TControls>
+        ) => Promise<TreeValidationResult> | Promise<void>,
         options?: Pick<FormSubmitOptions<unknown, unknown>, 'ignoreValidators'> & {
             onInvalid?: (form: SignalFormGroup<TControls>) => void;
         }
     ): Promise<boolean> {
         return signalFormSubmit(this.fieldTree as FieldTree<any>, {
-            action: async () => (await action(untracked(() => this.value), this)) as TreeValidationResult,
+            action: async () =>
+                (await action(
+                    untracked(() => this.value),
+                    this
+                )) as TreeValidationResult,
             onInvalid: options?.onInvalid ? () => options.onInvalid!(this) : undefined,
             ignoreValidators: options?.ignoreValidators,
         });
@@ -702,7 +727,12 @@ export class SignalFormArray<TItem extends object = AnyNode> extends SignalFormN
         let node = this._items.get(index);
         if (!node) {
             const def = this.runtime.itemDefOf(this.pathKeys);
-            node = createNode(this.runtime, [...this.pathKeys, String(index)], this as any, def ?? new ControlDef(null)) as TItem;
+            node = createNode(
+                this.runtime,
+                [...this.pathKeys, String(index)],
+                this as any,
+                def ?? new ControlDef(null)
+            ) as TItem;
             this._items.set(index, node);
         }
         return node;
@@ -713,7 +743,11 @@ export class SignalFormArray<TItem extends object = AnyNode> extends SignalFormN
     }
 
     override get valueSignal(): Signal<NodeValue<TItem>[]> {
-        return this.cached('value', () => (this.controls as unknown as AnyNode[]).filter((c) => this.disabled || c.enabled).map((c) => c.value as NodeValue<TItem>));
+        return this.cached('value', () =>
+            (this.controls as unknown as AnyNode[])
+                .filter((c) => this.disabled || c.enabled)
+                .map((c) => c.value as NodeValue<TItem>)
+        );
     }
 
     override get disabled(): boolean {
@@ -762,11 +796,15 @@ export class SignalFormArray<TItem extends object = AnyNode> extends SignalFormN
     }
 
     patchValue(value: unknown): void {
-        (value as unknown[] | null | undefined)?.forEach((item, index) => (this.at(index) as unknown as AnyNode | undefined)?.patchValue(item));
+        (value as unknown[] | null | undefined)?.forEach((item, index) =>
+            (this.at(index) as unknown as AnyNode | undefined)?.patchValue(item)
+        );
     }
 
     protected override controlsDeep(): AnyNode[] {
-        return this.controls.flatMap((c) => ((c as AnyNode).kind === 'control' ? [c as AnyNode] : (c as any).controlsDeep()));
+        return this.controls.flatMap((c) =>
+            (c as AnyNode).kind === 'control' ? [c as AnyNode] : (c as any).controlsDeep()
+        );
     }
 
     protected override nodesDeep(): AnyNode[] {

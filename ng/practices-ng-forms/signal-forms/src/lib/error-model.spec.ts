@@ -1,4 +1,12 @@
-import { emailError, maxError, maxLengthError, minError, minLengthError, patternError, requiredError } from '@angular/forms/signals';
+import {
+    emailError,
+    maxError,
+    maxLengthError,
+    minError,
+    minLengthError,
+    patternError,
+    requiredError,
+} from '@angular/forms/signals';
 import { fromValidationErrors, PuiValidationError, toValidationErrors } from './error-model';
 
 describe('error model', () => {
@@ -13,7 +21,15 @@ describe('error model', () => {
 
     it('maps native errors to the Reactive Forms keys and details', () => {
         const result = toValidationErrors(
-            [requiredError(), emailError(), minError(3), maxError(5), minLengthError(2), maxLengthError(4), patternError(/a/)] as any,
+            [
+                requiredError(),
+                emailError(),
+                minError(3),
+                maxError(5),
+                minLengthError(2),
+                maxLengthError(4),
+                patternError(/a/),
+            ] as any,
             'value'
         );
         expect(result).toEqual({

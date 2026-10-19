@@ -39,7 +39,9 @@ describe('consumer types of the signal forms factories', () => {
             assertType<Equal<typeof built.value.tags, (string | null)[]>>();
             assertType<Equal<typeof built.controls.name, SignalFormControl<string | null>>>();
             assertType<Equal<typeof built.controls.address.controls.zip.value, number | null>>();
-            assertType<Equal<ReturnType<typeof built.controls.tags.at>, SignalFormControl<string | null> | undefined>>();
+            assertType<
+                Equal<ReturnType<typeof built.controls.tags.at>, SignalFormControl<string | null> | undefined>
+            >();
             assertType<Equal<typeof built.valueSignal.name, Signal<string | null>>>();
             assertType<Equal<ReturnType<typeof built.valueSignal.address>['street'], string | null>>();
             assertType<IsAny<typeof built.value> extends false ? true : false>();

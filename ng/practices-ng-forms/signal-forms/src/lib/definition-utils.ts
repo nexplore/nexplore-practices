@@ -6,7 +6,9 @@ export function initialValueOfDef(def: AnyDef): any {
         case 'control':
             return def.initialValue === undefined ? null : def.initialValue;
         case 'group':
-            return Object.fromEntries(Object.entries(def.controls).map(([key, child]) => [key, initialValueOfDef(child as AnyDef)]));
+            return Object.fromEntries(
+                Object.entries(def.controls).map(([key, child]) => [key, initialValueOfDef(child as AnyDef)])
+            );
         case 'array':
             return def.items.map((item: AnyDef) => initialValueOfDef(item));
     }
@@ -19,7 +21,11 @@ export function initialValueOfDef(def: AnyDef): any {
  * @param patch Explicit values (as passed to `reset(value)`); `undefined` entries fall back to the default.
  * @param template For arrays, the definition used for items that have no definition of their own.
  */
-export function resetValueOfDef(def: AnyDef, patch: unknown, arrayItemDef?: (def: ArrayDef<any>) => AnyDef | undefined): any {
+export function resetValueOfDef(
+    def: AnyDef,
+    patch: unknown,
+    arrayItemDef?: (def: ArrayDef<any>) => AnyDef | undefined
+): any {
     switch (def.kind) {
         case 'control':
             return patch !== undefined ? patch : def.options.nonNullable ? def.initialValue ?? null : null;
@@ -67,5 +73,7 @@ export function normalizeDefinitionEntry(entry: unknown): AnyDef {
 }
 
 export function normalizeDefinitionRecord(record: Record<string, unknown>): GroupDef<Record<string, AnyDef>> {
-    return new GroupDef(Object.fromEntries(Object.entries(record).map(([key, entry]) => [key, normalizeDefinitionEntry(entry)])));
+    return new GroupDef(
+        Object.fromEntries(Object.entries(record).map(([key, entry]) => [key, normalizeDefinitionEntry(entry)]))
+    );
 }

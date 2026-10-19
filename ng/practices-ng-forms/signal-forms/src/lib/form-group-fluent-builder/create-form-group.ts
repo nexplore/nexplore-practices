@@ -1,5 +1,12 @@
 import type { Injector } from '@angular/core';
-import type { BuildFromGroupValueFn, FormGroupDefinition, FormGroupDefinitionRecord, FormGroupValueBase, PartialNullable, TypedExtendedFormGroup } from '../types';
+import type {
+    BuildFromGroupValueFn,
+    FormGroupDefinition,
+    FormGroupDefinitionRecord,
+    FormGroupValueBase,
+    PartialNullable,
+    TypedExtendedFormGroup,
+} from '../types';
 import { createExtendedFormGroup } from './extensions';
 
 /**

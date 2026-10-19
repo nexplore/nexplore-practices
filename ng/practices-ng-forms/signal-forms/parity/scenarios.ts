@@ -35,7 +35,15 @@ export const SCENARIOS: ParityScenario[] = [
                 age: control(42),
                 active: control(true),
             }));
-            return { value: fg.value, raw: fg.getRawValue(), valid: fg.valid, dirty: fg.dirty, touched: fg.touched, pristine: fg.pristine, status: fg.status };
+            return {
+                value: fg.value,
+                raw: fg.getRawValue(),
+                valid: fg.valid,
+                dirty: fg.dirty,
+                touched: fg.touched,
+                pristine: fg.pristine,
+                status: fg.status,
+            };
         },
     },
     {
@@ -133,9 +141,13 @@ export const SCENARIOS: ParityScenario[] = [
                     code: [Validators.pattern(/^\d+$/)],
                     mail: [Validators.email],
                 });
-            const bad = Object.fromEntries(['req', 'num', 'short', 'code', 'mail'].map((k) => [k, fg.controls[k].errors]));
+            const bad = Object.fromEntries(
+                ['req', 'num', 'short', 'code', 'mail'].map((k) => [k, fg.controls[k].errors])
+            );
             fg.patchValue({ req: 'x', num: 15, short: 'abc', code: '123', mail: 'a@b.ch' });
-            const good = Object.fromEntries(['req', 'num', 'short', 'code', 'mail'].map((k) => [k, fg.controls[k].errors]));
+            const good = Object.fromEntries(
+                ['req', 'num', 'short', 'code', 'mail'].map((k) => [k, fg.controls[k].errors])
+            );
             return { bad, good, valid: fg.valid };
         },
     },
@@ -143,7 +155,8 @@ export const SCENARIOS: ParityScenario[] = [
         id: 'custom-sync-validator',
         title: 'custom sync validator (ValidatorFn)',
         run: ({ formGroup }) => {
-            const noSpaces = (c: AbstractControl): ValidationErrors | null => (/\s/.test(c.value ?? '') ? { noSpaces: { found: true } } : null);
+            const noSpaces = (c: AbstractControl): ValidationErrors | null =>
+                /\s/.test(c.value ?? '') ? { noSpaces: { found: true } } : null;
             const fg = formGroup.withBuilder(({ control }: any) => ({ name: control('a b', [noSpaces]) }));
             const a = fg.controls.name.errors;
             fg.controls.name.setValue('ab');
@@ -233,8 +246,14 @@ export const SCENARIOS: ParityScenario[] = [
         title: 'multi-field validation: errors on every involved control',
         run: ({ formGroup, flush }) => {
             const fg = formGroup
-                .withBuilder(({ control }: any) => ({ field1: control(null), field2: control(null), other: control('') }))
-                .withMultiFieldValidation(({ field1, field2 }: any) => !field1 && !field2 && { atLeastOneFieldRequired: true });
+                .withBuilder(({ control }: any) => ({
+                    field1: control(null),
+                    field2: control(null),
+                    other: control(''),
+                }))
+                .withMultiFieldValidation(
+                    ({ field1, field2 }: any) => !field1 && !field2 && { atLeastOneFieldRequired: true }
+                );
             flush();
             const a = { f1: fg.controls.field1.errors, f2: fg.controls.field2.errors, other: fg.controls.other.errors };
             fg.controls.field1.setValue('x');
@@ -263,7 +282,11 @@ export const SCENARIOS: ParityScenario[] = [
             await settle(40);
             const steps: unknown[] = [{ status: fg.status, pending: fg.pending }];
             fg.controls.user.setValue('taken');
-            const during = { status: fg.controls.user.status, pending: fg.controls.user.pending, groupStatus: fg.status };
+            const during = {
+                status: fg.controls.user.status,
+                pending: fg.controls.user.pending,
+                groupStatus: fg.status,
+            };
             await settle(40);
             steps.push(during, { status: fg.controls.user.status, errors: fg.controls.user.errors, valid: fg.valid });
             fg.controls.user.setValue('free');
@@ -281,7 +304,9 @@ export const SCENARIOS: ParityScenario[] = [
                 calls.push(c.value);
                 return timer(30).pipe(map(() => (c.value === 'taken' ? { taken: true } : null)));
             };
-            const fg = formGroup.withBuilder(({ control }: any) => ({ user: control('', { asyncValidators: [validator] }) }));
+            const fg = formGroup.withBuilder(({ control }: any) => ({
+                user: control('', { asyncValidators: [validator] }),
+            }));
             await settle(60);
             calls.length = 0;
             fg.controls.user.setValue('taken');
@@ -319,11 +344,23 @@ export const SCENARIOS: ParityScenario[] = [
                 .withValidation({});
             const steps: unknown[] = [{ value: fg.value, raw: fg.getRawValue(), valid: fg.valid, status: fg.status }];
             fg.controls.a.disable();
-            steps.push({ value: fg.value, raw: fg.getRawValue(), valid: fg.valid, aStatus: fg.controls.a.status, aErrors: fg.controls.a.errors, aDisabled: fg.controls.a.disabled });
+            steps.push({
+                value: fg.value,
+                raw: fg.getRawValue(),
+                valid: fg.valid,
+                aStatus: fg.controls.a.status,
+                aErrors: fg.controls.a.errors,
+                aDisabled: fg.controls.a.disabled,
+            });
             fg.controls.a.enable();
             steps.push({ value: fg.value, valid: fg.valid, aStatus: fg.controls.a.status });
             fg.disable();
-            steps.push({ value: fg.value, status: fg.status, disabled: fg.disabled, bDisabled: fg.controls.b.disabled });
+            steps.push({
+                value: fg.value,
+                status: fg.status,
+                disabled: fg.disabled,
+                bDisabled: fg.controls.b.disabled,
+            });
             fg.enable();
             steps.push({ status: fg.status, disabled: fg.disabled, bDisabled: fg.controls.b.disabled });
             return steps;
@@ -338,7 +375,13 @@ export const SCENARIOS: ParityScenario[] = [
                 nested: group({ b: control('b') }),
             }));
             const steps: Record<string, unknown> = {};
-            const flags = () => ({ dirty: fg.dirty, touched: fg.touched, aDirty: fg.controls.a.dirty, aTouched: fg.controls.a.touched, bTouched: fg.get('nested.b').touched });
+            const flags = () => ({
+                dirty: fg.dirty,
+                touched: fg.touched,
+                aDirty: fg.controls.a.dirty,
+                aTouched: fg.controls.a.touched,
+                bTouched: fg.get('nested.b').touched,
+            });
             steps['initial'] = flags();
             fg.controls.a.setValue('changed');
             steps['setValue'] = flags();
@@ -378,10 +421,20 @@ export const SCENARIOS: ParityScenario[] = [
         title: 'error model: errors record, hasError, getError',
         run: ({ formGroup }) => {
             const fg = formGroup
-                .withBuilder(({ control }: any) => ({ a: control('', [Validators.required, () => ({ custom: { x: 1 } })]) }))
+                .withBuilder(({ control }: any) => ({
+                    a: control('', [Validators.required, () => ({ custom: { x: 1 } })]),
+                }))
                 .withValidation({});
             const a = fg.controls.a;
-            return { errors: a.errors, hasRequired: a.hasError('required'), hasCustom: a.hasError('custom'), custom: a.getError('custom'), hasNope: a.hasError('nope'), groupErrors: fg.errors, viaGroup: fg.hasError('required', ['a']) };
+            return {
+                errors: a.errors,
+                hasRequired: a.hasError('required'),
+                hasCustom: a.hasError('custom'),
+                custom: a.getError('custom'),
+                hasNope: a.hasError('nope'),
+                groupErrors: fg.errors,
+                viaGroup: fg.hasError('required', ['a']),
+            };
         },
     },
     {
@@ -557,7 +610,13 @@ export const SCENARIOS: ParityScenario[] = [
                 duringSubmitting = fg.submitting;
                 return serverError(fg.controls.email, 'emailTaken', { by: 'someone' });
             });
-            const result = { ok, duringSubmitting, after: fg.submitting, errors: fg.controls.email.errors, valid: fg.valid };
+            const result = {
+                ok,
+                duringSubmitting,
+                after: fg.submitting,
+                errors: fg.controls.email.errors,
+                valid: fg.valid,
+            };
             fg.controls.email.setValue('c@d.ch');
             return { ...result, afterEdit: fg.controls.email.errors };
         },
@@ -681,7 +740,10 @@ export const SCENARIOS: ParityScenario[] = [
         id: 'disabled-definition',
         title: 'control defined as disabled',
         run: ({ formGroup }) => {
-            const fg = formGroup.withBuilder(({ control }: any) => ({ a: control({ value: 'a', disabled: true }), b: control('b') }));
+            const fg = formGroup.withBuilder(({ control }: any) => ({
+                a: control({ value: 'a', disabled: true }),
+                b: control('b'),
+            }));
             return { a: fg.controls.a.disabled, value: fg.value, raw: fg.getRawValue() };
         },
     },

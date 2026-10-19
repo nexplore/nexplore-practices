@@ -15,9 +15,10 @@ import { createTypedFormGroupWithResetFromSignalFactory } from './create-form-gr
 import { createExtendedFormGroup } from './extensions';
 
 /** Makes sure that the definition is compatible with the provided type. */
-type DefinitionSatisfyingType<TFormGroupValue extends FormGroupValueBase, TDefinition> = TDefinition extends FormGroupDefinition<
-    infer TValue
->
+type DefinitionSatisfyingType<
+    TFormGroupValue extends FormGroupValueBase,
+    TDefinition
+> = TDefinition extends FormGroupDefinition<infer TValue>
     ? TDefinition extends FormGroupDefinition<AllPropsAMustBeInB<TValue, TFormGroupValue>>
         ? TDefinition
         : never

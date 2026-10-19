@@ -33,10 +33,9 @@ describe('fluent signal form group builder', () => {
     it('withResetFromSignal supports mapValue and null signal values', () =>
         inContext(() => {
             const source = signal<{ full: string } | null>(null);
-            const fg = createFormGroupWithResetFromSignal(
-                signal<{ name: string } | null>(null),
-                { name: { nullable: true } }
-            );
+            const fg = createFormGroupWithResetFromSignal(signal<{ name: string } | null>(null), {
+                name: { nullable: true },
+            });
             const mapped = formGroup
                 .withBuilder(({ control }) => ({ name: control('') }))
                 .withResetFromSignal(source, { mapValue: (dto) => ({ name: dto.full.toUpperCase() }) });
