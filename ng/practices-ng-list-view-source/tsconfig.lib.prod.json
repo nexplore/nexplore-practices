@@ -6,10 +6,10 @@
     "angularCompilerOptions": {
         "compilationMode": "partial",
         "extendedDiagnostics": {
-          "checks": {
-            "nullishCoalescingNotNullable": "suppress",
-            "optionalChainNotNullable": "suppress"
-          }
+            "checks": {
+                "nullishCoalescingNotNullable": "suppress",
+                "optionalChainNotNullable": "suppress"
+            }
         }
     }
 }

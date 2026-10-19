@@ -4,6 +4,6 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
     selector: 'app-subnavigation',
     templateUrl: './subnavigation.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    standalone: false,
 })
 export class SubnavigationComponent {}

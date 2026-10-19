@@ -74,12 +74,11 @@ export class PuibeToastComponent {
 
     /**
      * The color-variant of the toast.
-     * 
+     *
      * By default, the toast will have dark-sand background.
      */
     @Input()
     public variant?: 'default' | 'success' | 'error' | 'info' = 'default';
-
 
     /**
      *  Whether the toast should show an alert icon.

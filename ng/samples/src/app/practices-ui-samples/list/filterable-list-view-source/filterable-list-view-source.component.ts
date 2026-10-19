@@ -21,7 +21,7 @@ interface ISampleFilter {
     selector: 'app-filterable-list-view-source',
     templateUrl: './filterable-list-view-source.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    standalone: false,
 })
 export class FilterableListViewSourceComponent implements OnDestroy {
     lastRequestedApiUrl: string;

@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Inject, InjectionToken, Input, Optional, Output, ChangeDetectionStrategy } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Inject,
+    InjectionToken,
+    Input,
+    Optional,
+    Output,
+    ChangeDetectionStrategy,
+} from '@angular/core';
 import { isObservable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 

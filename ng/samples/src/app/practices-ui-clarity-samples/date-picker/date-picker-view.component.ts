@@ -5,7 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
     selector: 'app-date-picker-view',
     templateUrl: './date-picker-view.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    standalone: false,
 })
 export class DatePickerViewComponent {
     formGroup = new FormGroup({

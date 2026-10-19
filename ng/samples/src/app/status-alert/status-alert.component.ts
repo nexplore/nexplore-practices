@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
     selector: 'app-status-alert',
     templateUrl: './status-alert.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    standalone: false,
 })
 export class StatusAlertComponent implements OnInit, OnDestroy {
     private subscription: Subscription;
