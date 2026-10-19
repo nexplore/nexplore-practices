@@ -1,4 +1,4 @@
-import { effect, inject, Injector, runInInjectionContext } from '@angular/core';
+import { effect, inject, Injector, runInInjectionContext, untracked } from '@angular/core';
 import { isObjDeepEqual } from '@nexplore/practices-ng-common-util';
 import { trace } from '@nexplore/practices-ng-logging';
 import { AnyDef, ControlDef, GroupDef, SignalFormBuilder } from '../definition';
@@ -68,12 +68,10 @@ export function createExtendedFormGroup<TDefinition extends FormGroupDefinition<
     const builder = new SignalFormBuilder();
 
     let rootDef: GroupDef<Record<string, AnyDef>>;
-    let initialized = false;
 
     if (typeof definition === 'function') {
         try {
             rootDef = normalizeDefinitionRecord((definition as Function)(builder));
-            initialized = true;
         } catch (e) {
             trace(
                 'createExtendedFormGroup',
@@ -84,7 +82,6 @@ export function createExtendedFormGroup<TDefinition extends FormGroupDefinition<
         }
     } else {
         rootDef = normalizeDefinitionRecord(definition as Record<string, unknown>);
-        initialized = true;
     }
 
     const runtime = runInInjectionContext(injector, () => new SignalFormRuntime(injector, rootDef));
@@ -93,12 +90,8 @@ export function createExtendedFormGroup<TDefinition extends FormGroupDefinition<
         runInInjectionContext(injector, () => {
             effect(() => {
                 const record = (definition as Function)(builder) as Record<string, unknown>;
-                // The first run only establishes the dependencies when the initial evaluation already worked.
-                if (initialized) {
-                    initialized = false;
-                    return;
-                }
-                updateDefinition(runtime, record);
+                // Idempotent for an unchanged definition, so the first run needs no special treatment.
+                untracked(() => updateDefinition(runtime, record));
             });
         });
     }

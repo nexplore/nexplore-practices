@@ -9,7 +9,7 @@ import {
     type TreeValidationResult,
     type ValidationError,
 } from '@angular/forms/signals';
-import { distinctUntilChanged, Observable, skip } from 'rxjs';
+import { defer, distinctUntilChanged, Observable, skipWhile } from 'rxjs';
 import { AnyDef, ArrayDef, ControlDef, GroupDef, isDef } from '../definition';
 import { initialValueOfDef, resetValueOfDef } from '../definition-utils';
 import { PuiValidationError, toValidationErrors } from '../error-model';
@@ -453,9 +453,17 @@ export abstract class SignalFormNode<TValue = unknown> {
     }
 
     private toChanges<T>(source: Signal<T>): Observable<T> {
-        return runInInjectionContext(this.runtime.injector, () =>
-            toObservable(source, { injector: this.runtime.injector }).pipe(distinctUntilChanged(), skip(1))
+        const shared = runInInjectionContext(this.runtime.injector, () =>
+            toObservable(source, { injector: this.runtime.injector })
         );
+        // The baseline is the value at subscription time, so changes made before the first effect run are not lost.
+        return defer(() => {
+            const initial = untracked(source);
+            return shared.pipe(
+                distinctUntilChanged(),
+                skipWhile((value) => Object.is(value, initial))
+            );
+        });
     }
 
     // ---- traversal

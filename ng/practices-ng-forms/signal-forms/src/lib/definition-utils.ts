@@ -52,7 +52,7 @@ const CONTROL_DEF_KEYS = ['value', 'disabled', 'updateOn', 'nullable'];
  * Normalizes the entries of a definition record:
  * - definitions created with the builder are used as they are
  * - `{ value, nullable, validators, ... }` objects become control definitions
- * - anything else is the initial value of a non-nullable control
+ * - anything else is the initial value of a nullable control
  */
 export function normalizeDefinitionEntry(entry: unknown): AnyDef {
     if (isDef(entry)) {
@@ -62,7 +62,8 @@ export function normalizeDefinitionEntry(entry: unknown): AnyDef {
         const { value, nullable, ...rest } = entry as Record<string, any>;
         return new ControlDef(value, { ...rest, nonNullable: !nullable });
     }
-    return new ControlDef(entry, { nonNullable: true });
+    // like `new FormControl(value)`: a plain value is a nullable control
+    return new ControlDef(entry);
 }
 
 export function normalizeDefinitionRecord(record: Record<string, unknown>): GroupDef<Record<string, AnyDef>> {
