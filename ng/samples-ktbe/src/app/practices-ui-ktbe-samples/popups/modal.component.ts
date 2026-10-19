@@ -1,5 +1,5 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { PracticesKtbeDialogModule, PuibeButtonDirective } from '@nexplore/practices-ui-ktbe';
 
 interface Data {
@@ -10,6 +10,7 @@ interface Data {
     standalone: true,
     selector: 'app-modal',
     templateUrl: 'modal.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [PracticesKtbeDialogModule, PuibeButtonDirective],
 })
 export class AppModalComponent {

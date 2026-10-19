@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { DateService } from '../../date.service';
 import { PuibeCalendarPeriodService, CalendarPeriodType } from './calendar-period.service';
 import { PuibeCalendarYearViewService } from './calendar-year-view.service';
-import { Duration } from 'date-fns/types';
+import type { Duration } from 'date-fns';
 
 @Injectable({
     providedIn: 'root',

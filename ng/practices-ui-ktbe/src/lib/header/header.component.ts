@@ -1,6 +1,16 @@
 import { DomPortal, PortalModule } from '@angular/cdk/portal';
 import { AsyncPipe, NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
-import { Component, Input, EventEmitter, Output, ElementRef, ViewChild, OnInit, TemplateRef } from '@angular/core';
+import {
+    Component,
+    Input,
+    EventEmitter,
+    Output,
+    ElementRef,
+    ViewChild,
+    OnInit,
+    TemplateRef,
+    ChangeDetectionStrategy,
+} from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PuibeSideNavigationComponent } from '../side-navigation/side-navigation.component';
 import { PuibeHeaderLogoComponent } from './header-logo.component';
@@ -19,6 +29,7 @@ import { PuibeShellService } from '../shell/shell.service';
     standalone: true,
     selector: 'puibe-header',
     templateUrl: './header.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         NgClass,
         NgIf,

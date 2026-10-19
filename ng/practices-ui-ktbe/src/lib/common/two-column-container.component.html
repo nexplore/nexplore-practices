@@ -2,7 +2,11 @@
     <div
         #left
         class="basis-full"
-        [ngClass]="_mobileOrderMap[mobileOrder]?.left + ' ' + _horizontalDistributionMap[horizontalDistribution]?.left"
+        [ngClass]="
+            $safeNavigationMigration(_mobileOrderMap[mobileOrder]?.left) +
+            ' ' +
+            $safeNavigationMigration(_horizontalDistributionMap[horizontalDistribution]?.left)
+        "
     >
         <ng-content select="[left-column]"></ng-content>
     </div>
@@ -10,7 +14,9 @@
         #right
         class="basis-full"
         [ngClass]="
-            _mobileOrderMap[mobileOrder]?.right + ' ' + _horizontalDistributionMap[horizontalDistribution]?.right
+            $safeNavigationMigration(_mobileOrderMap[mobileOrder]?.right) +
+            ' ' +
+            $safeNavigationMigration(_horizontalDistributionMap[horizontalDistribution]?.right)
         "
     >
         <ng-content select="[right-column]"></ng-content>

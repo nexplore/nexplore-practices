@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LegacyCommand, StatusCategory, StatusService } from '@nexplore/practices-ui';
 import {
@@ -20,6 +20,7 @@ import { AppComponent } from '../../app.component';
     selector: 'puibe-status-hub-story',
     standalone: true,
     templateUrl: './status-hub.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         PracticesKtbeDefaultModule,
         PuibeButtonDirective,

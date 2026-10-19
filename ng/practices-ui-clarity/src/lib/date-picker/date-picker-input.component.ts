@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, forwardRef, Input, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, forwardRef, Input, ViewChild, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import {
     AbstractControl,
     ControlValueAccessor,
@@ -50,6 +50,7 @@ import { ClarityModule, ClrDateInput } from '@clr/angular';
         },
     ],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.Eager,
     styles: [
         `
             clr-date-container label.clr-control-label > label {

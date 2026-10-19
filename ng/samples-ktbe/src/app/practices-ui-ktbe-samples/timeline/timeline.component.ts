@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
     PuibeExpansionPanelComponent,
     PuibeTimelineComponent,
@@ -9,6 +9,7 @@ import {
     standalone: true,
     selector: 'app-timeline',
     templateUrl: './timeline.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [PuibeExpansionPanelComponent, PuibeTimelineItemComponent, PuibeTimelineComponent],
 })
 export class TimelineExampleComponent {}
