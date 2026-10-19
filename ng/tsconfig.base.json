@@ -19,6 +19,7 @@
             "@nexplore/practices-ng-common-util": ["./practices-ng-common-util/src/index.ts"],
             "@nexplore/practices-ng-dirty-guard": ["./practices-ng-dirty-guard/src/index.ts"],
             "@nexplore/practices-ng-forms": ["./practices-ng-forms/src/index.ts"],
+            "@nexplore/practices-ng-forms/signal-forms": ["./practices-ng-forms/signal-forms/src/index.ts"],
             "@nexplore/practices-ng-list-view-source": ["./practices-ng-list-view-source/src/index.ts"],
             "@nexplore/practices-ng-logging": ["./practices-ng-logging/src/index.ts"],
             "@nexplore/practices-ng-signals": ["./practices-ng-signals/src/index.ts"],
