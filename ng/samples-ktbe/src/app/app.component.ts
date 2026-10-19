@@ -99,7 +99,7 @@ export class AppComponent {
         injector: Injector
     ) {
         this._translateService.use(this.languageKeys.en).subscribe();
-        this._translateService.setDefaultLang(this.languageKeys.en);
+        void this._translateService.setDefaultLang(this.languageKeys.en);
         this._translateService.setTranslation(this.languageKeys.en, translations);
 
         this._titleService.title$.subscribe((t) => console.log('🎉Title Updated: ' + t));

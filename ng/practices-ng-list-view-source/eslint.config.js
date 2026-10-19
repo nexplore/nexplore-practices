@@ -22,6 +22,8 @@ module.exports = [
     {
         files: ['**/*.ts'],
         rules: {
+            '@angular-eslint/prefer-inject': 'warn',
+            '@angular-eslint/prefer-on-push-component-change-detection': 'warn',
             '@angular-eslint/directive-selector': [
                 'error',
                 {
