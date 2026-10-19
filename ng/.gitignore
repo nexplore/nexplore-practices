@@ -409,7 +409,6 @@ MigrationBackup/
 .nx/workspace-data
 .angular
 
-.claude/worktrees
 .nx/polygraph
 .nx/self-healing
 .nx/migrate-runs
