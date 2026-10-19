@@ -2,7 +2,7 @@ import { effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import type { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { PuiReadonlyDirective } from '@nexplore/practices-ng-forms';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { NODE_STATE } from '../runtime/node-state';
 import type { PuiFormFieldService } from './form-field.service';
 
@@ -21,5 +21,5 @@ export const removeValidatorsOnReadonlyFieldsBehavior =
             const readonly = isReadonlySignal();
             formFieldService.stateSignal()?.metadata(NODE_STATE)?.readonly.set(readonly);
         });
-        return { unsubscribe: () => ref.destroy() };
+        return new Subscription(() => ref.destroy());
     };
