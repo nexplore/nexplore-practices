@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-unused-expressions */
 /**
  * Compile-only consumer type test: jest type checks this file under the strict compiler options.
  * A regression in the inferred types (e.g. `any` or `unknown` creeping in) fails the compilation of this file.

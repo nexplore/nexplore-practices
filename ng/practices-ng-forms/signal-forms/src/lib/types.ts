@@ -6,7 +6,6 @@ import type {
     SignalFormArray,
     SignalFormControl,
     SignalFormGroup,
-    SignalFormNode,
 } from './nodes/nodes';
 
 export type { NodeValue, ControlsValues };

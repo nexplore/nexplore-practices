@@ -21,7 +21,7 @@ const createForm = () =>
         .withValidation({ name: [PuiValidators.minLength(2), Validators.required] });
 
 @Component({
-    selector: 'test-host',
+    selector: 'pui-test-host',
     imports: [FormField, PuiFormFieldDirective, PuiFormFieldControlDirective, PuiFormDirective, PuiReadonlyDirective],
     template: `
         <form [formGroup]="form" puiForm [enableDirtyFormNavigationGuard]="guard()">

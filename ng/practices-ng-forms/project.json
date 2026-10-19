@@ -33,8 +33,9 @@
             "executor": "@nx/eslint:lint",
             "options": {
                 "lintFilePatterns": [
-                    "practices-ui/**/*.ts",
-                    "practices-ui/package.json"
+                    "practices-ng-forms/src/**/*.ts",
+                    "practices-ng-forms/signal-forms/**/*.ts",
+                    "practices-ng-forms/package.json"
                 ]
             }
         }

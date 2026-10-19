@@ -230,14 +230,18 @@ export abstract class SignalFormNode<TValue = unknown> {
     /** Returns the descendant at the given path (`'address.street'`, `['items', 0, 'name']`). */
     get(path: ReadonlyArray<string | number> | string): AnyNode | null {
         const keys = Array.isArray(path) ? path.map(String) : String(path).split('.');
-        let node: AnyNode | null | undefined = this;
-        for (const key of keys) {
-            node = node.kind === 'group' ? (node as unknown as SignalFormGroup<any>).controls[key] : node.kind === 'array' ? (node as unknown as SignalFormArray<any>).at(Number(key)) : null;
+        return keys.reduce<AnyNode | null>((node, key) => {
             if (!node) {
                 return null;
             }
-        }
-        return node;
+            if (node.kind === 'group') {
+                return ((node as unknown as SignalFormGroup<any>).controls as Record<string, AnyNode>)[key] ?? null;
+            }
+            if (node.kind === 'array') {
+                return ((node as unknown as SignalFormArray<any>).at(Number(key)) as AnyNode | undefined) ?? null;
+            }
+            return null;
+        }, this as unknown as AnyNode);
     }
 
     // ---- state changes

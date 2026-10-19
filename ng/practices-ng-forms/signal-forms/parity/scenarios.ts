@@ -29,7 +29,7 @@ export const SCENARIOS: ParityScenario[] = [
     {
         id: 'group-init-values',
         title: 'group initial values (value, raw value, validity, flags)',
-        run: ({ formGroup, injector }) => {
+        run: ({ formGroup }) => {
             const fg = formGroup.withBuilder(({ control }: any) => ({
                 name: control('John'),
                 age: control(42),
@@ -103,7 +103,7 @@ export const SCENARIOS: ParityScenario[] = [
     {
         id: 'array-of-groups',
         title: 'array of groups: item validation and value',
-        run: ({ formGroup, arrayPush, createFormGroup }) => {
+        run: ({ formGroup }) => {
             const fg = formGroup.withBuilder(({ control, group, array }: any) => ({
                 people: array([group({ name: control('', [Validators.required]) })]),
             }));

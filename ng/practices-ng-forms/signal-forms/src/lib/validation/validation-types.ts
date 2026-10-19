@@ -1,7 +1,6 @@
 import type { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
 import type { Falsy } from 'rxjs';
 import type { SignalFormGroup } from '../nodes/nodes';
-import type { SignalFormNode } from '../nodes/nodes';
 import type { GroupValues } from '../types';
 
 export type ConditionalValidatorResult = ValidatorFn | ValidatorFn[] | Falsy | ValidationErrors;

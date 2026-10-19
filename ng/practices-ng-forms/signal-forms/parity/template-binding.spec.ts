@@ -12,7 +12,7 @@ const build = (formGroup: any) =>
         .withValidation({ name: [Validators.required] });
 
 @Component({
-    selector: 'test-reactive-host',
+    selector: 'pui-test-reactive-host',
     imports: [ReactiveFormsModule],
     template: `<input id="name" [formControl]="form.controls.name" /><input id="age" type="number" [formControl]="form.controls.age" />`,
 })
@@ -21,7 +21,7 @@ class ReactiveHostComponent {
 }
 
 @Component({
-    selector: 'test-signal-host',
+    selector: 'pui-test-signal-host',
     imports: [FormField],
     template: `<input id="name" [formField]="form.controls.name.field" /><input id="age" type="number" [formField]="form.controls.age.field" />`,
 })
