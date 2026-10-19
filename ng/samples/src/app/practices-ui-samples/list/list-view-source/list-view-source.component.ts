@@ -9,7 +9,7 @@ import { listEndpointMock } from '../endpointMock';
     selector: 'app-list-view-source',
     templateUrl: './list-view-source.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    standalone: false,
 })
 export class ListViewSourceComponent implements OnDestroy {
     lastRequestedApiUrl: string;

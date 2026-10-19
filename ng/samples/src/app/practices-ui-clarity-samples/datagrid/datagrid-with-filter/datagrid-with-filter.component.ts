@@ -18,7 +18,7 @@ interface IUserFilter {
     selector: 'app-datagrid-with-filter',
     templateUrl: './datagrid-with-filter.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    standalone: false,
 })
 export class DatagridWithFilterComponent {
     userSource: IFilterableListViewSource<IUserListEntry, IUserFilter> = new FilterableListViewSource(

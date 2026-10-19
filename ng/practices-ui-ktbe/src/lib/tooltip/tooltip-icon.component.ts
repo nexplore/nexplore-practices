@@ -30,4 +30,3 @@ import { Component, HostBinding, ChangeDetectionStrategy } from '@angular/core';
 export class PuibeTooltipIconComponent {
     @HostBinding('class') class = '';
 }
-

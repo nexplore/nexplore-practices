@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
     selector: 'app-dialog-view',
     templateUrl: './dialog-view.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    standalone: false,
 })
 export class DialogViewComponent {
     confirmDialogResponse: boolean | undefined;

@@ -7,7 +7,7 @@ import { delay, map, take } from 'rxjs/operators';
     selector: 'app-status-view',
     templateUrl: './status-view.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    standalone: false,
 })
 export class StatusViewComponent {
     constructor(private statusService: StatusService) {}

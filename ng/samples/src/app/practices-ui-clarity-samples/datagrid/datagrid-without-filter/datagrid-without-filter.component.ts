@@ -8,7 +8,7 @@ import { IUserListEntry } from '../model';
     selector: 'app-datagrid-without-filter',
     templateUrl: './datagrid-without-filter.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    standalone: false,
 })
 export class DatagridWithoutFilterComponent {
     userSource: IListViewSource<IUserListEntry> = createListViewSource(
