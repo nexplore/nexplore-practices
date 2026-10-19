@@ -17,6 +17,7 @@ export function enhanceWithMutableData<TViewSource extends IListViewSource<any>>
 
     const originalTotalCountSignal = source.totalCountSignal;
     const originalPage$: Observable<IListResult<any>> = source.page$;
+    let hasReadPageData = false;
     const pageDataSignal = withEffects(signal<any[]>([]), (signal) => {
         // Write
         effect(() => {
@@ -31,7 +32,14 @@ export function enhanceWithMutableData<TViewSource extends IListViewSource<any>>
         });
 
         // Read
-        subscriptionEffect(() => originalPage$.subscribe((page) => untracked(() => signal.set(page?.data))));
+        subscriptionEffect(() =>
+            originalPage$.subscribe((page) =>
+                untracked(() => {
+                    signal.set(page?.data);
+                    hasReadPageData = true;
+                })
+            )
+        );
     });
 
     let hasReadTotalCount = false;
@@ -51,7 +59,7 @@ export function enhanceWithMutableData<TViewSource extends IListViewSource<any>>
     return enhance(source, {
         pageDataSignal,
         totalCountSignal,
-        page$: combineLatest([toObservable(pageDataSignal), totalCount$]).pipe(
+        page$: combineLatest([toObservable(pageDataSignal).pipe(filter(() => hasReadPageData)), totalCount$]).pipe(
             map(([data, total]) => ({ data, total }))
         ),
     });
