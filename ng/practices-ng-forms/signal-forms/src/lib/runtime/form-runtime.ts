@@ -9,9 +9,11 @@ import {
     hidden,
     MAX,
     MAX_LENGTH,
+    MAX_NUMBER,
     metadata,
     MIN,
     MIN_LENGTH,
+    MIN_NUMBER,
     PATTERN,
     readonly,
     REQUIRED,
@@ -167,8 +169,10 @@ export class SignalFormRuntime implements FormRuntime {
         hidden(p, (ctx: Ctx) => ctx.state.metadata(NODE_STATE)?.hidden() ?? false);
 
         metadata(p, REQUIRED, ((ctx: Ctx) => !!registry.metaFor(pattern(ctx)).required) as any);
-        metadata(p, MIN, ((ctx: Ctx) => registry.metaFor(pattern(ctx)).min) as any);
-        metadata(p, MAX, ((ctx: Ctx) => registry.metaFor(pattern(ctx)).max) as any);
+        metadata(p, MIN, (() => MIN_NUMBER) as any);
+        metadata(p, MAX, (() => MAX_NUMBER) as any);
+        metadata(p, MIN_NUMBER, ((ctx: Ctx) => registry.metaFor(pattern(ctx)).min) as any);
+        metadata(p, MAX_NUMBER, ((ctx: Ctx) => registry.metaFor(pattern(ctx)).max) as any);
         metadata(p, MIN_LENGTH, ((ctx: Ctx) => registry.metaFor(pattern(ctx)).minLength) as any);
         metadata(p, MAX_LENGTH, ((ctx: Ctx) => registry.metaFor(pattern(ctx)).maxLength) as any);
         metadata(p, PATTERN, ((ctx: Ctx) => registry.metaFor(pattern(ctx)).pattern) as any);

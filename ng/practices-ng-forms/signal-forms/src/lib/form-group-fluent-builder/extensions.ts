@@ -68,10 +68,12 @@ export function createExtendedFormGroup<TDefinition extends FormGroupDefinition<
     const builder = new SignalFormBuilder();
 
     let rootDef: GroupDef<Record<string, AnyDef>>;
+    let initialRecord: unknown;
 
     if (typeof definition === 'function') {
         try {
-            rootDef = normalizeDefinitionRecord((definition as Function)(builder));
+            initialRecord = (definition as Function)(builder);
+            rootDef = normalizeDefinitionRecord(initialRecord as Record<string, unknown>);
         } catch (e) {
             trace(
                 'createExtendedFormGroup',
@@ -90,8 +92,13 @@ export function createExtendedFormGroup<TDefinition extends FormGroupDefinition<
         runInInjectionContext(injector, () => {
             effect(() => {
                 const record = (definition as Function)(builder) as Record<string, unknown>;
-                // Idempotent for an unchanged definition, so the first run needs no special treatment.
-                untracked(() => updateDefinition(runtime, record));
+                // The first run only has to establish the dependencies if the definition did not change since creation:
+                // applying it would reset values the user already changed.
+                const unchangedSinceCreation = initialRecord !== undefined && isObjDeepEqual(record, initialRecord);
+                initialRecord = undefined;
+                if (!unchangedSinceCreation) {
+                    untracked(() => updateDefinition(runtime, record));
+                }
             });
         });
     }
