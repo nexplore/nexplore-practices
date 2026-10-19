@@ -1,6 +1,6 @@
 import { effect } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { ListViewSource } from '../implementation/list-view-source';
 import { OrderDirection } from '../types';
 import { enhanceListViewSource } from './internal-util';
@@ -377,6 +377,49 @@ describe('enhanceWithMutableData', () => {
                 { data: [1, 2], total: 3 },
                 { data: [1, 2, 3], total: 3 },
             ]);
+        });
+    });
+
+    it('should not emit an initial empty page from page$ before the first source page arrives', () => {
+        TestBed.runInInjectionContext(() => {
+            const results: any[] = [];
+            const response$ = new Subject<{ data: number[]; total: number }>();
+
+            const source = enhanceListViewSource(new ListViewSource((_params) => response$, {})).withMutableData();
+
+            source.page$.subscribe((page: any) => results.push(page));
+
+            source.refresh();
+
+            jest.runAllTimers();
+            TestBed.flushEffects();
+
+            // The source has not responded yet: no placeholder page ({ data: [], total: 0 }) may be emitted
+            expect(results).toEqual([]);
+
+            response$.next({ data: [1, 2], total: 2 });
+
+            jest.runAllTimers();
+            TestBed.flushEffects();
+
+            expect(results).toEqual([{ data: [1, 2], total: 2 }]);
+
+            source.pageDataSignal.set([1, 2, 3]);
+
+            jest.runAllTimers();
+            TestBed.flushEffects();
+
+            expect(results).toEqual([
+                { data: [1, 2], total: 2 },
+                { data: [1, 2, 3], total: 2 },
+            ]);
+
+            response$.next({ data: [4], total: 1 });
+
+            jest.runAllTimers();
+            TestBed.flushEffects();
+
+            expect(results[results.length - 1]).toEqual({ data: [4], total: 1 });
         });
     });
 });
