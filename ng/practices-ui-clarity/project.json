@@ -16,21 +16,6 @@
                     "tsConfig": "practices-ui-clarity/tsconfig.lib.prod.json"
                 }
             }
-        },
-        "test": {
-            "executor": "@nx/jest:jest",
-            "options": {
-                "jestConfig": "practices-ui-clarity/jest.config.js"
-            }
-        },
-        "lint": {
-            "executor": "@nx/eslint:lint",
-            "options": {
-                "lintFilePatterns": [
-                    "practices-ui-clarity/**/*.ts",
-                    "practices-ui-clarity/package.json"
-                ]
-            }
         }
     }
 }

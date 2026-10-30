@@ -16,22 +16,6 @@
                     "tsConfig": "practices-ui/tsconfig.lib.prod.json"
                 }
             }
-        },
-        "test": {
-            "executor": "@nx/jest:jest",
-            "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-            "options": {
-                "jestConfig": "practices-ui/jest.config.ts"
-            }
-        },
-        "lint": {
-            "executor": "@nx/eslint:lint",
-            "options": {
-                "lintFilePatterns": [
-                    "practices-ui/**/*.ts",
-                    "practices-ui/package.json"
-                ]
-            }
         }
     }
 }
