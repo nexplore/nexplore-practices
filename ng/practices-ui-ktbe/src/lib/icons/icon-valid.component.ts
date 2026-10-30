@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { PuibeIconDirectiveBase } from './icon.directive';
 
 @Component({
@@ -16,6 +16,7 @@ import { PuibeIconDirectiveBase } from './icon.directive';
             }
         `,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
         <path
             class="cls-1"

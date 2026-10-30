@@ -4,7 +4,7 @@ import { add } from 'date-fns/add';
 import { format } from 'date-fns/format';
 import { getDaysInMonth } from 'date-fns/getDaysInMonth';
 import { isValid } from 'date-fns/isValid';
-import { Locale } from 'date-fns/types';
+import type { Locale } from 'date-fns';
 import { de, enUS, frCH } from 'date-fns/locale';
 import { parse } from 'date-fns/parse';
 import { parseISO } from 'date-fns/parseISO';

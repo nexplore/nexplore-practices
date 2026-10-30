@@ -5,7 +5,7 @@
  */
 
 import { NgFor } from '@angular/common';
-import { Component, ElementRef, Input, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DEFAULT_PAGE_SIZE_OPTIONS } from './config';
 
@@ -18,6 +18,7 @@ let nextUniqueId = 0;
     standalone: true,
     selector: 'puibe-table-page-size',
     templateUrl: './table-page-size.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, NgFor, A11yModule],
 })
 export class PuibeTablePageSizeComponent implements OnInit {

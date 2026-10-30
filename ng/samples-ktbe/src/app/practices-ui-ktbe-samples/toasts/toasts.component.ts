@@ -1,5 +1,5 @@
 import { NgClass, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
     PuibeIconCloseComponent,
     PuibeIconLoginComponent,
@@ -11,6 +11,7 @@ import {
     standalone: true,
     selector: 'app-toasts',
     templateUrl: './toasts.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         NgClass,
         NgIf,

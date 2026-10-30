@@ -1,5 +1,5 @@
 import { NgClass, NgIf } from '@angular/common';
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PuibeFlyoutService } from './flyout.service';
 import { Dialog } from '@angular/cdk/dialog';
@@ -12,6 +12,7 @@ export const FLYOUT_PROVIDERS = [PuibeFlyoutService, Dialog];
     templateUrl: 'flyout.component.html',
     imports: [NgIf, NgClass, TranslateModule],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.Eager,
     styles: [
         // The following rule uses the :where() pseudo-class to match attribute selector, but keeping the low specificity, so it can be easily overriden.
         `

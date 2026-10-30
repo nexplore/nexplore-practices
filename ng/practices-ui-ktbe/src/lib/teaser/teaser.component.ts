@@ -1,5 +1,5 @@
 import { NgClass, NgIf } from '@angular/common';
-import { Component, EventEmitter, forwardRef, Input, Optional, Output } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, Optional, Output, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { PuibeMigratingClickCommandHostDirective } from '../command/migrating-click-command-host.directive';
 import { PuibeIconArrowComponent } from '../icons/icon-arrow.component';
@@ -11,6 +11,7 @@ let nextUniqueId = 0;
     selector: 'puibe-teaser',
     templateUrl: './teaser.component.html',
     imports: [PuibeIconArrowComponent, NgClass, NgIf],
+    changeDetection: ChangeDetectionStrategy.Eager,
     hostDirectives: [
         {
             directive: forwardRef(() => PuibeMigratingClickCommandHostDirective),

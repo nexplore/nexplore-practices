@@ -1,4 +1,4 @@
-import { Component, EventEmitter, ViewChild } from '@angular/core';
+import { Component, EventEmitter, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { A11yModule } from '@angular/cdk/a11y';
@@ -17,6 +17,7 @@ import { PuibeCalendarToolbarItemDirective } from './presentation/calendar-toolb
         TranslateModule,
         PuibeIconCloseComponent,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [],
 })
 export class PuibeCalendarFlyoutComponent {

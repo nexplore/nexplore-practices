@@ -42,10 +42,10 @@ jobs:
           dotnet-version: "8.x"
 
       # Prepare Node.js like ADO UseNode@1
-      - name: Setup Node 22.14.0
+      - name: Setup Node 24.15.0
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
-          node-version: "22.14.0"
+          node-version: "24.15.0"
           check-latest: true
 
       # Download the build artifact named 'build-output' from the prior job

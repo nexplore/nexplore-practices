@@ -1,10 +1,11 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, HostBinding, Input, ChangeDetectionStrategy } from '@angular/core';
 import { PuibeIconDirectiveBase } from './icon.directive';
 import { IconSize } from './icon.interface';
 
 @Component({
     standalone: true,
     selector: 'puibe-icon-enumeration',
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31 31">
         <g>
             <circle cx="15.5" cy="15.5" r="15.5" />

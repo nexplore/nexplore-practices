@@ -2,7 +2,7 @@
 import { A11yModule } from '@angular/cdk/a11y';
 import { BlockScrollStrategy, ViewportRuler } from '@angular/cdk/overlay';
 import { AsyncPipe, NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
-import { Component, ContentChild, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, ContentChild, EventEmitter, Input, Output, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
     AggregatedStatusInfo,
     StatusCategory,
@@ -39,6 +39,7 @@ type ToastPosition = 'top-left' | 'top' | 'top-right' | 'bottom-left' | 'bottom'
         PuibeErrorStatusDirective,
         A11yModule,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     animations: [listEntryAnimation, scaleAnimation, slowFadeAnimation],
 })
 export class PuibeStatusHubComponent {
