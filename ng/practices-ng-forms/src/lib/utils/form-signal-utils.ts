@@ -1,7 +1,7 @@
 import { isSignal, Signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormControlState, FormGroup, UntypedFormGroup } from '@angular/forms';
-import { ValueOrSignal } from '@nexplore/practices-ng-common-util';
+import { isObjShallowEqual, ValueOrSignal } from '@nexplore/practices-ng-common-util';
 import { debounceTime, distinctUntilChanged, filter, map, noop, Observable, of, startWith, switchMap, tap } from 'rxjs';
 import { FormGroupValues, TypedFormGroup } from './form.types';
 import { ElementsOfArray } from './types-internal';
@@ -75,21 +75,7 @@ export function formGroupCurrentValueMappedSignal<
                             return value;
                         }
                     }),
-                    distinctUntilChanged(
-                        options?.distinctComparator ??
-                            ((a, b) => {
-                                if (!a || !b) {
-                                    return a === b;
-                                }
-
-                                const aEntries = Object.entries(a);
-                                const bEntries = Object.entries(b);
-                                return (
-                                    aEntries.length === bEntries.length &&
-                                    aEntries.every(([key, value]) => value === (b as Record<string, unknown>)[key])
-                                );
-                            })
-                    ),
+                    distinctUntilChanged(options?.distinctComparator ?? isObjShallowEqual),
                     debounceTime(options?.debounceTime ?? 1),
                     filter(options?.filter ?? (() => true)),
                     map(options?.map ?? ((v) => v as unknown as TResult))

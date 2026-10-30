@@ -85,9 +85,6 @@
             "style": "css"
         }
     },
-    "affected": {
-        "legacy": true
-    },
     "plugins": [
         {
             "plugin": "@nx/jest/plugin",
