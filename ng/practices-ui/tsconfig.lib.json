@@ -8,13 +8,5 @@
         "types": []
     },
     "exclude": ["src/test.ts", "**/*.spec.ts", "**/*.stories.ts"],
-    "include": ["**/*.ts"],
-    "angularCompilerOptions": {
-        "extendedDiagnostics": {
-            "checks": {
-                "nullishCoalescingNotNullable": "suppress",
-                "optionalChainNotNullable": "suppress"
-            }
-        }
-    }
+    "include": ["**/*.ts"]
 }

@@ -76,8 +76,6 @@
             "pattern": "{version}"
         }
     },
-    "useInferencePlugins": false,
-    "useLegacyCache": true,
     "generators": {
         "@nx/angular:library": {
             "linter": "eslint",

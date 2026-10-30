@@ -33,7 +33,7 @@
 >
     <puibe-status-toast
         *ngFor="let status of statusToasts$ | async; trackBy: trackByFn"
-        [errorTemplate]="$safeNavigationMigration(statusError?.templateRef)"
+        [errorTemplate]="statusError?.templateRef"
         @listEntryAnimation
         class="drop-shadow-md"
         [status]="status"

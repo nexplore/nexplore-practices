@@ -3,9 +3,9 @@
         #left
         class="basis-full"
         [ngClass]="
-            $safeNavigationMigration(_mobileOrderMap[mobileOrder]?.left) +
+            (_mobileOrderMap[mobileOrder]?.left ?? '') +
             ' ' +
-            $safeNavigationMigration(_horizontalDistributionMap[horizontalDistribution]?.left)
+            (_horizontalDistributionMap[horizontalDistribution]?.left ?? '')
         "
     >
         <ng-content select="[left-column]"></ng-content>
@@ -14,9 +14,9 @@
         #right
         class="basis-full"
         [ngClass]="
-            $safeNavigationMigration(_mobileOrderMap[mobileOrder]?.right) +
+            (_mobileOrderMap[mobileOrder]?.right ?? '') +
             ' ' +
-            $safeNavigationMigration(_horizontalDistributionMap[horizontalDistribution]?.right)
+            (_horizontalDistributionMap[horizontalDistribution]?.right ?? '')
         "
     >
         <ng-content select="[right-column]"></ng-content>

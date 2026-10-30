@@ -8,14 +8,14 @@
                     (!hideCurrentlyActiveItem || !route.active)
                 "
                 [routerLink]="route.pathFromRoot ?? route.path"
-                [href]="$safeNavigationMigration(route.data?.link?.href)"
-                [rel]="$safeNavigationMigration(route.data?.link?.rel)"
-                [target]="$safeNavigationMigration(route.data?.link?.target)"
+                [href]="route.data?.link?.href"
+                [rel]="route.data?.link?.rel"
+                [target]="route.data?.link?.target"
                 [hasHomeIcon]="
                     route.data?.breadcrumb?.showAsHomeIcon ||
                     (first && ['/', ''].includes(route.pathFromRoot ?? route.path))
                 "
-                [shouldOpenSideNav]="$safeNavigationMigration(route.data?.breadcrumb?.clickOpensSideNav)"
+                [shouldOpenSideNav]="route.data?.breadcrumb?.clickOpensSideNav"
                 [active]="route.active || (last && !first)"
                 [ariaCurrent]="route.active || (last && !first) ? 'page' : undefined"
                 [routerConfig]="routerConfig"
