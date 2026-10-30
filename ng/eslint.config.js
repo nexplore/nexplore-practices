@@ -70,7 +70,15 @@ module.exports = [
         files: ['**/*.html'],
         rules: {
             '@angular-eslint/template/label-has-associated-control': 'off',
+            '@angular-eslint/template/no-negated-async': 'off',
             '@angular-eslint/template/prefer-control-flow': 'warn',
+            // External templates were not linted by the previous `@nx/eslint:lint` targets (only `**/*.ts`);
+            // the inferred `eslint .` target now covers them. Kept as warnings until the templates are fixed.
+            '@angular-eslint/template/alt-text': 'warn',
+            '@angular-eslint/template/click-events-have-key-events': 'warn',
+            '@angular-eslint/template/eqeqeq': 'warn',
+            '@angular-eslint/template/interactive-supports-focus': 'warn',
+            '@angular-eslint/template/no-autofocus': 'warn',
         },
     },
     {
