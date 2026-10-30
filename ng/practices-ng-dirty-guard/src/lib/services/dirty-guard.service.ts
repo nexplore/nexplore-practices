@@ -1,9 +1,9 @@
 import { Injectable, Injector, OnDestroy, Optional, runInInjectionContext, SkipSelf } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRouteSnapshot, GuardsCheckStart, Route, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, GuardsCheckStart, NavigationEnd, Route, Router } from '@angular/router';
 import { firstValueFromMaybeAsync } from '@nexplore/practices-ng-common-util';
 import { trace } from '@nexplore/practices-ng-logging';
-import { Observable } from 'rxjs';
+import { filter, map, merge, Observable, startWith, take } from 'rxjs';
 import { createPuiDirtyGuard, evaluateDirtyGuardCanDeactivate } from '../dirty-guard-util-internal';
 import { PuiDirtyGuardHandler } from '../types';
 import { PuiGlobalRouteGuardService } from './global-route-guard.service';
@@ -18,8 +18,11 @@ import { DirtyGuardComponentState, DirtyGuardSupportedComponent } from './types-
 export class PuiDirtyGuardService implements OnDestroy {
     private _activeComponentInstanceStates = new Array<DirtyGuardComponentState>();
     private _disabled = false;
+    private _configuredDirtyGuardHandler = createPuiDirtyGuard();
 
-    protected dirtyGuardHandler = createPuiDirtyGuard();
+    protected dirtyGuardHandler: ReturnType<typeof createPuiDirtyGuard> = (...args) => {
+        return this._configuredDirtyGuardHandler(...args);
+    };
 
     public get disabled() {
         return this.globalRouteGuardService.disabled || this._disabled;
@@ -102,7 +105,7 @@ export class PuiDirtyGuardService implements OnDestroy {
     }
 
     setDirtyGuardHandler(value: PuiDirtyGuardHandler | null) {
-        this.dirtyGuardHandler = createPuiDirtyGuard(value);
+        this._configuredDirtyGuardHandler = createPuiDirtyGuard(value);
     }
 
     /** This will help ensure that routes are automatically protected.
@@ -113,9 +116,28 @@ export class PuiDirtyGuardService implements OnDestroy {
      * To use this feature, your components need to implement one of these interfaces: `IHasDirtyFormState` or `CanDeactivate`
      **/
     private _ensureGlobalGuards() {
-        this._router.events.pipe(takeUntilDestroyed()).subscribe((e) => {
-            if (e instanceof GuardsCheckStart) {
-                let lastChild: ActivatedRouteSnapshot = e.state.root;
+        // Example: A = previous page, B = lazy parent with this outlet, C = B's form page.
+        merge(
+            // Normal A -> B/C: register C so leaving C later checks its unsaved changes.
+            this._router.events.pipe(
+                filter((e) => e instanceof GuardsCheckStart),
+                map((e) => e.state)
+            ),
+            // Lazy B may create this service after GuardsCheckStart for C has already fired.
+            // Catch up on C at the first NavigationEnd. Blocking initial navigation needs this too.
+            this._router.events.pipe(
+                filter((e) => e instanceof NavigationEnd),
+                take(1),
+                map(() => this._router.routerState.snapshot)
+            )
+        )
+            .pipe(
+                // If B/C was already open when this service started, register C immediately.
+                startWith(this._router.routerState.snapshot),
+                takeUntilDestroyed()
+            )
+            .subscribe((state) => {
+                let lastChild: ActivatedRouteSnapshot = state.root;
                 while (lastChild && lastChild.firstChild) {
                     lastChild = lastChild.firstChild;
                 }
@@ -123,8 +145,7 @@ export class PuiDirtyGuardService implements OnDestroy {
                 if (lastChild && lastChild.routeConfig) {
                     this._ensureCanDeactivateGuards(lastChild.routeConfig);
                 }
-            }
-        });
+            });
 
         window.addEventListener('beforeunload', this.beforeUnloadHandler);
     }
