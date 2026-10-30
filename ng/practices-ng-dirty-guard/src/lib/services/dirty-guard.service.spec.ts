@@ -11,7 +11,7 @@ import {
 } from '@angular/router';
 import { afterEach, describe, expect, it, jest } from '@jest/globals';
 import { filter, firstValueFrom, take } from 'rxjs';
-import { PuiGlobalDirtyGuardDirective } from '@nexplore/practices-ng-dirty-guard';
+import { PuiGlobalDirtyGuardDirective } from '../directives/dirty-guard.directive';
 import { provideDirtyGuard } from '../dirty-guard.providers';
 import { PuiDirtyGuardHandler } from '../types';
 
