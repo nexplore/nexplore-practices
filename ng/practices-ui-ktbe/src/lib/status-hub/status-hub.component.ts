@@ -12,7 +12,7 @@ import {
     StatusHubService,
 } from '@nexplore/practices-ui';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { combineLatest, debounceTime, defer, delay, map, of, switchMap, tap } from 'rxjs';
+import { combineLatest, debounceTime, defer, delay, map, Observable, of, switchMap, tap } from 'rxjs';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
 import { IconSize } from '../icons/icon.interface';
 import { PuibeStatusToastComponent } from '../status-toast/status-toast.component';
@@ -119,7 +119,9 @@ export class PuibeStatusHubComponent {
         })
     );
 
-    readonly statusToasts$ = defer(() => this._statusHub.getLatestStatusEventsWithConfig$(this.statusHubConfig)).pipe(
+    readonly statusToasts$: Observable<StatusEventExt[]> = defer(() =>
+        this._statusHub.getLatestStatusEventsWithConfig$(this.statusHubConfig)
+    ).pipe(
         tap((evs) => {
             this.data.statusToasts = evs;
         }),
