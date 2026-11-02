@@ -12,7 +12,7 @@
 
     <ItemGroup>
         <PackageReference Include="MailKit" Version="4.18.1" />
-        <!-- MimeKit 4.18.1 requires Pkcs >= 10.0.0 on all target frameworks. Pin the patched version; the package provides net8.0, net9.0, and net10.0 assets. -->
+         <!--Explicit dependency because MailKit does not offer an updated version-->
         <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
     </ItemGroup>
 
