@@ -1,7 +1,6 @@
 namespace Nexplore.Practices.EntityFramework.Conventions
 {
-    using System;
-    using System.Linq;
+    using System.Reflection;
     using Microsoft.EntityFrameworkCore;
 
     public static class ModelBuilderExtensions
@@ -13,10 +12,9 @@ namespace Nexplore.Practices.EntityFramework.Conventions
                 return;
             }
 
-            var allAssemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var assemblyName in assemblyPaths)
             {
-                var assembly = allAssemblies.Single(e => e.GetName().Name == assemblyName);
+                var assembly = Assembly.Load(assemblyName);
                 modelBuilder.ApplyConfigurationsFromAssembly(assembly);
             }
         }
