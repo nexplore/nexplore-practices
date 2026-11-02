@@ -16,12 +16,20 @@ import { DirtyGuardComponentState, DirtyGuardSupportedComponent } from './types-
     providedIn: null,
 })
 export class PuiDirtyGuardService implements OnDestroy {
+    // track registered guards across outlet service instances to avoid duplicate route guards.
+    private static readonly _registeredDirtyGuards = new WeakSet<object>();
+
+    // share component ownership across instances so each guard uses the owning outlet's handler.
+    private static readonly _componentOwners = new WeakMap<object, PuiDirtyGuardService>();
+
     private _activeComponentInstanceStates = new Array<DirtyGuardComponentState>();
     private _disabled = false;
     private _configuredDirtyGuardHandler = createPuiDirtyGuard();
 
-    protected dirtyGuardHandler: ReturnType<typeof createPuiDirtyGuard> = (...args) => {
-        return this._configuredDirtyGuardHandler(...args);
+    protected dirtyGuardHandler: ReturnType<typeof createPuiDirtyGuard> = (component, ...args) => {
+        // always reuse the existing handler if one exists
+        const owner = PuiDirtyGuardService._componentOwners.get(component) ?? this;
+        return owner.disabled ? true : owner._configuredDirtyGuardHandler(component, ...args);
     };
 
     public get disabled() {
@@ -78,7 +86,12 @@ export class PuiDirtyGuardService implements OnDestroy {
     };
 
     activateComponent(component: DirtyGuardSupportedComponent | unknown) {
-        if (component && typeof component === 'object' && ('canDeactivate' in component || 'formState$' in component)) {
+        if (!component || typeof component !== 'object') {
+            return;
+        }
+
+        PuiDirtyGuardService._componentOwners.set(component, this);
+        if ('canDeactivate' in component || 'formState$' in component) {
             const state: DirtyGuardComponentState = { component: component as DirtyGuardSupportedComponent };
 
             if ('formState$' in component && component.formState$ instanceof Observable) {
@@ -92,6 +105,10 @@ export class PuiDirtyGuardService implements OnDestroy {
     }
 
     deactivateComponent(component: unknown) {
+        if (component && typeof component === 'object') {
+            PuiDirtyGuardService._componentOwners.delete(component);
+        }
+
         const i = this._activeComponentInstanceStates.findIndex((s) => s.component === component);
         if (i !== -1) {
             const state = this._activeComponentInstanceStates[i];
@@ -151,26 +168,24 @@ export class PuiDirtyGuardService implements OnDestroy {
     }
 
     private _ensureCanDeactivateGuards(routeConfig: Route) {
-        if (this.dirtyGuardHandler) {
-            if (!routeConfig.canDeactivate) {
-                routeConfig.canDeactivate = [];
-            }
+        if (!routeConfig.canDeactivate) {
+            routeConfig.canDeactivate = [];
+        }
 
-            const canDeactivateGuards = routeConfig.canDeactivate;
+        const canDeactivateGuards = routeConfig.canDeactivate;
 
-            if (!this.disabled) {
-                // ensure that the "dirtyGuardHandler" is in effect.
-                if (!canDeactivateGuards.find((o) => o === this.dirtyGuardHandler)) {
-                    trace('PuiDirtyGuardService', 'ensureCanDeactivateGuards', 'registering guard', {
-                        routeConfig,
-                        canDeactivateGuards,
-                    });
-                    this._registerGuard(canDeactivateGuards);
-                }
-            } else {
-                // If not enabled, remove the dirty guard
-                this._removeGuards();
+        if (!this.disabled) {
+            // share one automatic dirty guard across all outlets observing this route.
+            if (!canDeactivateGuards.some((guard) => PuiDirtyGuardService._registeredDirtyGuards.has(guard))) {
+                trace('PuiDirtyGuardService', 'ensureCanDeactivateGuards', 'registering guard', {
+                    routeConfig,
+                    canDeactivateGuards,
+                });
+                this._registerGuard(canDeactivateGuards);
             }
+        } else {
+            // If not enabled, remove the dirty guard
+            this._removeGuards();
         }
     }
 
@@ -182,6 +197,7 @@ export class PuiDirtyGuardService implements OnDestroy {
     }
 
     private _registerGuard(canDeactivateGuards: any[]) {
+        PuiDirtyGuardService._registeredDirtyGuards.add(this.dirtyGuardHandler);
         canDeactivateGuards.push(this.dirtyGuardHandler);
 
         const removeDirtyGuards = this._removeGuardsHandler;

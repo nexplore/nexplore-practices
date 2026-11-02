@@ -123,6 +123,81 @@ describe('PuiDirtyGuardService initial navigation', () => {
         }
     );
 
+    it.each([
+        { useBlockingInitialNavigation: true, userConfirmsDiscardingChanges: false },
+        { useBlockingInitialNavigation: true, userConfirmsDiscardingChanges: true },
+        { useBlockingInitialNavigation: false, userConfirmsDiscardingChanges: false },
+        { useBlockingInitialNavigation: false, userConfirmsDiscardingChanges: true },
+    ])(
+        'uses only the lazy outlet dialog when both outlets are guarded (blocking=$useBlockingInitialNavigation, discard confirmed=$userConfirmsDiscardingChanges)',
+        async ({ useBlockingInitialNavigation, userConfirmsDiscardingChanges }) => {
+            // Arrange
+            const { router, defaultDialogHandler, customOutletDialogHandler } = await bootstrapApp({
+                useBlockingInitialNavigation,
+                initialPath: '/test/lazy/a',
+                useCustomLazyOutletDialogHandler: true,
+                userConfirmsDiscardingChanges,
+            });
+
+            // Act
+            const navigated = await router.navigateByUrl('/test/lazy/b');
+
+            // Assert
+            expect(customOutletDialogHandler).toHaveBeenCalledTimes(1);
+            expect(defaultDialogHandler).not.toHaveBeenCalled();
+            expect(navigated).toBe(userConfirmsDiscardingChanges);
+            expect(router.url).toBe(userConfirmsDiscardingChanges ? '/test/lazy/b' : '/test/lazy/a');
+        }
+    );
+
+    it('allows leaving a disabled lazy outlet while keeping the root outlet protected', async () => {
+        // Arrange
+        const { app, router, defaultDialogHandler, customOutletDialogHandler } = await bootstrapApp({
+            useBlockingInitialNavigation: false,
+            initialPath: '/test/lazy/a',
+            useCustomLazyOutletDialogHandler: true,
+            disableLazyOutletGuard: true,
+        });
+
+        // Act
+        const leftLazyPage = await router.navigateByUrl('/test/a');
+        app.tick();
+        const leftRootPage = await router.navigateByUrl('/test/b');
+
+        // Assert
+        expect(leftLazyPage).toBe(true);
+        expect(leftRootPage).toBe(false);
+        expect(customOutletDialogHandler).not.toHaveBeenCalled();
+        expect(defaultDialogHandler).toHaveBeenCalledTimes(1);
+        expect(router.url).toBe('/test/a');
+    });
+
+    it('uses the current outlet dialog after leaving and re-entering a lazy shell', async () => {
+        // Arrange
+        const { app, router, defaultDialogHandler, customOutletDialogHandler } = await bootstrapApp({
+            useBlockingInitialNavigation: false,
+            initialPath: '/test/lazy/a',
+            useCustomLazyOutletDialogHandler: true,
+            userConfirmsDiscardingChanges: true,
+        });
+
+        // Act
+        const leftLazyPage = await router.navigateByUrl('/test/lazy/b');
+        await router.navigateByUrl('/test/a');
+        app.tick();
+        const reenteredLazyShell = await router.navigateByUrl('/test/lazy/a');
+        app.tick();
+        const leftLazyPageAgain = await router.navigateByUrl('/test/lazy/b');
+
+        // Assert
+        expect(leftLazyPage).toBe(true);
+        expect(reenteredLazyShell).toBe(true);
+        expect(leftLazyPageAgain).toBe(true);
+        expect(defaultDialogHandler).toHaveBeenCalledTimes(1);
+        expect(customOutletDialogHandler).toHaveBeenCalledTimes(2);
+        expect(router.url).toBe('/test/lazy/b');
+    });
+
     it('protects newly visited routes after the first successful navigation', async () => {
         // Arrange
         const { app, router, defaultDialogHandler } = await bootstrapApp({ pageHasUnsavedChanges: false });
@@ -175,6 +250,8 @@ describe('PuiDirtyGuardService initial navigation', () => {
         pageHasUnsavedChanges = true,
         userConfirmsDiscardingChanges = false,
         useCustomOutletDialogHandler = false,
+        useCustomLazyOutletDialogHandler = useCustomOutletDialogHandler,
+        disableLazyOutletGuard = false,
         initialPath = '/test/a',
     } = {}) {
         const host = document.createElement('pui-test-dirty-guard-app');
@@ -220,10 +297,20 @@ describe('PuiDirtyGuardService initial navigation', () => {
                                 {
                                     path: 'lazy',
                                     loadComponent: () => Promise.resolve(TestLazyGuardShellComponent),
-                                    children: [
-                                        { path: 'a', component: TestDirtyPageComponent },
-                                        { path: 'b', component: TestOtherPageComponent },
+                                    providers: [
+                                        { provide: LAZY_OUTLET_GUARD_DISABLED, useValue: disableLazyOutletGuard },
+                                        {
+                                            provide: OUTLET_DIALOG_HANDLER,
+                                            useValue: useCustomLazyOutletDialogHandler
+                                                ? customOutletDialogHandler
+                                                : defaultDialogHandler,
+                                        },
                                     ],
+                                    loadChildren: () =>
+                                        Promise.resolve([
+                                            { path: 'a', component: TestDirtyPageComponent },
+                                            { path: 'b', component: TestOtherPageComponent },
+                                        ]),
                                 },
                             ],
                         },
@@ -251,6 +338,7 @@ describe('PuiDirtyGuardService initial navigation', () => {
 const SHOW_GUARDED_OUTLET_INITIALLY = new InjectionToken<boolean>('SHOW_GUARDED_OUTLET_INITIALLY');
 const PAGE_HAS_UNSAVED_CHANGES = new InjectionToken<boolean>('PAGE_HAS_UNSAVED_CHANGES');
 const OUTLET_DIALOG_HANDLER = new InjectionToken<PuiDirtyGuardHandler>('OUTLET_DIALOG_HANDLER');
+const LAZY_OUTLET_GUARD_DISABLED = new InjectionToken<boolean>('LAZY_OUTLET_GUARD_DISABLED');
 
 @Component({
     selector: 'pui-test-dirty-page',
@@ -271,9 +359,16 @@ class TestOtherPageComponent {}
 @Component({
     standalone: true,
     imports: [RouterOutlet, PuiGlobalDirtyGuardDirective],
-    template: '<router-outlet puiGlobalDirtyGuard [dirtyGuardHandler]="outletDialogHandler" />',
+    template: `
+        <router-outlet
+            puiGlobalDirtyGuard
+            [puiGlobalDirtyGuardDisabled]="dirtyGuardDisabled"
+            [dirtyGuardHandler]="outletDialogHandler"
+        />
+    `,
 })
 class TestLazyGuardShellComponent {
+    public readonly dirtyGuardDisabled = inject(LAZY_OUTLET_GUARD_DISABLED);
     public readonly outletDialogHandler = inject(OUTLET_DIALOG_HANDLER);
 }
 
