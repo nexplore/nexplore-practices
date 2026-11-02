@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <Description>This package includes common extensions for e-mail handling.</Description>
@@ -12,7 +12,7 @@
 
     <ItemGroup>
         <PackageReference Include="MailKit" Version="4.18.1" />
-        <!--Explicit dependency because MailKit does not offer an updated version-->
+        <!-- MimeKit 4.18.1 requires Pkcs >= 10.0.0 on all target frameworks. Pin the patched version; the package provides net8.0, net9.0, and net10.0 assets. -->
         <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
     </ItemGroup>
 
