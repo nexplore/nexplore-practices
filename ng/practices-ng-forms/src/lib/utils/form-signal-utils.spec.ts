@@ -6,7 +6,7 @@ describe('formGroupCurrentValueMappedSignal', () => {
     type Value = { a: number | null; b: string | null };
 
     function setup(
-        options?: Parameters<typeof formGroupCurrentValueMappedSignal<Value, FormGroup, never[], Value>>[1]
+        options?: Parameters<typeof formGroupCurrentValueMappedSignal<Value, FormGroup, never[], Value>>[1],
     ) {
         const formGroup = new FormGroup({
             a: new FormControl(1),
@@ -21,7 +21,7 @@ describe('formGroupCurrentValueMappedSignal', () => {
                     emissions.push(values);
                     return true;
                 },
-            })
+            }),
         );
         // Flush the initial `startWith` emission through the debounce.
         tick(1);
