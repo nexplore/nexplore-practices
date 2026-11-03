@@ -18,6 +18,10 @@
         "build-storybook-ktbe": "nx run practices-ui-ktbe:build-storybook"
     },
     "private": true,
+    "engines": {
+        "node": ">=24.15.0 <25",
+        "npm": ">=11.10.0 <12"
+    },
     "dependencies": {
         "@angular/animations": "22.2.4",
         "@angular/common": "22.2.4",
