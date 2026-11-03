@@ -93,7 +93,12 @@ partial class Build
                    ";
                 File.WriteAllText(projectDir / ".npmrc", npmrc);
 
-                NpmTasks.Npm("publish", workingDirectory: projectDir);
+                // npm 11 refuses to publish a prerelease without an explicit dist-tag
+                var publishArguments = isPublicRelease
+                    ? "publish"
+                    : "publish --tag prerelease";
+
+                NpmTasks.Npm(publishArguments, workingDirectory: projectDir);
             }
         });
 
