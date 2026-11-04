@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using Nexplore.Practices.Build.Helpers;
 using Nuke.Common;
 using Nuke.Common.IO;
@@ -21,7 +20,6 @@ partial class Build : NukeBuild
         (RootDirectory / "dotnet/Nexplore.Practices.sln").ReadSolution();
 
     private AbsolutePath OutputDirectory => TemporaryDirectory / "output";
-    private AbsolutePath TemplateDirectory => RootDirectory / "build" / "templates";
     private AbsolutePath TestResultDirectory => TemporaryDirectory / "test-results";
     private readonly AbsolutePath NgDirectory = RootDirectory / "ng";
     private AbsolutePath NgDistributionDirectory => NgDirectory / "dist";
@@ -39,8 +37,6 @@ partial class Build : NukeBuild
         "practices-ng-commands",
         "practices-ng-list-view-source"
     ];
-
-    private readonly string[] NgAppProjects = ["samples", "samples-ktbe"];
 
     Target Clean => _ => _
         .Executes(() =>
