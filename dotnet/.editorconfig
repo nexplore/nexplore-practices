@@ -501,9 +501,6 @@ indent_size = 4
 
 # Overrides for Practices
 
-[*]
-insert_final_newline =
-
 [*.cs]
 
 # Require file header (IDE0073)
