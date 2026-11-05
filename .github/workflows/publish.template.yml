@@ -7,21 +7,15 @@ on:
         description: Target environment name
         type: string
         required: true
-    secrets:
-      NUGET_PUBLIC_RELEASE_API_KEY:
-        required: true
-      NUGET_PRE_RELEASE_API_KEY:
-        required: true
-      NPM_PUBLIC_RELEASE_API_KEY:
-        required: true
-      NPM_PRE_RELEASE_API_KEY:
-        required: true
 
 jobs:
   publish:
     name: Publish ${{ inputs.environment }}
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environment }}
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout
@@ -60,9 +54,6 @@ jobs:
 
       - name: Run Publish
         env:
-          NUKE_NUGET_PUBLIC_RELEASE_API_KEY: ${{ secrets.NUGET_PUBLIC_RELEASE_API_KEY }}
-          NUKE_NUGET_PRE_RELEASE_API_KEY: ${{ secrets.NUGET_PRE_RELEASE_API_KEY }}
-          NUKE_NPM_PUBLIC_RELEASE_API_KEY: ${{ secrets.NPM_PUBLIC_RELEASE_API_KEY }}
-          NUKE_NPM_PRE_RELEASE_API_KEY: ${{ secrets.NPM_PRE_RELEASE_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ./build.sh PublishAll --publish-artifacts-directory "${{ runner.temp }}/build-output"
