@@ -15,6 +15,13 @@
     <PackageReference Include="Nuke.Common" Version="10.1.0" />
   </ItemGroup>
 
+  <!-- Temporary Vulnerability Updates -->
+  <ItemGroup>
+    <!-- Defense in Depth update for NuGet Client: https://github.com/advisories/GHSA-g4vj-cjjj-v7hg -->
+    <PackageReference Include="NuGet.Packaging" Version="7.9.0" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.13" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageDownload Include="GitVersion.Tool" Version="[6.2.0]" />
   </ItemGroup>
