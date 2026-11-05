@@ -11,7 +11,7 @@ on:
 jobs:
   publish:
     name: Publish ${{ inputs.environment }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     permissions:
       contents: read
