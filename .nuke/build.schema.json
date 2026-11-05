@@ -112,33 +112,17 @@
   "allOf": [
     {
       "properties": {
-        "NpmPreReleaseApiKey": {
-          "type": "string",
-          "description": "API key for pre-release NPM registry"
-        },
         "NpmPreReleaseRegistry": {
           "type": "string",
           "description": "Pre-release NPM registry"
-        },
-        "NpmPublicReleaseApiKey": {
-          "type": "string",
-          "description": "API key for public release NPM registry"
         },
         "NpmPublicReleaseRegistry": {
           "type": "string",
           "description": "Public release NPM registry"
         },
-        "NuGetPreReleaseApiKey": {
-          "type": "string",
-          "description": "API Key for pre-release NuGet source"
-        },
         "NuGetPreReleaseSource": {
           "type": "string",
           "description": "Pre-release NuGet source"
-        },
-        "NuGetPublicReleaseApiKey": {
-          "type": "string",
-          "description": "API Key for public release NuGet feed"
         },
         "NuGetPublicReleaseSource": {
           "type": "string",
