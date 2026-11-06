@@ -22,28 +22,28 @@ How to install these libraries in your projects
 
 ## practices-ui
 
-- Make sure your project has the peer dependencies in `projects/practices-ui/package.json` installed
+- Make sure your project has the peer dependencies in `ng/practices-ui/package.json` installed
 - `npm install --save @nexplore/practices-ui`
 - Add `providePractices({...})` to the providers array in your main.ts
 
 ## practices-ui-clarity
 
-- Make sure your project has the peer dependencies in `projects/practices-ui-clarity/package.json` installed
+- Make sure your project has the peer dependencies in `ng/practices-ui-clarity/package.json` installed
 - Make sure to follow the official [Clarity Installation Guide](https://clarity.design/documentation/get-started) to install Clarity in your project
 - `npm install --save @nexplore/practices-ui-clarity`
 
 ## practices-ui-ktbe
 
 - practices-ui-ktbe is based on TailwindCSS. Follow the offical TailwindCSS [Installation Guide](https://tailwindcss.com/docs/guides/angular)
-- Make sure your project has the peer dependencies in `projects/practices-ui-ktbe/package.json` installed
+- Make sure your project has the peer dependencies in `ng/practices-ui-ktbe/package.json` installed
 - `npm install --save @nexplore/practices-ui-ktbe`
 - Adjust your `tailwind.config.js`:
-  - Copy the `projects/samples-ktbe/tailwind.config.js` into your project
+  - Copy the `ng/samples-ktbe/tailwind.config.js` into your project
   - Adapt the import of the ktbeTheme: `const ktbeTheme = require('./node_modules/@nexplore/practices-ui-ktbe/tailwind.config.js');`
   - Adapt the `content: []` section: `content: ['./node_modules/@nexplore/practices-ui-ktbe/esm2020/**/*.mjs', './src/**/*.{html,ts}'],`
 - Adjust your styles and add the fonts:
-  - Copy the Roboto-Fonts in `projects/samples-ktbe/src/assets/fonts` into your project
-  - Copy the CSS in `projects/samples-ktbe/src/styles.css` into your projects main CSS and adjust the paths to the font files
+  - Copy the Roboto-Fonts in `ng/samples-ktbe/src/assets/fonts` into your project
+  - Copy the CSS in `ng/samples-ktbe/src/styles.css` into your projects main CSS and adjust the paths to the font files
 - Adjust your main.ts: Add `providePracticesKtbe({...}` to the providers array
 - You may also need the `provideAnimations()` from `@angular/platform-browser/animations`.
 
@@ -57,4 +57,3 @@ How to install these libraries in your projects
 - `npm install --save @nexplore/practices-ng-logging`
 - `npm install --save @nexplore/practices-ng-signals`
 - `npm install --save @nexplore/practices-ng-status`
-- `npm install --save @nexplore/practices-ng-status-types`

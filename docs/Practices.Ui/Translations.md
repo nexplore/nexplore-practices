@@ -14,38 +14,58 @@ Practices.UI utilizes these prefixes for the keys:
 
 ## Configuration
 
-If you want to rewrite the prefixes, you can do so by providing a rewrite configuration to `providePractices()`.
-Such a config requires a key, which represents the prefix you want to rewrite and an object with a `rewriteTo` property
-and an optional `fallbackTo` property:
+If you want to rewrite the prefixes, you can do so by passing `rewriteResourceConfig` to `providePractices()`.
+Its `rewriteTypeConfig` maps each prefix you want to rewrite to an object with a `rewriteTo` property and an optional
+`fallbackTo` property:
 
 ```ts
 ...
 bootstrapApplication(AppComponent, {
     providers: [
         providePractices({
-            rewriteResourceTypes: {
-                "Practices": {
-                    rewriteTo: "MyApp",
-                    fallbackTo: "MyGeneral"
+            rewriteResourceConfig: {
+                rewriteTypeConfig: {
+                    Practices: {
+                        rewriteTo: 'MyApp',
+                        fallbackTo: 'MyGeneral',
+                    },
+                    Messages: {
+                        rewriteTo: 'MyMessages',
+                    },
                 },
-                "Messages": {
-                    rewriteTo: "MyMessages",
-                }
-            }
-        })
-    ]
+            },
+        }),
+    ],
 });
 ```
 
-This will inject a custom `TranslateParser` (`RewriteTranslateParser`) which will rewrite keys if it encouters a key with a prefix which is configured in `rewriteResourceTypes`.
+This configures `RewriteMissingTranslationHandler` as ngx-translate's `MissingTranslationHandler`. When ngx-translate
+cannot resolve a key, the handler checks its prefix against `rewriteTypeConfig` and tries the corresponding rewritten key.
 
 Some examples for the configuration above:
 
 - `Practices.Labels_Title` -> `MyApp.Labels_Title` -> `MyGeneral.Labels_Title`
 - `Messages.Labels_Title` -> `MyMessages.Labels_Title`
 
-If it fails to resolve the rewritten key for `rewriteTo`, it will try to resolve the key for `fallbackTo`.
-If that fails as well, it will return `undefined`, which is the default behaviour of ngx-translate's [`TranslateDefaultParser`](https://github.com/ngx-translate/core/blob/master/packages/core/lib/translate.parser.ts).
+If the handler cannot resolve the key configured by `rewriteTo`, it tries the key configured by `fallbackTo`, when
+present. If neither key resolves (or the original key has no configured prefix), it returns the original missing key.
+You can optionally set `missingKeyTransformFn` alongside `rewriteTypeConfig` to transform that returned key:
+
+```ts
+providePractices({
+    rewriteResourceConfig: {
+        rewriteTypeConfig: {
+            Practices: {
+                rewriteTo: 'MyApp',
+                fallbackTo: 'MyGeneral',
+            },
+        },
+        missingKeyTransformFn: (key) => `[${key}]`,
+    },
+});
+```
+
+With this function, an unresolved `Practices.Labels_Title` is returned as `[Practices.Labels_Title]`.
 
 ## TitleService
 
@@ -92,7 +112,7 @@ export class SampleComponent implements OnInit {
 
     ngOnInit(): void {
         this.titleService.setTitle('My Custom Title', { localize: false, autoSetBreadcrumbTitle: false }); // <-- Set a custom title, which is not localized and does not set the breadcrumb title
-        this.titleService.setBreadcrumbTitle('My Custom Breadcrumbs Title', { localize: false }, this.router.url); // <-- Set a custom breadcrumb title without localization for a specific route
+        this.titleService.setBreadcrumbTitle('My Custom Breadcrumbs Title', { localize: false, breadcrumbUrl: this.router.url }); // <-- Set a custom breadcrumb title without localization for a specific route
     }
 }
 ```
