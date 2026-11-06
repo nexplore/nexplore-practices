@@ -1,13 +1,10 @@
 {
     "extends": "./tsconfig.base.json",
     "compilerOptions": {
-        "types": [
-            "jest",
-            "node"
-        ],
+        "types": ["jest", "node"],
         "module": "commonjs",
         "target": "ES2022",
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "forceConsistentCasingInFileNames": false,
         "strict": false,
         "noImplicitOverride": false,
@@ -16,8 +13,5 @@
         "noFallthroughCasesInSwitch": false,
         "noImplicitAny": false
     },
-    "include": [
-        "**/*.spec.ts",
-        "**/*.d.ts"
-    ]
+    "include": ["**/*.spec.ts", "**/*.d.ts"]
 }

@@ -1,5 +1,5 @@
 import { DIALOG_DATA } from '@angular/cdk/dialog';
-import { Component, ElementRef, HostBinding, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostBinding, inject, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { StatusService } from '@nexplore/practices-ui';
 import {
     FLYOUT_PROVIDERS,
@@ -25,6 +25,7 @@ import { AppModalComponent } from './modal.component';
     selector: 'app-popups',
     templateUrl: 'popups.component.html',
     imports: [PracticesKtbeDialogModule, PuibeStatusHubComponent, PuibeTeaserComponent],
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [...MODAL_PROVIDERS, ...FLYOUT_PROVIDERS], // TODO: Normally you would probably `importProvidersFrom(PracticesKtbeDialogModule)` in the bootstrap module
 })
 export class AppPopupsComponent {
@@ -164,6 +165,7 @@ export class AppPopupsComponent {
 @Component({
     standalone: true,
     selector: 'app-answer-to-everything',
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: `<p>You might have guessed it, the answer is:</p>
         <h3>{{ data?.answer ?? 'ERROR' }}</h3>`,
 })

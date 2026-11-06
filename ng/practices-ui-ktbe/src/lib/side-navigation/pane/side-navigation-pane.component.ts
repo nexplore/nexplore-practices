@@ -1,6 +1,6 @@
 import { AnimationTriggerMetadata, trigger, style, transition, animate } from '@angular/animations';
 import { NgClass, NgIf } from '@angular/common';
-import { Component, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PuibeIconArrowComponent } from '../../icons/icon-arrow.component';
 import { PuibeIconCloseComponent } from '../../icons/icon-close.component';
@@ -36,6 +36,7 @@ export const panelExpansionAnimation: AnimationTriggerMetadata = trigger('sidePa
         PuibeSideNavigationItemComponent,
         A11yModule,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     animations: [panelExpansionAnimation],
 })
 export class PuibeSideNavigationPaneComponent {

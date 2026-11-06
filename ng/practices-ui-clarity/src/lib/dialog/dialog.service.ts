@@ -1,6 +1,6 @@
 import { ComponentPortal, DomPortalOutlet } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
-import { ApplicationRef, ComponentFactoryResolver, Inject, Injectable, Injector } from '@angular/core';
+import { ApplicationRef, Inject, Injectable, Injector } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { from, merge, Observable, ObservableInput, of } from 'rxjs';
 import { map, take, tap } from 'rxjs/operators';
@@ -16,7 +16,6 @@ export class DialogService {
     private document: Document;
 
     constructor(
-        private componentFactoryResolver: ComponentFactoryResolver,
         private appRef: ApplicationRef,
         private injector: Injector,
         private translateService: TranslateService,
@@ -148,6 +147,6 @@ export class DialogService {
     }
 
     private createPortalHost(): DomPortalOutlet {
-        return new DomPortalOutlet(this.document.body, this.componentFactoryResolver, this.appRef, this.injector);
+        return new DomPortalOutlet(this.document.body, this.appRef, this.injector);
     }
 }

@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
-import { Component, ElementRef, Input, Optional, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, Optional, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet, Routes } from '@angular/router';
 import { PuibeBreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 
@@ -53,6 +53,7 @@ export type AutofocusContentOnRouterNavigationConfig = {
         PuibeIconSpinnerComponent,
         PuibeStickyDirective,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [DestroyService],
 })
 export class PuibeShellComponent {

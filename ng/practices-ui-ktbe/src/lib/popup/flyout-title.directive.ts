@@ -1,4 +1,4 @@
-import { Component, Directive, HostBinding } from '@angular/core';
+import { Component, Directive, HostBinding, ChangeDetectionStrategy } from '@angular/core';
 
 @Directive({
     standalone: true,
@@ -16,6 +16,7 @@ export class PuibeFlyoutTitleDirective {
     standalone: true,
     selector: 'puibe-flyout-title',
     template: `<ng-content></ng-content>`,
+    changeDetection: ChangeDetectionStrategy.Eager,
     hostDirectives: [PuibeFlyoutTitleDirective],
 })
 export class PuibeFlyoutTitleComponent {}

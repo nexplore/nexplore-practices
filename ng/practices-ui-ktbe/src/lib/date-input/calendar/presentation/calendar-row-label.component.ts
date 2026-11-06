@@ -1,10 +1,11 @@
 import { NgClass } from '@angular/common';
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, HostBinding, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'puibe-calendar-row-label',
     templateUrl: './calendar-row-label.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass],
 })
 export class PuibeCalendarRowLabelComponent {

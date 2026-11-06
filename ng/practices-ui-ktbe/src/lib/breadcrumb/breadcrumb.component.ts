@@ -27,7 +27,7 @@ import { PuibeBreadcrumbItemComponent } from './item/breadcrumb-item.component';
     providers: [DestroyService],
 })
 export class PuibeBreadcrumbComponent implements OnInit {
-    @HostBinding('role')
+    @HostBinding('attr.role')
     readonly role = 'navigation';
 
     @HostBinding('aria-label')

@@ -272,7 +272,7 @@ export class PuiAwaitQueryDirective<T> {
         }
     }
 
-    static ngTemplateContextGuard<T>(_dir: PuiAwaitQueryDirective<T>, ctx: unknown): ctx is { $implicit: T } {
+    static ngTemplateContextGuard<T>(_dir: PuiAwaitQueryDirective<T>, _ctx: unknown): _ctx is { $implicit: T } {
         return true;
     }
 }

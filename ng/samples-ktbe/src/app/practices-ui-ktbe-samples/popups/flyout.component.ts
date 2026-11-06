@@ -1,5 +1,5 @@
 import { DIALOG_DATA, DialogModule, DialogRef } from '@angular/cdk/dialog';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import {
     PuibeButtonDirective,
     PuibeFlyoutComponent,
@@ -16,6 +16,7 @@ interface Data {
     standalone: true,
     selector: 'app-flyout',
     templateUrl: 'flyout.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         DialogModule,
         PuibeFlyoutComponent,

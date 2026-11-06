@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { PuibeContainerDirective } from '../common/container.directive';
@@ -8,6 +8,7 @@ import { NgClass } from '@angular/common';
     standalone: true,
     selector: 'puibe-footer',
     templateUrl: './footer.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [PuibeContainerDirective, TranslateModule, NgClass],
 })
 export class PuibeFooterComponent {

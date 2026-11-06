@@ -2,7 +2,7 @@
 import { A11yModule } from '@angular/cdk/a11y';
 import { BlockScrollStrategy, ViewportRuler } from '@angular/cdk/overlay';
 import { AsyncPipe, NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
-import { Component, ContentChild, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, ContentChild, EventEmitter, Input, Output, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
     AggregatedStatusInfo,
     StatusCategory,
@@ -12,7 +12,7 @@ import {
     StatusHubService,
 } from '@nexplore/practices-ui';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { combineLatest, debounceTime, defer, delay, map, of, switchMap, tap } from 'rxjs';
+import { combineLatest, debounceTime, defer, delay, map, Observable, of, switchMap, tap } from 'rxjs';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
 import { IconSize } from '../icons/icon.interface';
 import { PuibeStatusToastComponent } from '../status-toast/status-toast.component';
@@ -39,6 +39,7 @@ type ToastPosition = 'top-left' | 'top' | 'top-right' | 'bottom-left' | 'bottom'
         PuibeErrorStatusDirective,
         A11yModule,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     animations: [listEntryAnimation, scaleAnimation, slowFadeAnimation],
 })
 export class PuibeStatusHubComponent {
@@ -118,7 +119,9 @@ export class PuibeStatusHubComponent {
         })
     );
 
-    readonly statusToasts$ = defer(() => this._statusHub.getLatestStatusEventsWithConfig$(this.statusHubConfig)).pipe(
+    readonly statusToasts$: Observable<StatusEventExt[]> = defer(() =>
+        this._statusHub.getLatestStatusEventsWithConfig$(this.statusHubConfig)
+    ).pipe(
         tap((evs) => {
             this.data.statusToasts = evs;
         }),
