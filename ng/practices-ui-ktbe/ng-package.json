@@ -2,6 +2,7 @@
     "$schema": "../node_modules/ng-packagr/ng-package.schema.json",
     "dest": "../dist/practices-ui-ktbe",
     "assets": [
+        "./tailwind.css",
         "./tailwind.config.js",
         "./tailwind-tooltip-arrow.plugin.js"
     ],

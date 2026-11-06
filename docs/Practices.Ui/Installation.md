@@ -34,16 +34,16 @@ How to install these libraries in your projects
 
 ## practices-ui-ktbe
 
-- practices-ui-ktbe is based on TailwindCSS. Follow the offical TailwindCSS [Installation Guide](https://tailwindcss.com/docs/guides/angular)
+- practices-ui-ktbe is based on Tailwind CSS 4, which is installed through PostCSS (see the official [Tailwind CSS guide for Angular](https://tailwindcss.com/docs/installation/framework-guides/angular)):
+  - `npm install --save-dev tailwindcss @tailwindcss/postcss postcss`
+  - Create a `.postcssrc.json` in your project root with the content `{ "plugins": { "@tailwindcss/postcss": {} } }`
 - Make sure your project has the peer dependencies in `projects/practices-ui-ktbe/package.json` installed
 - `npm install --save @nexplore/practices-ui-ktbe`
-- Adjust your `tailwind.config.js`:
-  - Copy the `projects/samples-ktbe/tailwind.config.js` into your project
-  - Adapt the import of the ktbeTheme: `const ktbeTheme = require('./node_modules/@nexplore/practices-ui-ktbe/tailwind.config.js');`
-  - Adapt the `content: []` section: `content: ['./node_modules/@nexplore/practices-ui-ktbe/esm2020/**/*.mjs', './src/**/*.{html,ts}'],`
 - Adjust your styles and add the fonts:
+  - Add `@import '@nexplore/practices-ui-ktbe/tailwind.css';` at the top of your projects main CSS. It loads Tailwind, the KTBE theme and the sources of the library, so no `tailwind.config.js` is needed in your project
   - Copy the Roboto-Fonts in `projects/samples-ktbe/src/assets/fonts` into your project
-  - Copy the CSS in `projects/samples-ktbe/src/styles.css` into your projects main CSS and adjust the paths to the font files
+  - Copy the `@font-face` CSS in `projects/samples-ktbe/src/styles.css` into your projects main CSS and adjust the paths to the font files
+- If your project needs its own Tailwind customizations, create a `tailwind.config.js` with `presets: [require('@nexplore/practices-ui-ktbe/tailwind.config.js')]` and load it with `@config` instead of importing the shipped `tailwind.css` (see the [migration guide](./MigrationGuides.md#upgrading-to-1400))
 - Adjust your main.ts: Add `providePracticesKtbe({...}` to the providers array
 - You may also need the `provideAnimations()` from `@angular/platform-browser/animations`.
 

@@ -52,6 +52,8 @@ import { PuibeRadioButtonComponent } from './radio-button.component';
     hostDirectives: [PuiFormFieldDirective],
     styles: [
         `
+            @reference '../../../tailwind.css';
+
             puibe-radio-button-group {
                 @apply block;
             }

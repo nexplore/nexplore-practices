@@ -2,5 +2,10 @@
     "singleQuote": true,
     "tabWidth": 4,
     "printWidth": 120,
-    "endOfLine": "crlf"
+    "endOfLine": "crlf",
+    "trailingComma": "es5",
+    "plugins": [
+        "prettier-plugin-tailwindcss"
+    ],
+    "tailwindStylesheet": "./samples-ktbe/src/styles.css"
 }

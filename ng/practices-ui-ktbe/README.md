@@ -1,11 +1,11 @@
 # Practices.Ui.KtBe
 
-Component library following the [Kanton Bern style guide](https://kantonbern.snowflake.ch/styleguides/1/Kanton-Bern/), built with Angular and Tailwind CSS (v3).
+Component library following the [Kanton Bern style guide](https://kantonbern.snowflake.ch/styleguides/1/Kanton-Bern/), built with Angular and Tailwind CSS (v4).
 
 The library's Storybook is deployed to the following locations:
 
--   [Production Releases and RC builds](https://vm-iis10.nexplore.ch/RELEASED/storybook-practices-ui-ktbe/)
--   [Pre-Releases](https://vm-iis10.nexplore.ch/TESTING/storybook-practices-ui-ktbe/)
+- [Production Releases and RC builds](https://vm-iis10.nexplore.ch/RELEASED/storybook-practices-ui-ktbe/)
+- [Pre-Releases](https://vm-iis10.nexplore.ch/TESTING/storybook-practices-ui-ktbe/)
 
 ## Overview
 
@@ -13,76 +13,76 @@ This library provides a comprehensive set of Angular components, directives, and
 
 ## Key Features
 
--   **Fully styled UI components** aligned with the Kanton Bern design system
--   **Standalone components** for easy integration with Angular applications
--   **Responsive design** supporting various screen sizes
--   **Accessibility support** for inclusive user experiences
--   **Tailwind CSS integration** for consistent styling (Based on version 3, note that version 4 is not yet supported)
--   **Type-safe interfaces** for improved developer experience
+- **Fully styled UI components** aligned with the Kanton Bern design system
+- **Standalone components** for easy integration with Angular applications
+- **Responsive design** supporting various screen sizes
+- **Accessibility support** for inclusive user experiences
+- **Tailwind CSS 4 integration** for consistent styling (see the [installation guide](../../docs/Practices.Ui/Installation.md#practices-ui-ktbe))
+- **Type-safe interfaces** for improved developer experience
 
 ## Core Components
 
 ### Layout Components
 
--   [Shell components](./src/lib/shell/shell.component.ts) - Application layout structure
--   [Two-column container](./src/lib/common/two-column-container.component.ts) - Flexible layout patterns ([Storybook](./src/lib/common/two-column-container.stories.ts))
--   [Header](./src/lib/header/header.component.ts) - Header component ([Storybook](./src/lib/header/header.stories.ts))
--   [Footer](./src/lib/footer/footer.component.ts) - Footer component
--   [Skip Link](./src/lib/skip-link/skip-link.component.ts) - Accessibility feature to skip to main content
+- [Shell components](./src/lib/shell/shell.component.ts) - Application layout structure
+- [Two-column container](./src/lib/common/two-column-container.component.ts) - Flexible layout patterns ([Storybook](./src/lib/common/two-column-container.stories.ts))
+- [Header](./src/lib/header/header.component.ts) - Header component ([Storybook](./src/lib/header/header.stories.ts))
+- [Footer](./src/lib/footer/footer.component.ts) - Footer component
+- [Skip Link](./src/lib/skip-link/skip-link.component.ts) - Accessibility feature to skip to main content
 
 ### Navigation Components
 
--   [Breadcrumb](./src/lib/breadcrumb/breadcrumb.component.ts) - Path-based navigation ([Storybook](./src/lib/breadcrumb/breadcrumb.stories.ts))
--   [Side Navigation](./src/lib/side-navigation/side-navigation.component.ts) - Collapsible side menu ([Storybook](./src/lib/side-navigation/side-navigation.stories.ts))
--   [Tabs](./src/lib/tabs/tabs.component.ts) - Tabbed interface ([Storybook](./src/lib/tabs/tabs.stories.ts))
--   [Step Box](./src/lib/step-box/step-box.component.ts) - Step-by-step progression indicator ([Storybook](./src/lib/step-box/step-box.stories.ts))
--   [Arrow Link](./src/lib/link/arrow-link.component.ts) - Links with arrow indicators
+- [Breadcrumb](./src/lib/breadcrumb/breadcrumb.component.ts) - Path-based navigation ([Storybook](./src/lib/breadcrumb/breadcrumb.stories.ts))
+- [Side Navigation](./src/lib/side-navigation/side-navigation.component.ts) - Collapsible side menu ([Storybook](./src/lib/side-navigation/side-navigation.stories.ts))
+- [Tabs](./src/lib/tabs/tabs.component.ts) - Tabbed interface ([Storybook](./src/lib/tabs/tabs.stories.ts))
+- [Step Box](./src/lib/step-box/step-box.component.ts) - Step-by-step progression indicator ([Storybook](./src/lib/step-box/step-box.stories.ts))
+- [Arrow Link](./src/lib/link/arrow-link.component.ts) - Links with arrow indicators
 
 ### Display Components
 
--   [Timeline](./src/lib/timeline/timeline.component.ts) – Vertical timeline layout with optional left/right alignment, used to visually represent events in chronological order
+- [Timeline](./src/lib/timeline/timeline.component.ts) – Vertical timeline layout with optional left/right alignment, used to visually represent events in chronological order
 
 ### Form Components
 
--   [Teaser](./src/lib/teaser/teaser.component.ts) - Content preview ([Storybook](./src/lib/teaser/teaser.stories.ts))
--   [Two-column navigation](./src/lib/two-column-nav/two-column-nav.component.ts) - Split-view navigation layout ([Storybook](./src/lib/two-column-nav/two-column-nav.stories.ts))
--   [Table Hover Emphasis](./src/lib/table/cell/hover-emphasis.directive.ts) - Highlights columns on hover
+- [Teaser](./src/lib/teaser/teaser.component.ts) - Content preview ([Storybook](./src/lib/teaser/teaser.stories.ts))
+- [Two-column navigation](./src/lib/two-column-nav/two-column-nav.component.ts) - Split-view navigation layout ([Storybook](./src/lib/two-column-nav/two-column-nav.stories.ts))
+- [Table Hover Emphasis](./src/lib/table/cell/hover-emphasis.directive.ts) - Highlights columns on hover
 
 ### Feedback & Status
 
--   [Status Hub](./src/lib/status-hub/status-hub.component.ts) - Central status management for providing user feedback ([Storybook](./src/lib/status-hub/status-hub.stories.ts))
--   [Toast](./src/lib/toast/toast.component.ts) - Notification messages ([Storybook](./src/lib/toast/toast.stories.ts))
--   [Modal](./src/lib/popup/modal.component.ts) and [Flyout](./src/lib/popup/flyout.component.ts) - Dialog interfaces ([Storybook](./src/lib/popup/popups.stories.ts))
--   [Action Dialog](./src/lib/popup/action-dialog.service.ts) - Pre-configured confirmation dialogs ([Storybook](./src/lib/popup/action-dialog.stories.ts))
--   [In-page Search](./src/lib/inpage-search/inpage-search.component.ts) - Search within the current page ([Storybook](./src/lib/inpage-search/inpage-search.stories.ts))
--   [Side Overlay Panel](./src/lib/side-overlay-panel/side-overlay-panel.service.ts) – Service-based slide-in panel for contextual content or workflows, supporting dynamic content injection, title translation, and full lifecycle management via Angular CDK overlay
+- [Status Hub](./src/lib/status-hub/status-hub.component.ts) - Central status management for providing user feedback ([Storybook](./src/lib/status-hub/status-hub.stories.ts))
+- [Toast](./src/lib/toast/toast.component.ts) - Notification messages ([Storybook](./src/lib/toast/toast.stories.ts))
+- [Modal](./src/lib/popup/modal.component.ts) and [Flyout](./src/lib/popup/flyout.component.ts) - Dialog interfaces ([Storybook](./src/lib/popup/popups.stories.ts))
+- [Action Dialog](./src/lib/popup/action-dialog.service.ts) - Pre-configured confirmation dialogs ([Storybook](./src/lib/popup/action-dialog.stories.ts))
+- [In-page Search](./src/lib/inpage-search/inpage-search.component.ts) - Search within the current page ([Storybook](./src/lib/inpage-search/inpage-search.stories.ts))
+- [Side Overlay Panel](./src/lib/side-overlay-panel/side-overlay-panel.service.ts) – Service-based slide-in panel for contextual content or workflows, supporting dynamic content injection, title translation, and full lifecycle management via Angular CDK overlay
 
 ### Buttons & Interactions
 
--   [Button](./src/lib/button/button.directive.ts) - Standard and variant buttons ([Storybook](./src/lib/button/button.stories.ts))
--   [Button Arrows](./src/lib/button/button-arrows.component.ts) - Buttons with directional arrows
--   [Button Spinner](./src/lib/button/button-spinner.component.ts) - Loading indicator for buttons
--   [Dropdown Button](./src/lib/dropdown-button/dropdown-button.component.ts) - Button with dropdown menu
--   [Selection](./src/lib/selection/index.ts) - Components for item selection
+- [Button](./src/lib/button/button.directive.ts) - Standard and variant buttons ([Storybook](./src/lib/button/button.stories.ts))
+- [Button Arrows](./src/lib/button/button-arrows.component.ts) - Buttons with directional arrows
+- [Button Spinner](./src/lib/button/button-spinner.component.ts) - Loading indicator for buttons
+- [Dropdown Button](./src/lib/dropdown-button/dropdown-button.component.ts) - Button with dropdown menu
+- [Selection](./src/lib/selection/index.ts) - Components for item selection
 
 ### Icons
 
 The library includes a basic set of svg-based icons following the Kanton Bern design guidelines:
 
--   Navigation icons (arrows, hamburger menu, home)
--   Action icons (edit, download, upload)
--   Status icons (valid, invalid, spinner)
--   Enumeration icon (displays numbers as icons)
--   And many more
+- Navigation icons (arrows, hamburger menu, home)
+- Action icons (edit, download, upload)
+- Status icons (valid, invalid, spinner)
+- Enumeration icon (displays numbers as icons)
+- And many more
 
 ### Utility Directives
 
--   [Hide If Empty Text](./src/lib/util/hide-if-empty-text.directive.ts) - Hides elements with empty text ([Storybook](./src/lib/util/hide-if-empty-text.stories.ts))
--   [Observe Screen Position](./src/lib/util/observe-screen-position.directive.ts) - Track element position
--   [Observe Scroll Position](./src/lib/util/observe-scroll-position.directive.ts) - Track scroll events
--   [Observe Size](./src/lib/util/observe-size.directive.ts) - Track element size changes
--   [Sticky](./src/lib/util/sticky.directive.ts) - Create sticky positioned elements
--   [Add Title If Ellipsis](./src/lib/util/add-title-if-ellipsis.directive.ts) - Auto-add title attributes
+- [Hide If Empty Text](./src/lib/util/hide-if-empty-text.directive.ts) - Hides elements with empty text ([Storybook](./src/lib/util/hide-if-empty-text.stories.ts))
+- [Observe Screen Position](./src/lib/util/observe-screen-position.directive.ts) - Track element position
+- [Observe Scroll Position](./src/lib/util/observe-scroll-position.directive.ts) - Track scroll events
+- [Observe Size](./src/lib/util/observe-size.directive.ts) - Track element size changes
+- [Sticky](./src/lib/util/sticky.directive.ts) - Create sticky positioned elements
+- [Add Title If Ellipsis](./src/lib/util/add-title-if-ellipsis.directive.ts) - Auto-add title attributes
 
 ## Installation
 
@@ -342,11 +342,11 @@ import {
             <puibe-table-column [field]="tableSource.columns.created" />
 
             @for (item of tableSource.pageDataSignal(); track item.id) {
-            <puibe-table-row>
-                <puibe-table-cell>{{ item.id }}</puibe-table-cell>
-                <puibe-table-cell>{{ item.name }}</puibe-table-cell>
-                <puibe-table-cell>{{ item.created | date }}</puibe-table-cell>
-            </puibe-table-row>
+                <puibe-table-row>
+                    <puibe-table-cell>{{ item.id }}</puibe-table-cell>
+                    <puibe-table-cell>{{ item.name }}</puibe-table-cell>
+                    <puibe-table-cell>{{ item.created | date }}</puibe-table-cell>
+                </puibe-table-row>
             }
             <puibe-table-footer>
                 <puibe-table-pagination-infinite-scroll />
@@ -397,8 +397,8 @@ The `PuibeTimelineComponent` is designed to create a vertical timeline layout. I
 
 ##### Features
 
--   Flexible vertical layout with consistent spacing between items
--   Configurable alignment for timeline items (`left` or `right`)
+- Flexible vertical layout with consistent spacing between items
+- Configurable alignment for timeline items (`left` or `right`)
 
 ##### Usage
 
@@ -417,7 +417,7 @@ Import the component and use it to wrap `puibe-timeline-item` components or any 
 
 ##### Related Components
 
--   `PuibeTimelineItemComponent`: Individual timeline item component that respects the alignment set by `PuibeTimelineComponent` or can override it individually.
+- `PuibeTimelineItemComponent`: Individual timeline item component that respects the alignment set by `PuibeTimelineComponent` or can override it individually.
 
 ---
 
@@ -543,11 +543,7 @@ export class MyComponent {
     // Command patterns that work automatically with Status Hub:
 
     // 1. Action command - already configured with appropriate status defaults
-    protected readonly saveCommand = command.action(() =>
-        this._httpClient.post('/api/data', {
-            /* your data */
-        })
-    );
+    protected readonly saveCommand = command.action(() => this._httpClient.post('/api/data', {/* your data */}));
 
     // 2. Signal-triggered query - for data that depends on an input
     public readonly idSignal = input.required<string>({ alias: 'id' });
@@ -585,10 +581,7 @@ export class MyComponent {
 
     // You can customize status options when needed (but defaults are usually sufficient)
     protected readonly customizedCommand = command.action(
-        () =>
-            this._httpClient.post('/api/important-data', {
-                /* data */
-            }),
+        () => this._httpClient.post('/api/important-data', {/* data */}),
         {
             status: {
                 progressMessage: 'Processing critical data...',
@@ -799,9 +792,9 @@ Create elements that stick to the viewport during scrolling:
 
 Key features:
 
--   Stick to any edge: `puibeStickyDir="top|bottom|left|right"`
--   Custom offset: `[puibeStickyThresholdPx]="64"` (in pixels)
--   Apply classes conditionally: `puibeStickyClass="my-sticky-class"`
+- Stick to any edge: `puibeStickyDir="top|bottom|left|right"`
+- Custom offset: `[puibeStickyThresholdPx]="64"` (in pixels)
+- Apply classes conditionally: `puibeStickyClass="my-sticky-class"`
 
 For more examples, see the [Sticky directive source](./src/lib/util/sticky.directive.ts).
 
@@ -829,10 +822,10 @@ For more examples, see the [In-page Search stories](./src/lib/inpage-search/inpa
 
 The library provides convenient modules for importing related components:
 
--   `PracticesKtbeShellModule` - Shell components for application layout
--   `PracticesKtbeFormComponentsModule` - All form-related components
--   `PracticesKtbeTableComponentsModule` - Table and data display components
--   `PracticesKtbeDialogModule` - Modal and dialog components
--   `PracticesKtbeFlyoutModule` - Flyout sidebar components
+- `PracticesKtbeShellModule` - Shell components for application layout
+- `PracticesKtbeFormComponentsModule` - All form-related components
+- `PracticesKtbeTableComponentsModule` - Table and data display components
+- `PracticesKtbeDialogModule` - Modal and dialog components
+- `PracticesKtbeFlyoutModule` - Flyout sidebar components
 
 All components are also available as standalone components, allowing for fine-grained imports when using Angular's standalone component pattern.
