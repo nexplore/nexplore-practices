@@ -9,6 +9,8 @@ export type Alignment = 'right' | 'left';
     encapsulation: ViewEncapsulation.None,
     styles: [
         `
+            @reference '../../../tailwind.css';
+
             :where(puibe-timeline) {
                 @apply flex flex-col gap-4;
             }

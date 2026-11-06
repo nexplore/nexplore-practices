@@ -31,11 +31,11 @@ const meta: Meta = {
         },
         template: `
         <puibe-two-column [mobileOrder]="mobileOrder" [horizontalDistribution]="horizontalDistribution">
-            <div left-column class="bg-white text-black p-3 m-0 drop-shadow-md rounded">
+            <div left-column class="bg-white text-black p-3 m-0 drop-shadow-md rounded-sm">
                 <h2>Left column content</h2>
                 <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
             </div>
-            <div right-column class="bg-white text-black p-3 m-0 drop-shadow-md rounded">
+            <div right-column class="bg-white text-black p-3 m-0 drop-shadow-md rounded-sm">
                 <h2>Right column content</h2>
                 <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
             </div>

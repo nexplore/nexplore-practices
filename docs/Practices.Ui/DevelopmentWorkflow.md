@@ -42,6 +42,5 @@ Execute `npm run lint` before you issue a PR to ensure that the code fulfills ou
 ### Style Sharing and Reusability
 - DO share styles by extracting components or directives in Angular
 
-- DO use Tailwind v4 [@theme variables](https://tailwindcss.com/docs/theme) for values used in multiple places 
-    - Alternatively, configure new theming variables or base styles in tailwind.config.js
+- DO configure new theme values (colors, font sizes, spacing, ...) and base styles in the KTBE preset `practices-ui-ktbe/tailwind.config.js`, so that they are shipped to consuming applications (the library uses Tailwind CSS 4 with the JavaScript preset loaded through `@config`)
 - DO configure new utility classes, component classes or variants using the Tailwind plugin system for styles used across components

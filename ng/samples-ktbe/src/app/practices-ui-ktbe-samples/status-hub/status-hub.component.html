@@ -62,7 +62,7 @@
         <puibe-expansion-panel
             *ngIf="status.error?.stack ?? status.error?.message"
             caption="Details"
-            class="flex-grow-0 text-black"
+            class="grow-0 text-black"
             [enableContentScroll]="true"
         >
             <code *ngIf="status.error.stack" class="whitespace-pre">{{

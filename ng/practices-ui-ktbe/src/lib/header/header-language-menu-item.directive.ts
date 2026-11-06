@@ -17,7 +17,7 @@ import { applyLanguageAriaAttributes } from '../util/aria.utils';
 import { PuibeLocale } from '../util/constants';
 
 const className =
-    'font-normal text-small uppercase inline-block h-5 leading-tight mx-1.5 no-underline outline-none last-of-type:mr-0 first-of-type:ml-0';
+    'font-normal text-small uppercase inline-block h-5 leading-tight mx-1.5 no-underline outline-hidden last-of-type:mr-0 first-of-type:ml-0';
 const activeClassNames = 'border-b-2 border-red';
 const inactiveClassNames =
     'border-b-0 after:block after:border-b-2 after:scale-x-0 after:transition-transform after:duration-100 after:ease-in-out hover:after:scale-x-100 focus:after:scale-x-100 active:after:scale-x-100';

@@ -24,7 +24,7 @@ import { PuibeIconHomeComponent } from '../../icons/icon-home.component';
 })
 export class PuibeSideNavigationItemComponent {
     @HostBinding('class')
-    readonly className = 'flex gap-2 items-center outline-none bg-white';
+    readonly className = 'flex gap-2 items-center outline-hidden bg-white';
 
     @HostBinding('attr.role')
     readonly role = 'listitem';

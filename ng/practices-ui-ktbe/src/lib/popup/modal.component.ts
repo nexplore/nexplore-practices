@@ -15,9 +15,11 @@ import { PUIBE_MODAL_CONFIG, PuibeModalConfig } from './types';
     styles: [
         // The following rule uses the :where() pseudo-class to match attribute selector, but keeping the low specificity, so it can be easily overriden.
         `
+            @reference '../../../tailwind.css';
+
             puibe-modal > [part='title-bar'] > *:where([puibeModalTitle]),
             puibe-modal-title {
-                @apply text-h2 mx-6 mb-0 mt-6 font-light;
+                @apply mx-6 mt-6 mb-0 text-h2 font-light;
             }
 
             puibe-modal > *:where([puibeModalSubtitle]),

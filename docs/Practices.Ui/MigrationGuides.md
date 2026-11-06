@@ -4,6 +4,143 @@ This file serves as an additional guide to the [changelog](../../CHANGELOG.md), 
 
 Note: The goal would be, with time, to synthesize these guides in their own documentation-files.
 
+## Upgrading to 14.0.0
+
+Version 14.0.0 builds `practices-ui-ktbe` with Tailwind CSS 4. The components look and behave the same, but Tailwind 4 changes how it is set up in a consuming application. Follow the steps below after updating the practices packages. The official [Tailwind CSS upgrade guide](https://tailwindcss.com/docs/upgrade-guide) explains the details.
+
+-   [Tailwind CSS 4 is required](#tailwind-css-4-is-required)
+-   [Install Tailwind through PostCSS](#install-tailwind-through-postcss)
+-   [Replace your `tailwind.config.js` with the shipped entry stylesheet](#replace-your-tailwindconfigjs-with-the-shipped-entry-stylesheet)
+-   [`@apply` and `theme()` in component styles need `@reference`](#apply-and-theme-in-component-styles-need-reference)
+-   [Renamed and removed utilities](#renamed-and-removed-utilities)
+-   [Behaviour changes](#behaviour-changes)
+-   [Prettier](#prettier)
+
+### Tailwind CSS 4 is required
+
+`@nexplore/practices-ui-ktbe` now declares `tailwindcss >=4.0.0 <5.0.0` as peer dependency. Tailwind CSS 3 is no longer supported.
+
+```jsonc
+// Before (13.x)
+"tailwindcss": ">=3.2.4 <5.0.0"
+
+// After (14.0.0)
+"tailwindcss": ">=4.0.0 <5.0.0"
+```
+
+### Install Tailwind through PostCSS
+
+Tailwind 4 is no longer a PostCSS plugin itself, Angular loads it through `@tailwindcss/postcss`. The Angular CLI (and ng-packagr) pick up a PostCSS configuration file in the project or workspace root.
+
+```bash
+npm install --save-dev tailwindcss@4 @tailwindcss/postcss
+```
+
+Create a `.postcssrc.json` next to your `angular.json` (or in the project root):
+
+```json
+{
+    "plugins": {
+        "@tailwindcss/postcss": {}
+    }
+}
+```
+
+`autoprefixer` and `postcss-import` are handled by Tailwind 4 and can be removed from an existing PostCSS configuration.
+
+### Replace your `tailwind.config.js` with the shipped entry stylesheet
+
+Tailwind 4 is configured in CSS. The library now ships `tailwind.css`, which loads Tailwind, the KTBE preset (`tailwind.config.js`, still shipped) and registers the sources of the library. Replace the `@tailwind` directives in your global stylesheet with a single import and delete the `tailwind.config.js` that was copied from `samples-ktbe`.
+
+```css
+/* Before (13.x) - styles.css, together with a tailwind.config.js that used the KTBE preset */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* After (14.0.0) - styles.css, no tailwind.config.js needed */
+@import '@nexplore/practices-ui-ktbe/tailwind.css';
+```
+
+Tailwind 4 detects the sources of your application automatically (it ignores `node_modules` and everything in `.gitignore`). The sources of the library are registered by the preset, so the `content` entry for `@nexplore/practices-ui-ktbe` is not needed anymore.
+
+If your application has its own Tailwind customizations (theme values, plugins), keep a `tailwind.config.js` that uses the KTBE preset and load it with `@config` instead of importing the shipped stylesheet. Copy the imports from `node_modules/@nexplore/practices-ui-ktbe/tailwind.css` so that the utilities stay un-layered (see [Behaviour changes](#behaviour-changes)):
+
+```css
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/utilities.css';
+@config '../tailwind.config.js';
+```
+
+```js
+// tailwind.config.js
+module.exports = {
+    presets: [require('@nexplore/practices-ui-ktbe/tailwind.config.js')],
+    theme: {
+        extend: {
+            // your customizations
+        },
+    },
+};
+```
+
+### `@apply` and `theme()` in component styles need `@reference`
+
+Tailwind 4 compiles every stylesheet on its own, including the inline `styles` and `styleUrls` of Angular components. A component stylesheet that uses `@apply` or `theme()` has to reference the global stylesheet first, otherwise the build fails with `Cannot apply unknown utility class`. The path is relative to the component file.
+
+```ts
+@Component({
+    styles: `
+        @reference '../../styles.css';
+
+        my-component {
+            @apply flex flex-col gap-2;
+        }
+    `,
+})
+```
+
+`@reference` only loads the theme, it does not duplicate any CSS in the component styles.
+
+### Renamed and removed utilities
+
+Tailwind 4 renamed some utilities and removed others. The library's templates were migrated, the following utilities have to be replaced in your application (the official upgrade tool `npx @tailwindcss/upgrade` does this for you in most projects):
+
+| Tailwind 3                                           | Tailwind 4                                                         |
+| ---------------------------------------------------- | ------------------------------------------------------------------ |
+| `outline-none`                                       | `outline-hidden` (`outline-none` now really removes the outline)   |
+| `rounded`, `rounded-sm`                              | `rounded-sm`, `rounded-xs`                                         |
+| `shadow`, `shadow-sm`, `shadow-inner`                | `shadow-sm`, `shadow-xs`, `inset-shadow-sm`                        |
+| `blur`, `blur-sm`, `backdrop-blur-sm`                | `blur-sm`, `blur-xs`, `backdrop-blur-xs`                           |
+| `ring`                                               | `ring-3`                                                           |
+| `flex-grow`, `flex-shrink`                           | `grow`, `shrink`                                                   |
+| `overflow-ellipsis`                                  | `text-ellipsis`                                                    |
+| `bg-opacity-*`, `text-opacity-*`, `border-opacity-*` | opacity modifier on the color, e.g. `bg-black/10`, `text-black/60` |
+| `!flex` (important prefix)                           | `flex!` (important suffix)                                         |
+| `bg-[--my-var]`                                      | `bg-(--my-var)`                                                    |
+
+### Behaviour changes
+
+-   **Cascade layers:** By default Tailwind 4 puts its utilities into the `utilities` cascade layer, where they lose against every un-layered rule, including Angular component styles. The shipped `tailwind.css` deliberately imports the utilities without a layer, so utility classes on a component's host element keep overriding the component's own styles like in Tailwind 3. If you build your own entry stylesheet, import `tailwindcss/utilities.css` without `layer(utilities)` to keep this behaviour.
+-   **Buttons:** Tailwind 4 no longer sets `cursor: pointer` on buttons. The KTBE preset restores it for enabled buttons.
+-   **Placeholders:** Placeholder text uses the current text color at 50% opacity instead of a fixed gray.
+-   **Stacked variants** apply from left to right instead of right to left (e.g. `*:first:pt-0` becomes `first:*:pt-0`).
+-   **Default ring:** `ring` is 1px wide and uses `currentColor` (3px blue in Tailwind 3). The library does not use it.
+-   **Hover** styles only apply on devices that support hover.
+
+### Prettier
+
+`prettier-plugin-tailwindcss` supports Tailwind 4 from version 0.6, which requires Prettier 3. Replace the `tailwindConfig` option by `tailwindStylesheet` pointing to your global stylesheet and list the plugin explicitly, because Prettier 3 does not load plugins automatically.
+
+```json
+{
+    "plugins": ["prettier-plugin-tailwindcss"],
+    "tailwindStylesheet": "./src/styles.css"
+}
+```
+
 ## Upgrading to 13.0.0
 
 Version 13.0.0 builds the Angular packages with Angular 22. It contains no intended behaviour changes, but the following breaking changes affect consuming applications.

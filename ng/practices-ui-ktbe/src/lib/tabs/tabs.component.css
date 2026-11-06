@@ -1,17 +1,19 @@
+@reference '../../../tailwind.css';
+
 .tabs-component .ng-select .ng-select-container {
-    @apply min-h-ktbe-15 border-dark-gray !z-auto items-center border-0 border-b border-solid bg-white pr-12 text-black;
+    @apply z-auto! min-h-ktbe-15 items-center border-0 border-b border-solid border-dark-gray bg-white pr-12 text-black;
 }
 .tabs-component .ng-select .ng-select-container.ng-has-value,
 .tabs-component .ng-select.ng-invalid .ng-select-container {
     @apply border-l-0;
 }
 .tabs-component .ng-select .ng-select-container:focus-within {
-    @apply border-dark-gray rounded-sm border border-solid border-black outline-0;
+    @apply rounded-xs border border-solid border-black border-dark-gray outline-0;
 }
 .tabs-component .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked {
     @apply border-l-dark-gray;
 }
 
 .tabs-component .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
-    @apply bg-sand border-l-dark-gray text-black;
+    @apply border-l-dark-gray bg-sand text-black;
 }

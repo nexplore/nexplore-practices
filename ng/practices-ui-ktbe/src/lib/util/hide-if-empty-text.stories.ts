@@ -55,7 +55,7 @@ export const WithEntranceAnimation: Story = {
             },
             template: `
             <div class="flex flex-col min-h-96 min-w-96 gap-4">
-                <button (click)="show = !show" class="p-6 bg-light-gray rounded-full cursor-pointer hover:shadow-inner transition-all border border-gray">toggle content</button>
+                <button (click)="show = !show" class="p-6 bg-light-gray rounded-full cursor-pointer hover:inset-shadow-sm transition-all border border-gray">toggle content</button>
                 <p>Is empty: {{isEmpty}}</p>
                 <div puibeHideIfEmptyText (emptyTextChange)="isEmpty = $event">
 
@@ -77,7 +77,7 @@ export const WithEntranceAnimationAndNestedDirectives: Story = {
             },
             template: `
             <div class="flex flex-col min-h-96 min-w-96 gap-4">
-                <button (click)="show = !show" class="p-6 bg-light-gray rounded-full cursor-pointer hover:shadow-inner transition-all border border-gray">toggle content</button>
+                <button (click)="show = !show" class="p-6 bg-light-gray rounded-full cursor-pointer hover:inset-shadow-sm transition-all border border-gray">toggle content</button>
                 <p>Is child empty: {{isEmpty}}, Is parent empty: {{isParentEmpty}}</p>
                 <div puibeHideIfEmptyText (emptyTextChange)="isParentEmpty = $event">
                     <div puibeHideIfEmptyText (emptyTextChange)="isEmpty = $event">
@@ -103,7 +103,7 @@ export const WithWrapperAndProjectedChildDirective: Story = {
             },
             template: `
             <div class="flex flex-col min-h-96 min-w-96 gap-4">
-                <button (click)="show = !show" class="p-6 bg-light-gray rounded-full cursor-pointer hover:shadow-inner transition-all border border-gray">toggle content with delay</button>
+                <button (click)="show = !show" class="p-6 bg-light-gray rounded-full cursor-pointer hover:inset-shadow-sm transition-all border border-gray">toggle content with delay</button>
                 <p>Projected child empty: {{isEmpty}}, Wrapper empty: {{isParentEmpty}}</p>
 
                 <component-wrapper (emptyTextChange)="isParentEmpty = $event">

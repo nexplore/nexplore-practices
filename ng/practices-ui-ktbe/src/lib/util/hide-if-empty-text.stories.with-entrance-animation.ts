@@ -9,12 +9,12 @@ import { delay } from 'rxjs';
     selector: 'component-with-entrace-animation',
     template: ` @if (showDelayed()) {
         <div
-            class="bg-cappuchino h3 flex min-h-52 min-w-52 items-center justify-center rounded-3xl shadow-inner"
+            class="h3 flex min-h-52 min-w-52 items-center justify-center rounded-3xl bg-cappuchino inset-shadow-sm"
             @enterAnimation
         >
             I am here
         </div>
-        }`,
+    }`,
     animations: [
         trigger('enterAnimation', [
             transition(':leave', [
