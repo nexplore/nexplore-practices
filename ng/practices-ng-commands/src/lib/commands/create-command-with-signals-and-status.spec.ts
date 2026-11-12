@@ -542,11 +542,11 @@ describe('createCommandWithSignalsAndStatus', () => {
                 results.push(cmd.errorSignal());
             });
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             cmd.trigger();
 
-            TestBed.flushEffects();
+            TestBed.tick();
         });
         expect(results).toEqual([undefined, new Error('error')]);
     });
@@ -563,11 +563,11 @@ describe('createCommandWithSignalsAndStatus', () => {
                 results.push(result);
             });
 
-            TestBed.flushEffects();
+            TestBed.tick();
             cmd.trigger();
-            TestBed.flushEffects();
+            TestBed.tick();
             subject.complete();
-            TestBed.flushEffects();
+            TestBed.tick();
         });
 
         expect(results).toEqual([false, true, false]);
@@ -585,7 +585,7 @@ describe('createCommandWithSignalsAndStatus', () => {
             });
 
             cmd.trigger();
-            TestBed.flushEffects();
+            TestBed.tick();
         });
 
         expect(results).toEqual([1]);

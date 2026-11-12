@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { createListViewSource, IListViewSource, OrderDirection, StatusService } from '@nexplore/practices-ui';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -8,7 +8,8 @@ import { listEndpointMock } from '../endpointMock';
 @Component({
     selector: 'app-list-view-source',
     templateUrl: './list-view-source.component.html',
-    standalone: false
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false,
 })
 export class ListViewSourceComponent implements OnDestroy {
     lastRequestedApiUrl: string;

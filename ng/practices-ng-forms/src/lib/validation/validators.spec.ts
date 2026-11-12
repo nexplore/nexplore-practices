@@ -12,11 +12,11 @@ describe('validateConditional', () => {
                 null,
                 validateConditional(() => isRequiredSignal() && Validators.required)
             );
-            TestBed.flushEffects();
+            TestBed.tick();
             results.push(formControl.hasValidator(Validators.required));
 
             isRequiredSignal.set(true);
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(formControl.hasValidator(Validators.required));
         });
@@ -30,20 +30,20 @@ describe('validateConditional', () => {
             const validator = validateConditional(() => isRequiredSignal() && Validators.required);
             const formControl1 = new FormControl(null, validator);
             const formControl2 = new FormControl(null, validator);
-            TestBed.flushEffects();
+            TestBed.tick();
             results.push(
                 formControl1.hasValidator(Validators.required) && formControl2.hasValidator(Validators.required)
             );
 
             isRequiredSignal.set(true);
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(
                 formControl1.hasValidator(Validators.required) && formControl2.hasValidator(Validators.required)
             );
 
             isRequiredSignal.set(false);
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(
                 formControl1.hasValidator(Validators.required) && formControl2.hasValidator(Validators.required)
@@ -72,21 +72,21 @@ describe('validateDependent', () => {
                 validateDependent(formGroupSignal, ({ testControl }) => testControl && Validators.required)
             );
 
-            TestBed.flushEffects();
+            TestBed.tick();
             results.push(formControl.hasValidator(Validators.required));
 
             formGroupSignal.set(formGroup2);
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(formControl.hasValidator(Validators.required));
 
             formGroup1.controls.testControl.setValue(true);
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(formControl.hasValidator(Validators.required));
 
             formGroup2.controls.testControl.setValue(false);
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(formControl.hasValidator(Validators.required));
         });

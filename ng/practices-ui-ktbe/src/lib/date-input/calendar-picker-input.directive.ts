@@ -62,7 +62,6 @@ export class PuibeCalendarPickerInputDirective implements OnInit, ControlValueAc
 
     @Input() helpDescriptionKey = 'Practices.Labels_DatePicker_HelpDescription';
 
-    // eslint-disable-next-line @typescript-eslint/member-ordering
     @Input() getModelValueHandler: (date: Date | null) => DateInput = (date) => date;
 
     constructor(

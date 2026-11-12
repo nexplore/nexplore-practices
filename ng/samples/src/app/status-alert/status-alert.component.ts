@@ -1,11 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AggregatedStatusInfo, StatusError, StatusHubService, StatusSuccess } from '@nexplore/practices-ui';
 import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-status-alert',
     templateUrl: './status-alert.component.html',
-    standalone: false
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false,
 })
 export class StatusAlertComponent implements OnInit, OnDestroy {
     private subscription: Subscription;

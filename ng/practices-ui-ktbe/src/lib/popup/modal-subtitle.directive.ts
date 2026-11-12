@@ -1,4 +1,4 @@
-import { Component, Directive, HostBinding } from '@angular/core';
+import { Component, Directive, HostBinding, ChangeDetectionStrategy } from '@angular/core';
 
 @Directive({
     standalone: true,
@@ -16,6 +16,7 @@ export class PuibeModalSubtitleDirective {
     standalone: true,
     selector: 'puibe-modal-subtitle',
     template: `<ng-content></ng-content>`,
+    changeDetection: ChangeDetectionStrategy.Eager,
     hostDirectives: [PuibeModalSubtitleDirective],
 })
 export class PuibeModalSubtitleComponent {}

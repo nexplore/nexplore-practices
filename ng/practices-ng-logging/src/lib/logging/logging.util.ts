@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 const logTopicConfig = new Map<string, boolean>();
 
 /**
@@ -15,7 +14,6 @@ export function log(topic: string, context?: string | unknown, ...messages: any[
     const topicEnabled = logTopicConfig.get(topic);
     const topicExlicitlyDisabled = topicEnabled === false;
     if (topicEnabled || (logTopicConfig.get('*') && !topicExlicitlyDisabled)) {
-        // eslint-disable-next-line no-console
         console.log(
             `%c[Log] %c${topic}%c: ${context ?? ''}`,
             `color: grey`,
@@ -41,7 +39,6 @@ export function trace(topic: string, context?: string | unknown, ...messages: an
 
     const topicEnabled = logTopicConfig.get(topic) || logTopicConfig.get('trace');
     if (topicEnabled) {
-        // eslint-disable-next-line no-console
         console.log(
             `%c[Trace] %c${topic}%c: ${context ?? ''}`,
             `color: grey`,
@@ -82,7 +79,6 @@ export function configureDebugLogging(): void {
         const allTopics = params?.find((p) => p === 'log');
 
         if (topics) {
-            // eslint-disable-next-line no-console
             console.log('%c[Log]%c Enabling logging for topic(s)', 'color: grey', 'color: currentColor', topics);
             topics.forEach((topic) => {
                 enableLogTopic(topic, true);
@@ -95,7 +91,6 @@ export function configureDebugLogging(): void {
         if (logConfigStr) {
             const logConfig = JSON.parse(logConfigStr);
             if (logConfig) {
-                // eslint-disable-next-line no-console
                 console.log(
                     '%c[Log]%c Applying logging config from local storage',
                     'color: grey',
@@ -112,7 +107,6 @@ export function configureDebugLogging(): void {
                 if (topic === false) {
                     logTopicConfig.clear();
                     window.localStorage.removeItem('log');
-                    // eslint-disable-next-line no-console
                     console.log('%c[Log]%c Disabled logging', 'color: grey', 'color: currentColor');
                     return;
                 } else {
@@ -124,12 +118,10 @@ export function configureDebugLogging(): void {
             enableLogTopic(topic, enabled);
 
             const logConfig = Object.fromEntries(logTopicConfig.entries());
-            // eslint-disable-next-line no-console
             console.log('%c[Log]%c Configured logging', 'color: grey', 'color: currentColor', logConfig);
             window.localStorage.setItem('log', JSON.stringify(logConfig));
         };
     } catch (er) {
-        // eslint-disable-next-line no-console
         console.warn('%c[Log]%c Could not set up logging', 'color: grey', 'color: currentColor', er);
     }
 }

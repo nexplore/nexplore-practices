@@ -12,7 +12,6 @@ import { PuiDirtyGuardHandler } from '../types';
     standalone: true,
 })
 export class PuiGlobalDirtyGuardDirective implements OnInit, OnDestroy {
-    // eslint-disable-next-line @angular-eslint/no-input-rename
     @Input('puiGlobalDirtyGuardDisabled')
     set disabled(disabled: boolean) {
         this.routeGuardService.disabled = disabled;

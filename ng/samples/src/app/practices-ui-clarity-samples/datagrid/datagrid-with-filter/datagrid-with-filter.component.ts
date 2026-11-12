@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
     FilterableListViewSource,
     IFilterableListViewSource,
@@ -17,7 +17,8 @@ interface IUserFilter {
 @Component({
     selector: 'app-datagrid-with-filter',
     templateUrl: './datagrid-with-filter.component.html',
-    standalone: false
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false,
 })
 export class DatagridWithFilterComponent {
     userSource: IFilterableListViewSource<IUserListEntry, IUserFilter> = new FilterableListViewSource(

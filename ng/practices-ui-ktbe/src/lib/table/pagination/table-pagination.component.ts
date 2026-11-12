@@ -15,6 +15,7 @@ import {
     OnInit,
     Output,
     ViewChild,
+    ChangeDetectionStrategy,
 } from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
 import { TranslateModule } from '@ngx-translate/core';
@@ -32,6 +33,7 @@ import { PuibeTablePageSizeComponent } from './table-page-size.component';
     selector: 'puibe-table-pagination',
     templateUrl: './table-pagination.component.html',
     providers: [DestroyService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgIf, NgClass, TranslateModule, PuibeIconArrowEndComponent, PuibeIconArrowSlidingComponent],
 })
 export class PuibeTablePaginationComponent implements OnDestroy, OnInit {

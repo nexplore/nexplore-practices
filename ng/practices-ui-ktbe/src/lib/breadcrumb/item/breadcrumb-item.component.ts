@@ -29,7 +29,7 @@ import { A11yModule } from '@angular/cdk/a11y';
     ],
 })
 export class PuibeBreadcrumbItemComponent {
-    @HostBinding('role')
+    @HostBinding('attr.role')
     readonly role = 'listitem';
 
     @HostBinding('class')

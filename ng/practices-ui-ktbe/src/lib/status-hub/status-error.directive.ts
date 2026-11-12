@@ -12,8 +12,8 @@ export class PuibeErrorStatusDirective {
     // template of this directive will be rendered
     static ngTemplateContextGuard(
         _directive: PuibeErrorStatusDirective,
-        context: unknown
-    ): context is StatusTemplateContext<any> {
+        _context: unknown
+    ): _context is StatusTemplateContext<any> {
         return true;
     }
 }

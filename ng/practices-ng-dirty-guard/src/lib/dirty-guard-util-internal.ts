@@ -27,9 +27,7 @@ export const evaluateDirtyGuardCanDeactivate = (
     nextState: RouterStateSnapshot | null,
     canDeactivateSelector: (state: PuiFormState) => AsyncResult | Result
 ): Result | AsyncResult => {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     const hierarchicalDirtyGuardService = inject(PuiDirtyGuardService, { optional: true });
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     const globalRouteGuardService = inject(PuiGlobalRouteGuardService);
     if (hierarchicalDirtyGuardService?.disabled || globalRouteGuardService?.disabled) {
         // Note, normally when disabled, the guard will already be removed and not even get called, this is like a "second line of defense".

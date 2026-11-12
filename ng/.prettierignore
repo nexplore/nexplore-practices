@@ -6,3 +6,5 @@ dist
 node_modules/*
 .nx/workspace-data
 .angular
+
+.nx/self-healing

@@ -1,5 +1,5 @@
 import { NgIf, NgTemplateOutlet } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 import { PuiFormularInvalidError } from '@nexplore/practices-ng-forms';
 import { StatusError, StatusEventExt } from '@nexplore/practices-ui';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -15,6 +15,7 @@ export type StatusTemplateContext<TError = StatusError> = {
     selector: 'puibe-status-toast',
     standalone: true,
     templateUrl: './status-toast.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [PuibeToastComponent, NgIf, NgTemplateOutlet, PuibeExpansionPanelComponent, TranslateModule],
 })
 export class PuibeStatusToastComponent {

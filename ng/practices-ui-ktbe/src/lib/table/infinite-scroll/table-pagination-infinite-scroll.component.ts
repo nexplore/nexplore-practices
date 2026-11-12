@@ -1,5 +1,14 @@
 import { AsyncPipe, NgIf } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    Input,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+    ChangeDetectionStrategy,
+} from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, combineLatest, map, takeUntil, tap } from 'rxjs';
@@ -12,6 +21,7 @@ import { PuibeTableComponent } from '../table.component';
     selector: 'puibe-table-pagination-infinite-scroll',
     templateUrl: './table-pagination-infinite-scroll.component.html',
     imports: [NgIf, AsyncPipe, TranslateModule, PuibeIconSpinnerComponent],
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [DestroyService],
 })
 export class PuibeTablePaginationInfiniteScrollComponent implements OnInit, AfterViewInit, OnDestroy {

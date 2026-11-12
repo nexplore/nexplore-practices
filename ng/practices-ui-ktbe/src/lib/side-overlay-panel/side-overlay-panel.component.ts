@@ -1,7 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { A11yModule } from '@angular/cdk/a11y';
 import { CdkPortalOutlet, ComponentPortal, ComponentType, Portal, PortalModule } from '@angular/cdk/portal';
-import { Component, EventEmitter, model, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, model, Output, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PuibeIconCloseComponent } from '../icons/icon-close.component';
 
@@ -18,6 +18,7 @@ import { PuibeIconCloseComponent } from '../icons/icon-close.component';
         `,
     ],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.Eager,
     animations: [
         trigger('slideInOut', [
             state('in', style({ transform: 'translateX(0%)' })),
