@@ -33,7 +33,6 @@ class FakeLoader implements TranslateLoader {
 describe('MissingTranslationHandler', () => {
     let translate: TranslateService;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const configureTestBed = (rewriteConfig: RewriteResourceConfig) => {
         TestBed.resetTestingModule();
         TestBed.configureTestingModule({

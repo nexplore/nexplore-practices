@@ -1,4 +1,3 @@
-/* eslint-disable no-redeclare */
 import { assertInInjectionContext, computed, isSignal, Signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Observable, OperatorFunction } from 'rxjs';
