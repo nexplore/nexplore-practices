@@ -13,7 +13,7 @@ import {
 import { setHostClassNames } from '../util/utils';
 
 const className =
-    'font-sans font-normal text-small leading-normal no-underline inline-block h-5 outline-none mr-9 last-of-type:mr-0 last:mb-0';
+    'font-sans font-normal text-small leading-normal no-underline inline-block h-5 outline-hidden mr-9 last-of-type:mr-0 last:mb-0';
 const linkClassNames =
     'after:block after:border-b-2 w-fit after:scale-x-0 after:transition-transform after:duration-100 after:ease-in-out hover:after:scale-x-100 focus:after:scale-x-100 active:after:scale-x-100 hover:text-black';
 const activeClassNames = 'after:border-red after:scale-x-100';

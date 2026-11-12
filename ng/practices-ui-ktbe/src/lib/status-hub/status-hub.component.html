@@ -2,13 +2,13 @@
     <div
         *ngIf="busyAndBlocking$ | async as busyAndBlocking"
         @slowFadeAnimation
-        class="bg-dark-gray-50-solid fixed left-0 top-0 z-[1002] flex h-screen w-screen items-center justify-center bg-opacity-10 align-middle backdrop-blur-sm"
+        class="fixed top-0 left-0 z-[1002] flex h-screen w-screen items-center justify-center bg-dark-gray-50-solid/10 align-middle backdrop-blur-xs"
     ></div>
 
     <ng-container *ngIf="progressMessage$ | async as message; else noMessage">
         <div
             *ngIf="busyAndBlocking$ | async as busyAndBlocking"
-            class="fixed bottom-10 left-10 right-10 top-10 z-[1002] flex items-center justify-center align-middle"
+            class="fixed top-10 right-10 bottom-10 left-10 z-[1002] flex items-center justify-center align-middle"
         >
             <ng-container *ngTemplateOutlet="progressMessageTmpl; context: { $implicit: message }"></ng-container>
         </div>
@@ -52,7 +52,7 @@
         variant="info"
         @listEntryAnimation
         [closeable]="false"
-        class="flex min-w-full max-w-full items-center justify-center overflow-hidden drop-shadow-md max-sm:max-w-full sm:max-w-[660px] md:min-w-[300px]"
+        class="flex max-w-full min-w-full items-center justify-center overflow-hidden drop-shadow-md max-sm:max-w-full sm:max-w-[660px] md:min-w-[300px]"
     >
         <div class="flex items-center justify-between gap-2">
             <span class="flex-auto whitespace-pre-wrap">{{ message }}</span>

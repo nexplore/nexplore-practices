@@ -1,5 +1,7 @@
 # Repository structure
+
 This is a monorepo consisting of multiple library-packages for angular:
+
 - [practices-ui-clarity](/practices-ui-clarity/README.md): Extensions for Clarity component library
 - [practices-ui-ktbe](/practices-ui-ktbe/README.md): Component library following the [Kanton Bern Styleguide](https://kantonbern.snowflake.ch/styleguides/1/Kanton-Bern/), using tailwind and Angular CDK
 - [practices-ui](/practices-ui/README.md): Agnostic services and helpers for Angular (**Legacy**)
@@ -14,6 +16,7 @@ This is a monorepo consisting of multiple library-packages for angular:
 - [practices-ng-status-types](/practices-ng-status-types/README.md): Status type definitions for Angular
 
 # Typescript
+
 - Run `Format Document` vscode command after generating code (or terminal `npm run format`).
 - Always check if the code actually typechecks and compiles (See problems tab, or run typescript typechecker), if any doubt, run `npx nx build PROJECTNAME`, for example `npx nx build practices-ng-forms`.
 - to run the ktbe samples app, run: `npm run start-ktbe`
@@ -24,7 +27,7 @@ This is a monorepo consisting of multiple library-packages for angular:
 - Do not test angular components/services directly, rather identify logic that needs testing, split those up into functions, and test those isolated.
 - Always postfix a variable that is of a `Signal` type (eg. `signal()`, `computed()`, `input()`, `viewChild()`, etc all from `@angular/core`) with `Signal`, for example: `const myValueSignal = signal(10);`.
 - Angular Components: Use `inject()` from (`@angular/core`) instead of constructor injection
-- Angular Components: Use `public readonly myValueSignal = input<T | null>(null, {alias: 'myValue'})`  or `input.required<T>({alias: ...})` from (`@angular/core`) instead of `@Input` annotations.
+- Angular Components: Use `public readonly myValueSignal = input<T | null>(null, {alias: 'myValue'})` or `input.required<T>({alias: ...})` from (`@angular/core`) instead of `@Input` annotations.
 - Many methods in angular apps return observables, apis, or HttpClient, so to await in an async method, wrap it with `firstValueFrom`.
 - When adding new features such as components or making changes to api, make sure to update the readme of the library package.
 - Classes, order of members and visibility:
@@ -62,7 +65,7 @@ This is a monorepo consisting of multiple library-packages for angular:
         })
     );
     ```
-- Class members, naming: 
+- Class members, naming:
     - `private _underScorePrefixLowerCamelCase`
     - `protected/public lowerCamelCase`
 - Always add visibility to class members:
@@ -71,7 +74,7 @@ This is a monorepo consisting of multiple library-packages for angular:
     - Use public only when necessary, when exposing an interface, or declaring component inputs/outputs
 - Always mark class members as `readonly` unless they absolutely need to be mutable (which normally shouldn't be the case, as instead Signals should be used).
 - When authoring angular components, also add a storybook file, as long as the component has not too many dependencies, especially if they are hard to resolve or mock.
-    Here is an example storybook:
+  Here is an example storybook:
     ```ts
     // File: toast.stories.ts
     import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
@@ -151,8 +154,10 @@ This is a monorepo consisting of multiple library-packages for angular:
 - If you don't know what to track, just use either the item reference itself, or `$index`, depending on use case.
 - Try to split up templates into multiple smaller presentation components, to reuse markup and styles.
 
-# Tailwind styling in Practices KTBE 
+# Tailwind styling in Practices KTBE
+
 - In the KTBE packages (practices-ui-ktbe, samples-ktbe), use tailwind classes for styling
+- practices-ui-ktbe uses Tailwind CSS 4. Component styles are compiled on their own, so every component stylesheet (inline `styles` or `styleUrls`) that uses `@apply` or `theme()` must start with `@reference '../../../tailwind.css';` (the relative path to `practices-ui-ktbe/tailwind.css`), otherwise the build fails with "Cannot apply unknown utility class"
 - Here is a list of available colors in KTBE:
     - transparent
     - red (KTBE main color)
@@ -181,6 +186,8 @@ This is a monorepo consisting of multiple library-packages for angular:
     @Component({
         selector: 'puibe-my-component'
         styles: `
+                    @reference '../../../tailwind.css';
+
                     puibe-my-component {
                         @apply flex flex-col gap-2;
                     }
@@ -194,6 +201,8 @@ This is a monorepo consisting of multiple library-packages for angular:
     @Component({
         selector: 'puibe-my-component'
         styles: `
+                    @reference '../../../tailwind.css';
+
                     puibe-my-component {
                         @apply flex flex-col gap-2;
                     }
@@ -217,7 +226,8 @@ This is a monorepo consisting of multiple library-packages for angular:
     ```
 
 # Readmes
-When generating documentation, create a draft first, but then make sure to go through all related code files one by one. 
+
+When generating documentation, create a draft first, but then make sure to go through all related code files one by one.
 For example, when editing a readme for a library, first look at the index.ts file, then generate a rough draft. Then go through EACH exported symbol of that index and check the actual implementation to get an accurate documentation.
 
 When referencing for symbols, make sure to create a markdown link directly to the file, relative to the current directory, for example: [PuibeStatusHubComponent](../practices-ui-ktbe/src/lib/status-hub/status-hub.component.ts)

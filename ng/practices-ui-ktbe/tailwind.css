@@ -1,0 +1,19 @@
+/*
+ * Tailwind CSS entry point of @nexplore/practices-ui-ktbe (Tailwind CSS 4).
+ *
+ * Import it from the global stylesheet of your application:
+ *
+ *     @import '@nexplore/practices-ui-ktbe/tailwind.css';
+ *
+ * It loads Tailwind's default theme and preflight, the KTBE preset (tailwind.config.js, which also registers the
+ * library's sources) and generates the utilities. Your own sources are detected automatically by Tailwind.
+ *
+ * Note: Unlike Tailwind's default `@import 'tailwindcss'`, the utilities are intentionally NOT placed in the
+ * `utilities` cascade layer. Un-layered utilities keep the Tailwind 3 cascade behaviour, where utility classes
+ * on a component's host element can override the (un-layered) styles of the component itself.
+ */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/utilities.css';
+@config './tailwind.config.js';

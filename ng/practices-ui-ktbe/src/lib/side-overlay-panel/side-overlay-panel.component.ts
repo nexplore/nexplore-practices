@@ -12,6 +12,8 @@ import { PuibeIconCloseComponent } from '../icons/icon-close.component';
     templateUrl: './side-overlay-panel.component.html',
     styles: [
         `
+            @reference '../../../tailwind.css';
+
             :where(puibe-side-overlay-panel) {
                 @apply h-full w-full;
             }
