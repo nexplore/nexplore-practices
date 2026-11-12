@@ -14,13 +14,13 @@ describe('conditionalValidationEffect', () => {
 
             const effect = conditionalValidationEffect(formControl, () => addValidatorSignal() && Validators.required);
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(formControl.hasValidator(Validators.required));
 
             addValidatorSignal.set(true);
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(formControl.hasValidator(Validators.required));
 
@@ -41,13 +41,13 @@ describe('conditionalValidationEffect', () => {
                 () => addValidatorSignal() && [Validators.required, Validators.email]
             );
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(formControl.hasValidator(Validators.required) && formControl.hasValidator(Validators.email));
 
             addValidatorSignal.set(true);
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(formControl.hasValidator(Validators.required) && formControl.hasValidator(Validators.email));
 
@@ -70,13 +70,13 @@ describe('conditionalValidationEffect', () => {
                 return validators[currentIndex];
             });
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(formControl.hasValidator(validators[0]));
 
             validatorIndexSignal.set(1);
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(formControl.hasValidator(validators[1]) && false === formControl.hasValidator(validators[0]));
 
@@ -102,13 +102,13 @@ describe('conditionalValidationEffect', () => {
                 return validators[currentIndex];
             });
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(formControl.hasValidator(validators[0][0]) && formControl.hasValidator(validators[0][1]));
 
             validatorIndexSignal.set(1);
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             results.push(
                 formControl.hasValidator(validators[1][0]) &&
@@ -138,17 +138,17 @@ describe('configureFormValidationsEffect', () => {
                     dependent: [],
                 }));
 
-                TestBed.flushEffects();
+                TestBed.tick();
                 results.push(formGroup.controls.control.hasValidator(Validators.required));
 
                 formGroup.controls.dependent.setValue(true);
 
-                TestBed.flushEffects();
+                TestBed.tick();
                 results.push(formGroup.controls.control.hasValidator(Validators.required));
 
                 formGroup.controls.dependent.setValue(false);
 
-                TestBed.flushEffects();
+                TestBed.tick();
                 results.push(formGroup.controls.control.hasValidator(Validators.required));
             });
 

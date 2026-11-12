@@ -61,12 +61,12 @@ describe('tryDestroyInjector', () => {
             });
 
             mySignal.set(1);
-            TestBed.flushEffects();
+            TestBed.tick();
 
             tryDestroyInjector(injector);
 
             mySignal.set(2);
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(isDestroyed).toBe(true);
             expect(latestValue).toBe(1);
