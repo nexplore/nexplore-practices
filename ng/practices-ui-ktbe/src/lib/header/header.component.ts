@@ -1,5 +1,5 @@
 import { DomPortal, PortalModule } from '@angular/cdk/portal';
-import { AsyncPipe, NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
     Component,
     Input,
@@ -32,10 +32,8 @@ import { PuibeShellService } from '../shell/shell.service';
     changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         NgClass,
-        NgIf,
         AsyncPipe,
         TranslateModule,
-        NgTemplateOutlet,
         PuibeSideNavigationComponent,
         PuibeHeaderLogoComponent,
         PortalModule,

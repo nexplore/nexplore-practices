@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
     PuibeTableCellComponent,
@@ -6,7 +6,6 @@ import {
     PuibeTableComponent,
     PuibeTableFooterComponent,
     PuibeTableHoverEmphasisDirective,
-    PuibeTablePaginationComponent,
     PuibeTablePaginationInfiniteScrollComponent,
     PuibeTableRowActionTriggerDirective,
     PuibeTableRowComponent,
@@ -25,13 +24,10 @@ import { SampleModel, tableSampleLoadFn } from '../tables/tables.component';
         PuibeTableFooterComponent,
         PuibeTableCellComponent,
         PuibeTableHoverEmphasisDirective,
-        PuibeTablePaginationComponent,
         PuibeTableRowActionTriggerDirective,
         PuibeTablePaginationInfiniteScrollComponent,
         AsyncPipe,
         DatePipe,
-        NgFor,
-        NgIf,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

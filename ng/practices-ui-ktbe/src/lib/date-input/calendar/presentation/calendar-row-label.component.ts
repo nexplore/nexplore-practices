@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import { Component, HostBinding, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
@@ -6,7 +5,6 @@ import { Component, HostBinding, Input, ChangeDetectionStrategy } from '@angular
     templateUrl: './calendar-row-label.component.html',
     standalone: true,
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [NgClass],
 })
 export class PuibeCalendarRowLabelComponent {
     @HostBinding('class')

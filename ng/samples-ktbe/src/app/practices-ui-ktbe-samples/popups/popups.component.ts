@@ -143,7 +143,6 @@ export class AppPopupsComponent {
                 {
                     actions: { OK: () => timer(500) },
                     title: 'The answer to everything',
-                    // eslint-disable-next-line @typescript-eslint/no-use-before-define
                     content: AnswerToEverythingComponent,
                 },
                 {
@@ -161,7 +160,6 @@ export class AppPopupsComponent {
     };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-use-before-define
 @Component({
     standalone: true,
     selector: 'app-answer-to-everything',

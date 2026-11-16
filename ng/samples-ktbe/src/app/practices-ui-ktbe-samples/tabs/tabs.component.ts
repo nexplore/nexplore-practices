@@ -1,4 +1,4 @@
-import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
+import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { PuibeDetailPageDirective, PuibeTabsComponent, PuibeTabSelectionItem } from '@nexplore/practices-ui-ktbe';
 import { BehaviorSubject } from 'rxjs';
@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
     selector: 'app-tabs',
     templateUrl: './tabs.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [PuibeTabsComponent, JsonPipe, AsyncPipe, NgIf, PuibeDetailPageDirective],
+    imports: [PuibeTabsComponent, JsonPipe, AsyncPipe, PuibeDetailPageDirective],
 })
 export class TabsComponent {
     items: Array<PuibeTabSelectionItem> = [

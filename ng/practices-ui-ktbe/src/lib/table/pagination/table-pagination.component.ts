@@ -3,7 +3,6 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of https://github.com/vmware-clarity/ng-clarity.
  */
-import { NgClass, NgIf } from '@angular/common';
 import {
     Component,
     ContentChild,
@@ -34,7 +33,7 @@ import { PuibeTablePageSizeComponent } from './table-page-size.component';
     templateUrl: './table-pagination.component.html',
     providers: [DestroyService],
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [NgIf, NgClass, TranslateModule, PuibeIconArrowEndComponent, PuibeIconArrowSlidingComponent],
+    imports: [TranslateModule, PuibeIconArrowEndComponent, PuibeIconArrowSlidingComponent],
 })
 export class PuibeTablePaginationComponent implements OnDestroy, OnInit {
     /**

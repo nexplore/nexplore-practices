@@ -1,4 +1,4 @@
-<ng-container *ngIf="!(isReadonly$ | async); else readonly">
+@if (!(isReadonly$ | async)) {
     <label
         class="mr-9 inline-flex align-middle antialiased"
         [for]="id"
@@ -28,7 +28,7 @@
                     [ngClass]="{
                         'border-red': (displayAsInvalid$ | async),
                         'border-dark-gray': !(displayAsInvalid$ | async),
-                        'bg-light-gray opacity-50': (disabled$ | async)
+                        'bg-light-gray opacity-50': (disabled$ | async),
                     }"
                 ></div>
                 <div
@@ -39,31 +39,36 @@
         </div>
         <div class="flex flex-col">
             {{ label }}<ng-content></ng-content>
-            <span class="text-very-small" *ngIf="description">{{ description }}</span>
+            @if (description) {
+                <span class="text-very-small">{{ description }}</span>
+            }
         </div>
     </label>
-    <ng-container *ngIf="!isInGroup">
+    @if (!isInGroup) {
         <div
             [attr.id]="id + '-error'"
             class="text-red text-very-small min-h-5 font-medium"
             [attr.aria-live]="(dirty$ | async) ? 'assertive' : 'off'"
             aria-atomic="true"
         >
-            <div *ngFor="let error of errors$ | async">
-                {{ error.key | translate : error.param }}
-            </div>
+            @for (error of errors$ | async; track error) {
+                <div>
+                    {{ error.key | translate: error.param }}
+                </div>
+            }
         </div>
         <span class="sr-only" aria-live="polite" aria-atomic="true">
-            <span *ngIf="pending$ | async">{{ 'Practices.Labels_Pending' | translate }}</span>
+            @if (pending$ | async) {
+                <span>{{ 'Practices.Labels_Pending' | translate }}</span>
+            }
         </span>
-    </ng-container>
-</ng-container>
-
-<ng-template #readonly>
+    }
+} @else {
     <puibe-readonly-label-value [label]="label" [useSmallLabel]="useSmallTextForReadonlyLabel">
-        <ng-container *ngIf="checked$ | async; else chechboxNo">{{
-            'Practices.Labels_Input_CheckboxYes' | translate
-        }}</ng-container>
-        <ng-template #chechboxNo>{{ 'Practices.Labels_Input_CheckboxNo' | translate }}</ng-template>
+        @if (checked$ | async) {
+            {{ 'Practices.Labels_Input_CheckboxYes' | translate }}
+        } @else {
+            {{ 'Practices.Labels_Input_CheckboxNo' | translate }}
+        }
     </puibe-readonly-label-value>
-</ng-template>
+}

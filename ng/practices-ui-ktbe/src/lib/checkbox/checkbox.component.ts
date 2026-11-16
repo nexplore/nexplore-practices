@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -36,7 +36,7 @@ let nextUniqueId = 0;
     selector: 'puibe-checkbox',
     templateUrl: './checkbox.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, AsyncPipe, NgFor, TranslateModule, NgIf, PuibeReadonlyLabelValueComponent],
+    imports: [NgClass, AsyncPipe, TranslateModule, PuibeReadonlyLabelValueComponent],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,

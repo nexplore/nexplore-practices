@@ -12,7 +12,6 @@ import { isObservable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { DialogAction, DialogOptions } from '.';
-import { CommonModule } from '@angular/common';
 import { ClarityModule } from '@clr/angular';
 import { PortalModule } from '@angular/cdk/portal';
 import { TranslateModule } from '@ngx-translate/core';
@@ -21,7 +20,7 @@ export const DIALOG_OPTIONS = new InjectionToken<{}>('DialogOptions');
 
 @Component({
     selector: 'puiclr-dialog',
-    imports: [CommonModule, ClarityModule, PortalModule, TranslateModule],
+    imports: [ClarityModule, PortalModule, TranslateModule],
     templateUrl: './dialog.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,

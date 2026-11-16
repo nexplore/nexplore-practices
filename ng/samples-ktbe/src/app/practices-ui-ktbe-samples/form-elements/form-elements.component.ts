@@ -114,7 +114,6 @@ export class FormElementsComponent implements OnInit {
         map((result) => result)
     );
 
-    // eslint-disable-next-line @typescript-eslint/member-ordering
     readonly saveCommand = command.actionSaveForm(this.mainForm, async (params?: { navigateBackToList: boolean }) => {
         await firstValueFrom(timer(3000));
         this.mainForm.markAsPristine();
@@ -125,7 +124,6 @@ export class FormElementsComponent implements OnInit {
         }
     });
 
-    // eslint-disable-next-line @typescript-eslint/member-ordering
     constructor(private fb: FormBuilder, private readonly _titleService: TitleService, private router: Router) {}
 
     ngOnInit() {

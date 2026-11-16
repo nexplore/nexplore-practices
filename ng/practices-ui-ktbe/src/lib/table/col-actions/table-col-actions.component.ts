@@ -1,5 +1,5 @@
 import { CdkMenuModule, CdkMenuTrigger } from '@angular/cdk/menu';
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -19,7 +19,7 @@ import { PuibeIconOptionsComponent } from '../../icons/icon-options.component';
     selector: 'puibe-table-col-actions',
     templateUrl: 'table-col-actions.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgIf, NgTemplateOutlet, PuibeIconOptionsComponent, CdkMenuModule],
+    imports: [NgTemplateOutlet, PuibeIconOptionsComponent, CdkMenuModule],
 })
 export class PuibeTableColActionsComponent implements AfterViewInit {
     @HostBinding('class')
