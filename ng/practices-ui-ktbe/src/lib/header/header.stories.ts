@@ -125,7 +125,6 @@ const meta: Meta<Args> = {
                 <puibe-header [routerConfig]="routerConfig">
                     <puibe-header-logo
                         link="/"
-                        image="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Logo_Kanton_Bern_Canton_de_Berne.svg/1200px-Logo_Kanton_Bern_Canton_de_Berne.svg.png"
                         alt="Logo"
                         [caption]="logoCaption">
                     </puibe-header-logo>
