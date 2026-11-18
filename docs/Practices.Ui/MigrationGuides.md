@@ -124,6 +124,9 @@ Tailwind 4 renamed some utilities and removed others. The library's templates we
 ### Behaviour changes
 
 -   **Cascade layers:** By default Tailwind 4 puts its utilities into the `utilities` cascade layer, where they lose against every un-layered rule, including Angular component styles. The shipped `tailwind.css` deliberately imports the utilities without a layer, so utility classes on a component's host element keep overriding the component's own styles like in Tailwind 3. If you build your own entry stylesheet, import `tailwindcss/utilities.css` without `layer(utilities)` to keep this behaviour.
+-   **Base styles no longer win against utilities:** The base styles of the KTBE preset are in the `base` layer, so every utility overrides them, regardless of the selector specificity. In Tailwind 3 some base rules won because of their higher specificity:
+    -   `a:hover` turned links red even with a text color utility (e.g. `<a class="text-black">`). Add `hover:text-red` where links should still turn red.
+    -   `ul.list-none` and its `li` elements had no margin, even with a margin utility (e.g. `<ul class="list-none mt-4">`). These utilities are applied now, remove them if the margin is not wanted.
 -   **Buttons:** Tailwind 4 no longer sets `cursor: pointer` on buttons. The KTBE preset restores it for enabled buttons.
 -   **Placeholders:** Placeholder text uses the current text color at 50% opacity instead of a fixed gray.
 -   **Stacked variants** apply from left to right instead of right to left (e.g. `*:first:pt-0` becomes `first:*:pt-0`).

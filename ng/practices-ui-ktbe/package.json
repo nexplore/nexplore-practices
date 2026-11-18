@@ -1,6 +1,15 @@
 {
     "name": "@nexplore/practices-ui-ktbe",
     "version": "0.0.0-VERSION",
+    "exports": {
+        "./tailwind.css": {
+            "style": "./tailwind.css",
+            "default": "./tailwind.css"
+        },
+        "./tailwind.config.js": {
+            "default": "./tailwind.config.js"
+        }
+    },
     "peerDependencies": {
         "@angular/animations": ">=22.0.0 <23.0.0",
         "@angular/cdk": ">=22.0.0 <23.0.0",
