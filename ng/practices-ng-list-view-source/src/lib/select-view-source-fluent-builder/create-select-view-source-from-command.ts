@@ -15,34 +15,32 @@ type AdditionalConfig = {
     /**
      * If `true`, the data will be sorted in memory.
      *
-     * DEfaults to `true`.
+     * Defaults to `false`.
      */
     sortInMemory?: boolean;
 
     /**
-     * If `true`, the query command will be triggered with the filter of the table view source.
+     * If `true`, the query command will be triggered with the filter of the select view source.
      *
-     * Defaults to `false`.
+     * Defaults to `true`.
      */
     triggerQueryCommandWithFilter?: boolean;
 };
 
 /**
- * Creates a new `TableViewSource` from a query command.
+ * Creates a new `SelectViewSource` from a query command.
  *
  * Expects the query command to return an array of items.
  *
- * Notice: By default does NOT trigger the query command automatically (unless the command was created with `withAutoTrigger`).
+ * By default, the select view source triggers the query command itself with its filter whenever it loads.
+ * A command created with `command.query.withManualTrigger` is therefore sufficient.
  *
- * This can be overridden by setting `config.triggerQueryCommandWithFilter` to `true`.
+ * When the command is triggered elsewhere (e.g. by `withAutoTrigger`), the select view source shows that result without triggering the command again.
  *
  * @param command The query command to use.
- * @param config The configuration for the TableViewSource.
- * - `columns`: The columns to display in the table.
- * - `columnTranslationPrefix`: Optional prefix for the column translations.
- * - `transformFieldForOrdering`: Optional function to transform the field name for ordering.
- * - `sortInMemory`: Optional flag to sort the data in memory. Default is `true`.
- * - `triggerQueryCommandWithFilter`: Optional flag to trigger the query command with the filter. Default is `false`. f `false` the `QueryCommand` will never be triggered by the `TableViewSource`.
+ * @param config The configuration for the SelectViewSource.
+ * - `sortInMemory`: Optional flag to sort the data in memory. Default is `false`.
+ * - `triggerQueryCommandWithFilter`: Optional flag to trigger the query command with the filter. Default is `true`. If `false` the `QueryCommand` will never be triggered by the `SelectViewSource`.
  */
 export function createSelectViewSourceFromCommand<
     TData,
@@ -55,19 +53,43 @@ export function createSelectViewSourceFromCommand<
     config?: AdditionalConfig & Omit<TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams>, 'loadFn'>
 ): SelectViewSourceWithSignals<TData, TFilter> {
     const isBeingTriggerredByListViewSourceSignal = signal(false);
+    const noExternalResult = Symbol('noExternalResult');
+    let filterAtExternalResult: unknown = noExternalResult;
+
     const selectViewSource = createSelectViewSourceInternal<TData, TLabelKey, TQueryParams, TFilter>({
         ...config,
         loadFn: (params: any) => {
-            untracked(() => isBeingTriggerredByListViewSourceSignal.set(true));
-            return commandToListResultObservable(unwrapSignalLike(command), params, {
+            // A refresh caused by an external trigger shows that result instead of triggering the command again.
+            // A filter change in the same debounce window still triggers the command with the new filter.
+            const useLatestResult = filterAtExternalResult === params.filter;
+            filterAtExternalResult = noExternalResult;
+
+            const options = {
                 sortInMemory: false,
                 triggerQueryCommandWithFilter: true,
                 ...config,
-            }).pipe(tap(() => setTimeout(() => isBeingTriggerredByListViewSourceSignal.set(false))));
+                useLatestResult,
+            };
+
+            if (useLatestResult) {
+                return commandToListResultObservable(unwrapSignalLike(command), params, options);
+            }
+
+            untracked(() => isBeingTriggerredByListViewSourceSignal.set(true));
+            return commandToListResultObservable(unwrapSignalLike(command), params, options).pipe(
+                tap(() => setTimeout(() => isBeingTriggerredByListViewSourceSignal.set(false)))
+            );
         },
     } as TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams>);
 
-    refreshListViewSourceWhenCommandTriggered(selectViewSource, command, isBeingTriggerredByListViewSourceSignal);
+    refreshListViewSourceWhenCommandTriggered(
+        selectViewSource,
+        command,
+        isBeingTriggerredByListViewSourceSignal,
+        () => {
+            filterAtExternalResult = selectViewSource.getQueryParams()?.filter;
+        }
+    );
 
     return selectViewSource;
 }
