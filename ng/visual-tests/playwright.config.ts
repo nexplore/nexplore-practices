@@ -1,11 +1,13 @@
 import { defineConfig } from '@playwright/test';
 import path from 'node:path';
-import { port, snapshotDir, storybookDir } from './paths';
+import { samplesDir, samplesPort, samplesUrl, snapshotDir, storybookDir, storybookPort, storybookUrl } from './paths';
+
+const serveStatic = path.join(__dirname, 'serve-static.mjs');
 
 export default defineConfig({
     testDir: __dirname,
     testMatch: '*.spec.ts',
-    snapshotPathTemplate: path.join(snapshotDir, '{projectName}', '{arg}{ext}'),
+    snapshotPathTemplate: path.join(snapshotDir, '{projectName}', '{testFileName}', '{arg}{ext}'),
     outputDir: path.join(__dirname, 'test-results'),
     reporter: [['list'], ['html', { outputFolder: path.join(__dirname, 'report'), open: 'never' }]],
     fullyParallel: true,
@@ -24,7 +26,6 @@ export default defineConfig({
         },
     },
     use: {
-        baseURL: `http://127.0.0.1:${port}`,
         locale: 'de-CH',
         timezoneId: 'Europe/Zurich',
         colorScheme: 'light',
@@ -33,9 +34,16 @@ export default defineConfig({
         { name: 'desktop', use: { browserName: 'chromium', viewport: { width: 1280, height: 800 } } },
         { name: 'mobile', use: { browserName: 'chromium', viewport: { width: 390, height: 844 } } },
     ],
-    webServer: {
-        command: `node "${path.join(__dirname, 'serve-static.mjs')}" "${storybookDir}" ${port}`,
-        url: `http://127.0.0.1:${port}/index.json`,
-        reuseExistingServer: false,
-    },
+    webServer: [
+        {
+            command: `node "${serveStatic}" "${storybookDir}" ${storybookPort}`,
+            url: `${storybookUrl}/index.json`,
+            reuseExistingServer: false,
+        },
+        {
+            command: `node "${serveStatic}" "${samplesDir}" ${samplesPort} --spa`,
+            url: `${samplesUrl}/index.html`,
+            reuseExistingServer: false,
+        },
+    ],
 });

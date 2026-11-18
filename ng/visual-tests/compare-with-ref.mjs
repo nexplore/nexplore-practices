@@ -1,12 +1,13 @@
 #!/usr/bin/env node
-// Visual regression comparison of the practices-ui-ktbe Storybook against any git ref.
+// Visual regression comparison of the practices-ui-ktbe Storybook and the samples-ktbe application against any git ref.
 //
 //   node visual-tests/compare-with-ref.mjs <ref> [--node <version>] [--filter <regex>] [--skip-baseline] [--skip-build]
 //
 // 1. Checks out <ref> into a separate git worktree (ng/tmp/visual-baseline), installs its dependencies
-//    and builds its Storybook (with the Node version from its .nvmrc or --node, via fnm if available).
-// 2. Screenshots every story of that build as reference (visual-tests/__screenshots__).
-// 3. Builds the Storybook of the current working tree and compares every story against the reference.
+//    and builds its Storybook and samples-ktbe (with the Node version from its .nvmrc or --node, via fnm if available).
+// 2. Screenshots every story, the interaction states and the samples pages of that build as reference
+//    (visual-tests/__screenshots__).
+// 3. Builds the current working tree and compares everything against the reference.
 //
 // The HTML report with side-by-side/diff views ends up in visual-tests/report.
 import { spawnSync } from 'node:child_process';
@@ -21,6 +22,7 @@ const ngDir = path.resolve(here, '..');
 const worktreeDir = path.join(ngDir, 'tmp', 'visual-baseline');
 const worktreeNgDir = path.join(worktreeDir, 'ng');
 const storybookOutput = path.join('dist', 'storybook', 'practices-ui-ktbe');
+const samplesOutput = path.join('dist', 'samples-ktbe');
 const snapshotDir = path.join(here, '__screenshots__');
 
 const { values: options, positionals } = parseArgs({
@@ -86,7 +88,7 @@ function readNvmrc(dir) {
     return existsSync(file) ? readFileSync(file, 'utf-8').trim() : undefined;
 }
 
-function prepareBaselineStorybook() {
+function prepareBaseline() {
     const sha = git(['rev-parse', '--verify', `${ref}^{commit}`]);
     console.log(`Reference: ${ref} (${sha.slice(0, 10)})`);
 
@@ -116,33 +118,46 @@ function prepareBaselineStorybook() {
         writeFileSync(markerFile, installHash);
     }
 
-    run('npx nx run practices-ui-ktbe:build-storybook', { cwd: worktreeNgDir, nodeBinDir });
-    return path.join(worktreeNgDir, storybookOutput);
+    buildAll({ cwd: worktreeNgDir, nodeBinDir });
+    return {
+        storybookDir: path.join(worktreeNgDir, storybookOutput),
+        samplesDir: path.join(worktreeNgDir, samplesOutput),
+    };
+}
+
+/** Builds the Storybook of practices-ui-ktbe and the samples-ktbe application. */
+function buildAll(runOptions = {}) {
+    run('npx nx run practices-ui-ktbe:build-storybook', runOptions);
+    run('npx nx build samples-ktbe --configuration production', runOptions);
 }
 
 const playwright = 'npx playwright test -c visual-tests/playwright.config.ts';
 const filterEnv = options.filter ? { VISUAL_FILTER: options.filter } : {};
 
 if (!options['skip-baseline']) {
-    const baselineStorybook = prepareBaselineStorybook();
-    rmSync(snapshotDir, { recursive: true, force: true });
+    const baseline = prepareBaseline();
+    // Without filter, start from scratch so screenshots of removed stories do not linger. With a filter, only the
+    // matching screenshots are rewritten and all others are kept.
+    if (!options.filter) {
+        rmSync(snapshotDir, { recursive: true, force: true });
+    }
     console.log('\nCreating reference screenshots...');
     const status = run(`${playwright} --update-snapshots=all`, {
-        env: { VISUAL_STORYBOOK_DIR: baselineStorybook, ...filterEnv },
+        env: { VISUAL_STORYBOOK_DIR: baseline.storybookDir, VISUAL_SAMPLES_DIR: baseline.samplesDir, ...filterEnv },
         allowFailure: true,
     });
     if (status !== 0) {
         console.warn(
-            '\nSome stories could not be captured in the reference build (see output above). They will be reported as missing.'
+            '\nSome screenshots could not be captured in the reference build (see output above). They will be reported as missing.'
         );
     }
 }
 
 if (!options['skip-build']) {
-    run('npx nx run practices-ui-ktbe:build-storybook');
+    buildAll();
 }
 
-console.log('\nComparing current Storybook against the reference screenshots...');
+console.log('\nComparing the current builds against the reference screenshots...');
 const status = run(playwright, { env: filterEnv, allowFailure: true });
 console.log(`\nReport: npx playwright show-report ${path.join('visual-tests', 'report')}`);
 process.exit(status);
