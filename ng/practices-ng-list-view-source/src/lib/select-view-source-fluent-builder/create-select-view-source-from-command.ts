@@ -54,15 +54,17 @@ export function createSelectViewSourceFromCommand<
 ): SelectViewSourceWithSignals<TData, TFilter> {
     const isBeingTriggerredByListViewSourceSignal = signal(false);
     const noExternalResult = Symbol('noExternalResult');
-    let filterAtExternalResult: unknown = noExternalResult;
+    let lastLoadedFilter: unknown;
+    let externalResultForFilter: unknown = noExternalResult;
 
     const selectViewSource = createSelectViewSourceInternal<TData, TLabelKey, TQueryParams, TFilter>({
         ...config,
         loadFn: (params: any) => {
             // A refresh caused by an external trigger shows that result instead of triggering the command again.
             // A filter change in the same debounce window still triggers the command with the new filter.
-            const useLatestResult = filterAtExternalResult === params.filter;
-            filterAtExternalResult = noExternalResult;
+            const useLatestResult = externalResultForFilter === params.filter;
+            externalResultForFilter = noExternalResult;
+            lastLoadedFilter = params.filter;
 
             const options = {
                 sortInMemory: false,
@@ -82,12 +84,14 @@ export function createSelectViewSourceFromCommand<
         },
     } as TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams>);
 
+    lastLoadedFilter = selectViewSource.getQueryParams()?.filter;
+
     refreshListViewSourceWhenCommandTriggered(
         selectViewSource,
         command,
         isBeingTriggerredByListViewSourceSignal,
         () => {
-            filterAtExternalResult = selectViewSource.getQueryParams()?.filter;
+            externalResultForFilter = lastLoadedFilter;
         }
     );
 

@@ -133,4 +133,46 @@ describe('createSelectViewSourceFromCommand', () => {
 
         expect(args).toEqual([{}, { name: 'external' }, { name: 'A' }]);
     });
+
+    it('should trigger the command with the new filter when an external trigger follows right after a filter change', async () => {
+        const args: unknown[] = [];
+
+        const cmd = TestBed.runInInjectionContext(() =>
+            command.query.withManualTrigger((filter: unknown) => {
+                args.push(filter);
+                return createDtos(['A']);
+            })
+        );
+        const vs = TestBed.runInInjectionContext(() => createSelectViewSourceFromCommand(cmd, { label: 'name' }));
+
+        vs.pageData$.subscribe();
+        await flush();
+
+        vs.filter({ name: 'A' });
+        cmd.trigger({ name: 'external' });
+        await flush();
+
+        expect(args).toEqual([{}, { name: 'external' }, { name: 'A' }]);
+    });
+
+    it('should call the handler only once when an auto triggered command responds slower than the debounce', async () => {
+        let handlerCalls = 0;
+        const results: TestDto[][] = [];
+
+        const vs = TestBed.runInInjectionContext(() =>
+            createSelectViewSourceFromCommand(
+                command.query.withAutoTrigger(() => {
+                    handlerCalls++;
+                    return of(createDtos(['A', 'B'])).pipe(delay(1000));
+                }),
+                { label: 'name' }
+            )
+        );
+
+        vs.pageData$.subscribe((data) => results.push(data));
+        await flush();
+
+        expect(handlerCalls).toBe(1);
+        expect(results.at(-1)?.map((d) => d.name)).toEqual(['A', 'B']);
+    });
 });
