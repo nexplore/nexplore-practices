@@ -66,6 +66,8 @@ export class MyComponent {
 }
 ```
 
+It also has the behavior of a regular effect, and thus any read signal will be tracked as a dependency, forcing the subscription to be disposed and re-created.
+
 ### Signal Transformations - [`computedPipe`](./src/lib/computed-pipe.ts)
 
 Apply a series of transformations to a signal value, similar to RxJS pipe but returns a signal (shorthand for toSignal with pipe).
@@ -73,7 +75,7 @@ Apply a series of transformations to a signal value, similar to RxJS pipe but re
 ```typescript
 import { signal } from '@angular/core';
 import { computedPipe } from '@nexplore/practices-ng-signals';
-import { map, filter } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
 
 @Component({...})
 export class MyComponent {
@@ -82,13 +84,13 @@ export class MyComponent {
   // Transform the signal value through a series of operations
   protected readonly transformedValueSignal = computedPipe(
     this._valueSignal,
-    map(value => value * 2),
+    debounceTime(100),
     filter(value => value > 15)
   );
-
-  // Result: signal that will have the value 20 (10 * 2)
 }
 ```
+
+The main use case is when you want to alter the timing of the produced values.
 
 ### Type Conversion Utilities
 
