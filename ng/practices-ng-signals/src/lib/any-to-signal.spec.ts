@@ -18,7 +18,7 @@ describe('anyToSignal', () => {
       results.push('initial:' + result());
 
       source.set(20);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push('updated:' + result());
 
       expect(results).toEqual([
@@ -42,11 +42,11 @@ describe('anyToSignal', () => {
       results.push('initial:' + result());
 
       subject.next(10);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push('first-update:' + result());
 
       subject.next(20);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push('second-update:' + result());
 
       expect(results).toEqual([
@@ -70,11 +70,11 @@ describe('anyToSignal', () => {
       results.push('initial:' + result());
 
       subject.next(10);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push('first-update:' + result());
 
       subject.next(20);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push('second-update:' + result());
 
       expect(results).toEqual([
@@ -111,7 +111,7 @@ describe('anyToSignal', () => {
       results.push('initial:' + result());
 
       // Allow time for the observable to emit (though with of() it's immediate)
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push('after-emit:' + result());
 
       expect(results).toEqual([

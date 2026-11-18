@@ -3,14 +3,14 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { formGroupCurrentValueMappedSignal } from './form-signal-utils';
 
 describe('formGroupCurrentValueMappedSignal', () => {
-    type Value = { a: number | null; b: string | null };
+    type Value = { a: number | null; b: string | null | undefined };
 
     function setup(
         options?: Parameters<typeof formGroupCurrentValueMappedSignal<Value, FormGroup, never[], Value>>[1],
     ) {
         const formGroup = new FormGroup({
             a: new FormControl(1),
-            b: new FormControl('x'),
+            b: new FormControl<string | null | undefined>('x'),
         });
         const emissions: Value[] = [];
         const signal = TestBed.runInInjectionContext(() =>
@@ -60,6 +60,19 @@ describe('formGroupCurrentValueMappedSignal', () => {
                 { a: 2, b: null },
             ]);
             expect(signal()).toEqual({ a: 2, b: null });
+        }));
+
+        it('should emit when a property is removed from the value', fakeAsync(() => {
+            const { formGroup, signal, emissions } = setup();
+
+            formGroup.controls.b.setValue(undefined);
+            tick(1);
+            // A disabled control is excluded from `FormGroup.value`, so `{ a: 1, b: undefined }` becomes `{ a: 1 }`.
+            formGroup.controls.b.disable();
+            tick(1);
+
+            expect(emissions.map((value) => Object.keys(value))).toEqual([['a', 'b'], ['a', 'b'], ['a']]);
+            expect(signal()).toEqual({ a: 1 });
         }));
     });
 

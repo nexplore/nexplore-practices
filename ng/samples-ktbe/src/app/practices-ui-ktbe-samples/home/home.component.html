@@ -22,22 +22,20 @@
     </puibe-panel>
 </header>
 
-<div class="mb-6" *ngFor="let category of categories">
-    <div class="mb-2 flex items-center">
-        <h2>{{ category.name }}</h2>
+@for (category of categories; track category) {
+    <div class="mb-6">
+        <div class="mb-2 flex items-center">
+            <h2>{{ category.name }}</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            @for (component of category.components; track component) {
+                <puibe-teaser [teaserLink]="component.route" [title]="component.title" class="h-full">
+                    <p class="text-sm">{{ component.description }}</p>
+                </puibe-teaser>
+            }
+        </div>
     </div>
-
-    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-        <puibe-teaser
-            [teaserLink]="component.route"
-            [title]="component.title"
-            class="h-full"
-            *ngFor="let component of category.components"
-        >
-            <p class="text-sm">{{ component.description }}</p>
-        </puibe-teaser>
-    </div>
-</div>
+}
 
 <puibe-panel variant="white" class="my-8">
     <div class="flex flex-col gap-4">
@@ -49,16 +47,16 @@
             >
 
             <p class="mt-4">Requirements:</p>
-            <ul class="text-sm mt-2 list-disc">
+            <ul class="list-disc text-sm mt-2">
                 <li>Angular 18+</li>
-                <li>Tailwind CSS 4.x</li>
+                <li>Tailwind CSS 3.x</li>
             </ul>
         </div>
     </div>
 </puibe-panel>
 
 <hr />
-<footer class="text-gray-500 text-xspt-4 my-8 text-center">
+<footer class="my-8 text-center text-gray-500 text-xspt-4">
     <p>Kanton Bern UI Component Library - Sample Application</p>
     <p>
         Based on the

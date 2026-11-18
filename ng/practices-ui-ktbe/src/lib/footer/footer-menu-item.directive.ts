@@ -33,14 +33,12 @@ export class PuibeFooterMenuItemDirective implements OnInit, OnDestroy {
     @HostBinding('attr.role')
     readonly role = 'listitem';
 
-    // eslint-disable-next-line @angular-eslint/no-input-rename
     @Input('navLink')
     @Input()
     set routerLink(value: string) {
         this._menuItemService.setRouterLink(value);
     }
 
-    // eslint-disable-next-line @angular-eslint/no-input-rename
     @Input('navLinkActiveOptions')
     @Input()
     set routerLinkActiveOptions(value: IsActiveMatchOptions) {

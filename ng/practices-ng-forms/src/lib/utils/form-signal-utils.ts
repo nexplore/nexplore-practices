@@ -1,7 +1,7 @@
 import { isSignal, Signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormControlState, FormGroup, UntypedFormGroup } from '@angular/forms';
-import { isObjShallowEqual, ValueOrSignal } from '@nexplore/practices-ng-common-util';
+import { ValueOrSignal } from '@nexplore/practices-ng-common-util';
 import { debounceTime, distinctUntilChanged, filter, map, noop, Observable, of, startWith, switchMap, tap } from 'rxjs';
 import { FormGroupValues, TypedFormGroup } from './form.types';
 import { ElementsOfArray } from './types-internal';
@@ -30,6 +30,20 @@ export function formGroupValueChangesSignal<TValue = any>(
         ),
         { initialValue: options.initialValue as any }
     ) as Signal<Partial<TValue>>;
+}
+
+/**
+ * Default comparator of `formGroupCurrentValueMappedSignal`:
+ * Two values are equal if they have the same number of own properties and every property is strictly equal (`===`).
+ */
+function hasSameEntries(a: unknown, b: unknown): boolean {
+    if (!a || !b || typeof a !== 'object' || typeof b !== 'object') {
+        return a === b;
+    }
+
+    const aEntries = Object.entries(a);
+    const bEntries = new Map(Object.entries(b));
+    return aEntries.length === bEntries.size && aEntries.every(([key, value]) => value === bEntries.get(key));
 }
 
 /**
@@ -75,7 +89,7 @@ export function formGroupCurrentValueMappedSignal<
                             return value;
                         }
                     }),
-                    distinctUntilChanged(options?.distinctComparator ?? isObjShallowEqual),
+                    distinctUntilChanged(options?.distinctComparator ?? hasSameEntries),
                     debounceTime(options?.debounceTime ?? 1),
                     filter(options?.filter ?? (() => true)),
                     map(options?.map ?? ((v) => v as unknown as TResult))

@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -13,7 +13,6 @@ import {
 } from '@angular/core';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
-import { PuibeFormFieldComponent } from '../form-field/form-field.component';
 import { PuibeIconArrowComponent } from '../icons/icon-arrow.component';
 
 export interface PuibeTabSelectionItem {
@@ -28,7 +27,7 @@ export interface PuibeTabSelectionItem {
     styleUrls: ['./tabs.component.css', '../select/select.directive.css'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [PuibeFormFieldComponent, NgFor, NgIf, NgClass, NgSelectModule, FormsModule, PuibeIconArrowComponent],
+    imports: [NgClass, NgSelectModule, FormsModule, PuibeIconArrowComponent],
 })
 export class PuibeTabsComponent implements OnInit {
     activeClassNames = 'bg-anthrazit text-white';

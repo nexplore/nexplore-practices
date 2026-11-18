@@ -24,19 +24,21 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      # Prepare .NET (global.json + explicit 8.x)
+      # Prepare .NET (SDK from global.json + runtimes for the net8.0/net9.0 targets)
       - name: Setup .NET from global.json
         uses: actions/setup-dotnet@v5.4.0
         with:
-          global-json-file: dotnet/global.json
+          global-json-file: global.json
 
-      - name: Setup .NET 8.x
+      - name: Setup .NET 8.x/9.x runtimes
         uses: actions/setup-dotnet@v5.4.0
         with:
-          dotnet-version: "8.x"
+          dotnet-version: |
+            8.x
+            9.x
 
       # Prepare Node.js
-      - name: Setup Node 22.14.0
+      - name: Setup Node (version from ng/.nvmrc)
         uses: actions/setup-node@v6.4.0
         with:
           node-version-file: "ng/.nvmrc"

@@ -15,7 +15,7 @@ import { PuibeSelectViewSourceDirective } from './select-view-source.directive';
 import { PuibeSelectDirective } from './select.directive';
 
 type Args = {
-    label: string;
+    labelText: string;
     value: number | null;
     loading: boolean;
     placeholder: string;
@@ -63,7 +63,7 @@ const meta: Meta<Args> = {
     component: PuibeFormFieldComponent,
     tags: ['autodocs'],
     argTypes: {
-        label: { type: 'string' },
+        labelText: { type: 'string' },
         loading: { type: 'boolean', defaultValue: false },
         placeholder: { type: 'string' },
         searchable: { type: 'boolean', defaultValue: true },
@@ -102,7 +102,7 @@ const meta: Meta<Args> = {
         },
         template: `
         <puibe-form-field class="w-1/2" [formGroup]="formGroup">
-            <label puibeLabel>{{label}}</label>
+            <label puibeLabel>{{labelText}}</label>
             <ng-select
                 puibeInput
                 [items]="items"
@@ -126,35 +126,35 @@ export default meta;
 type Story = StoryObj<Args>;
 
 export const Default: Story = {
-    args: { label: 'Default' },
+    args: { labelText: 'Default' },
 };
 
 export const WithInitialValue: Story = {
-    args: { label: 'Basic Select with initial value', value: 2 },
+    args: { labelText: 'Basic Select with initial value', value: 2 },
 };
 
 export const WithInitialNullValue: Story = {
-    args: { label: 'Basic Select with initial NULL', items: [{ name: 'None', id: null }, ...items], value: null },
+    args: { labelText: 'Basic Select with initial NULL', items: [{ name: 'None', id: null }, ...items], value: null },
 };
 
 export const RequiredSelect: Story = {
-    args: { label: 'Required Select', required: true },
+    args: { labelText: 'Required Select', required: true },
 };
 
 export const NonClearableSelect: Story = {
-    args: { label: 'Non clearable Select', required: true, clearable: false },
+    args: { labelText: 'Non clearable Select', required: true, clearable: false },
 };
 
 export const DisabledSelect: Story = {
-    args: { label: 'Disabled Select', disabled: true },
+    args: { labelText: 'Disabled Select', disabled: true },
 };
 
 export const AsyncValidator: Story = {
-    args: { label: 'Async Validator Select', asyncValidator: true },
+    args: { labelText: 'Async Validator Select', asyncValidator: true },
 };
 
 export const NonSearchableSelect: Story = {
-    args: { label: 'NonSearchable Select', searchable: false },
+    args: { labelText: 'NonSearchable Select', searchable: false },
 };
 
 export const WithMetadataSelect: Story = {
@@ -186,24 +186,24 @@ export const WithMetadataSelect: Story = {
 };
 
 export const MultiSelect: Story = {
-    args: { label: 'Multi Select', multiple: true },
+    args: { labelText: 'Multi Select', multiple: true },
 };
 
 export const MultiSelectRequired: Story = {
-    args: { label: 'Multi Select Required', multiple: true, required: true },
+    args: { labelText: 'Multi Select Required', multiple: true, required: true },
 };
 
 export const MultiSelectDisabled: Story = {
-    args: { label: 'Multi Select Disabled', multiple: true, disabled: true },
+    args: { labelText: 'Multi Select Disabled', multiple: true, disabled: true },
 };
 
 export const SelectWithViewSource: Story = {
-    args: { label: 'Select with ViewSource', itemSource: new SelectViewSource<Item>({}, defaultLoadFn) },
+    args: { labelText: 'Select with ViewSource', itemSource: new SelectViewSource<Item>({}, defaultLoadFn) },
 };
 
 export const NonSearchableWithViewSource: Story = {
     args: {
-        label: 'NonSearchable Select with ViewSource',
+        labelText: 'NonSearchable Select with ViewSource',
         searchable: false,
         itemSource: new SelectViewSource<Item>({}, defaultLoadFn),
     },
@@ -211,7 +211,7 @@ export const NonSearchableWithViewSource: Story = {
 
 export const MultiSelectWithViewSource: Story = {
     args: {
-        label: 'Multi Select with ViewSource',
+        labelText: 'Multi Select with ViewSource',
         multiple: true,
         itemSource: new SelectViewSource<Item>({}, defaultLoadFn),
     },
@@ -219,28 +219,28 @@ export const MultiSelectWithViewSource: Story = {
 
 export const SelectWithViewSourceConfig: Story = {
     args: {
-        label: 'Select with ViewSource',
+        labelText: 'Select with ViewSource',
         itemSource: new SelectViewSource<Item>({ label: 'name', value: 'id' }, defaultLoadFn),
     },
 };
 
 export const NonSearchableSelectWithViewSourceConfig: Story = {
     args: {
-        label: 'NonSearchable Select with ViewSource',
+        labelText: 'NonSearchable Select with ViewSource',
         itemSource: new SelectViewSource<Item>({ label: 'name', value: 'id', searchable: false }, defaultLoadFn),
     },
 };
 
 export const LocalSearchSelectWithViewSource: Story = {
     args: {
-        label: 'Local Search Select with ViewSource',
+        labelText: 'Local Search Select with ViewSource',
         itemSource: new SelectViewSource<Item>({ label: 'name', value: 'id', localSearch: true }, defaultLoadFn),
     },
 };
 
 export const SelectWithViewSourceInitialValue: Story = {
     args: {
-        label: 'Select with ViewSource',
+        labelText: 'Select with ViewSource',
         itemSource: new SelectViewSource<Item>({ label: 'name', value: 'id' }, defaultLoadFn),
         value: 2,
     },
@@ -248,7 +248,7 @@ export const SelectWithViewSourceInitialValue: Story = {
 
 export const SelectWithViewSourceRequired: Story = {
     args: {
-        label: 'Select with ViewSource',
+        labelText: 'Select with ViewSource',
         itemSource: new SelectViewSource<Item>({ label: 'name', value: 'id' }, defaultLoadFn),
         required: true,
     },
@@ -318,23 +318,23 @@ export const AsyncWithoutViewSource: Story = {
 };
 
 export const LoadingSpinner: Story = {
-    args: { label: 'Loading Spinner', loading: true },
+    args: { labelText: 'Loading Spinner', loading: true },
 };
 
 export const WithCustomPlaceholder: Story = {
-    args: { label: 'With Custom Placeholder', placeholder: 'Search ...' },
+    args: { labelText: 'With Custom Placeholder', placeholder: 'Search ...' },
 };
 
 export const WithDefaultPlaceholder: Story = {
-    args: { label: 'With Default Placeholder' },
+    args: { labelText: 'With Default Placeholder' },
 };
 
 export const UseSearchIcon: Story = {
-    args: { label: 'Use Search Icon', userSearchIconIfSearchable: true },
+    args: { labelText: 'Use Search Icon', userSearchIconIfSearchable: true },
 };
 
 export const UseSearchIconDefineInConfig: Story = {
-    args: { label: 'Use Search Icon In Config' },
+    args: { labelText: 'Use Search Icon In Config' },
     decorators: [
         moduleMetadata({
             providers: [

@@ -1,38 +1,46 @@
-<puibe-toast
-    variant="error"
-    *ngIf="status?.error"
-    [closeable]="true"
-    (dismissed)="onDismiss()"
-    class="flex max-w-screen min-w-screen overflow-hidden md:max-w-[660px] md:min-w-96"
-    role="status"
->
-    <div part="error-content" class="flex min-w-0 flex-col items-stretch gap-2 pl-2 text-ellipsis whitespace-pre-wrap">
-        @if (isFormularInvalidError(status.error)) {
-            <p translate>Practices.Labels_FormularInvalid</p>
-        } @else {
-            <ng-container *ngTemplateOutlet="errorTemplate; context: { $implicit: status }"></ng-container>
-            <ng-container *ngIf="!errorTemplate">
-                {{ status.error?.message ?? status.error }}
-                <puibe-expansion-panel
-                    *ngIf="status.error?.stack"
-                    caption="Details"
-                    class="grow-0 text-black"
-                    [enableContentScroll]="true"
-                >
-                    <code *ngIf="status.error.stack" class="whitespace-pre">{{ status?.error.stack }}</code>
-                </puibe-expansion-panel>
-            </ng-container>
-        }
-    </div>
-</puibe-toast>
-<ng-container *ngIf="status?.success">
+@if (status?.error) {
     <puibe-toast
-        variant="success"
+        variant="error"
         [closeable]="true"
-        *ngIf="getSuccessMessage(status) as successMessage"
-        class="flex max-w-screen min-w-screen overflow-hidden md:min-w-40 lg:max-w-[660px]"
+        (dismissed)="onDismiss()"
+        class="flex max-w-screen min-w-screen overflow-hidden md:max-w-[660px] md:min-w-96"
         role="status"
     >
-        {{ successMessage }}
+        <div
+            part="error-content"
+            class="flex min-w-0 flex-col items-stretch gap-2 pl-2 text-ellipsis whitespace-pre-wrap"
+        >
+            @if (isFormularInvalidError(status.error)) {
+                <p translate>Practices.Labels_FormularInvalid</p>
+            } @else {
+                <ng-container *ngTemplateOutlet="errorTemplate; context: { $implicit: status }"></ng-container>
+                @if (!errorTemplate) {
+                    {{ status.error?.message ?? status.error }}
+                    @if (status.error?.stack) {
+                        <puibe-expansion-panel
+                            caption="Details"
+                            class="grow-0 text-black"
+                            [enableContentScroll]="true"
+                        >
+                            @if (status.error.stack) {
+                                <code class="whitespace-pre">{{ status?.error.stack }}</code>
+                            }
+                        </puibe-expansion-panel>
+                    }
+                }
+            }
+        </div>
     </puibe-toast>
-</ng-container>
+}
+@if (status?.success) {
+    @if (getSuccessMessage(status); as successMessage) {
+        <puibe-toast
+            variant="success"
+            [closeable]="true"
+            class="flex max-w-screen min-w-screen overflow-hidden md:min-w-40 lg:max-w-[660px]"
+            role="status"
+        >
+            {{ successMessage }}
+        </puibe-toast>
+    }
+}

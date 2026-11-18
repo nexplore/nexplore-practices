@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PuiFormFieldService } from '@nexplore/practices-ng-forms';
@@ -13,7 +13,7 @@ let nextUniqueId = 0;
     selector: 'puibe-radio-button',
     templateUrl: './radio-button.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, ReactiveFormsModule, AsyncPipe, NgIf, PuibeTooltipButtonComponent],
+    imports: [NgClass, ReactiveFormsModule, AsyncPipe, PuibeTooltipButtonComponent],
 })
 export class PuibeRadioButtonComponent {
     @Input()

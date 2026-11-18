@@ -1,5 +1,5 @@
 import { DomPortal, PortalModule } from '@angular/cdk/portal';
-import { AsyncPipe, NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
     Component,
     Input,
@@ -32,10 +32,8 @@ import { PuibeShellService } from '../shell/shell.service';
     changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         NgClass,
-        NgIf,
         AsyncPipe,
         TranslateModule,
-        NgTemplateOutlet,
         PuibeSideNavigationComponent,
         PuibeHeaderLogoComponent,
         PortalModule,
@@ -90,17 +88,18 @@ export class PuibeHeaderComponent implements OnInit {
      * ...
      * <!-- `item` is the `PuibeMetaRoute` object from the routeConfig -->
      * <ng-template #sidemenuItemAfterTemplate let-item let-size="size">
-     *   <puibe-icon-enumeration
-     *       class="ml-1 align-middle"
-     *       [size]="size ?? IconSize.S"
-     *       *ngIf="item.data.numberOfNotifications || item.data.numberOfErrors"
-     *       [color]="item.data.numberOfErrors ? 'red' : 'anthrazit'"
-     *       [ariaLabel]="(item.data.numberOfErrors ? 'Labels.HasNumberOfErrors' : 'Labels.HasNumberOfNotifications') | translate
-     *       "
-     *       >{{
-     *           item.data.numberOfErrors || item.data.numberOfNotifications || 0
-     *       }}</puibe-icon-enumeration
-     *   >
+     *   @if (item.data.numberOfNotifications || item.data.numberOfErrors) {
+     *       <puibe-icon-enumeration
+     *           class="ml-1 align-middle"
+     *           [size]="size ?? IconSize.S"
+     *           [color]="item.data.numberOfErrors ? 'red' : 'anthrazit'"
+     *           [ariaLabel]="(item.data.numberOfErrors ? 'Labels.HasNumberOfErrors' : 'Labels.HasNumberOfNotifications') | translate
+     *           "
+     *           >{{
+     *               item.data.numberOfErrors || item.data.numberOfNotifications || 0
+     *           }}</puibe-icon-enumeration
+     *       >
+     *   }
      * </ng-template>
      * ```
      */
@@ -128,15 +127,16 @@ export class PuibeHeaderComponent implements OnInit {
      *             </select>
      *         </div>
      *
-     *         <button
-     *             type="button"
-     *             puibeFooterLanguageMenuItem
-     *             *ngFor="let language of availableLanguages"
-     *             (languageChanged)="onLanguageChange($event)"
-     *             [isActive]="isLanguageActive(language)"
-     *         >
-     *             {{ language }}
-     *         </button>
+     *         @for (language of availableLanguages; track language) {
+     *             <button
+     *                 type="button"
+     *                 puibeFooterLanguageMenuItem
+     *                 (languageChanged)="onLanguageChange($event)"
+     *                 [isActive]="isLanguageActive(language)"
+     *             >
+     *                 {{ language }}
+     *             </button>
+     *         }
      *
      *         <span puibeFooterCopyright>© 2019 - Kanton Bern</span>
      *     </puibe-sidenav-footer>

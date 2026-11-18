@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { PuibeIconDirectiveBase } from './icon.directive';
 @Component({
@@ -10,7 +9,6 @@ import { PuibeIconDirectiveBase } from './icon.directive';
         />
     </svg> `,
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [NgClass],
 })
 export class PuibeIconCloseComponent extends PuibeIconDirectiveBase {
     /**

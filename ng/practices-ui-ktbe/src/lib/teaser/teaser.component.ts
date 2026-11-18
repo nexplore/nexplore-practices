@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, EventEmitter, forwardRef, Input, Optional, Output, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { PuibeMigratingClickCommandHostDirective } from '../command/migrating-click-command-host.directive';
@@ -10,7 +10,7 @@ let nextUniqueId = 0;
     standalone: true,
     selector: 'puibe-teaser',
     templateUrl: './teaser.component.html',
-    imports: [PuibeIconArrowComponent, NgClass, NgIf],
+    imports: [PuibeIconArrowComponent, NgClass],
     changeDetection: ChangeDetectionStrategy.Eager,
     hostDirectives: [
         {

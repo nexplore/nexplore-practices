@@ -30,7 +30,7 @@ import { translations } from './translations';
 })
 export class StorybookWrapperComponent {
     constructor(translateService: TranslateService) {
-        translateService.setDefaultLang('de-CH');
+        translateService.setFallbackLang('de-CH');
         translateService.use('de').subscribe();
         translateService.setTranslation('de', translations);
 

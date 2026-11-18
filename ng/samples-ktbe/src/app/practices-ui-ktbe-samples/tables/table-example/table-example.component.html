@@ -33,32 +33,28 @@
     class="w-full"
     [noItemsMessage]="'Keine Einträge vorhanden'"
 >
-    <puibe-table-column
-        [field]="itemSource.columns.name"
-        class="w-1/4" />
-    <puibe-table-column
-        [field]="itemSource.columns.type"
-        class="w-1/4" />
-    <puibe-table-column
-        [field]="itemSource.columns.active"
-        class="w-1/4" />
+    <puibe-table-column [field]="itemSource.columns.name" class="w-1/4" />
+    <puibe-table-column [field]="itemSource.columns.type" class="w-1/4" />
+    <puibe-table-column [field]="itemSource.columns.active" class="w-1/4" />
 
-    <puibe-table-row puibeTableRowActionTrigger *ngFor="let item of itemSource.pageData$ | async">
-        <puibe-table-cell>
-            <button puibeTableRowAction (click)="openModal(item)">
-                {{ item.name }}
-                <span class="sr-only">'Navigate to detail'</span>
-            </button>
-        </puibe-table-cell>
-        <puibe-table-cell>{{ item.type }}</puibe-table-cell>
-        <puibe-table-cell
-            ><puibe-icon-enumeration
-                [color]="item.active ? 'green' : 'red'"
-                [size]="'xs'"
-                [title]="item.active ? 'Active' : 'Inactive'"
-            ></puibe-icon-enumeration
-        ></puibe-table-cell>
-    </puibe-table-row>
+    @for (item of itemSource.pageData$ | async; track item) {
+        <puibe-table-row puibeTableRowActionTrigger>
+            <puibe-table-cell>
+                <button puibeTableRowAction (click)="openModal(item)">
+                    {{ item.name }}
+                    <span class="sr-only">'Navigate to detail'</span>
+                </button>
+            </puibe-table-cell>
+            <puibe-table-cell>{{ item.type }}</puibe-table-cell>
+            <puibe-table-cell
+                ><puibe-icon-enumeration
+                    [color]="item.active ? 'green' : 'red'"
+                    [size]="'xs'"
+                    [title]="item.active ? 'Active' : 'Inactive'"
+                ></puibe-icon-enumeration
+            ></puibe-table-cell>
+        </puibe-table-row>
+    }
     <puibe-table-footer>
         <puibe-table-pagination [pageSize]="5">
             <puibe-table-page-size [pageSizeOptions]="[5, 15, 30]">Items per page </puibe-table-page-size>

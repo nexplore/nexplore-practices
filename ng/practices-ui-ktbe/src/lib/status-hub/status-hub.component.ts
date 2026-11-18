@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/dot-notation */
 import { A11yModule } from '@angular/cdk/a11y';
 import { BlockScrollStrategy, ViewportRuler } from '@angular/cdk/overlay';
-import { AsyncPipe, NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { Component, ContentChild, EventEmitter, Input, Output, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
     AggregatedStatusInfo,
@@ -30,13 +29,10 @@ type ToastPosition = 'top-left' | 'top' | 'top-right' | 'bottom-left' | 'bottom'
         PuibeStatusToastComponent,
         PuibeToastComponent,
         PuibeIconSpinnerComponent,
-        NgIf,
-        NgFor,
         NgClass,
         NgTemplateOutlet,
         AsyncPipe,
         TranslateModule,
-        PuibeErrorStatusDirective,
         A11yModule,
     ],
     changeDetection: ChangeDetectionStrategy.Eager,

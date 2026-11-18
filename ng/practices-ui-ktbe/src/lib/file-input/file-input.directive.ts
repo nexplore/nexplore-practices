@@ -61,6 +61,7 @@ export class PuibeFileInputDirective implements OnInit, ControlValueAccessor {
     placeholder?: string;
 
     private _fileDialogIsOpen = false;
+    private _value: File | string | null = null;
     private _onChange: (file: File) => void;
 
     private inputElement: HTMLInputElement;
@@ -74,8 +75,9 @@ export class PuibeFileInputDirective implements OnInit, ControlValueAccessor {
         this.inputElement = this._elementRef.nativeElement;
     }
 
-    writeValue(value: File | string): void {
-        this._formFieldService.updateOverlayText({ text: typeof value === 'string' ? value : value?.name });
+    writeValue(value: File | string | null): void {
+        this._value = value;
+        this._formFieldService.updateOverlayText({ text: this._toOverlayText(value) });
         if (!value) {
             this.inputElement.value = null;
         }
@@ -107,15 +109,25 @@ export class PuibeFileInputDirective implements OnInit, ControlValueAccessor {
         // Hide native file input content to hide the default button and label
         setClassNames({ ['opacity-0']: true }, this.inputElement);
 
-        this._formFieldService.setOverlayText({ text: this.placeholder });
+        // writeValue may already have run before ngOnInit, so keep its value instead of always showing the placeholder.
+        this._formFieldService.setOverlayText({ text: this._toOverlayText(this._value) });
 
-        this._formFieldService.value$.pipe(takeUntil(this._destroy$)).subscribe((value: File) => {
-            this._formFieldService.updateOverlayText({ text: value?.name ?? this.placeholder });
+        this._formFieldService.value$.pipe(takeUntil(this._destroy$)).subscribe((value: File | string | null) => {
+            this._formFieldService.updateOverlayText({ text: this._toOverlayText(value) });
         });
 
         this._formFieldService.iconClick$.pipe(takeUntil(this._destroy$)).subscribe(() => {
             this._elementRef.nativeElement.focus();
             this._elementRef.nativeElement.click();
         });
+    }
+
+    /**
+     * Text shown in the field: a string value as is, a file by its name, and the placeholder when empty.
+     * Without the fallback a reset (e.g. `form.reset()`) would leave the field without any visible text.
+     */
+    private _toOverlayText(value: File | string | null | undefined): string | undefined {
+        const text = typeof value === 'string' ? value : value?.name;
+        return text || this.placeholder;
     }
 }

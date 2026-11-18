@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
     AfterViewInit,
     Component,
@@ -20,7 +20,7 @@ import { PuibeTableComponent } from '../table.component';
     standalone: true,
     selector: 'puibe-table-pagination-infinite-scroll',
     templateUrl: './table-pagination-infinite-scroll.component.html',
-    imports: [NgIf, AsyncPipe, TranslateModule, PuibeIconSpinnerComponent],
+    imports: [AsyncPipe, TranslateModule, PuibeIconSpinnerComponent],
     changeDetection: ChangeDetectionStrategy.Eager,
     providers: [DestroyService],
 })

@@ -8,10 +8,12 @@
 
 <puibe-toast variant="default" [closeable]="false" class="my-4 block">
     <p class="text-h4">Some Error occured...</p>
-    <div *ngIf="visible">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</p>
-        <p>elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-    </div>
+    @if (visible) {
+        <div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</p>
+            <p>elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+    }
     <a puibeToastAction href="/">zur Startseite</a>
     <button puibeToastAction (click)="toggleDetails()">Weitere Details...</button>
 </puibe-toast>

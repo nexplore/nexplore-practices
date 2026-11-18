@@ -1,5 +1,4 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { NgFor, NgIf } from '@angular/common';
 import {
     Component,
     inject,
@@ -35,8 +34,6 @@ import { PuibeModalComponent } from './modal.component';
         PuibeModalSubtitleDirective,
         PuibeModalFooterActionDirective,
         PuibeButtonDirective,
-        NgFor,
-        NgIf,
         TranslateModule,
         PuibeIconSpinnerComponent,
         DialogTemplateContentComponent,

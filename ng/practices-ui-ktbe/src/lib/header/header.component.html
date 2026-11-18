@@ -9,7 +9,7 @@
             >
                 <ng-content select="puibe-header-logo"></ng-content>
             </div>
-            <ng-container *ngIf="headerLogoContent.children.length === 0">
+            @if (headerLogoContent.children.length === 0) {
                 <puibe-header-logo
                     [link]="logoLink"
                     [image]="logoImage"
@@ -17,11 +17,13 @@
                     [caption]="logoCaption"
                     (clickLink)="onClickLogoLink()"
                 ></puibe-header-logo>
-            </ng-container>
+            }
         </div>
-        <div *ngIf="openSideNav" #headerLogoPlaceholder style="width: var(--logoWidth)">
-            <!-- Placeholder retaining the logo-width, for when the logo moved to the sidenav using cdkPortal-->
-        </div>
+        @if (openSideNav) {
+            <div #headerLogoPlaceholder style="width: var(--logoWidth)">
+                <!-- Placeholder retaining the logo-width, for when the logo moved to the sidenav using cdkPortal-->
+            </div>
+        }
         <div class="flex flex-col justify-between">
             <div class="hidden lg:flex lg:justify-end lg:gap-x-10">
                 <nav
@@ -33,7 +35,7 @@
                         class="flex list-none"
                         [ngClass]="{
                             'flex-col gap-y-[1.875rem]': (isMobileBreakpoint$ | async),
-                            'flex-row gap-x-10': false === (isMobileBreakpoint$ | async)
+                            'flex-row gap-x-10': false === (isMobileBreakpoint$ | async),
                         }"
                     >
                         <ng-content select="[puibeHeaderServiceMenuItem]"></ng-content>
@@ -90,9 +92,9 @@
 >
     <ng-container ngProjectAs="puibe-header-logo">
         <div>
-            <ng-container *ngIf="openSideNav">
+            @if (openSideNav) {
                 <ng-container *cdkPortalOutlet="headerLogoWrapperPortal"></ng-container>
-            </ng-container>
+            }
         </div>
     </ng-container>
 

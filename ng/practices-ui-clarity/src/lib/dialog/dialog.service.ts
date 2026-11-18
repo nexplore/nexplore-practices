@@ -1,6 +1,5 @@
 import { ComponentPortal, DomPortalOutlet } from '@angular/cdk/portal';
-import { DOCUMENT } from '@angular/common';
-import { ApplicationRef, Inject, Injectable, Injector } from '@angular/core';
+import { ApplicationRef, Inject, Injectable, Injector, DOCUMENT } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { from, merge, Observable, ObservableInput, of } from 'rxjs';
 import { map, take, tap } from 'rxjs/operators';

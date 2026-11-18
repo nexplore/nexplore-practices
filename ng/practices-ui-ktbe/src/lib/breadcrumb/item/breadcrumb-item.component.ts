@@ -1,4 +1,4 @@
-import { NgClass, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, HostBinding, Input, Optional } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -15,10 +15,6 @@ import { A11yModule } from '@angular/cdk/a11y';
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         NgClass,
-        NgIf,
-        NgSwitch,
-        NgSwitchCase,
-        NgSwitchDefault,
         TranslateModule,
         PuibeIconHomeComponent,
         PuibeIconArrowBreadcrumbComponent,

@@ -287,7 +287,6 @@ export class LegacyCommand<TArgs = void, TResult = unknown> extends LegacyComman
         innerCommand: LegacyCommandBase<TArgs, TResult>,
         defaultOptions: LegacyCommandOptions<TArgs>
     ) {
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         return new PassthroughCommand<TArgs, TResult>(innerCommand, defaultOptions);
     }
 }
