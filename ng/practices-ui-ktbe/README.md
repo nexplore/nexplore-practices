@@ -509,16 +509,17 @@ You can provide a custom template for error messages using the `puibeIfErrorStat
 <puibe-status-hub>
     <ng-container *puibeIfErrorStatus="let status">
         <p>Something went wrong!</p>
-        <puibe-expansion-panel
-            *ngIf="status.error?.stack ?? status.error?.message"
-            caption="Details"
-            class="flex-grow-0 text-black"
-            [enableContentScroll]="true"
-        >
-            <code *ngIf="status.error.stack" class="whitespace-pre">
-                {{ status?.error.stack ?? status.error?.message }}
-            </code>
-        </puibe-expansion-panel>
+        @if (status.error?.stack ?? status.error?.message) {
+            <puibe-expansion-panel
+                caption="Details"
+                class="flex-grow-0 text-black"
+                [enableContentScroll]="true"
+            >
+                <code class="whitespace-pre">
+                    {{ status.error?.stack ?? status.error?.message }}
+                </code>
+            </puibe-expansion-panel>
+        }
     </ng-container>
 </puibe-status-hub>
 ```

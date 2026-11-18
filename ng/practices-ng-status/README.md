@@ -90,21 +90,27 @@ import { StatusHubService } from '@nexplore/practices-ng-status';
 @Component({
     selector: 'app-status-hub',
     template: `
-        <div class="loading-overlay" *ngIf="statusHub.busyAndBlocking$ | async">
-            <div class="spinner"></div>
-            <div class="message">{{ (statusHub.aggregatedStatus$ | async)?.progressMessage }}</div>
-        </div>
+        @if (statusHub.busyAndBlocking$ | async) {
+            <div class="loading-overlay">
+                <div class="spinner"></div>
+                <div class="message">{{ (statusHub.aggregatedStatus$ | async)?.progressMessage }}</div>
+            </div>
+        }
 
         <div class="toast-container">
-            <div class="toast error" *ngIf="(statusHub.aggregatedStatus$ | async)?.error">
-                <div class="message">{{ (statusHub.aggregatedStatus$ | async)?.error }}</div>
-                <button (click)="(statusHub.aggregatedStatus$ | async)?.dismissError()">✕</button>
-            </div>
+            @if ((statusHub.aggregatedStatus$ | async)?.error) {
+                <div class="toast error">
+                    <div class="message">{{ (statusHub.aggregatedStatus$ | async)?.error }}</div>
+                    <button (click)="(statusHub.aggregatedStatus$ | async)?.dismissError()">✕</button>
+                </div>
+            }
 
-            <div class="toast success" *ngIf="(statusHub.aggregatedStatus$ | async)?.success">
-                <div class="message">{{ (statusHub.aggregatedStatus$ | async)?.success }}</div>
-                <button (click)="(statusHub.aggregatedStatus$ | async)?.dismissSuccess()">✕</button>
-            </div>
+            @if ((statusHub.aggregatedStatus$ | async)?.success) {
+                <div class="toast success">
+                    <div class="message">{{ (statusHub.aggregatedStatus$ | async)?.success }}</div>
+                    <button (click)="(statusHub.aggregatedStatus$ | async)?.dismissSuccess()">✕</button>
+                </div>
+            }
         </div>
     `,
 })

@@ -158,7 +158,9 @@ export class UserDetailComponent {
 In the template:
 
 ```html
-<div *ngIf="userQuery.busySignal()">Loading user...</div>
+@if (userQuery.busySignal()) {
+<div>Loading user...</div>
+}
 
 @if (userSignal(); as user) {
 <div class="user-details">

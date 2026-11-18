@@ -71,7 +71,9 @@ const meta: Meta<Args> = {
         template: `
         <div [formGroup]="formGroup" class="w-full"  [puibeReadonly]="readonly">
             <puibe-radio-button-group class="w-full" [useSmallTextForReadonlyLabel]="useSmallTextForReadonlyLabel" [legend]="legend" [attr.name]="name" [hint]="hint" formControlName="radio" [displayInline]="displayInline" [hideGroupBorders]="hideGroupBorders" [gapVariant]="gapVariant" [hideOptional]="hideOptional" [legendAsLabel]="legendAsLabel" [readonlyEmptyValuePlaceholder]="readonlyEmptyValuePlaceholder">
-                <puibe-radio-button [value]="value.id" [label]="value.name" [description]="value.description" [descriptionAsTooltip]="descriptionAsTooltip" *ngFor="let value of values; index as i"></puibe-radio-button>
+                @for (value of values; track value) {
+                    <puibe-radio-button [value]="value.id" [label]="value.name" [description]="value.description" [descriptionAsTooltip]="descriptionAsTooltip"></puibe-radio-button>
+                }
             </puibe-radio-button-group>
         </div>`,
     }),
