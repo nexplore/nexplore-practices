@@ -114,9 +114,12 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
         this._data$.pipe(takeUntil(this._destroy$)).subscribe((data) => {
             this._writeComponentProp('items', data);
 
-            // This is a dangerous hack because it relies on the internals of ng-select
-            // It is necessary because angular does not call ngOnChanges when we set properties manually and ng-select uses this to detect changes of items.
-            this._ngSelectComponent.ngOnChanges({ items: { currentValue: data } } as any);
+            // This is a dangerous hack because it relies on the internals of ng-select.
+            // Since ng-select 24, later changes of `items` are only applied by an effect, which runs with the next change
+            // detection of the ng-select (never, while it is not rendered, e.g. in readonly mode). Only the first change is
+            // applied synchronously in `ngOnChanges`, so mark every change as first change to map the selected value to
+            // the new items immediately (needed for the readonly value below).
+            this._ngSelectComponent.ngOnChanges({ items: { currentValue: data, firstChange: true } } as any);
             this._changeDetectorRef.markForCheck();
         });
 
