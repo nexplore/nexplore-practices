@@ -23,8 +23,8 @@ RUN curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh \
     && rm /tmp/dotnet-install.sh
 
 # Same Node.js version as CI (.github/workflows/build.template.yml).
-COPY --from=node:22.14.0-bookworm-slim /usr/local/bin/node /usr/local/bin/node
-COPY --from=node:22.14.0-bookworm-slim /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=node:26.13.0-bookworm-slim /usr/local/bin/node /usr/local/bin/node
+COPY --from=node:26.13.0-bookworm-slim /usr/local/lib/node_modules /usr/local/lib/node_modules
 RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
     && ln -s ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
 
