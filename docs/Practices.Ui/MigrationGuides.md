@@ -34,7 +34,8 @@ The following third-party peer dependencies changed with Angular 22:
 | --------------------- | -------------------------------------- | ----------------- | ----------------- |
 | `@ng-select/ng-select` | `practices-ui-ktbe`                    | `>=13.0.0 <22.0.0` | `>=24.0.0 <25.0.0` |
 | `@clr/angular`        | `practices-ui-clarity`                 | `>=15.0.0 <19.0.0` | `>=18.4.0 <19.0.0` |
-| `@ngx-translate/core` | `practices-ui`, `practices-ui-ktbe`, `practices-ui-clarity` | `>=15.0.0 <18.0.0` | `>=17.0.0 <18.0.0` |
+| `@ngx-translate/core` | `practices-ui`, `practices-ui-ktbe`     | `>=15.0.0 <18.0.0` | `>=17.0.0 <18.0.0` |
+| `@ngx-translate/core` | `practices-ui-clarity`                 | `>=15.0.0 <17.0.0` | `>=17.0.0 <18.0.0` |
 
 If your application uses one of these packages directly, update it together with the practices.
 
