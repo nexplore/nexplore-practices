@@ -14,7 +14,7 @@ type Args = {
     required?: boolean;
     disabled?: boolean;
     displayInline?: boolean;
-    hideGroupBorders?: boolean;
+    hideGroupBorder?: boolean;
     hideOptional?: boolean;
     legendAsLabel?: boolean;
     descriptionAsTooltip?: boolean;
@@ -43,7 +43,7 @@ const meta: Meta<Args> = {
         required: { type: 'boolean', defaultValue: false },
         disabled: { type: 'boolean', defaultValue: false },
         displayInline: { type: 'boolean', defaultValue: false },
-        hideGroupBorders: { type: 'boolean', defaultValue: false },
+        hideGroupBorder: { type: 'boolean', defaultValue: false },
         hideOptional: { type: 'boolean', defaultValue: false },
         legendAsLabel: { type: 'boolean', defaultValue: false },
         descriptionAsTooltip: { type: 'boolean', defaultValue: false },
@@ -70,7 +70,7 @@ const meta: Meta<Args> = {
         },
         template: `
         <div [formGroup]="formGroup" class="w-full"  [puibeReadonly]="readonly">
-            <puibe-radio-button-group class="w-full" [useSmallTextForReadonlyLabel]="useSmallTextForReadonlyLabel" [legend]="legend" [attr.name]="name" [hint]="hint" formControlName="radio" [displayInline]="displayInline" [hideGroupBorders]="hideGroupBorders" [gapVariant]="gapVariant" [hideOptional]="hideOptional" [legendAsLabel]="legendAsLabel" [readonlyEmptyValuePlaceholder]="readonlyEmptyValuePlaceholder">
+            <puibe-radio-button-group class="w-full" [useSmallTextForReadonlyLabel]="useSmallTextForReadonlyLabel" [legend]="legend" [attr.name]="name" [hint]="hint" formControlName="radio" [displayInline]="displayInline" [hideGroupBorder]="hideGroupBorder" [gapVariant]="gapVariant" [hideOptional]="hideOptional" [legendAsLabel]="legendAsLabel" [readonlyEmptyValuePlaceholder]="readonlyEmptyValuePlaceholder">
                 @for (value of values; track value) {
                     <puibe-radio-button [value]="value.id" [label]="value.name" [description]="value.description" [descriptionAsTooltip]="descriptionAsTooltip"></puibe-radio-button>
                 }
