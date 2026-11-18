@@ -1,3 +1,4 @@
+import { Component, Input } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { command } from '@nexplore/practices-ng-commands';
 import { LegacyCommand } from '@nexplore/practices-ui';
@@ -15,6 +16,91 @@ import { PuibeClickCommandDirective } from './click-command.directive';
 type Args = {
     enableStatusHub: boolean;
 };
+
+/**
+ * `command.action(...)` needs an injection context, so the commands are created as fields of a component
+ * instead of in the `props` of the story.
+ */
+@Component({
+    selector: 'puibe-click-command-with-status-story',
+    imports: [PuibeButtonDirective, PuibeClickCommandDirective, PuibeStatusHubComponent],
+    template: `
+        @if (enableStatusHub) {
+            <puibe-status-hub></puibe-status-hub>
+        }
+        <button type="button" puibeButton [clickCommand]="simpleCommand">Simple Progress</button>
+        <button type="button" puibeButton [clickCommand]="successCommand">Success Message</button>
+        <button type="button" puibeButton [clickCommand]="blockingCommand">Block ui</button>
+        <button type="button" puibeButton [clickCommand]="msgCommand">Progress Message</button>
+        <button type="button" puibeButton [clickCommand]="blockingMsgCommand">Progress Message (blocking)</button>
+        <button type="button" puibeButton [clickCommand]="errorAsyncCommand">Throw Error Async</button>
+        <button type="button" puibeButton [clickCommand]="errorCommand">Throw Error</button>
+        <button type="button" puibeButton [clickCommand]="withParam" [commandArgs]="{ text: '42' }">With params</button>
+    `,
+})
+class ClickCommandWithStatusStoryComponent {
+    @Input() enableStatusHub = true;
+
+    readonly simpleCommand = command.action(() => {
+        return timer(3000);
+    });
+
+    readonly successCommand = command.action(
+        () => {
+            return timer(1000);
+        },
+        { status: { successMessage: 'Yeah it worked!' } }
+    );
+
+    readonly blockingCommand = LegacyCommand.create(
+        () => {
+            return timer(4000);
+        },
+        { blocking: true }
+    );
+
+    readonly msgCommand = LegacyCommand.create(
+        () => {
+            return timer(6000);
+        },
+        {
+            progressMessage: 'Please wait...',
+        }
+    );
+
+    readonly blockingMsgCommand = LegacyCommand.create(
+        () => {
+            return timer(6000);
+        },
+        {
+            blocking: true,
+            progressMessage: 'Please wait...',
+            successMessage: 'The long blocking operation is finally finished!',
+        }
+    );
+
+    readonly errorCommand = LegacyCommand.create(() => {
+        throw new Error('I threw immedeately! ' + Math.random());
+    });
+
+    readonly errorAsyncCommand = LegacyCommand.create(() => {
+        return timer(1000).pipe(
+            map((_) => {
+                throw new Error('Here is your error!');
+            })
+        );
+    });
+
+    readonly withParam = LegacyCommand.create(
+        (params: { text: string }) =>
+            timer(1000).pipe(
+                map((_) => {
+                    return params.text;
+                })
+            ),
+        { successMessage: (text) => `The result is "${text}"` }
+    );
+}
 
 const meta: Meta<Args> = {
     title: 'PUIBE/click-command',
@@ -34,6 +120,7 @@ const meta: Meta<Args> = {
                 BrowserAnimationsModule,
                 PuibeClickCommandDirective,
                 PuibeStatusHubComponent,
+                ClickCommandWithStatusStoryComponent,
             ],
         }),
     ],
@@ -59,70 +146,7 @@ export const SimpleClickCommand: Story = {
 export const WithStatus: Story = {
     args: { enableStatusHub: true },
     render: (args) => ({
-        props: {
-            simpleCommand: command.action(() => {
-                return timer(3000);
-            }),
-            successCommand: command.action(
-                () => {
-                    return timer(1000);
-                },
-                { status: { successMessage: 'Yeah it worked!' } }
-            ),
-            blockingCommand: LegacyCommand.create(
-                () => {
-                    return timer(4000);
-                },
-                { blocking: true }
-            ),
-            msgCommand: LegacyCommand.create(
-                () => {
-                    return timer(6000);
-                },
-                {
-                    progressMessage: 'Please wait...',
-                }
-            ),
-            blockingMsgCommand: LegacyCommand.create(
-                () => {
-                    return timer(6000);
-                },
-                {
-                    blocking: true,
-                    progressMessage: 'Please wait...',
-                    successMessage: 'The long blocking operation is finally finished!',
-                }
-            ),
-            errorCommand: LegacyCommand.create(() => {
-                throw new Error('I threw immedeately! ' + Math.random());
-            }),
-            errorAsyncCommand: LegacyCommand.create(() => {
-                return timer(1000).pipe(
-                    map((_) => {
-                        throw new Error('Here is your error!');
-                    })
-                );
-            }),
-
-            withParam: LegacyCommand.create(
-                (params: { text: string }) =>
-                    timer(1000).pipe(
-                        map((_) => {
-                            return params.text;
-                        })
-                    ),
-                { successMessage: (text) => `The result is "${text}"` }
-            ),
-        },
-        template: `${defaultTmpl(args)}
-        <button type="button" puibeButton [clickCommand]="simpleCommand">Simple Progress</button>
-        <button type="button" puibeButton [clickCommand]="successCommand">Success Message</button>
-        <button type="button" puibeButton [clickCommand]="blockingCommand">Block ui</button>
-        <button type="button" puibeButton [clickCommand]="msgCommand">Progress Message</button>
-        <button type="button" puibeButton [clickCommand]="blockingMsgCommand">Progress Message (blocking)</button>
-        <button type="button" puibeButton [clickCommand]="errorAsyncCommand">Throw Error Async</button>
-        <button type="button" puibeButton [clickCommand]="errorCommand">Throw Error</button>
-        <button type="button" puibeButton [clickCommand]="withParam" [commandArgs]="{text: '42'}">With params</button>
-        `,
+        props: args,
+        template: `<puibe-click-command-with-status-story [enableStatusHub]="enableStatusHub"></puibe-click-command-with-status-story>`,
     }),
 };
