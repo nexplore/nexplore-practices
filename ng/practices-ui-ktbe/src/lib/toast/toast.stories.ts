@@ -28,9 +28,11 @@ const meta: Meta<Args> = {
         template: `
         <puibe-toast [closeable]="closeable" [variant]="variant" [showAlertIcon]="showAlertIcon">
             ${args.text}
-            <button puibeToastAction *ngFor="let action of actions;">
-                {{ action.text }}
-            </button>
+            @for (action of actions; track action) {
+                <button puibeToastAction>
+                    {{ action.text }}
+                </button>
+            }
         </puibe-toast>`,
     }),
 };

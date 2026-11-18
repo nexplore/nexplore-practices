@@ -81,7 +81,7 @@ describe('createTableViewSourceFromData', () => {
 
                 vs.filter({ name: 'John' });
                 jest.runAllTimers();
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 expect(loadFn).toHaveBeenCalledWith(
                     expect.objectContaining({
@@ -132,7 +132,7 @@ describe('createTableViewSourceFromData', () => {
 
                 const subscription = vs.pageData$.subscribe((data) => results.push(data));
                 jest.runAllTimers();
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 expect(results[0]).toEqual(testData);
                 subscription.unsubscribe();
@@ -150,7 +150,7 @@ describe('createTableViewSourceFromData', () => {
                 });
 
                 jest.runAllTimers();
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 // Directly check the final state
                 expect(vs.totalCountSignal()).toBe(5);
@@ -204,11 +204,11 @@ describe('createTableViewSourceFromData', () => {
                 });
 
                 jest.runAllTimers();
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 dataSignal.set({ data: updatedData, total: 2 });
                 jest.runAllTimers();
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 expect(results).toEqual([0, 1, 2]);
             });
@@ -231,11 +231,11 @@ describe('createTableViewSourceFromData', () => {
                 });
 
                 jest.runAllTimers();
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 dataSignal.set(updatedData);
                 jest.runAllTimers();
-                TestBed.flushEffects();
+                TestBed.tick();
                 expect(results).toEqual([0, 1, 2]);
             });
         });
@@ -250,7 +250,7 @@ describe('createTableViewSourceFromData', () => {
                 });
 
                 jest.runAllTimers();
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 // Directly check the final state
                 expect(vs.totalCountSignal()).toBe(2);
@@ -269,7 +269,7 @@ describe('createTableViewSourceFromData', () => {
 
                 const subscription = vs.pageData$.subscribe((data) => results.push(data));
                 jest.runAllTimers();
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 expect(results[0]).toEqual([]);
                 subscription.unsubscribe();
@@ -303,13 +303,13 @@ describe('createTableViewSourceFromData', () => {
                 const refreshSpy = jest.spyOn(vs, 'refresh');
 
                 jest.runAllTimers();
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 const initialRefreshCount = refreshSpy.mock.calls.length;
 
                 dataSignal.set([]);
                 jest.runAllTimers();
-                TestBed.flushEffects();
+                TestBed.tick();
 
                 // Empty array is still truthy, so it should trigger refresh
                 expect(refreshSpy.mock.calls.length).toBeGreaterThan(initialRefreshCount);

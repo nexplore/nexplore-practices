@@ -34,10 +34,10 @@ describe('withEffects', () => {
             jest.runAllTimers();
 
             mySignal.set(true);
-            TestBed.flushEffects();
+            TestBed.tick();
 
             mySignal.set(false);
-            TestBed.flushEffects();
+            TestBed.tick();
         });
 
         expect(result).toEqual([false, true, false]);
@@ -58,10 +58,10 @@ describe('withEffects', () => {
             jest.runAllTimers();
 
             mySignal.set(true);
-            TestBed.flushEffects();
+            TestBed.tick();
 
             mySignal.set(false);
-            TestBed.flushEffects();
+            TestBed.tick();
         });
 
         expect(result).toEqual([false, true, false]);

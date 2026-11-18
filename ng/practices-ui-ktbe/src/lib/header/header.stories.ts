@@ -125,7 +125,6 @@ const meta: Meta<Args> = {
                 <puibe-header [routerConfig]="routerConfig">
                     <puibe-header-logo
                         link="/"
-                        image="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Logo_Kanton_Bern_Canton_de_Berne.svg/1200px-Logo_Kanton_Bern_Canton_de_Berne.svg.png"
                         alt="Logo"
                         [caption]="logoCaption">
                     </puibe-header-logo>
@@ -145,15 +144,23 @@ const meta: Meta<Args> = {
                     </div>
                     <a puibeHeaderServiceMenuItem routerLink="/practices-ui-ktbe-samples/header">Header</a>
 
-                    <button type="button" puibeHeaderLanguageMenuItem *ngFor="let language of languages" (languageChanged)="onLanguageChange($event)" [isActive]="language.isActive">{{language.language}}</button>
+                    @for (language of languages; track language) {
+                        <button type="button" puibeHeaderLanguageMenuItem (languageChanged)="onLanguageChange($event)" [isActive]="language.isActive">{{language.language}}</button>
+                    }
 
-                    <a puibeHeaderMainMenuItem *ngFor="let mainMenuItem of mainMenuItems" [isSmall]="mainMenuItem.isSmall" [routerLink]="mainMenuItem.routerLink">{{mainMenuItem.label}}</a>
-                    <button type="button" puibeHeaderMainMenuItem [isIcon]="true" [isSmall]="false" [withAnimation]="false" *ngIf="showSearchIcon">
-                        <puibe-icon-search></puibe-icon-search>
-                    </button>
-                    <button type="button" puibeHeaderMainMenuItem [isIcon]="true" [isSmall]="false" [withAnimation]="false" *ngIf="showSideNav">
-                        <puibe-icon-hamburger></puibe-icon-hamburger>
-                    </button>
+                    @for (mainMenuItem of mainMenuItems; track mainMenuItem) {
+                        <a puibeHeaderMainMenuItem [isSmall]="mainMenuItem.isSmall" [routerLink]="mainMenuItem.routerLink">{{mainMenuItem.label}}</a>
+                    }
+                    @if (showSearchIcon) {
+                        <button type="button" puibeHeaderMainMenuItem [isIcon]="true" [isSmall]="false" [withAnimation]="false">
+                            <puibe-icon-search></puibe-icon-search>
+                        </button>
+                    }
+                    @if (showSideNav) {
+                        <button type="button" puibeHeaderMainMenuItem [isIcon]="true" [isSmall]="false" [withAnimation]="false">
+                            <puibe-icon-hamburger></puibe-icon-hamburger>
+                        </button>
+                    }
 
                     <button type="button" puibeHeaderMobileMenuItem class="w-8 h-8">
                         <puibe-icon-search-mobile ></puibe-icon-search-mobile>

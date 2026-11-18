@@ -1,5 +1,5 @@
 const nx = require('@nx/eslint-plugin');
-const rxjs = require('eslint-plugin-rxjs');
+const rxjs = require('eslint-plugin-rxjs-x').default;
 
 module.exports = [
     ...nx.configs['flat/base'],
@@ -8,7 +8,7 @@ module.exports = [
     ...nx.configs['flat/angular'],
     ...nx.configs['flat/angular-template'],
     {
-        ignores: ['**/dist', '**/*.stories.ts', '**/stories', '**/.storybook'],
+        ignores: ['**/dist', '**/*.js', '**/src/polyfills.ts', '**/*.stories.ts', '**/stories', '**/.storybook'],
     },
     {
         languageOptions: {
@@ -26,7 +26,7 @@ module.exports = [
             'rxjs/no-unsafe-takeuntil': 'error',
             'rxjs/no-nested-subscribe': 'error',
             'rxjs/no-async-subscribe': 'warn',
-            'rxjs/no-ignored-observable': 'error',
+            'rxjs/no-floating-observables': 'error',
             'rxjs/no-ignored-subscription': 'warn',
             'rxjs/no-unbound-methods': 'warn',
             'rxjs/throw-error': 'warn',
@@ -46,6 +46,10 @@ module.exports = [
             ],
             '@angular-eslint/template/no-negated-async': 'off',
             '@angular-eslint/no-input-rename': 'off',
+            // Rules introduced by newer lint presets; kept as warnings until the code base is modernized
+            '@angular-eslint/prefer-inject': 'warn',
+            '@angular-eslint/prefer-on-push-component-change-detection': 'warn',
+            'no-useless-assignment': 'warn',
             '@angular-eslint/template/label-has-associated-control': 'off',
             '@nx/enforce-module-boundaries': [
                 'error',
@@ -66,6 +70,13 @@ module.exports = [
         files: ['**/*.html'],
         rules: {
             '@angular-eslint/template/label-has-associated-control': 'off',
+            '@angular-eslint/template/no-negated-async': 'off',
+            '@angular-eslint/template/prefer-control-flow': 'warn',
+            '@angular-eslint/template/alt-text': 'warn',
+            '@angular-eslint/template/click-events-have-key-events': 'warn',
+            '@angular-eslint/template/eqeqeq': 'warn',
+            '@angular-eslint/template/interactive-supports-focus': 'warn',
+            '@angular-eslint/template/no-autofocus': 'warn',
         },
     },
     {

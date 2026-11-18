@@ -78,7 +78,9 @@ const meta: Meta<Args> = {
             template: `
         <div [formGroup]="formGroup" class="w-full" [puibeReadonly]="readonly">
             <puibe-checkbox-group class="w-full" [legend]="legend" [hint]="hint" [displayInline]="displayInline" [hideGroupBorder]="hideGroupBorder" [gapVariant]="gapVariant" [hideOptional]="hideOptional" [legendAsLabel]="legendAsLabel" [readonlyEmptyValuePlaceholder]="readonlyEmptyValuePlaceholder">
-                <puibe-checkbox *ngFor="let checkbox of checkboxes; index as i" [label]="checkbox.label" [description]="checkbox.description" formControlName="{{'checkbox' + '-' + i}}"></puibe-checkbox>
+                @for (checkbox of checkboxes; track checkbox; let i = $index) {
+                    <puibe-checkbox [label]="checkbox.label" [description]="checkbox.description" formControlName="{{'checkbox' + '-' + i}}"></puibe-checkbox>
+                }
             </puibe-checkbox-group>
         </div>`,
         };

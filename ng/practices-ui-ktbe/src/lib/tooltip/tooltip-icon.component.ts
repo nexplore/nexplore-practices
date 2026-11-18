@@ -1,8 +1,9 @@
-import { Component, HostBinding } from '@angular/core';
+import { Component, HostBinding, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     standalone: true,
     selector: 'puibe-tooltip-icon',
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: `<svg
         [class]="class"
         xmlns="http://www.w3.org/2000/svg"
@@ -29,4 +30,3 @@ import { Component, HostBinding } from '@angular/core';
 export class PuibeTooltipIconComponent {
     @HostBinding('class') class = '';
 }
-

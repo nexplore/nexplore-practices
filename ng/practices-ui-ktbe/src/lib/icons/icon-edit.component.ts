@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { PuibeIconDirectiveBase } from './icon.directive';
 
 @Component({
     standalone: true,
     selector: 'puibe-icon-edit',
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: `<svg viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
             fill-rule="evenodd"

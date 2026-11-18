@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { command } from '@nexplore/practices-ng-commands';
 import { PuibeButtonDirective } from '@nexplore/practices-ui-ktbe';
 import { timer } from 'rxjs';
@@ -7,6 +7,7 @@ import { timer } from 'rxjs';
     selector: 'app-commands',
     standalone: true,
     imports: [PuibeButtonDirective],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './commands.component.html',
 })
 export class CommandsComponent {

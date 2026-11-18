@@ -6,99 +6,99 @@
             </output>
             <span class="sr-only" [attr.id]="labeledByIdSignal()">
                 <p>{{ 'Practices.Labels_DatePicker_Calendar' | translate }}</p>
-                <span *ngIf="ariaInitialDateLabelSignal()">
-                    {{ 'Practices.Labels_DatePicker_SelectedDate' | translate }}
-                    {{ ariaInitialDateLabelSignal() }}
-                </span>
-                <span *ngIf="!ariaInitialDateLabelSignal()">{{ noSelectedDateLabelSignal() }}</span>
+                @if (ariaInitialDateLabelSignal()) {
+                    <span>
+                        {{ 'Practices.Labels_DatePicker_SelectedDate' | translate }}
+                        {{ ariaInitialDateLabelSignal() }}
+                    </span>
+                }
+                @if (!ariaInitialDateLabelSignal()) {
+                    <span>{{ noSelectedDateLabelSignal() }}</span>
+                }
             </span>
             <div class="sr-only" [attr.id]="describedByIdSignal()">
-                <ng-container *ngIf="!disabled">
+                @if (!disabled) {
                     <span>{{ helpDescriptionSignal() }}</span>
-                    <span *ngIf="ariaAdditionalDescription">{{ ariaAdditionalDescription }}</span>
-                </ng-container>
+                    @if (ariaAdditionalDescription) {
+                        <span>{{ ariaAdditionalDescription }}</span>
+                    }
+                }
             </div>
-            <ng-container [ngSwitch]="activeViewModeSignal()">
-                <puibe-calendar-date-view
-                    *ngSwitchCase="'date'"
-                    [view]="dateForCurrentPeriodViewSignal()"
-                    [disabled]="disabled"
-                    [focused]="focusedDateSignal()"
-                    [selected]="selectedDateSignal()"
-                    [hideWeekLabels]="hideWeekLabels"
-                    [itemDisabledHandler]="itemDisabledHandler"
-                    (clickItem)="onItemClick($event)"
-                    [canClickPeriodHeader]="canChangePeriodView('year')"
-                    (clickPeriodHeader)="tryChangePeriodView('year')"
-                >
-                    <ng-container *ngTemplateOutlet="btnTodayTemplate" ngProjectAs="[slot='left']"></ng-container>
-
-                    <ng-container *ngTemplateOutlet="btnPrevTemplate" ngProjectAs="[slot='left']"></ng-container>
-
-                    <ng-container *ngTemplateOutlet="btnNextTemplate" ngProjectAs="[slot='left']"></ng-container>
-
-                    <ng-container ngProjectAs="[slot='right']" *ngTemplateOutlet="toolbarAdditionalItemsTemplate">
-                    </ng-container>
-                </puibe-calendar-date-view>
-
-                <puibe-calendar-month-view
-                    *ngSwitchCase="'month'"
-                    [view]="dateForCurrentPeriodViewSignal()"
-                    [disabled]="disabled"
-                    [focused]="focusedDateSignal()"
-                    [selected]="selectedDateSignal()"
-                    [itemDisabledHandler]="itemDisabledHandler"
-                    (clickItem)="onItemClick($event)"
-                    [canClickPeriodHeader]="canChangePeriodView('year')"
-                    (clickPeriodHeader)="tryChangePeriodView('year')"
-                >
-                    <ng-container *ngTemplateOutlet="btnTodayTemplate" ngProjectAs="[slot='left']"></ng-container>
-
-                    <ng-container *ngTemplateOutlet="btnPrevTemplate" ngProjectAs="[slot='left']"></ng-container>
-
-                    <ng-container *ngTemplateOutlet="btnNextTemplate" ngProjectAs="[slot='left']"></ng-container>
-
-                    <ng-container ngProjectAs="[slot='right']" *ngTemplateOutlet="toolbarAdditionalItemsTemplate">
-                    </ng-container>
-                </puibe-calendar-month-view>
-                <puibe-calendar-year-view
-                    *ngSwitchCase="'year'"
-                    [view]="dateForCurrentPeriodViewSignal()"
-                    [disabled]="disabled"
-                    [focused]="focusedDateSignal()"
-                    [selected]="selectedDateSignal()"
-                    [itemDisabledHandler]="itemDisabledHandler"
-                    (clickItem)="onItemClick($event)"
-                >
-                    <ng-container *ngTemplateOutlet="btnTodayTemplate" ngProjectAs="[slot='left']"></ng-container>
-
-                    <ng-container *ngTemplateOutlet="btnPrevTemplate" ngProjectAs="[slot='left']"></ng-container>
-
-                    <ng-container *ngTemplateOutlet="btnNextTemplate" ngProjectAs="[slot='left']"></ng-container>
-
-                    <ng-container ngProjectAs="[slot='right']" *ngTemplateOutlet="toolbarAdditionalItemsTemplate">
-                    </ng-container>
-                </puibe-calendar-year-view>
-            </ng-container>
+            @switch (activeViewModeSignal()) {
+                @case ('date') {
+                    <puibe-calendar-date-view
+                        [view]="dateForCurrentPeriodViewSignal()"
+                        [disabled]="disabled"
+                        [focused]="focusedDateSignal()"
+                        [selected]="selectedDateSignal()"
+                        [hideWeekLabels]="hideWeekLabels"
+                        [itemDisabledHandler]="itemDisabledHandler"
+                        (clickItem)="onItemClick($event)"
+                        [canClickPeriodHeader]="canChangePeriodView('year')"
+                        (clickPeriodHeader)="tryChangePeriodView('year')"
+                    >
+                        <ng-container *ngTemplateOutlet="btnTodayTemplate" ngProjectAs="[slot='left']"></ng-container>
+                        <ng-container *ngTemplateOutlet="btnPrevTemplate" ngProjectAs="[slot='left']"></ng-container>
+                        <ng-container *ngTemplateOutlet="btnNextTemplate" ngProjectAs="[slot='left']"></ng-container>
+                        <ng-container ngProjectAs="[slot='right']" *ngTemplateOutlet="toolbarAdditionalItemsTemplate">
+                        </ng-container>
+                    </puibe-calendar-date-view>
+                }
+                @case ('month') {
+                    <puibe-calendar-month-view
+                        [view]="dateForCurrentPeriodViewSignal()"
+                        [disabled]="disabled"
+                        [focused]="focusedDateSignal()"
+                        [selected]="selectedDateSignal()"
+                        [itemDisabledHandler]="itemDisabledHandler"
+                        (clickItem)="onItemClick($event)"
+                        [canClickPeriodHeader]="canChangePeriodView('year')"
+                        (clickPeriodHeader)="tryChangePeriodView('year')"
+                    >
+                        <ng-container *ngTemplateOutlet="btnTodayTemplate" ngProjectAs="[slot='left']"></ng-container>
+                        <ng-container *ngTemplateOutlet="btnPrevTemplate" ngProjectAs="[slot='left']"></ng-container>
+                        <ng-container *ngTemplateOutlet="btnNextTemplate" ngProjectAs="[slot='left']"></ng-container>
+                        <ng-container ngProjectAs="[slot='right']" *ngTemplateOutlet="toolbarAdditionalItemsTemplate">
+                        </ng-container>
+                    </puibe-calendar-month-view>
+                }
+                @case ('year') {
+                    <puibe-calendar-year-view
+                        [view]="dateForCurrentPeriodViewSignal()"
+                        [disabled]="disabled"
+                        [focused]="focusedDateSignal()"
+                        [selected]="selectedDateSignal()"
+                        [itemDisabledHandler]="itemDisabledHandler"
+                        (clickItem)="onItemClick($event)"
+                    >
+                        <ng-container *ngTemplateOutlet="btnTodayTemplate" ngProjectAs="[slot='left']"></ng-container>
+                        <ng-container *ngTemplateOutlet="btnPrevTemplate" ngProjectAs="[slot='left']"></ng-container>
+                        <ng-container *ngTemplateOutlet="btnNextTemplate" ngProjectAs="[slot='left']"></ng-container>
+                        <ng-container ngProjectAs="[slot='right']" *ngTemplateOutlet="toolbarAdditionalItemsTemplate">
+                        </ng-container>
+                    </puibe-calendar-year-view>
+                }
+            }
         </div>
     </div>
 </div>
 
 <ng-template #btnTodayTemplate>
-    <button
-        *ngIf="!hideTodayButton && isTodayWithinMinMaxSignal()"
-        puibeCalendarToolbarItem
-        [clickable]="true"
-        slot="left"
-        [title]="'Practices.Labels_DatePicker_ChangeToday' | translate"
-        [attr.aria-label]="'Practices.Labels_DatePicker_ChangeToday' | translate"
-        (click)="moveToday()"
-    >
-        <puibe-icon-datepicker-today
-            size="fit"
-            class="inline-flex h-5 w-5 max-sm:h-7 max-sm:w-7"
-        ></puibe-icon-datepicker-today>
-    </button>
+    @if (!hideTodayButton && isTodayWithinMinMaxSignal()) {
+        <button
+            puibeCalendarToolbarItem
+            [clickable]="true"
+            slot="left"
+            [title]="'Practices.Labels_DatePicker_ChangeToday' | translate"
+            [attr.aria-label]="'Practices.Labels_DatePicker_ChangeToday' | translate"
+            (click)="moveToday()"
+        >
+            <puibe-icon-datepicker-today
+                size="fit"
+                class="inline-flex h-5 w-5 max-sm:h-7 max-sm:w-7"
+            ></puibe-icon-datepicker-today>
+        </button>
+    }
 </ng-template>
 
 <ng-template #btnPrevTemplate>

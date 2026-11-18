@@ -8,7 +8,9 @@
             selectedItemId="3"
         ></puibe-tabs>
     </div>
-    <div class="mt-8 block" *ngIf="selectedElement$ | async as item">
-        <p>{{ item | json }}</p>
-    </div>
+    @if (selectedElement$ | async; as item) {
+        <div class="mt-8 block">
+            <p>{{ item | json }}</p>
+        </div>
+    }
 </div>

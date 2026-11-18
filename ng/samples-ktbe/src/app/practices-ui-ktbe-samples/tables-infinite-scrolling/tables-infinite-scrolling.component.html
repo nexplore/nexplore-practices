@@ -15,12 +15,14 @@
         ></puibe-table-column>
         <puibe-table-column>Actions</puibe-table-column>
 
-        <puibe-table-row *ngFor="let item of tableSource.pageData$ | async" puibeTableRowActionTrigger>
-            <puibe-table-cell>{{ item.id }}</puibe-table-cell>
-            <puibe-table-cell [hoverEmphasis]="true">{{ item.name }}</puibe-table-cell>
-            <puibe-table-cell>{{ item.created | date }}</puibe-table-cell>
-            <puibe-table-cell></puibe-table-cell>
-        </puibe-table-row>
+        @for (item of tableSource.pageData$ | async; track item) {
+            <puibe-table-row puibeTableRowActionTrigger>
+                <puibe-table-cell>{{ item.id }}</puibe-table-cell>
+                <puibe-table-cell [hoverEmphasis]="true">{{ item.name }}</puibe-table-cell>
+                <puibe-table-cell>{{ item.created | date }}</puibe-table-cell>
+                <puibe-table-cell></puibe-table-cell>
+            </puibe-table-row>
+        }
 
         <puibe-table-footer>
             <puibe-table-pagination-infinite-scroll [pageSize]="10"></puibe-table-pagination-infinite-scroll>

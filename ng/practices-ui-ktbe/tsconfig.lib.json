@@ -6,25 +6,16 @@
         "target": "es2020",
         "declaration": true,
         "inlineSources": true,
-        "types": [],
-        "lib": [
-            "dom",
-            "es2020"
-        ]
+        "types": []
     },
     "angularCompilerOptions": {
         "skipTemplateCodegen": true,
         "strictMetadataEmit": true,
         "fullTemplateTypeCheck": true,
         "strictInjectionParameters": true,
-        "enableResourceInlining": true
+        "enableResourceInlining": true,
+        "strictTemplates": false
     },
-    "exclude": [
-        "src/test.ts",
-        "**/*.spec.ts",
-        "**/*.stories.ts"
-    ],
-    "include": [
-        "**/*.ts"
-    ]
+    "exclude": ["src/test.ts", "**/*.spec.ts", "**/*.stories.ts"],
+    "include": ["**/*.ts"]
 }

@@ -22,15 +22,16 @@
             </select>
         </div>
 
-        <button
-            type="button"
-            puibeHeaderLanguageMenuItem
-            *ngFor="let language of availableLanguages"
-            (languageChanged)="onLanguageChange($event)"
-            [isActive]="isLanguageActive(language)"
-        >
-            {{ language }}
-        </button>
+        @for (language of availableLanguages; track language) {
+            <button
+                type="button"
+                puibeHeaderLanguageMenuItem
+                (languageChanged)="onLanguageChange($event)"
+                [isActive]="isLanguageActive(language)"
+            >
+                {{ language }}
+            </button>
+        }
 
         <button id="nav" type="button" puibeHeaderMainMenuItem [isSmall]="false" (click)="onClickMainMenu()">
             Components
@@ -70,18 +71,21 @@
             </select>
         </div>
 
-        <button
-            type="button"
-            puibeFooterLanguageMenuItem
-            *ngFor="let language of availableLanguages"
-            (languageChanged)="onLanguageChange($event)"
-            [isActive]="isLanguageActive(language)"
-        >
-            {{ language }}
-        </button>
+        @for (language of availableLanguages; track language) {
+            <button
+                type="button"
+                puibeFooterLanguageMenuItem
+                (languageChanged)="onLanguageChange($event)"
+                [isActive]="isLanguageActive(language)"
+            >
+                {{ language }}
+            </button>
+        }
 
         <span puibeFooterCopyright>© 2019 - Kanton Bern</span>
     </puibe-sidenav-footer>
 </ng-template>
 
-<puibe-status-hub *ngIf="!overrideStatusHub"></puibe-status-hub>
+@if (!overrideStatusHub) {
+    <puibe-status-hub></puibe-status-hub>
+}

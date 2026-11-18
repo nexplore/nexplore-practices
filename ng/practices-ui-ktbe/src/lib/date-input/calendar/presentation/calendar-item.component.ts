@@ -1,12 +1,13 @@
 import { A11yModule } from '@angular/cdk/a11y';
 import { NgClass } from '@angular/common';
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, HostBinding, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CalendarPeriodItem } from '../../services/calendar-period.service';
 
 @Component({
     selector: 'puibe-calendar-item',
     templateUrl: './calendar-item.component.html',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass, A11yModule],
 })
 export class PuibeCalendarItemComponent {

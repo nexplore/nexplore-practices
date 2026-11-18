@@ -1,12 +1,11 @@
-<ng-container *ngIf="!showOptionsMenu">
+@if (!showOptionsMenu) {
     <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
-</ng-container>
+}
 
-<ng-container *ngIf="showOptionsMenu">
+@if (showOptionsMenu) {
     <div class="hidden">
         <ng-container #menuItemsSlot></ng-container>
     </div>
-
     <div [cdkMenuTriggerFor]="actionsMenu" class="w-full">
         <button>
             <puibe-icon-options class="block h-4 w-4"></puibe-icon-options>
@@ -19,7 +18,7 @@
             </div>
         </div>
     </ng-template>
-</ng-container>
+}
 
 <ng-template #contentTemplate>
     <ng-content></ng-content>

@@ -408,3 +408,7 @@ MigrationBackup/
 .nx/cache
 .nx/workspace-data
 .angular
+
+.nx/polygraph
+.nx/self-healing
+.nx/migrate-runs
