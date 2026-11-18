@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PuibeIconDirectiveBase } from './icon.directive';
 
 @Component({
     standalone: true,
@@ -17,4 +18,4 @@ import { Component } from '@angular/core';
         </g>
     </svg> `,
 })
-export class PuibeIconOptionsComponent {}
+export class PuibeIconOptionsComponent extends PuibeIconDirectiveBase {}
