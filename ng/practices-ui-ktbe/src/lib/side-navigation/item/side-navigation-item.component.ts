@@ -12,7 +12,6 @@ import { PuibeIconArrowBreadcrumbComponent } from '../../icons/icon-arrow-breadc
     imports: [
         NgClass,
         TranslateModule,
-        TranslateModule,
         PuibeIconArrowBreadcrumbComponent,
         RouterLink,
         RouterLinkActive,

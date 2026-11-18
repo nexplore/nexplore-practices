@@ -1,4 +1,4 @@
-import { CommonModule, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -22,7 +22,7 @@ import { PuibeExpansionPanelComponent } from '../expansion-panel/expansion-panel
     selector: 'puibe-nav-expansion-panel',
     templateUrl: './nav-expansion-panel.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [PuibeExpansionPanelComponent, CommonModule, NgClass],
+    imports: [PuibeExpansionPanelComponent, NgClass],
 })
 export class PuibeNavExpansionPanelComponent implements AfterViewInit {
     @HostListener('window:resize', []) onWindowResize() {

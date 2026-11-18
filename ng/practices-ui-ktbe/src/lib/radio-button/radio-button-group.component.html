@@ -80,12 +80,7 @@
 } @else {
     <puibe-readonly-label-value [label]="legend" [useSmallLabel]="useSmallTextForReadonlyLabel">
         @if (labelOfSelectedRadio$ | async; as label) {
-            @if (label !== '') {
-                <span>{{ label }}</span>
-            }
-            @if (label === '') {
-                <span>{{ readonlyEmptyValuePlaceholder ?? ('Practices.Labels_Input_NoInputValue' | translate) }}</span>
-            }
+            <span>{{ label }}</span>
         } @else {
             {{ readonlyEmptyValuePlaceholder ?? ('Practices.Labels_Input_NoInputValue' | translate) }}
         }

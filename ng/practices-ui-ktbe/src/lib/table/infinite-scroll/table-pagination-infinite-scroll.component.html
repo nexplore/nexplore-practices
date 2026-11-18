@@ -2,7 +2,7 @@
 <div class="flex justify-center">
     @if ((tableNoItems$ | async) === false) {
         @if ((busyCount$ | async) > 0) {
-            <puibe-icon-spinner #busy class="block h-6 w-6"></puibe-icon-spinner>
+            <puibe-icon-spinner class="block h-6 w-6"></puibe-icon-spinner>
         } @else {
             @if (noMoreData$ | async) {
                 <p>
