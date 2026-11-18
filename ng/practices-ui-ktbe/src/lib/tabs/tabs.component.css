@@ -8,7 +8,7 @@
     @apply border-l-0;
 }
 .tabs-component .ng-select .ng-select-container:focus-within {
-    @apply rounded-xs border border-solid border-black border-dark-gray outline-0;
+    @apply rounded-xs border border-solid border-dark-gray outline-0;
 }
 .tabs-component .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked {
     @apply border-l-dark-gray;

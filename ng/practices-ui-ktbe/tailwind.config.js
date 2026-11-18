@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
+const path = require('path');
 const plugin = require('tailwindcss/plugin');
 const defaultTheme = require('tailwindcss/defaultTheme');
 const tooltipArrowPlugin = require('./tailwind-tooltip-arrow.plugin');
@@ -66,6 +67,15 @@ const fontSizes = {
     'very-large': '4.0625rem',
 };
 
+// Font weights of the KTBE typography, exposed as `font-*` utilities.
+const fontWeights = {
+    thin: '100',
+    light: '300',
+    normal: '400',
+    medium: '500',
+    bold: '700',
+};
+
 // Breakpoints of the KTBE layout, exposed as `xs:`, `sm:`, ... variants.
 const screens = {
     xs: '375px',
@@ -76,14 +86,14 @@ const screens = {
 };
 
 module.exports = {
-    // Sources of the library, relative to this file: the sources in this repository and the compiled bundles in the
-    // published package (consumers import this preset through the shipped tailwind.css).
-    content: ['./src/**/*.{html,ts}', './fesm2022/**/*.mjs'],
+    // Sources of the library: the sources in this repository and the compiled bundles in the published package.
+    // The paths are absolute, because Tailwind resolves relative paths of a preset against the configuration that uses it
+    // (e.g. an application's tailwind.config.js loaded with `@config`), not against this file.
+    content: [path.join(__dirname, 'src/**/*.{html,ts}'), path.join(__dirname, 'fesm2022/**/*.mjs')],
     theme: {
         colors,
         // The values are defined as constants above and referenced directly: inside this preset (function-valued theme sections
-        // and plugins) Tailwind 4 resolves `theme('colors.*')`, `theme('fontSize.*')` and `theme('screens.*')` against its
-        // default theme instead of the values of this preset.
+        // and plugins) Tailwind 4 resolves `theme(...)` against its default theme instead of the values of this preset.
         fontSize: {
             'extra-small': [fontSizes['extra-small'], { lineHeight: lineHeights['ktbe-extra-small'] }],
             'very-small': [fontSizes['very-small'], { lineHeight: lineHeights['ktbe-very-small'] }],
@@ -100,13 +110,7 @@ module.exports = {
             h1: [fontSizes.h1, { lineHeight: lineHeights['ktbe-h1'] }],
             'very-large': [fontSizes['very-large'], { lineHeight: lineHeights['ktbe-very-large'] }],
         },
-        fontWeight: {
-            thin: '100',
-            light: '300',
-            normal: '400',
-            medium: '500',
-            bold: '700',
-        },
+        fontWeight: fontWeights,
         screens,
         extend: {
             fontFamily: {
@@ -134,18 +138,6 @@ module.exports = {
             animation: {
                 pop: 'pop 0.7s linear 1',
             },
-            minHeight: ({ theme }) => ({
-                ...theme('height'),
-            }),
-            minWidth: ({ theme }) => ({
-                ...theme('width'),
-            }),
-            maxHeight: ({ theme }) => ({
-                ...theme('height'),
-            }),
-            maxWidth: ({ theme }) => ({
-                ...theme('width'),
-            }),
             scrollbarGutter: {
                 stable: 'stable',
                 'stable-both': 'stable both-edges',
@@ -180,28 +172,28 @@ module.exports = {
     },
     plugins: [
         tooltipArrowPlugin(),
-        plugin(function ({ addBase, theme, addComponents, addUtilities }) {
+        plugin(function ({ addBase, addComponents, addUtilities }) {
             addBase({
-                h1: headingStylingRules(theme).h1,
-                h2: headingStylingRules(theme).h2,
-                h3: headingStylingRules(theme).h3,
-                h4: headingStylingRules(theme).h4,
-                h5: headingStylingRules(theme).h5,
-                h6: headingStylingRules(theme).h6,
+                h1: headingStylingRules().h1,
+                h2: headingStylingRules().h2,
+                h3: headingStylingRules().h3,
+                h4: headingStylingRules().h4,
+                h5: headingStylingRules().h5,
+                h6: headingStylingRules().h6,
                 p: {
                     fontSize: fontSizes.base,
-                    lineHeight: theme('lineHeight.ktbe-base'),
-                    fontWeight: theme('fontWeight.light'),
+                    lineHeight: lineHeights['ktbe-base'],
+                    fontWeight: fontWeights.light,
                 },
                 small: {
                     fontSize: fontSizes.small,
-                    lineHeight: theme('lineHeight.ktbe-small'),
-                    fontWeight: theme('fontWeight.normal'),
+                    lineHeight: lineHeights['ktbe-small'],
+                    fontWeight: fontWeights.normal,
                 },
                 a: {
                     fontSize: fontSizes.base,
-                    lineHeight: theme('lineHeight.ktbe-base'),
-                    fontWeight: theme('fontWeight.light'),
+                    lineHeight: lineHeights['ktbe-base'],
+                    fontWeight: fontWeights.light,
                     textDecoration: 'underline',
                 },
                 'a:hover': {
@@ -210,9 +202,9 @@ module.exports = {
                 },
                 ul: {
                     listStyleType: 'square',
-                    lineHeight: theme('lineHeight.ktbe-base'),
+                    lineHeight: lineHeights['ktbe-base'],
                     margin: '2.25rem 0 2.25rem 1.25rem',
-                    fontWeight: theme('fontWeight.light'),
+                    fontWeight: fontWeights.light,
                 },
                 li: {
                     margin: '0 0 0 0.75rem',
@@ -236,13 +228,13 @@ module.exports = {
                 },
             });
             addComponents({
-                '.h1': headingStylingRules(theme).h1,
-                '.h2': headingStylingRules(theme).h2,
-                '.h3': headingStylingRules(theme).h3,
-                '.h4': headingStylingRules(theme).h4,
-                '.h5': headingStylingRules(theme).h5,
-                '.h6': headingStylingRules(theme).h6,
-                '.scrollbar-thin': scrollbarThinRule(theme),
+                '.h1': headingStylingRules().h1,
+                '.h2': headingStylingRules().h2,
+                '.h3': headingStylingRules().h3,
+                '.h4': headingStylingRules().h4,
+                '.h5': headingStylingRules().h5,
+                '.h6': headingStylingRules().h6,
+                '.scrollbar-thin': scrollbarThinRule(),
             });
             addUtilities({
                 '.scrollbar-gutter-stable': {
@@ -256,12 +248,12 @@ module.exports = {
     ],
 };
 
-const headingStylingRules = (theme) => {
+const headingStylingRules = () => {
     return {
         h1: {
             fontSize: fontSizes.h1,
-            lineHeight: theme('lineHeight.ktbe-h1'),
-            fontWeight: theme('fontWeight.thin'),
+            lineHeight: lineHeights['ktbe-h1'],
+            fontWeight: fontWeights.thin,
             margin: `0 0 2.75rem 0`,
 
             [`@media (max-width: ${screens.md})`]: {
@@ -274,13 +266,13 @@ const headingStylingRules = (theme) => {
                 fontSize: '2rem',
                 lineHeight: '2.375rem',
                 margin: `2.75rem 0 1.5rem 0`,
-                fontWeight: theme('fontWeight.light'),
+                fontWeight: fontWeights.light,
             },
         },
         h2: {
             fontSize: fontSizes.h2,
-            lineHeight: theme('lineHeight.ktbe-h2'),
-            fontWeight: theme('fontWeight.light'),
+            lineHeight: lineHeights['ktbe-h2'],
+            fontWeight: fontWeights.light,
             margin: `0 0 0.75rem 0`,
 
             [`@media (max-width: ${screens.md})`]: {
@@ -297,8 +289,8 @@ const headingStylingRules = (theme) => {
         },
         h3: {
             fontSize: fontSizes.h3,
-            lineHeight: theme('lineHeight.ktbe-h3'),
-            fontWeight: theme('fontWeight.light'),
+            lineHeight: lineHeights['ktbe-h3'],
+            fontWeight: fontWeights.light,
             fontStyle: 'italic',
             margin: `0 0 0.75rem 0`,
 
@@ -316,8 +308,8 @@ const headingStylingRules = (theme) => {
         },
         h4: {
             fontSize: fontSizes.h4,
-            lineHeight: theme('lineHeight.ktbe-h4'),
-            fontWeight: theme('fontWeight.light'),
+            lineHeight: lineHeights['ktbe-h4'],
+            fontWeight: fontWeights.light,
             margin: `0 0 0.75rem 0`,
 
             [`@media (max-width: ${screens.sm})`]: {
@@ -327,8 +319,8 @@ const headingStylingRules = (theme) => {
         },
         h5: {
             fontSize: fontSizes.h5,
-            lineHeight: theme('lineHeight.ktbe-h5'),
-            fontWeight: theme('fontWeight.light'),
+            lineHeight: lineHeights['ktbe-h5'],
+            fontWeight: fontWeights.light,
             fontStyle: 'italic',
             [`@media (max-width: ${screens.sm})`]: {
                 fontSize: '1.125rem',
@@ -337,14 +329,14 @@ const headingStylingRules = (theme) => {
         },
         h6: {
             fontSize: fontSizes.h6,
-            lineHeight: theme('lineHeight.ktbe-h6'),
-            fontWeight: theme('fontWeight.light'),
+            lineHeight: lineHeights['ktbe-h6'],
+            fontWeight: fontWeights.light,
         },
     };
 };
 
 // TODO: Use `scrollbar-width: thin` once available in all browsers (https://caniuse.com/?search=scrollbar-width)
-const scrollbarThinRule = (theme) => {
+const scrollbarThinRule = () => {
     return {
         '&::-webkit-scrollbar': {
             width: '.8rem',

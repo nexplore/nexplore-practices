@@ -159,7 +159,7 @@ This is a monorepo consisting of multiple library-packages for angular:
 # Tailwind styling in Practices KTBE
 
 - In the KTBE packages (practices-ui-ktbe, samples-ktbe), use tailwind classes for styling
-- practices-ui-ktbe uses Tailwind CSS 4. Component styles are compiled on their own, so every component stylesheet (inline `styles` or `styleUrls`) that uses `@apply` or `theme()` must start with `@reference '../../../tailwind.css';` (the relative path to `practices-ui-ktbe/tailwind.css`), otherwise the build fails with "Cannot apply unknown utility class"
+- practices-ui-ktbe uses Tailwind CSS 4. Component styles are compiled on their own, so every component stylesheet (inline `styles` or `styleUrls`) that uses `@apply` or `theme()` must start with `@reference` and the path from the component file to `practices-ui-ktbe/tailwind.css`, otherwise the build fails with "Cannot apply unknown utility class". The path depends on the folder depth: `@reference '../../../tailwind.css';` for `src/lib/<feature>/`, `@reference '../../../../tailwind.css';` for `src/lib/<feature>/<sub-folder>/`
 - Here is a list of available colors in KTBE:
     - transparent
     - red (KTBE main color)
@@ -188,7 +188,7 @@ This is a monorepo consisting of multiple library-packages for angular:
     @Component({
         selector: 'puibe-my-component'
         styles: `
-                    @reference '../../../tailwind.css';
+                    @reference '../../../tailwind.css'; /* component in src/lib/<feature>/ */
 
                     puibe-my-component {
                         @apply flex flex-col gap-2;
@@ -203,7 +203,7 @@ This is a monorepo consisting of multiple library-packages for angular:
     @Component({
         selector: 'puibe-my-component'
         styles: `
-                    @reference '../../../tailwind.css';
+                    @reference '../../../tailwind.css'; /* component in src/lib/<feature>/ */
 
                     puibe-my-component {
                         @apply flex flex-col gap-2;

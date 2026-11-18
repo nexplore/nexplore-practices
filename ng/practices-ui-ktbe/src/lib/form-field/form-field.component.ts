@@ -304,7 +304,6 @@ export class PuibeFormFieldComponent {
             ' ' +
             (focus ? overlayTextFocusClassName : '') +
             ' ' +
-            ' ' +
             (value ? overlayTextFilledClassName : overlayTextEmptyClassName)
         );
     }
