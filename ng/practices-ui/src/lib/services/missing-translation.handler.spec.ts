@@ -54,7 +54,7 @@ describe('MissingTranslationHandler', () => {
         }).compileComponents();
 
         translate = TestBed.inject(TranslateService);
-        void translate.setDefaultLang('en');
+        void translate.setFallbackLang('en');
     };
 
     it('should resolve a translation that does not require rewriting', async () => {
