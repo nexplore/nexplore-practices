@@ -74,8 +74,11 @@ export class PuibeFileInputDirective implements OnInit, ControlValueAccessor {
         this.inputElement = this._elementRef.nativeElement;
     }
 
-    writeValue(value: File | string): void {
-        this._formFieldService.updateOverlayText({ text: typeof value === 'string' ? value : value?.name });
+    writeValue(value: File | string | null): void {
+        // Fall back to the placeholder, otherwise a reset (e.g. `form.reset()`) leaves the field without any visible text.
+        this._formFieldService.updateOverlayText({
+            text: (typeof value === 'string' ? value : value?.name) ?? this.placeholder,
+        });
         if (!value) {
             this.inputElement.value = null;
         }
