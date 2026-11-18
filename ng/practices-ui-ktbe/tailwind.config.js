@@ -221,6 +221,11 @@ module.exports = {
                 'button:not(:disabled), [role="button"]:not(:disabled)': {
                     cursor: 'pointer',
                 },
+                // Tailwind 4's preflight resets the padding of all elements, Tailwind 3 kept the browser default of
+                // table cells. Keep the Tailwind 3 behaviour, the tables of KTBE are laid out with it.
+                'td, th': {
+                    padding: '1px',
+                },
                 body: {
                     // Provide a global default fill value for svg based icons, using the inherited text `color`.
                     // Has to be globally so that it can still be overridden using the `fill` css property
