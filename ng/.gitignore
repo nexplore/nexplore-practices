@@ -412,3 +412,8 @@ MigrationBackup/
 .nx/polygraph
 .nx/self-healing
 .nx/migrate-runs
+
+# Visual regression tests (reference screenshots are generated locally, see visual-tests/README.md)
+/visual-tests/__screenshots__
+/visual-tests/test-results
+/visual-tests/report

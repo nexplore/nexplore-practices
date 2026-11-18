@@ -15,7 +15,10 @@
         "e2e": "nx e2e",
         "format": "nx format",
         "storybook-ktbe": "nx run practices-ui-ktbe:storybook",
-        "build-storybook-ktbe": "nx run practices-ui-ktbe:build-storybook"
+        "build-storybook-ktbe": "nx run practices-ui-ktbe:build-storybook",
+        "visual:compare": "node visual-tests/compare-with-ref.mjs",
+        "visual:test": "playwright test -c visual-tests/playwright.config.ts",
+        "visual:report": "playwright show-report visual-tests/report"
     },
     "private": true,
     "engines": {
@@ -63,6 +66,7 @@
         "@nx/storybook": "24.0.2",
         "@nx/web": "24.0.2",
         "@nx/workspace": "24.0.2",
+        "@playwright/test": "1.56.1",
         "@schematics/angular": "22.2.5",
         "@storybook/addon-docs": "10.6.5",
         "@storybook/addon-links": "10.6.5",

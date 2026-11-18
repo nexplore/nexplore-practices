@@ -20,6 +20,10 @@ Samples (Kanton Bern):
 
 You can run all Unit Tests by executing `npm test`. You can add the library specific names after it to only execute tests for a specific project.
 
+### Visual regression tests (Practices.Ui.KtBE)
+
+Changes that may affect the look of the KtBE components (upgrades of Angular or Tailwind, refactorings of templates or styles) can be verified by comparing screenshots of every Storybook story against a release, e.g. `npm run visual:compare -- 12.1.2 --node 22.14.0`. See [ng/visual-tests/README.md](../../ng/visual-tests/README.md).
+
 ## Lint
 
 Execute `npm run lint` before you issue a PR to ensure that the code fulfills our conventions.
