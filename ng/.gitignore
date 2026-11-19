@@ -415,7 +415,3 @@ MigrationBackup/
 .nx/polygraph
 .nx/self-healing
 .nx/migrate-runs
-
-# Visual regression tests (the screenshots in visual-tests/__screenshots__ are committed with Git LFS)
-/visual-tests/test-results
-/visual-tests/report
