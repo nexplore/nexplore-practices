@@ -1,4 +1,4 @@
-import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -13,7 +13,6 @@ import { PuibeIconHomeComponent } from '../../icons/icon-home.component';
     imports: [
         NgClass,
         TranslateModule,
-        NgIf,
         TranslateModule,
         PuibeIconHomeComponent,
         PuibeIconArrowBreadcrumbComponent,
