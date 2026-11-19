@@ -1,8 +1,22 @@
 import { defineConfig } from '@playwright/test';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { samplesDir, samplesPort, samplesUrl, snapshotDir, storybookDir, storybookPort, storybookUrl } from './paths';
 
 const serveStatic = path.join(__dirname, 'serve-static.mjs');
+
+const webServers = [
+    existsSync(path.join(storybookDir, 'index.json')) && {
+        command: `node "${serveStatic}" "${storybookDir}" ${storybookPort}`,
+        url: `${storybookUrl}/index.json`,
+        reuseExistingServer: false,
+    },
+    existsSync(path.join(samplesDir, 'index.html')) && {
+        command: `node "${serveStatic}" "${samplesDir}" ${samplesPort} --spa`,
+        url: `${samplesUrl}/index.html`,
+        reuseExistingServer: false,
+    },
+].filter((server) => !!server);
 
 export default defineConfig({
     testDir: __dirname,
@@ -34,16 +48,6 @@ export default defineConfig({
         { name: 'desktop', use: { browserName: 'chromium', viewport: { width: 1280, height: 800 } } },
         { name: 'mobile', use: { browserName: 'chromium', viewport: { width: 390, height: 844 } } },
     ],
-    webServer: [
-        {
-            command: `node "${serveStatic}" "${storybookDir}" ${storybookPort}`,
-            url: `${storybookUrl}/index.json`,
-            reuseExistingServer: false,
-        },
-        {
-            command: `node "${serveStatic}" "${samplesDir}" ${samplesPort} --spa`,
-            url: `${samplesUrl}/index.html`,
-            reuseExistingServer: false,
-        },
-    ],
+    // Only serve the builds that exist, so e.g. the samples-ktbe tests also run without a Storybook build.
+    webServer: webServers,
 });

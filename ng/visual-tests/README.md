@@ -33,7 +33,7 @@ npm run visual:compare -- 12.1.2 --node 22.14.0 --docker
 The script
 
 1. checks out the given git ref (tag, branch or commit) into a separate worktree in `tmp/visual-baseline`, installs its dependencies and builds its Storybook and `samples-ktbe`,
-2. screenshots everything of that build as reference (`visual-tests/__screenshots__`),
+2. screenshots everything of that build as reference (`tmp/visual-compare-screenshots`, the committed screenshots are not touched),
 3. builds your working tree and compares everything against the reference.
 
 The reference is built with the Node version from its `ng/.nvmrc`. For refs without `.nvmrc` (12.x and older), pass the version with `--node`. Switching Node versions needs [fnm](https://github.com/Schniz/fnm); without it the current Node version is used. Dependencies of the reference are only reinstalled when its `package-lock.json` changed, so later runs are much faster.
@@ -56,12 +56,10 @@ Stories, interactions or pages that don't exist in the reference (e.g. new stori
 
 ## Iterating on a fix
 
-Once the reference screenshots exist, rebuild and only rerun the comparison:
+Against the committed screenshots, rebuild and rerun `npm run visual:docker` (see above). After a `visual:compare`, reuse its reference screenshots and only rebuild and compare the working tree:
 
 ```bash
-npm run build-storybook-ktbe
-npx nx build samples-ktbe --configuration production
-npm run visual:test
+npm run visual:compare -- --skip-baseline --docker
 ```
 
 To only run some screenshots, set `VISUAL_FILTER` to a regular expression matching the story ids or sample pages (`VISUAL_FILTER=toast npm run visual:test` in bash, `$env:VISUAL_FILTER='toast'` in PowerShell).
@@ -92,4 +90,4 @@ Stories using `randomAsyncValidator` are deterministic within one version, but n
 
 Screenshots depend on the operating system's font rendering. Reference and comparison must therefore run on the same platform: use `--docker` / `npm run visual:docker`. Without Docker (`npm run visual:test`), only compare against screenshots taken on the same machine.
 
-Note that `visual:compare` replaces the screenshots in `__screenshots__` with the ones of the given ref. Restore the committed ones with `git checkout -- visual-tests/__screenshots__` afterwards.
+`visual:compare` writes the screenshots of the given ref to `tmp/visual-compare-screenshots` (ignored by Git), the committed screenshots are not touched.

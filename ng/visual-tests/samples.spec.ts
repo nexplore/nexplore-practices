@@ -1,5 +1,8 @@
-import { expect, Page, test } from '@playwright/test';
-import { samplesUrl } from './paths';
+import type { Page } from '@playwright/test';
+import { expect, test } from '@playwright/test';
+import { existsSync } from 'node:fs';
+import path from 'node:path';
+import { samplesDir, samplesUrl } from './paths';
 import { preparePage, settle } from './stabilize';
 
 /**
@@ -60,6 +63,12 @@ async function gotoSamplesPage(page: Page, pagePath: string) {
 
 test.describe('samples-ktbe', () => {
     test.use({ baseURL: samplesUrl });
+
+    // Without a samples-ktbe build, only the other specs (e.g. Storybook) run.
+    test.skip(
+        !existsSync(path.join(samplesDir, 'index.html')),
+        `No samples-ktbe build found at ${samplesDir}. Run "npx nx build samples-ktbe --configuration production".`
+    );
 
     for (const pagePath of PAGES.filter((p) => !filter || filter.test(screenshotName(p)))) {
         test(`page /${pagePath}`, async ({ page }) => {
