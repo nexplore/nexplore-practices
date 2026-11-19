@@ -21,7 +21,7 @@ import { trace } from '@nexplore/practices-ng-logging';
 import { DestroyService } from '@nexplore/practices-ui';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { TranslateService } from '@ngx-translate/core';
-import { takeUntil } from 'rxjs';
+import { combineLatest, takeUntil } from 'rxjs';
 import { FormFieldService } from '../form-field/form-field.service';
 import { FORM_CONFIG, FormConfig } from '../form/form.config';
 import { PuibeIconArrowComponent } from '../icons/icon-arrow.component';
@@ -132,6 +132,21 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
             .subscribe((displayAsInvalid) =>
                 setHostClassNames({ 'puibe-hide-invalid': !displayAsInvalid }, this._elementRef)
             );
+
+        // Since ng-select 24, the dropdown panel is rendered in an overlay (outside of the ng-select), so the styles for
+        // the invalid and loading state cannot use the classes of the ng-select: pass the state to the panel instead.
+        const userPanelClass = this._readComponentProp<string | string[] | null>('_panelClass');
+        combineLatest([this._formFieldService.displayAsInvalid$, this._formFieldService.loading$])
+            .pipe(takeUntil(this._destroy$))
+            .subscribe(([displayAsInvalid, loading]) => {
+                const panelClasses = [
+                    ...(Array.isArray(userPanelClass) ? userPanelClass : [userPanelClass]),
+                    displayAsInvalid ? 'puibe-select-panel-invalid' : null,
+                    loading ? 'puibe-select-panel-loading' : null,
+                ].filter(Boolean);
+                this._writeComponentProp('panelClass', panelClasses.join(' ') || null);
+                this._cdr.markForCheck();
+            });
 
         // Displays the label as placeholder, until focused, then switches to actual placeholder (if defined)
         this._formFieldService.placeholder$.pipe(takeUntil(this._destroy$)).subscribe((placeholder) => {

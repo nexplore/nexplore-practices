@@ -116,6 +116,10 @@ export class PuibeDropdownButtonComponent implements AfterViewInit, AfterContent
     }
 
     handleOpen(): void {
+        // Emitted before the menu is attached: measure the button now, so the menu is rendered with its final min width and
+        // padding. The menu overlay measures its size once to position itself (and to push itself into the viewport on
+        // small screens), and the values computed during the last change detection may be outdated.
+        this.computeMenuStyles();
         this.menuOpen.emit();
         this.isExpanded = true;
     }

@@ -10,10 +10,11 @@
 .tabs-component .ng-select .ng-select-container:focus-within {
     @apply rounded-xs border border-solid border-black outline-0;
 }
-.tabs-component .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked {
+/* The dropdown panel is rendered in an overlay (outside of .tabs-component), it is identified by its panelClass. */
+.ng-dropdown-panel.tabs-component-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked {
     @apply border-l-dark-gray;
 }
 
-.tabs-component .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+.ng-dropdown-panel.tabs-component-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
     @apply border-l-dark-gray bg-sand text-black;
 }

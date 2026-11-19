@@ -60,6 +60,17 @@ const INTERACTIONS: Interaction[] = [
     { storyId: 'puibe-select--with-initial-value', name: 'open', act: openSelect },
     { storyId: 'puibe-select--with-metadata-select', name: 'open', act: openSelect },
     { storyId: 'puibe-select--grouped', name: 'open', act: openSelect },
+    {
+        // Leave the required select without a value (touched, invalid), then open it again
+        storyId: 'puibe-select--required-select',
+        name: 'open-invalid',
+        act: async (page) => {
+            await openSelect(page);
+            await page.keyboard.press('Escape');
+            await page.mouse.click(5, 5);
+            await openSelect(page);
+        },
+    },
     { storyId: 'puibe-select--multi-select-with-view-source', name: 'open', act: openSelect },
     // On small screens the tabs are rendered as select
     { storyId: 'puibe-tabs--tabs-default-story', name: 'open', viewport: 'mobile', act: openSelect },
