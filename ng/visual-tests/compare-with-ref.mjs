@@ -6,7 +6,7 @@
 // 1. Checks out <ref> into a separate git worktree (ng/tmp/visual-baseline), installs its dependencies
 //    and builds its Storybook and samples-ktbe (with the Node version from its .nvmrc or --node, via fnm if available).
 // 2. Screenshots every story, the interaction states and the samples pages of that build as reference
-//    (visual-tests/__screenshots__).
+//    (tmp/visual-compare-screenshots; the committed screenshots in visual-tests/__screenshots__ are not touched).
 // 3. Builds the current working tree and compares everything against the reference.
 //
 // The HTML report with side-by-side/diff views ends up in visual-tests/report.
@@ -23,7 +23,8 @@ const worktreeDir = path.join(ngDir, 'tmp', 'visual-baseline');
 const worktreeNgDir = path.join(worktreeDir, 'ng');
 const storybookOutput = path.join('dist', 'storybook', 'practices-ui-ktbe');
 const samplesOutput = path.join('dist', 'samples-ktbe');
-const snapshotDir = path.join(here, '__screenshots__');
+// The reference screenshots of the compared ref. Not the committed ones in visual-tests/__screenshots__, which stay untouched.
+const snapshotDir = path.join(ngDir, 'tmp', 'visual-compare-screenshots');
 
 const { values: options, positionals } = parseArgs({
     allowPositionals: true,
@@ -136,7 +137,7 @@ function buildAll(runOptions = {}) {
 const playwright = options.docker
     ? 'node visual-tests/docker.mjs'
     : 'npx playwright test -c visual-tests/playwright.config.ts';
-const filterEnv = options.filter ? { VISUAL_FILTER: options.filter } : {};
+const filterEnv = { VISUAL_SNAPSHOT_DIR: snapshotDir, ...(options.filter ? { VISUAL_FILTER: options.filter } : {}) };
 
 if (!options['skip-baseline']) {
     const baseline = prepareBaseline();

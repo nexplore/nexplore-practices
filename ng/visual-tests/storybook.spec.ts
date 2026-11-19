@@ -15,10 +15,11 @@ interface StoryIndexEntry {
 /** Stories tagged with this tag are excluded from visual comparison (e.g. inherently non-deterministic ones). */
 const SKIP_TAG = 'no-visual-test';
 
+const indexFile = path.join(storybookDir, 'index.json');
+
 function readStories(): StoryIndexEntry[] {
-    const indexFile = path.join(storybookDir, 'index.json');
     if (!existsSync(indexFile)) {
-        throw new Error(`No Storybook build found at ${storybookDir}. Run "npm run build-storybook-ktbe" first.`);
+        return [];
     }
     const index = JSON.parse(readFileSync(indexFile, 'utf-8')) as { entries: Record<string, StoryIndexEntry> };
     const filter = process.env['VISUAL_FILTER'] ? new RegExp(process.env['VISUAL_FILTER'], 'i') : undefined;
@@ -30,6 +31,12 @@ function readStories(): StoryIndexEntry[] {
 
 test.describe('storybook', () => {
     test.use({ baseURL: storybookUrl });
+
+    // Without a Storybook build, only the other specs (e.g. samples-ktbe) run.
+    test.skip(
+        !existsSync(indexFile),
+        `No Storybook build found at ${storybookDir}. Run "npm run build-storybook-ktbe".`
+    );
 
     for (const story of readStories()) {
         test(`${story.title} › ${story.name}`, async ({ page }) => {
