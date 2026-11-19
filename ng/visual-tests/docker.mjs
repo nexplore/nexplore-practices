@@ -60,6 +60,13 @@ const script = [
     `&& node "$PW" test -c visual-tests/playwright.config.ts ${quoted}`,
 ].join(' ');
 
+// On Linux and macOS, run as the current user, so the written screenshots and reports are not owned by root. (Docker
+// Desktop on Windows maps the file ownership itself.)
+const userArgs =
+    typeof process.getuid === 'function' && typeof process.getgid === 'function'
+        ? ['--user', `${process.getuid()}:${process.getgid()}`, '-e', 'HOME=/tmp']
+        : [];
+
 console.log(`> docker run ${image} playwright test ${process.argv.slice(2).join(' ')}`);
 const result = spawnSync(
     'docker',
@@ -71,6 +78,7 @@ const result = spawnSync(
         `${ngDir}:${mountDir}`,
         '-w',
         mountDir,
+        ...userArgs,
         ...envArgs,
         image,
         'bash',

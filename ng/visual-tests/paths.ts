@@ -12,7 +12,7 @@ export const samplesDir = (() => {
     return existsSync(path.join(dir, 'browser', 'index.html')) ? path.join(dir, 'browser') : dir;
 })();
 
-/** Directory holding the reference screenshots (not committed, see README). */
+/** Directory holding the reference screenshots (committed with Git LFS, see README). */
 export const snapshotDir = path.resolve(process.env['VISUAL_SNAPSHOT_DIR'] ?? path.join(__dirname, '__screenshots__'));
 
 export const storybookPort = Number(process.env['VISUAL_STORYBOOK_PORT'] ?? 6106);
