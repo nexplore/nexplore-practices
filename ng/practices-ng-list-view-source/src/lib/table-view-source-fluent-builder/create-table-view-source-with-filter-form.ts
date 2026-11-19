@@ -1,15 +1,20 @@
 import { effect, isSignal, untracked } from '@angular/core';
-import { AbstractControl, FormGroup, UntypedFormGroup } from '@angular/forms';
-import { isObjDeepEqual, isObjShallowEqual, unwrapSignalLike, ValueOrSignal } from '@nexplore/practices-ng-common-util';
-import { formGroupCurrentValueSignal, FormGroupValues, TypedFormGroup } from '@nexplore/practices-ng-forms';
+import type { FormGroup, UntypedFormGroup } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
+import type { ValueOrSignal } from '@nexplore/practices-ng-common-util';
+import { isObjDeepEqual, isObjShallowEqual, unwrapSignalLike } from '@nexplore/practices-ng-common-util';
+import type { FormGroupValues, TypedFormGroup } from '@nexplore/practices-ng-forms';
+import { formGroupCurrentValueSignal } from '@nexplore/practices-ng-forms';
 import { trace } from '@nexplore/practices-ng-logging';
 import { subscriptionEffect } from '@nexplore/practices-ng-signals';
-import { TableViewSource } from '../implementation/table-view-source';
-import { IListResult } from '../types';
-import { HasTypedQueryParams } from '../types-internal';
+import type { TableViewSource } from '../implementation/table-view-source';
+import type { IListResult } from '../types';
+import type { HasTypedQueryParams } from '../types-internal';
 import { getDefaultQueryParams } from '../utils/internal-util';
-import { createExtendableTableViewSource, Extensions } from './extensions';
-import {
+import type { Extensions } from './extensions';
+// eslint-disable-next-line import-x/no-cycle -- fluent builder: the view source and its extensions only reference each other inside functions.
+import { createExtendableTableViewSource } from './extensions';
+import type {
     TableViewSourceWithSignals,
     TypedTableViewSourceConfig,
     TypedTableViewSourceConfigPartial,

@@ -104,6 +104,10 @@ module.exports = [
             ],
         },
         rules: {
+            // `import type` is removed by TypeScript, so cycles that only consist of type imports are not reported.
+            // (@typescript-eslint/consistent-type-imports cannot be enabled: with type-aware linting it would convert
+            // constructor parameter types of Angular classes, which are needed as values for dependency injection.)
+            'import-x/no-cycle': 'error',
             'import-x/no-duplicates': 'error',
             'import-x/no-self-import': 'error',
             'import-x/no-useless-path-segments': 'error',

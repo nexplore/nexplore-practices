@@ -1,4 +1,5 @@
-import { AbstractControl, FormArray, FormGroup, ValidationErrors } from '@angular/forms';
+import type { AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 
 /**
  * Combines the errors of all controls in a form group into a single object.

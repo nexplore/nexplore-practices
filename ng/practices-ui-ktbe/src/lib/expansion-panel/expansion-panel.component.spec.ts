@@ -1,5 +1,6 @@
 import '@angular/compiler';
-import { ChangeDetectorRef, ElementRef } from '@angular/core';
+import type { ChangeDetectorRef } from '@angular/core';
+import { ElementRef } from '@angular/core';
 import { PuibeExpansionPanelComponent } from './expansion-panel.component';
 
 describe('PuibeExpansionPanelComponent', () => {

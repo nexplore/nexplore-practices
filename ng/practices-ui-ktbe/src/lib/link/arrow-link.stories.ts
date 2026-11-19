@@ -1,5 +1,6 @@
 import { provideRouter } from '@angular/router';
-import { applicationConfig, Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { applicationConfig, moduleMetadata } from '@storybook/angular';
 import { PuibeArrowLinkComponent } from './arrow-link.component';
 
 type Args = {

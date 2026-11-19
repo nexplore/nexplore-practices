@@ -1,11 +1,13 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 
 import { PuibeIconLoginComponent } from '../icons/icon-login.component';
 import { PuibeIconHamburgerComponent } from '../icons/icon-hamburger.component';
 import { PuibeIconHomeComponent } from '../icons/icon-home.component';
-import { DropdownMenuOption, PuibeDropdownButtonComponent } from './dropdown-button.component';
-import { Size } from '../button/button.directive';
+import type { DropdownMenuOption } from './dropdown-button.component';
+import { PuibeDropdownButtonComponent } from './dropdown-button.component';
+import type { Size } from '../button/button.directive';
 
 type Args = {
     triggerButtonContent: string;

@@ -1,12 +1,15 @@
-import { Signal, untracked } from '@angular/core';
-import { AbstractCommand } from '@nexplore/practices-ng-commands';
-import { unwrapSignalLike, ValueOrGetter } from '@nexplore/practices-ng-common-util';
+import type { Signal } from '@angular/core';
+import { untracked } from '@angular/core';
+import type { AbstractCommand } from '@nexplore/practices-ng-commands';
+import type { ValueOrGetter } from '@nexplore/practices-ng-common-util';
+import { unwrapSignalLike } from '@nexplore/practices-ng-common-util';
 import { trace } from '@nexplore/practices-ng-logging';
 import { subscriptionEffect } from '@nexplore/practices-ng-signals';
-import { combineLatest, from, Observable, startWith, takeUntil } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { combineLatest, from, startWith, takeUntil } from 'rxjs';
 import { filter, map, take, tap } from 'rxjs/operators';
-import { ListViewSource } from '../implementation/list-view-source';
-import { IListResult, IQueryParamsWithFilter } from '../types';
+import type { ListViewSource } from '../implementation/list-view-source';
+import type { IListResult, IQueryParamsWithFilter } from '../types';
 import { arrayToInMemorySortedListResult, arrayToListResult } from './list-result-util';
 
 export function commandToListResultObservable<TData, TArgs, TFilter = TArgs>(

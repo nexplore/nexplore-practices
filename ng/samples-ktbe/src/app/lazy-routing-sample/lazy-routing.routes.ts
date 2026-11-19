@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import type { Routes } from '@angular/router';
 import { LazyRoutingSampleComponent } from './lazy-routing.component';
 import {
     Breadcrumb3Component,

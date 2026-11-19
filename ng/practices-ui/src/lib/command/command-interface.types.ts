@@ -1,12 +1,12 @@
-import {
+import type {
     AbstractCommand,
     CommandAfterExecuteResult,
     CommandAsyncHandlerFn,
     CommandAsyncHandlerResult,
     CommandOptions,
 } from '@nexplore/practices-ng-commands';
-import { LegacyCommandBase } from './command-base';
-import { LegacyCommandAsyncHandlerFn, LegacyCommandOptions } from './command.types';
+import type { LegacyCommandBase } from './command-base';
+import type { LegacyCommandAsyncHandlerFn, LegacyCommandOptions } from './command.types';
 
 /**
  * @deprecated Use `CommandInput` from `@nexplore/practices-ng-commands` instead

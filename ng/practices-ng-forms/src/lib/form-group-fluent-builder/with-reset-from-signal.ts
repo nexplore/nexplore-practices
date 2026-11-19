@@ -1,6 +1,7 @@
-import { effect, runInInjectionContext, Signal } from '@angular/core';
-import { FormGroupEnhancedWithSignals } from './types';
-import { FormControlValue, FormGroupValues } from '../utils/form.types';
+import type { Signal } from '@angular/core';
+import { effect, runInInjectionContext } from '@angular/core';
+import type { FormGroupEnhancedWithSignals } from './types';
+import type { FormControlValue, FormGroupValues } from '../utils/form.types';
 /**
  * Configuration for the reset with signal
  * @param mapValue - Maps the signal value to the form group value

@@ -1,4 +1,5 @@
-import { Signal, isSignal } from '@angular/core';
+import type { Signal } from '@angular/core';
+import { isSignal } from '@angular/core';
 
 /**
  * @deprecated

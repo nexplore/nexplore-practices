@@ -1,6 +1,6 @@
-import { ActivatedRouteSnapshot, MaybeAsync, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
-import { DirtyGuardSupportedComponent } from './services/types-internal';
+import type { ActivatedRouteSnapshot, MaybeAsync, RouterStateSnapshot } from '@angular/router';
+import type { Observable } from 'rxjs';
+import type { DirtyGuardSupportedComponent } from './services/types-internal';
 
 export interface PuiDirtyGuardEvent<TService = any> {
     type:

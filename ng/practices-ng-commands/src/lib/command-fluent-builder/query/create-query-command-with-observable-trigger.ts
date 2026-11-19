@@ -1,6 +1,6 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Observable } from 'rxjs';
-import { CommandAsyncHandlerArg, QueryCommand, QueryOptions } from '../../commands/command.types';
+import type { Observable } from 'rxjs';
+import type { CommandAsyncHandlerArg, QueryCommand, QueryOptions } from '../../commands/command.types';
 import { createQueryCommand } from './command-query-util';
 
 /**

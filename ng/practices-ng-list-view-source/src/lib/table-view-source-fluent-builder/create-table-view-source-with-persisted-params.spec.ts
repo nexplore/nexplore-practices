@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
-import { IListResult, IQueryParamsWithFilter, OrderDirection, TypedQueryParamsWithFilter } from '../types';
+import type { IListResult, IQueryParamsWithFilter, TypedQueryParamsWithFilter } from '../types';
+import { OrderDirection } from '../types';
 import { createTableViewSourceWithPersistedParams } from './create-table-view-source-with-persisted-params';
 
 describe('createTableViewSourceWithPersistedParams', () => {

@@ -1,4 +1,5 @@
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 
 import { PuibeStepBoxComponent } from './step-box.component';
 

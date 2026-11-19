@@ -4,8 +4,8 @@ import { trace } from '@nexplore/practices-ng-logging';
 import { runWithoutStatus, StatusHubService } from '@nexplore/practices-ng-status';
 import { AbstractCommand } from '../commands/abstract-command';
 import { CommandImpl } from '../commands/command-impl';
-import { ILegacyCommand } from '../commands/command-internal.types';
-import { Command, CommandInput, CommandOptions } from '../commands/command.types';
+import type { ILegacyCommand } from '../commands/command-internal.types';
+import type { Command, CommandInput, CommandOptions } from '../commands/command.types';
 import { createCommandWithSignalsAndStatus } from '../commands/create-command-with-signals-and-status-util';
 import { triggerLegacyCommandAsync } from '../commands/legacy-command-util';
 

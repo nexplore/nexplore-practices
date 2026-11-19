@@ -1,12 +1,13 @@
-import { Injector, Type } from '@angular/core';
+import type { Injector, Type } from '@angular/core';
 import { trace } from '@nexplore/practices-ng-logging';
-import { PartialNullable } from '../utils/form.types';
+import type { PartialNullable } from '../utils/form.types';
 import { createTypedFactory } from './create-form-group';
 import { createTypedFormGroupWithResetFromSignalFactory } from './create-form-group-with-reset-from-signal';
 
-import { createExtendedFormGroup, Extensions } from './extensions';
-import { AllPropsAMustBeInB, FormControlsOfValues } from './form-group-types.internal';
-import {
+import type { Extensions } from './extensions';
+import { createExtendedFormGroup } from './extensions';
+import type { AllPropsAMustBeInB, FormControlsOfValues } from './form-group-types.internal';
+import type {
     FormGroupDefinition,
     FormGroupDefinitionRecord,
     FormGroupEnhancedWithSignals,

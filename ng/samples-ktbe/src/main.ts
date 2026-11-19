@@ -14,7 +14,7 @@ import { provideConsoleLogging } from '@nexplore/practices-ng-logging';
 import { providePractices } from '@nexplore/practices-ui';
 import { PracticesKtbeShellModule, providePracticesKtbe } from '@nexplore/practices-ui-ktbe';
 import { provideTranslateService, TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
 
 import { removeValidatorsOnReadonlyFieldsBehavior } from '@nexplore/practices-ng-forms';
 import { AppComponent } from './app/app.component';

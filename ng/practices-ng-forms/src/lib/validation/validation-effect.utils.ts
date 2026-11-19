@@ -1,6 +1,7 @@
-import { effect, EffectRef, inject, Injector, isSignal, runInInjectionContext, Signal } from '@angular/core';
-import { AbstractControl, FormGroup, ValidatorFn } from '@angular/forms';
-import { BoundValidators, ValidatorDefinition } from './validation-types';
+import type { EffectRef, Signal } from '@angular/core';
+import { effect, inject, Injector, isSignal, runInInjectionContext } from '@angular/core';
+import type { AbstractControl, FormGroup, ValidatorFn } from '@angular/forms';
+import type { BoundValidators, ValidatorDefinition } from './validation-types';
 import { validateAsync, validateAsyncConditional, validateConditional, validateDependent } from './validators';
 
 /**

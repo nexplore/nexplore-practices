@@ -7,6 +7,7 @@ import { PuibeReadonlyDirective } from '../common/readonly.directive';
 import { MarkControlService } from '../form/mark-control.service';
 import { PuibeIconInvalidComponent } from '../icons/icon-invalid.component';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
+// eslint-disable-next-line import-x/no-cycle -- Angular parent/child pattern: the checkbox injects its group, the group registers its checkboxes at runtime.
 import { PuibeCheckboxComponent } from './checkbox.component';
 
 let nextUniqueId = 0;

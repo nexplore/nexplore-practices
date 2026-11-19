@@ -1,8 +1,8 @@
-import { Signal } from '@angular/core';
-import { StatusProgressOptions } from '@nexplore/practices-ng-status';
-import { Observable } from 'rxjs';
-import { AbstractCommand } from './abstract-command';
-import { CommandAfterExecuteResult, ConcurrentTriggerBehavior } from './command.types';
+import type { Signal } from '@angular/core';
+import type { StatusProgressOptions } from '@nexplore/practices-ng-status';
+import type { Observable } from 'rxjs';
+import type { AbstractCommand } from './abstract-command';
+import type { CommandAfterExecuteResult, ConcurrentTriggerBehavior } from './command.types';
 
 export interface AbstractCommandOptions<TArgs = void> {
     /**

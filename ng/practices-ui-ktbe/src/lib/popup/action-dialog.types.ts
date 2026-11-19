@@ -1,7 +1,8 @@
-import { TemplateRef, Type } from '@angular/core';
-import { CommandInput, command } from '@nexplore/practices-ng-commands';
-import { CombinedCommandInput } from '@nexplore/practices-ui';
-import { Variant } from '../button/button.directive';
+import type { TemplateRef, Type } from '@angular/core';
+import type { CommandInput } from '@nexplore/practices-ng-commands';
+import { command } from '@nexplore/practices-ng-commands';
+import type { CombinedCommandInput } from '@nexplore/practices-ui';
+import type { Variant } from '../button/button.directive';
 
 export type DialogAction<TAction> = TAction & { command?: CommandInput<void, any> };
 

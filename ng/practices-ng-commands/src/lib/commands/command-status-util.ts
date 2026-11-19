@@ -1,11 +1,13 @@
 import { inject } from '@angular/core';
 import { deepMerge, enhance } from '@nexplore/practices-ng-common-util';
-import { StatusEvent, StatusHubService, StatusProgressOptions } from '@nexplore/practices-ng-status';
-import { combineLatest, Observable, Subscription } from 'rxjs';
+import type { StatusEvent, StatusProgressOptions } from '@nexplore/practices-ng-status';
+import { StatusHubService } from '@nexplore/practices-ng-status';
+import type { Observable } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { finalize, first, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
-import { AbstractCommand } from './abstract-command';
-import { CommandOptions } from './command.types';
+import type { AbstractCommand } from './abstract-command';
+import type { CommandOptions } from './command.types';
 
 export type CommandWithStatusSubscription<TArgs, TResult> = AbstractCommand<TArgs, TResult> & {
     /**

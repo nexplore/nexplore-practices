@@ -1,5 +1,6 @@
 import { FormsModule } from '@angular/forms';
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 import { PuibeHideIfEmptyTextDirective } from './hide-if-empty-text.directive';
 import { ComponentWithEntraceAnimation } from './hide-if-empty-text.stories.with-entrance-animation';
 import { ComponentProjectedChild, ComponentWrapper } from './hide-if-empty-text.stories.with-projected-child';

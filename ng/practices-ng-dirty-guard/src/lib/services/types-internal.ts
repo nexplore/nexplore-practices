@@ -1,6 +1,6 @@
-import { UrlTree } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { PuiCanDeactivate, PuiDirtyGuardConfig, PuiHasDirtyFormState } from '../types';
+import type { UrlTree } from '@angular/router';
+import type { Observable, Subscription } from 'rxjs';
+import type { PuiCanDeactivate, PuiDirtyGuardConfig, PuiHasDirtyFormState } from '../types';
 
 export type DirtyGuardSupportedComponent = PuiHasDirtyFormState | PuiCanDeactivate;
 export type AsyncResult = Observable<boolean | UrlTree> | Promise<boolean | UrlTree>;

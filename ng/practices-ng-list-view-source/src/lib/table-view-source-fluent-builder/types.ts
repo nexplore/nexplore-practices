@@ -1,9 +1,9 @@
-import { Type } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { MaybeAsync } from '@angular/router';
-import { FormGroupValues, TypedPartialFormGroup, TypedPartialFormGroupValues } from '@nexplore/practices-ng-forms';
-import { TableViewSource } from '../implementation/table-view-source';
-import {
+import type { Type } from '@angular/core';
+import type { FormGroup } from '@angular/forms';
+import type { MaybeAsync } from '@angular/router';
+import type { FormGroupValues, TypedPartialFormGroup, TypedPartialFormGroupValues } from '@nexplore/practices-ng-forms';
+import type { TableViewSource } from '../implementation/table-view-source';
+import type {
     EnhancedListViewSource,
     IListResult,
     IQueryParamsWithFilter,
@@ -11,7 +11,7 @@ import {
     TableColumnItem,
     TableViewSourceConfig,
 } from '../types';
-import { HasTypedQueryParams } from '../types-internal';
+import type { HasTypedQueryParams } from '../types-internal';
 
 export type Data<TResult extends Partial<IListResult<any>>> = TResult extends IListResult<infer T> ? T : never;
 

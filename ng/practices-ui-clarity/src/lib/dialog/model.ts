@@ -1,4 +1,4 @@
-import { ObservableInput } from 'rxjs';
+import type { ObservableInput } from 'rxjs';
 
 export interface DialogOptions {
     title: string;

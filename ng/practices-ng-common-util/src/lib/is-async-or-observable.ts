@@ -1,4 +1,5 @@
-import { isObservable, Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { isObservable } from 'rxjs';
 
 /**
  * Checks if a value is a Promise or an Observable.

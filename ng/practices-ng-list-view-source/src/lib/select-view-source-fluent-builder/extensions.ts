@@ -1,9 +1,9 @@
 import { maybeAsyncToObservable } from '@nexplore/practices-ng-common-util';
 import { map } from 'rxjs/operators';
 import { SelectViewSource } from '../implementation/select-view-source';
-import { EnhancedListViewSource, IListResult } from '../types';
+import type { EnhancedListViewSource, IListResult } from '../types';
 import { enhanceListViewSource, getDefaultQueryParams } from '../utils/internal-util';
-import { SelectViewSourceFilterType, SelectViewSourceLabelKey, TypedSelectViewSourceConfig } from './types';
+import type { SelectViewSourceFilterType, SelectViewSourceLabelKey, TypedSelectViewSourceConfig } from './types';
 
 /* @internal */
 export function createSelectViewSourceInternal<

@@ -1,8 +1,8 @@
-import { Injector } from '@angular/core';
-import { PartialNullable } from '../utils/form.types';
+import type { Injector } from '@angular/core';
+import type { PartialNullable } from '../utils/form.types';
 
 import { createExtendedFormGroup } from './extensions';
-import {
+import type {
     BuildFromGroupValueFn,
     FormGroupDefinition,
     FormGroupDefinitionRecord,

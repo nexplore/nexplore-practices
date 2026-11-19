@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
 
 /**
  * Subscribes to an observable and forgets about it. This is useful when you want to subscribe to an observable but you don't care about the result.

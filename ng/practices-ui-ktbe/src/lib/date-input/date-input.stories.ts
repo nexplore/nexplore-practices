@@ -1,5 +1,7 @@
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 import { randomAsyncValidator } from '../../stories/util';
 import { PuibeFormFieldComponent } from '../form-field/form-field.component';
 import { PuibeInputDirective } from '../input/input.directive';
@@ -7,7 +9,7 @@ import { PuibeLabelDirective } from '../form-field/label.directive';
 import { PuibeDateInputDirective } from './date-input.directive';
 import { PuibeCalendarFlyoutComponent } from './calendar/calendar-flyout.component';
 import { add, format } from 'date-fns';
-import { CalendarPeriodType } from './services/calendar-period.service';
+import type { CalendarPeriodType } from './services/calendar-period.service';
 import { PuibeMonthInputDirective } from './month-input.directive';
 import { PuibeYearInputDirective } from './year-input.directive';
 import { PuibeReadonlyDirective } from '../common/readonly.directive';

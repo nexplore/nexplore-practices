@@ -4,7 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of https://github.com/vmware-clarity/ng-clarity.
  */
 
-import { Observable, Subject } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 
 /*
  * This provider implements some form of synchronous debouncing through a lock pattern

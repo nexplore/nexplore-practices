@@ -1,4 +1,5 @@
-import { AbstractControl, FormGroup } from '@angular/forms';
+import type { AbstractControl } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 export function getControlsByNamesOfFormGroup(
     formGroup: AbstractControl,

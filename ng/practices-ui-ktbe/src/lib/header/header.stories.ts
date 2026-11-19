@@ -1,6 +1,7 @@
-import { IsActiveMatchOptions, Routes } from '@angular/router';
+import type { IsActiveMatchOptions, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 
 import { PuibeContainerDirective } from '../common/container.directive';
 import { PuibeIconHamburgerComponent } from '../icons/icon-hamburger.component';

@@ -1,8 +1,9 @@
 import { AsyncPipe } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { IQueryParamsWithFilter } from '@nexplore/practices-ui';
+import type { IQueryParamsWithFilter } from '@nexplore/practices-ui';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 import { BehaviorSubject, concat, debounceTime, map, of, Subject, switchMap, tap, timer } from 'rxjs';
 import { randomAsyncValidator } from '../../stories/util';
 import { PuibeReadonlyDirective } from '../common/readonly.directive';

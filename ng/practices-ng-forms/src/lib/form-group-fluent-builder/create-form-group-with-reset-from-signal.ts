@@ -1,9 +1,10 @@
-import { Injector, Signal } from '@angular/core';
-import { PartialNullable } from '../utils/form.types';
+import type { Injector, Signal } from '@angular/core';
+import type { PartialNullable } from '../utils/form.types';
 
-import { createExtendedFormGroup, Extensions } from './extensions';
-import { AllPropsAMustBeInB, FormControlsOfValues } from './form-group-types.internal';
-import {
+import type { Extensions } from './extensions';
+import { createExtendedFormGroup } from './extensions';
+import type { AllPropsAMustBeInB, FormControlsOfValues } from './form-group-types.internal';
+import type {
     DefinitionWithNullValuesInferredFromValue,
     ExtractActualValueFromDefinition,
     FormGroupDefinition,
@@ -13,7 +14,8 @@ import {
     TypedExtendedFormGroup,
     ValueSatisfyingType,
 } from './types';
-import { extendWithResetFromSignal, ResetWithSignalConfig } from './with-reset-from-signal';
+import type { ResetWithSignalConfig } from './with-reset-from-signal';
+import { extendWithResetFromSignal } from './with-reset-from-signal';
 
 /**
  * Crazy type that makes sure that the definition is compatible with the signal value,

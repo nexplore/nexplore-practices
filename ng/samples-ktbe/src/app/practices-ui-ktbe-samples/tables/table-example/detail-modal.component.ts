@@ -14,7 +14,8 @@ import {
     PuibeSelectDirective,
 } from '@nexplore/practices-ui-ktbe';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { SampleListEntry, SampleType } from './table-example.component';
+import type { SampleListEntry } from './table-example.types';
+import { SampleType } from './table-example.types';
 
 @Component({
     standalone: true,

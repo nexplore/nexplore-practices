@@ -1,5 +1,7 @@
-import { isSignal, Signal } from '@angular/core';
-import { isObservable, Observable } from 'rxjs';
+import type { Signal } from '@angular/core';
+import { isSignal } from '@angular/core';
+import type { Observable } from 'rxjs';
+import { isObservable } from 'rxjs';
 
 type Enhancements = Record<string, unknown | PropertyDescriptor>;
 type EnhancedObject<T, TE> = T & {

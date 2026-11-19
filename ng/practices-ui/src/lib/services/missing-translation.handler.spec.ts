@@ -1,17 +1,14 @@
 import { TestBed } from '@angular/core/testing';
+import type { TranslateLoader } from '@ngx-translate/core';
 import {
     provideMissingTranslationHandler,
     provideTranslateLoader,
     provideTranslateService,
-    TranslateLoader,
     TranslateService,
 } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import {
-    REWRITE_RESOURCE_CONFIG,
-    RewriteMissingTranslationHandler,
-    RewriteResourceConfig,
-} from './missing-translation.handler';
+import type { RewriteResourceConfig } from './missing-translation.handler';
+import { REWRITE_RESOURCE_CONFIG, RewriteMissingTranslationHandler } from './missing-translation.handler';
 
 const mockTranslation = {
     Base: {

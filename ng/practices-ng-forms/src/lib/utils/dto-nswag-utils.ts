@@ -1,5 +1,5 @@
-import { Type } from '@angular/core';
-import { INswagGeneratedType, PartialNullable } from './form.types';
+import type { Type } from '@angular/core';
+import type { INswagGeneratedType, PartialNullable } from './form.types';
 
 /**
  * Check if the provided object represents an NSwag generated type.

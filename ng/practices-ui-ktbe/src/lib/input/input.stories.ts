@@ -1,5 +1,6 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 import { PuibeReadonlyDirective } from '../../index';
 import { randomAsyncValidator } from '../../stories/util';
 import { PuibeCalendarFlyoutComponent } from '../date-input/calendar/calendar-flyout.component';

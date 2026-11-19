@@ -1,5 +1,5 @@
-import { Signal } from '@angular/core';
-import { AbstractControl, FormControl, FormControlState, FormGroup, ValidationErrors } from '@angular/forms';
+import type { Signal } from '@angular/core';
+import type { AbstractControl, FormControl, FormControlState, FormGroup, ValidationErrors } from '@angular/forms';
 
 export interface INswagGeneratedType {
     init(_data?: any): void;

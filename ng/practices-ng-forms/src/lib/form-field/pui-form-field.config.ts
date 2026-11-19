@@ -1,7 +1,7 @@
 import { InjectionToken } from '@angular/core';
-import { NgControl, ValidationErrors } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { PuiFormFieldService } from './form-field.service';
+import type { NgControl, ValidationErrors } from '@angular/forms';
+import type { Subscription } from 'rxjs';
+import type { PuiFormFieldService } from './form-field.service';
 
 export type PuiFormFieldBehavior = (service: PuiFormFieldService) => Subscription | void;
 

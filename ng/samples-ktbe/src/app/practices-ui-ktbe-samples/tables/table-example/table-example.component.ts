@@ -14,21 +14,10 @@ import {
     PuibeSelectDirective,
 } from '@nexplore/practices-ui-ktbe';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { tableSampleLoadFn } from '../tables.component';
+import { tableSampleLoadFn } from '../table-sample-data';
 import { AppTableDetailModalComponent } from './detail-modal.component';
-
-export enum SampleType {
-    Type1 = 'type1',
-    Type2 = 'type2',
-    Type3 = 'type3',
-}
-
-export interface SampleListEntry {
-    id: string;
-    type: SampleType;
-    name: string;
-    active: boolean;
-}
+import type { SampleListEntry } from './table-example.types';
+import { SampleType } from './table-example.types';
 
 interface SampleListFilter {
     name?: string | null;

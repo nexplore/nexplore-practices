@@ -1,12 +1,15 @@
-import { effect, EffectRef, inject, Injector, Signal, untracked } from '@angular/core';
+import type { EffectRef, Signal } from '@angular/core';
+import { effect, inject, Injector, untracked } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { AbstractControl, FormControlState, FormGroup, PristineChangeEvent } from '@angular/forms';
-import { tryDestroyInjector, unwrapSignalLike, ValueOrSignal } from '@nexplore/practices-ng-common-util';
+import type { AbstractControl, FormControlState, FormGroup } from '@angular/forms';
+import { PristineChangeEvent } from '@angular/forms';
+import type { ValueOrSignal } from '@nexplore/practices-ng-common-util';
+import { tryDestroyInjector, unwrapSignalLike } from '@nexplore/practices-ng-common-util';
 import { trace } from '@nexplore/practices-ng-logging';
 import { computedPipe } from '@nexplore/practices-ng-signals';
 import { debounceTime, filter, map, noop, startWith, switchMap, take, tap } from 'rxjs';
 import { createFormValueSignalsProxyWithAutoTrackingDependencies } from './create-form-value-signals-proxy-with-auto-tracking-dependencies';
-import { FormGroupValues, TypedFormGroup } from './form.types';
+import type { FormGroupValues, TypedFormGroup } from './form.types';
 
 /**
  * Creates an effect function, that provides the value of the form as its first argument.

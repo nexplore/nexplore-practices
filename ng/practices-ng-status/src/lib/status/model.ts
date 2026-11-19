@@ -1,5 +1,5 @@
-import { Subscription } from 'rxjs';
-import { StatusCategory } from './types';
+import type { Subscription } from 'rxjs';
+import type { StatusCategory } from './types';
 
 export type StatusError = true | string | { [key: string]: any } | undefined | Error;
 

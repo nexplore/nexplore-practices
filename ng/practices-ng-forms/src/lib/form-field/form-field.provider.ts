@@ -1,7 +1,9 @@
-import { Provider } from '@angular/core';
-import { NgControl, Validators } from '@angular/forms';
+import type { Provider } from '@angular/core';
+import type { NgControl } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { firstCharToUpper } from '@nexplore/practices-ng-common-util';
-import { PUI_FORM_FIELD_CONFIG, PuiFormFieldConfig } from './pui-form-field.config';
+import type { PuiFormFieldConfig } from './pui-form-field.config';
+import { PUI_FORM_FIELD_CONFIG } from './pui-form-field.config';
 
 export const FORM_FIELD_CONFIG_DEFAULTS: PuiFormFieldConfig = {
     hideInvalidIfUntouched: false,

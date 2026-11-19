@@ -1,7 +1,11 @@
-import { WritableSignal } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AbstractCommand } from './abstract-command';
-import { CommandWithLifecycleOptions, CommandWithSignalsAndStatus, ILegacyCommand } from './command-internal.types';
+import type { WritableSignal } from '@angular/core';
+import type { Observable } from 'rxjs';
+import type { AbstractCommand } from './abstract-command';
+import type {
+    CommandWithLifecycleOptions,
+    CommandWithSignalsAndStatus,
+    ILegacyCommand,
+} from './command-internal.types';
 
 export interface CommandAfterExecuteResult<TArgs = void | never | undefined> {
     args: TArgs;

@@ -1,7 +1,7 @@
-import { Signal, WritableSignal } from '@angular/core';
-import { StringKeyOf } from '@nexplore/practices-ng-common-util';
-import { Observable } from 'rxjs';
-import { FilterableListViewSource } from './implementation/list-view-source';
+import type { Signal, WritableSignal } from '@angular/core';
+import type { StringKeyOf } from '@nexplore/practices-ng-common-util';
+import type { Observable } from 'rxjs';
+import type { FilterableListViewSource } from './implementation/list-view-source';
 
 export interface IListResult<T> {
     data: T[];

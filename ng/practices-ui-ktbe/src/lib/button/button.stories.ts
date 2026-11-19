@@ -1,5 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 import { PracticesKtbeTableComponentsModule } from '../../index';
 import { PuibeIconGoNextComponent } from '../icons/icon-go-next.component';
 import { PuibeIconHomeComponent } from '../icons/icon-home.component';

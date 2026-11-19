@@ -1,6 +1,6 @@
-import { Signal } from '@angular/core';
-import { FormGroupControlsValues } from '../utils/form.types';
-import { FormControls } from './form-group-types.internal';
+import type { Signal } from '@angular/core';
+import type { FormGroupControlsValues } from '../utils/form.types';
+import type { FormControls } from './form-group-types.internal';
 
 export type FormValueSignalsRecordDeprecated<TFormValue> = {
     /**

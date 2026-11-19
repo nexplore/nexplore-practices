@@ -1,8 +1,10 @@
-import { IListResult, IOrdering, OrderDirection } from '@nexplore/practices-ui';
-import { Observable, of } from 'rxjs';
+import type { IListResult, IOrdering } from '@nexplore/practices-ui';
+import { OrderDirection } from '@nexplore/practices-ui';
+import type { Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-import { IUserListEntry } from './model';
+import type { IUserListEntry } from './model';
 
 function generateUsers(amount: number) {
     const users: IUserListEntry[] = [];

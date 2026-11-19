@@ -27,6 +27,7 @@ import { FormFieldStatus } from '../form-field/form-field.service';
 import { FORM_CONFIG, FormConfig } from '../form/form.config';
 import { PuibeReadonlyLabelValueComponent } from '../readonly-label-value/readonly-label-value.component';
 import { getElementFormStates$ } from '../util/form.utils';
+// eslint-disable-next-line import-x/no-cycle -- Angular parent/child pattern: the checkbox injects its group, the group registers its checkboxes at runtime.
 import { PuibeCheckboxGroupComponent } from './checkbox-group.component';
 
 let nextUniqueId = 0;

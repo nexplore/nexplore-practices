@@ -1,4 +1,4 @@
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import type { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 
 export type FormControls<
     TControls extends {

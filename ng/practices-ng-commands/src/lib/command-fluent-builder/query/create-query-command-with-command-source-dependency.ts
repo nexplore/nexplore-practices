@@ -2,7 +2,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { enhance } from '@nexplore/practices-ng-common-util';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Command, CommandAsyncHandlerArg, QueryCommand, QueryOptions } from '../../commands/command.types';
+import type { Command, CommandAsyncHandlerArg, QueryCommand, QueryOptions } from '../../commands/command.types';
 import { createQueryCommand } from './command-query-util';
 
 /**

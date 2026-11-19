@@ -1,8 +1,8 @@
-import { MaybeAsync } from '@angular/router';
+import type { MaybeAsync } from '@angular/router';
 import { maybeAsyncToObservable } from '@nexplore/practices-ng-common-util';
 import { map } from 'rxjs/operators';
 import { TableViewSource } from '../implementation/table-view-source';
-import {
+import type {
     IListResult,
     IQueryParamsWithFilter,
     TableColumnDefinitions,
@@ -10,9 +10,11 @@ import {
     TableViewSourceConfig,
 } from '../types';
 import { enhanceListViewSource } from '../utils/internal-util';
+// eslint-disable-next-line import-x/no-cycle -- fluent builder: the view source and its extensions only reference each other inside functions.
 import { extendWithFilterForm } from './create-table-view-source-with-filter-form';
+// eslint-disable-next-line import-x/no-cycle -- fluent builder: the view source and its extensions only reference each other inside functions.
 import { extendWithPersistedParams } from './create-table-view-source-with-persisted-params';
-import { TableViewSourceWithSignals } from './types';
+import type { TableViewSourceWithSignals } from './types';
 
 export const extensions = {
     withFilterForm: extendWithFilterForm,

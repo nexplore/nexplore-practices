@@ -1,5 +1,6 @@
-import { effect, Signal, untracked } from '@angular/core';
-import { CommandAsyncHandlerArg, QueryCommand, QueryOptions } from '../../commands/command.types';
+import type { Signal } from '@angular/core';
+import { effect, untracked } from '@angular/core';
+import type { CommandAsyncHandlerArg, QueryCommand, QueryOptions } from '../../commands/command.types';
 import { createQueryCommand } from './command-query-util';
 
 /**

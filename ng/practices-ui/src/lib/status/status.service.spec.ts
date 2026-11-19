@@ -1,8 +1,9 @@
 import { describe, expect, it, jest } from '@jest/globals';
 import { distinctUntilChanged, first, firstValueFrom, shareReplay, Subject, take, timer } from 'rxjs';
 import { LegacyCommand } from '../command';
-import { IListResult, ListViewSource } from '../list';
-import { StatusEvent } from './model';
+import type { IListResult } from '../list';
+import { ListViewSource } from '../list';
+import type { StatusEvent } from './model';
 import { StatusHubService } from './status-hub.service';
 import { StatusService } from './status.service';
 

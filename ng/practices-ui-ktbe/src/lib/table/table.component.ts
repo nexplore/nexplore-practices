@@ -14,6 +14,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, combineLatest, filter, map, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
 import { setHostClassNames } from '../util/utils';
+// eslint-disable-next-line import-x/no-cycle -- Angular parent/child pattern: the table components inject their parents and query their children at runtime (forwardRef).
 import { PuibeTableColumnComponent } from './column/table-column.component';
 import { ClassNames } from './constants';
 import { PageService } from './pagination/page.service';

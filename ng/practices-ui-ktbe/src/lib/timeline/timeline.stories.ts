@@ -1,5 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 import { PuibeExpansionPanelComponent } from '../expansion-panel/expansion-panel.component';
 import { PuibeTimelineItemComponent } from './timeline-item/timeline-item.component';
 import { PuibeTimelineComponent } from './timeline.component';

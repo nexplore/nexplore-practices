@@ -1,7 +1,8 @@
 import { firstCharToLower } from '@nexplore/practices-ng-common-util';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import {
+import type {
     IListResult,
     IOrdering,
     IQueryParams,

@@ -1,8 +1,13 @@
-import { IListResult } from '../types';
-import { HasTypedQueryParams } from '../types-internal';
+import type { IListResult } from '../types';
+import type { HasTypedQueryParams } from '../types-internal';
 import { getDefaultQueryParams } from '../utils/internal-util';
-import { createExtendableTableViewSource, Extensions } from './extensions';
-import { TableViewSourceWithSignals, TypedTableViewSourceConfig, TypedTableViewSourceConfigPartial } from './types';
+import type { Extensions } from './extensions';
+import { createExtendableTableViewSource } from './extensions';
+import type {
+    TableViewSourceWithSignals,
+    TypedTableViewSourceConfig,
+    TypedTableViewSourceConfigPartial,
+} from './types';
 
 /**
  * Creates a TableViewSource with the specified configuration

@@ -1,4 +1,5 @@
-import { inject, Provider } from '@angular/core';
+import type { Provider } from '@angular/core';
+import { inject } from '@angular/core';
 import { provideDirtyGuard } from '@nexplore/practices-ng-dirty-guard';
 import { PuibeActionDialogService } from '../popup/action-dialog.service';
 import { PUIBE_DIALOG_PRESETS } from '../popup/action-dialog.types';

@@ -1,4 +1,5 @@
-import { PuibeMetaRoute, RouterUtilService } from '@nexplore/practices-ui-ktbe';
+import type { PuibeMetaRoute } from '@nexplore/practices-ui-ktbe';
+import { RouterUtilService } from '@nexplore/practices-ui-ktbe';
 import {
     Breadcrumb2Component,
     Breadcrumb3Component,
@@ -6,7 +7,7 @@ import {
 } from './practices-ui-ktbe-samples/breadcrumb/breadcrumb.component';
 
 import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot } from '@angular/router';
+import type { ActivatedRouteSnapshot } from '@angular/router';
 import { TitleService } from '@nexplore/practices-ui';
 import { timer } from 'rxjs';
 import { ButtonsComponent } from './practices-ui-ktbe-samples/buttons/buttons.component';

@@ -2,7 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { command } from '@nexplore/practices-ng-commands';
 import { of } from 'rxjs';
-import { IOrdering, OrderDirection, selectViewSource, tableViewSource } from './api';
+import type { IOrdering } from './api';
+import { OrderDirection, selectViewSource, tableViewSource } from './api';
 import { createListResultFromArray } from './utils/list-result-util';
 
 describe('tableViewSource', () => {

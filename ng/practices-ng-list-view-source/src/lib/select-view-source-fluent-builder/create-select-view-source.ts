@@ -1,5 +1,5 @@
 import { createSelectViewSourceInternal } from './extensions';
-import {
+import type {
     SelectViewSourceFilterType,
     SelectViewSourceLabelKey,
     SelectViewSourceWithSignals,

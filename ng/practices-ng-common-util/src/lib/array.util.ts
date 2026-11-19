@@ -1,4 +1,4 @@
-import { Falsy } from 'rxjs';
+import type { Falsy } from 'rxjs';
 
 export type NotFalseOrNothing<T> = Exclude<T, Falsy>;
 

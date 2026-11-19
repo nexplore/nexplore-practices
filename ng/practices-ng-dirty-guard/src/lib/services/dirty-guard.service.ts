@@ -4,6 +4,7 @@ import { ActivatedRouteSnapshot, GuardsCheckStart, Route, Router } from '@angula
 import { firstValueFromMaybeAsync } from '@nexplore/practices-ng-common-util';
 import { trace } from '@nexplore/practices-ng-logging';
 import { Observable } from 'rxjs';
+// eslint-disable-next-line import-x/no-cycle -- the dirty guard service and its helpers only call each other at runtime (inject() and method calls).
 import { createPuiDirtyGuard, evaluateDirtyGuardCanDeactivate } from '../dirty-guard-util-internal';
 import { PuiDirtyGuardHandler } from '../types';
 import { PuiGlobalRouteGuardService } from './global-route-guard.service';

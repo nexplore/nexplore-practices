@@ -1,5 +1,6 @@
 import { trace } from '@nexplore/practices-ng-logging';
-import { isObservable, Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { isObservable } from 'rxjs';
 
 /**
  * Returns a promise that resolves with the first value emitted by the observable,

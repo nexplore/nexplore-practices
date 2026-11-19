@@ -1,15 +1,17 @@
 import { signal, untracked } from '@angular/core';
-import { AbstractCommand } from '@nexplore/practices-ng-commands';
-import { unwrapSignalLike, ValueOrGetter, ValueOrSignal } from '@nexplore/practices-ng-common-util';
-import { TypedFormGroup } from '@nexplore/practices-ng-forms';
+import type { AbstractCommand } from '@nexplore/practices-ng-commands';
+import type { ValueOrGetter, ValueOrSignal } from '@nexplore/practices-ng-common-util';
+import { unwrapSignalLike } from '@nexplore/practices-ng-common-util';
+import type { TypedFormGroup } from '@nexplore/practices-ng-forms';
 import { tap } from 'rxjs/operators';
-import { IListResult } from '../types';
-import { HasTypedQueryParams } from '../types-internal';
+import type { IListResult } from '../types';
+import type { HasTypedQueryParams } from '../types-internal';
 import { commandToListResultObservable, refreshListViewSourceWhenCommandTriggered } from '../utils/command-list-util';
 import { getDefaultQueryParams } from '../utils/internal-util';
-import { PersistParamsConfig } from './create-table-view-source-with-persisted-params';
-import { createExtendableTableViewSource, Extensions } from './extensions';
-import { TableViewSourceWithSignals, TypedTableViewSourceConfigWithoutLoadFn } from './types';
+import type { PersistParamsConfig } from './create-table-view-source-with-persisted-params';
+import type { Extensions } from './extensions';
+import { createExtendableTableViewSource } from './extensions';
+import type { TableViewSourceWithSignals, TypedTableViewSourceConfigWithoutLoadFn } from './types';
 
 type AdditionalConfig = {
     /**

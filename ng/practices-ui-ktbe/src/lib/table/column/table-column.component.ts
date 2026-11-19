@@ -19,6 +19,7 @@ import { PuibeIconSpinnerComponent } from '../../icons/icon-spinner.component';
 import { setHostAttr, setHostClassNames } from '../../util/utils';
 import { ClassNames } from '../constants';
 import { TableColumnItem } from '../table-view-source';
+// eslint-disable-next-line import-x/no-cycle -- Angular parent/child pattern: the table components inject their parents and query their children at runtime (forwardRef).
 import { PuibeTableComponent } from '../table.component';
 import {
     combineTranslationPrefixAndKey,

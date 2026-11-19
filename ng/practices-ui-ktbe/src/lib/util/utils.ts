@@ -1,4 +1,4 @@
-import { ElementRef } from '@angular/core';
+import type { ElementRef } from '@angular/core';
 
 export function setAttr(attr: string, value: string | boolean, element: HTMLElement) {
     if (value === undefined || value === null || value === false) {

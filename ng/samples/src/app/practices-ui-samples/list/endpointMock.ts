@@ -1,5 +1,6 @@
-import { IListResult, IOrdering } from '@nexplore/practices-ui';
-import { Observable, of, throwError } from 'rxjs';
+import type { IListResult, IOrdering } from '@nexplore/practices-ui';
+import type { Observable } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 export function filterableListEndpointMock(

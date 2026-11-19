@@ -1,10 +1,12 @@
-import { isSignal, Signal } from '@angular/core';
+import type { Signal } from '@angular/core';
+import { isSignal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { AbstractControl, FormControlState, FormGroup, UntypedFormGroup } from '@angular/forms';
-import { ValueOrSignal } from '@nexplore/practices-ng-common-util';
-import { debounceTime, distinctUntilChanged, filter, map, noop, Observable, of, startWith, switchMap, tap } from 'rxjs';
-import { FormGroupValues, TypedFormGroup } from './form.types';
-import { ElementsOfArray } from './types-internal';
+import type { AbstractControl, FormControlState, FormGroup, UntypedFormGroup } from '@angular/forms';
+import type { ValueOrSignal } from '@nexplore/practices-ng-common-util';
+import type { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map, noop, of, startWith, switchMap, tap } from 'rxjs';
+import type { FormGroupValues, TypedFormGroup } from './form.types';
+import type { ElementsOfArray } from './types-internal';
 
 /**
  * Creates a signal that emits the value changes of a form group. Only emits if the form group is dirty.

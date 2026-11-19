@@ -1,20 +1,9 @@
 import { AbstractCommand } from '@nexplore/practices-ng-commands';
-import {
-    BehaviorSubject,
-    defer,
-    from,
-    Observable,
-    of,
-    shareReplay,
-    Subject,
-    take,
-    takeUntil,
-    tap,
-    Unsubscribable,
-} from 'rxjs';
+import type { Unsubscribable } from 'rxjs';
+import { BehaviorSubject, defer, from, Observable, of, shareReplay, Subject, take, takeUntil, tap } from 'rxjs';
 import { LegacyCommandBase } from './command-base';
-import { CombinedCommandInput, ILegacyCommand } from './command-interface.types';
-import {
+import type { CombinedCommandInput, ILegacyCommand } from './command-interface.types';
+import type {
     LegacyCommandAsyncHandlerArg,
     LegacyCommandAsyncHandlerFn,
     LegacyCommandAsyncHandlerResult,

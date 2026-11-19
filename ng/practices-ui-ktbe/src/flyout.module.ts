@@ -1,12 +1,8 @@
 import { NgModule } from '@angular/core';
-import {
-    FLYOUT_PROVIDERS,
-    PuibeFlyoutComponent,
-    PuibeFlyoutContentDirective,
-    PuibeFlyoutFooterActionDirective,
-    PuibeFlyoutTitleComponent,
-    PuibeFlyoutTitleDirective,
-} from '.';
+import { PuibeFlyoutContentDirective } from './lib/popup/flyout-content.directive';
+import { PuibeFlyoutFooterActionDirective } from './lib/popup/flyout-footer-action.directive';
+import { PuibeFlyoutTitleComponent, PuibeFlyoutTitleDirective } from './lib/popup/flyout-title.directive';
+import { FLYOUT_PROVIDERS, PuibeFlyoutComponent } from './lib/popup/flyout.component';
 
 const DEFAULT_FLYOUT_COMPONENTS = [
     PuibeFlyoutComponent,

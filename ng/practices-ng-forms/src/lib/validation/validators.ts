@@ -1,17 +1,15 @@
-import { effect, EffectRef, inject, Injector, runInInjectionContext, untracked } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormGroup, ValidatorFn } from '@angular/forms';
-import { tryDestroyInjector, unwrapSignalLike, ValueOrGetter } from '@nexplore/practices-ng-common-util';
+import type { EffectRef } from '@angular/core';
+import { effect, inject, Injector, runInInjectionContext, untracked } from '@angular/core';
+import type { AbstractControl, AsyncValidatorFn, FormGroup, ValidatorFn } from '@angular/forms';
+import type { ValueOrGetter } from '@nexplore/practices-ng-common-util';
+import { tryDestroyInjector, unwrapSignalLike } from '@nexplore/practices-ng-common-util';
 
 import { trace } from '@nexplore/practices-ng-logging';
 import { createFormValueSignalsProxyWithAutoTrackingDependencies } from '../utils/create-form-value-signals-proxy-with-auto-tracking-dependencies';
-import { DeepKeyOfFormGroup, FormGroupValues } from '../utils/form.types';
+import type { DeepKeyOfFormGroup, FormGroupValues } from '../utils/form.types';
 import { getControlsByNamesOfFormGroup } from './util-internal';
-import {
-    conditionalAsyncValidationEffect,
-    ConditionalAsyncValidatorResult,
-    conditionalValidationEffect,
-    ConditionalValidatorResult,
-} from './validation-internal.util';
+import type { ConditionalAsyncValidatorResult, ConditionalValidatorResult } from './validation-internal.util';
+import { conditionalAsyncValidationEffect, conditionalValidationEffect } from './validation-internal.util';
 
 /**
  * Conditional validation based on a effect computation.

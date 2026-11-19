@@ -1,5 +1,5 @@
-import { Injector, Signal } from '@angular/core';
-import {
+import type { Injector, Signal } from '@angular/core';
+import type {
     AbstractControl,
     AsyncValidatorFn,
     FormBuilder,
@@ -7,10 +7,14 @@ import {
     FormGroup,
     ValidatorFn,
 } from '@angular/forms';
-import { FormGroupControlsValues, FormValueSignalsRecordWithoutPostfix, PartialNullable } from '../utils/form.types';
-import { Extensions } from './extensions';
-import { FormGroupValueWithSignals } from './form-group-types';
-import { FormControlsOfValues } from './form-group-types.internal';
+import type {
+    FormGroupControlsValues,
+    FormValueSignalsRecordWithoutPostfix,
+    PartialNullable,
+} from '../utils/form.types';
+import type { Extensions } from './extensions';
+import type { FormGroupValueWithSignals } from './form-group-types';
+import type { FormControlsOfValues } from './form-group-types.internal';
 
 export type FormGroupEnhancedWithSignals<TControls = any> = TControls extends {
     [K in keyof TControls]: AbstractControl;

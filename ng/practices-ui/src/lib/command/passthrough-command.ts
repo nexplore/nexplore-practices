@@ -1,6 +1,6 @@
 import { combineLatest, defer, EMPTY, map, shareReplay, startWith } from 'rxjs';
 import { LegacyCommandBase } from './command-base';
-import { LegacyCommandOptions, LegacyCommandTriggerOptions } from './command.types';
+import type { LegacyCommandOptions, LegacyCommandTriggerOptions } from './command.types';
 
 /** Links the command with another command, adding default options */
 export class PassthroughCommand<TArgs = void, TResult = void> extends LegacyCommandBase<TArgs, TResult> {

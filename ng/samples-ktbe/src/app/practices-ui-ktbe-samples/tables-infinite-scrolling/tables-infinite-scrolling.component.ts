@@ -11,7 +11,7 @@ import {
     PuibeTableRowComponent,
     TableViewSource,
 } from '@nexplore/practices-ui-ktbe';
-import { SampleModel, tableSampleLoadFn } from '../tables/tables.component';
+import { SampleModel, tableSampleLoadFn } from '../tables/table-sample-data';
 
 @Component({
     standalone: true,

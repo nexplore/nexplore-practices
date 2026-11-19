@@ -1,4 +1,5 @@
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 import { map, timer } from 'rxjs';
 import { PuibeTableComponent } from './table.component';
 import { TableViewSource } from './table-view-source';

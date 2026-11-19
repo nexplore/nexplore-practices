@@ -1,7 +1,8 @@
-import { effect, EffectRef, isSignal, Signal } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
+import type { EffectRef, Signal } from '@angular/core';
+import { effect, isSignal } from '@angular/core';
+import type { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { wrapArrayAndFilterFalsyValues } from '@nexplore/practices-ng-common-util';
-import { Falsy } from 'rxjs';
+import type { Falsy } from 'rxjs';
 
 export type ControlProvider =
     | AbstractControl[]
