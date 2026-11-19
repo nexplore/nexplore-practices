@@ -1,6 +1,6 @@
 import { Router, ActivatedRouteSnapshot, Params } from '@angular/router';
 
-import { compareUrlWithWildcards, trimChars } from '../util/utils';
+import { compareUrlWithWildcards, trimChars } from './utils';
 import { PuibeMetaRoute } from '../side-navigation/side-navigation.interface';
 
 export function getActivatedRouteSnapshotJoinedPath(snapshot: ActivatedRouteSnapshot): string {

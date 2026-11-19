@@ -20,7 +20,7 @@ import { PuibeIconHamburgerComponent } from '../icons/icon-hamburger.component';
 import { map } from 'rxjs/operators';
 import { PuibeHeaderMobileMenuItemDirective } from './header-mobile-menu-item.directive';
 import { Routes } from '@angular/router';
-import { PuibeObserveSizeDirective } from '../../lib/util/observe-size.directive';
+import { PuibeObserveSizeDirective } from '../util/observe-size.directive';
 import { PuibeMetaRoute } from '../side-navigation/side-navigation.interface';
 import { PUIBE_BREAKPOINT_MAX_W_LG } from '../util/constants';
 import { PuibeShellService } from '../shell/shell.service';
