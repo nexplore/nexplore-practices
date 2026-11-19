@@ -191,6 +191,7 @@ Version 13.0.0 builds the Angular packages with Angular 22. It contains no inten
 -   [Deep imports no longer resolve](#deep-imports-no-longer-resolve)
 -   [Declare `practices-ng-common-util` when you import it](#declare-practices-ng-common-util-when-you-import-it)
 -   [`DialogService` constructor (`practices-ui-clarity`)](#dialogservice-constructor-practices-ui-clarity)
+-   [ng-select copies its classes to the dropdown panel](#ng-select-copies-its-classes-to-the-dropdown-panel)
 
 ### Angular 22 is required
 
@@ -254,6 +255,22 @@ new DialogService(componentFactoryResolver, appRef, injector, translateService, 
 // After
 new DialogService(appRef, injector, translateService, document);
 ```
+
+### ng-select copies its classes to the dropdown panel
+
+Since ng-select 24, the dropdown panel is rendered in an overlay outside of the `ng-select` element, and ng-select copies the classes of the `ng-select` element (except Angular's form classes like `ng-invalid`) to the panel. Layout utilities that you put on the select, e.g. a width, margin or padding, therefore also apply to the panel. Put them on a wrapper element instead, and style the panel through `panelClass`:
+
+```html
+<!-- Before: the width and margin also apply to the dropdown panel -->
+<ng-select puibeInput class="mt-4 w-64" ...></ng-select>
+
+<!-- After -->
+<div class="mt-4 w-64">
+    <ng-select puibeInput ...></ng-select>
+</div>
+```
+
+Styles for the panel that used a selector below the `ng-select` (e.g. `.my-select .ng-dropdown-panel`) no longer match either: use `panelClass="my-panel"` and `.ng-dropdown-panel.my-panel` instead.
 
 ## Migrating to use Signals
 
