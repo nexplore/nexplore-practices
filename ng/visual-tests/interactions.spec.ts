@@ -1,6 +1,17 @@
-import { expect, Page, test } from '@playwright/test';
-import { storybookUrl } from './paths';
+import type { Page } from '@playwright/test';
+import { expect, test } from '@playwright/test';
+import { existsSync, readFileSync } from 'node:fs';
+import path from 'node:path';
+import { storybookDir, storybookUrl } from './paths';
 import { gotoStory, preparePage, settle } from './stabilize';
+
+/** Ids of the stories of the build under test (older releases do not have all stories yet). */
+const availableStoryIds: Set<string> = (() => {
+    const indexFile = path.join(storybookDir, 'index.json');
+    return existsSync(indexFile)
+        ? new Set(Object.keys(JSON.parse(readFileSync(indexFile, 'utf-8')).entries))
+        : new Set<string>();
+})();
 
 interface Interaction {
     storyId: string;
@@ -96,6 +107,7 @@ test.describe('storybook interactions', () => {
                 interaction.viewport !== undefined && interaction.viewport !== testInfo.project.name,
                 `only relevant on ${interaction.viewport}`
             );
+            test.skip(!availableStoryIds.has(interaction.storyId), 'the story does not exist in this build');
             await preparePage(page);
             await gotoStory(page, interaction.storyId);
             await settle(page);

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Visual regression comparison of the practices-ui-ktbe Storybook and the samples-ktbe application against any git ref.
 //
-//   node visual-tests/compare-with-ref.mjs <ref> [--node <version>] [--filter <regex>] [--skip-baseline] [--skip-build]
+//   node visual-tests/compare-with-ref.mjs <ref> [--node <version>] [--filter <regex>] [--skip-baseline] [--skip-build] [--docker]
 //
 // 1. Checks out <ref> into a separate git worktree (ng/tmp/visual-baseline), installs its dependencies
 //    and builds its Storybook and samples-ktbe (with the Node version from its .nvmrc or --node, via fnm if available).
@@ -32,12 +32,14 @@ const { values: options, positionals } = parseArgs({
         filter: { type: 'string' },
         'skip-baseline': { type: 'boolean', default: false },
         'skip-build': { type: 'boolean', default: false },
+        // Take the screenshots in the Playwright Docker image (identical on every machine and on the build server).
+        docker: { type: 'boolean', default: false },
     },
 });
 const ref = positionals[0];
 if (!ref && !options['skip-baseline']) {
     console.error(
-        'Usage: node visual-tests/compare-with-ref.mjs <git-ref> [--node <version>] [--filter <regex>] [--skip-baseline] [--skip-build]'
+        'Usage: node visual-tests/compare-with-ref.mjs <git-ref> [--node <version>] [--filter <regex>] [--skip-baseline] [--skip-build] [--docker]'
     );
     process.exit(2);
 }
@@ -131,7 +133,9 @@ function buildAll(runOptions = {}) {
     run('npx nx build samples-ktbe --configuration production', runOptions);
 }
 
-const playwright = 'npx playwright test -c visual-tests/playwright.config.ts';
+const playwright = options.docker
+    ? 'node visual-tests/docker.mjs'
+    : 'npx playwright test -c visual-tests/playwright.config.ts';
 const filterEnv = options.filter ? { VISUAL_FILTER: options.filter } : {};
 
 if (!options['skip-baseline']) {

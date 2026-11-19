@@ -8,11 +8,26 @@ Screenshots the KTBE components with [Playwright](https://playwright.dev) (deskt
 | `interactions.spec.ts` | States that need an interaction: keyboard focus, opened selects, calendars, dropdowns, tooltips, dialogs and flyouts, expanded panels. |
 | `samples.spec.ts`      | Every page of `samples-ktbe`, i.e. the components together in the shell, plus opened side overlay panel and mobile menu.               |
 
+## Committed screenshots
+
+The screenshots in `visual-tests/__screenshots__` are committed with [Git LFS](https://git-lfs.com) (run `git lfs install` once). They are taken in the official Playwright Docker image, because the font rendering differs between operating systems: screenshots taken on Windows or macOS do not match the committed ones.
+
+The baseline was created from release 12.1.2. A change that affects the look updates the screenshots in the same pull request, so the review shows the visual changes next to the code:
+
+```bash
+npm run build-storybook-ktbe
+npx nx build samples-ktbe --configuration production
+npm run visual:docker                              # compare against the committed screenshots
+npm run visual:docker -- --update-snapshots=all    # update them after an intended change
+```
+
+`visual:docker` needs Docker (e.g. Docker Desktop or Rancher Desktop) and uses the image matching the installed `@playwright/test` version.
+
 ## Compare against a release or branch
 
 ```bash
-npx playwright install chromium   # once
-npm run visual:compare -- 12.1.2 --node 22.14.0
+npx playwright install chromium   # once, only needed without --docker
+npm run visual:compare -- 12.1.2 --node 22.14.0 --docker
 ```
 
 The script
@@ -29,6 +44,7 @@ The reference is built with the Node version from its `ng/.nvmrc`. For refs with
 | `--filter <re>`   | Only compare story ids / sample pages matching the regular expression, e.g. `button\|toast`. |
 | `--skip-baseline` | Reuse the existing reference screenshots.                                                    |
 | `--skip-build`    | Don't rebuild the working tree.                                                              |
+| `--docker`        | Take the screenshots in the Playwright Docker image (needed to compare with committed ones). |
 
 Open the report with the expected, actual and diff image of every change:
 
@@ -74,4 +90,6 @@ export const Random: Story = { tags: ['no-visual-test'] };
 
 Stories using `randomAsyncValidator` are deterministic within one version, but not across versions (the number of `Math.random` calls of Angular and Storybook differs), so expect differences there when comparing against an older release.
 
-Screenshots depend on the operating system's font rendering. Reference and comparison must therefore run on the same machine, which is why the screenshots are not committed.
+Screenshots depend on the operating system's font rendering. Reference and comparison must therefore run on the same platform: use `--docker` / `npm run visual:docker`. Without Docker (`npm run visual:test`), only compare against screenshots taken on the same machine.
+
+Note that `visual:compare` replaces the screenshots in `__screenshots__` with the ones of the given ref. Restore the committed ones with `git checkout -- visual-tests/__screenshots__` afterwards.

@@ -18,7 +18,8 @@
         "build-storybook-ktbe": "nx run practices-ui-ktbe:build-storybook",
         "visual:compare": "node visual-tests/compare-with-ref.mjs",
         "visual:test": "playwright test -c visual-tests/playwright.config.ts",
-        "visual:report": "playwright show-report visual-tests/report"
+        "visual:report": "playwright show-report visual-tests/report",
+        "visual:docker": "node visual-tests/docker.mjs"
     },
     "private": true,
     "engines": {
