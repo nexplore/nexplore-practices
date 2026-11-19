@@ -8,6 +8,7 @@ Note: The goal would be, with time, to synthesize these guides in their own docu
 
 Version 14.0.0 builds `practices-ui-ktbe` with Tailwind CSS 4. The components look and behave the same, but Tailwind 4 changes how it is set up in a consuming application. Follow the steps below after updating the practices packages. The official [Tailwind CSS upgrade guide](https://tailwindcss.com/docs/upgrade-guide) explains the details.
 
+-   [Before you start: create a visual baseline](#before-you-start-create-a-visual-baseline)
 -   [Tailwind CSS 4 is required](#tailwind-css-4-is-required)
 -   [Install Tailwind through PostCSS](#install-tailwind-through-postcss)
 -   [Replace your `tailwind.config.js` with the shipped entry stylesheet](#replace-your-tailwindconfigjs-with-the-shipped-entry-stylesheet)
@@ -15,6 +16,41 @@ Version 14.0.0 builds `practices-ui-ktbe` with Tailwind CSS 4. The components lo
 -   [Renamed and removed utilities](#renamed-and-removed-utilities)
 -   [Behaviour changes](#behaviour-changes)
 -   [Prettier](#prettier)
+
+### Before you start: create a visual baseline
+
+Tailwind 4 changes defaults, the cascade and the generated CSS in subtle ways (see [Behaviour changes](#behaviour-changes)). Most of the differences are not visible in a code review and are easily overlooked when clicking through an application. While migrating the library, screenshot comparisons found, for example, doubled spacing in a menu, a calendar with higher rows on small screens and a grey instead of a black focus border.
+
+We therefore recommend to take screenshots of your application with [Playwright](https://playwright.dev) **before** updating, and to compare against them afterwards:
+
+1. On your current version (before the update), install Playwright:
+
+    ```bash
+    npm install --save-dev @playwright/test
+    npx playwright install chromium
+    ```
+
+2. Write a test that opens the important pages and states (open dialogs, dropdowns, forms with validation errors, small and large viewports) and takes a screenshot of each:
+
+    ```ts
+    import { expect, test } from '@playwright/test';
+
+    const pages = ['/', '/orders', '/orders/42', '/settings'];
+
+    for (const path of pages) {
+        test(`page ${path}`, async ({ page }) => {
+            // Fixed time, so dates and calendars render the same in every run
+            await page.clock.setFixedTime(new Date('2025-03-14T10:00:00'));
+            await page.goto(path);
+            await expect(page).toHaveScreenshot({ fullPage: true, animations: 'disabled' });
+        });
+    }
+    ```
+
+3. Create the baseline with `npx playwright test --update-snapshots` and commit the screenshots (with [Git LFS](https://git-lfs.com) to keep the repository small).
+4. Migrate as described below, then run `npx playwright test`. `npx playwright show-report` shows the expected, actual and diff image of every changed screen. Fix unintended changes, then update the screenshots and commit them, so the review shows exactly what changed.
+
+Screenshots depend on the fonts and the rendering of the operating system. Create and compare them on the same platform, ideally in the official Playwright Docker image (`mcr.microsoft.com/playwright`), so they also match on the build server. The visual regression tests of the library ([`ng/visual-tests`](../../ng/visual-tests/README.md)) show a complete setup, including deterministic timers and interaction states.
 
 ### Tailwind CSS 4 is required
 
