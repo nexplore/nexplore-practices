@@ -93,7 +93,9 @@ module.exports = {
     theme: {
         colors,
         // The values are defined as constants above and referenced directly: inside this preset (function-valued theme sections
-        // and plugins) Tailwind 4 resolves `theme(...)` against its default theme instead of the values of this preset.
+        // and plugins), Tailwind 4 resolves `theme(...)` of the keys that it defines itself (colors, fontSize, fontWeight,
+        // lineHeight, screens, ...) against its default theme instead of the values of this preset. Custom keys such as
+        // `tooltipArrows` (used by the tooltip arrow plugin) resolve to the values of this preset.
         fontSize: {
             'extra-small': [fontSizes['extra-small'], { lineHeight: lineHeights['ktbe-extra-small'] }],
             'very-small': [fontSizes['very-small'], { lineHeight: lineHeights['ktbe-very-small'] }],
