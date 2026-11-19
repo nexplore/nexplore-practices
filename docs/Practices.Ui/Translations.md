@@ -14,30 +14,37 @@ Practices.UI utilizes these prefixes for the keys:
 
 ## Configuration
 
-If you want to rewrite the prefixes, you can do so by providing a rewrite configuration to `providePractices()`.
-Such a config requires a key, which represents the prefix you want to rewrite and an object with a `rewriteTo` property
-and an optional `fallbackTo` property:
+If you want to rewrite the prefixes, you can do so by providing a `rewriteResourceConfig` to `providePractices()`.
+Its `rewriteTypeConfig` maps the prefix you want to rewrite to an object with a `rewriteTo` property and an optional
+`fallbackTo` property:
 
 ```ts
 ...
 bootstrapApplication(AppComponent, {
     providers: [
+        provideTranslateService(),
         providePractices({
-            rewriteResourceTypes: {
-                "Practices": {
-                    rewriteTo: "MyApp",
-                    fallbackTo: "MyGeneral"
+            rewriteResourceConfig: {
+                rewriteTypeConfig: {
+                    Practices: {
+                        rewriteTo: 'MyApp',
+                        fallbackTo: 'MyGeneral',
+                    },
+                    Messages: {
+                        rewriteTo: 'MyMessages',
+                    },
                 },
-                "Messages": {
-                    rewriteTo: "MyMessages",
-                }
-            }
-        })
-    ]
+                // Optional: how keys without any translation are displayed, e.g. `[Practices.Labels_Title]`
+                missingKeyTransformFn: (key) => `[${key}]`,
+            },
+        }),
+    ],
 });
 ```
 
-This will inject a custom `TranslateParser` (`RewriteTranslateParser`) which will rewrite keys if it encouters a key with a prefix which is configured in `rewriteResourceTypes`.
+This registers the `RewriteMissingTranslationHandler` as ngx-translate's `MissingTranslationHandler`. It is only used for keys
+which have **no translation**: if such a key starts with a prefix configured in `rewriteTypeConfig`, the handler tries the
+rewritten key.
 
 Some examples for the configuration above:
 
@@ -45,7 +52,7 @@ Some examples for the configuration above:
 - `Messages.Labels_Title` -> `MyMessages.Labels_Title`
 
 If it fails to resolve the rewritten key for `rewriteTo`, it will try to resolve the key for `fallbackTo`.
-If that fails as well, it will return `undefined`, which is the default behaviour of ngx-translate's [`TranslateDefaultParser`](https://github.com/ngx-translate/core/blob/master/packages/core/lib/translate.parser.ts).
+If that fails as well, it returns the original key, transformed by `missingKeyTransformFn` if one is configured.
 
 ## TitleService
 
@@ -59,20 +66,21 @@ This service also provides a `breadcrumbTitle$` observable, which is intended to
 Provide and configure the service:
 
 ```ts
-import { TitleService } from '@nexplore/practices-ui';
+import { providePractices } from '@nexplore/practices-ui';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter, TitleStrategy } from '@angular/router';
+import { provideRouter } from '@angular/router';
 
 bootstrapApplication(AppComponent, {
-    providers: [provideRouter(...) {
+    providers: [
+        provideRouter(APP_ROUTES),
         providePractices({
             titleServiceConfig: {
                 titleTransformer: (title) => title + ' | SamplesKtBE', // <-- Declare a title transformer, which gets applied to all **page** titles
                 autoSetBreadcrumbTitle: true, // <-- Automatically set the breadcrumb title, if the page title is set
-                localize: true,  // <-- Localize the page title
-            }
+                localize: true, // <-- Localize the page title
+            },
         }),
-    }],
+    ],
 });
 ```
 
@@ -92,7 +100,7 @@ export class SampleComponent implements OnInit {
 
     ngOnInit(): void {
         this.titleService.setTitle('My Custom Title', { localize: false, autoSetBreadcrumbTitle: false }); // <-- Set a custom title, which is not localized and does not set the breadcrumb title
-        this.titleService.setBreadcrumbTitle('My Custom Breadcrumbs Title', { localize: false }, this.router.url); // <-- Set a custom breadcrumb title without localization for a specific route
+        this.titleService.setBreadcrumbTitle('My Custom Breadcrumbs Title', { localize: false, breadcrumbUrl: this.router.url }); // <-- Set a custom breadcrumb title without localization for a specific route
     }
 }
 ```
