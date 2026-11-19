@@ -100,6 +100,26 @@ export interface WrapperFormControlAccessor<T = any> {
  *
  * If you intend to use the form control with values that are DTO constructors, you should implement either the `getValueAccessorEntityDto` or `getValueAccessorEntityDtoSignal` methods to provide the current DTO.
  */
+/**
+ * Returns the DTO to clone the form value with: the DTO provided by the component, or else the last written value if it
+ * is a DTO.
+ *
+ * @internal Exported for tests.
+ */
+export function resolveValueAccessorEntityDto(
+    instance: Pick<
+        WrapperFormControlAccessor,
+        'getValueAccessorEntityDto' | 'getValueAccessorEntityDtoSignalToAutoResetForm'
+    >,
+    currentDtoValue: unknown
+): INswagGeneratedType | null {
+    return (
+        instance.getValueAccessorEntityDto?.() ??
+        instance.getValueAccessorEntityDtoSignalToAutoResetForm?.()() ??
+        (isDto(currentDtoValue) ? (currentDtoValue as INswagGeneratedType) : null)
+    );
+}
+
 export function provideWrappedFormControlAccessors(component: Type<WrapperFormControlAccessor>): Provider[] {
     // https://github.com/angular/angular/issues/54527
     function safeTakeUntilDestroyed<T>(destroyRef?: DestroyRef): MonoTypeOperatorFunction<T> {
@@ -218,12 +238,7 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                                             currentDtoValue) &&
                                         !isDto(value)
                                     ) {
-                                        const entity =
-                                            (instance.getValueAccessorEntityDto?.() ??
-                                            instance.getValueAccessorEntityDtoSignalToAutoResetForm?.()() ??
-                                            isDto(currentDtoValue))
-                                                ? currentDtoValue
-                                                : null;
+                                        const entity = resolveValueAccessorEntityDto(instance, currentDtoValue);
 
                                         if (entity && value !== null) {
                                             value = cloneDtoWith(entity, value);
