@@ -104,7 +104,7 @@ import { importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { providePractices } from '@nexplore/practices-ui';
 import { PracticesKtbeShellModule, providePracticesKtbe } from '@nexplore/practices-ui-ktbe';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 
 import { AppComponent } from './app/app.component';
 import { APP_ROUTES } from './app/app.routes';
@@ -112,7 +112,8 @@ import { APP_ROUTES } from './app/app.routes';
 bootstrapApplication(AppComponent, {
     providers: [
         provideRouter(APP_ROUTES),
-        importProvidersFrom(TranslateModule.forRoot(), BrowserAnimationsModule, PracticesKtbeShellModule),
+        provideTranslateService(),
+        importProvidersFrom(BrowserAnimationsModule, PracticesKtbeShellModule),
         // Configure the core Practices services
         providePractices({
             titleServiceConfig: {

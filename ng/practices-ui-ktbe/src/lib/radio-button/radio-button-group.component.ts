@@ -15,7 +15,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { PuiFormFieldDirective, PuiFormFieldService } from '@nexplore/practices-ng-forms';
 import { DestroyService } from '@nexplore/practices-ui';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { combineLatestWith, map, of, skip, takeUntil } from 'rxjs';
 import { PuibeReadonlyDirective } from '../common/readonly.directive';
 import { PuibeIconInvalidComponent } from '../icons/icon-invalid.component';
@@ -34,7 +34,7 @@ import { PuibeRadioButtonComponent } from './radio-button.component';
         NgClass,
         PuibeIconInvalidComponent,
         AsyncPipe,
-        TranslateModule,
+        TranslatePipe,
         PuibeIconSpinnerComponent,
         PuibeReadonlyLabelValueComponent,
     ],

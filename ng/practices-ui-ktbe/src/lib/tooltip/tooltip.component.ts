@@ -16,7 +16,7 @@ import {
     DOCUMENT,
 } from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { takeUntil } from 'rxjs';
 import { PuibeTooltipIconComponent } from './tooltip-icon.component';
 
@@ -75,7 +75,7 @@ let nextUniqueId = 0;
 
 @Component({
     selector: 'puibe-tooltip-button',
-    imports: [CommonModule, OverlayModule, TranslateModule, PuibeTooltipIconComponent],
+    imports: [CommonModule, OverlayModule, TranslatePipe, PuibeTooltipIconComponent],
     providers: [DestroyService],
     templateUrl: './tooltip.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,

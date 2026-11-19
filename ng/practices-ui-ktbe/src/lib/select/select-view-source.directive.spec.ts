@@ -1,10 +1,10 @@
-import { Component, importProvidersFrom } from '@angular/core';
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { providePractices } from '@nexplore/practices-ui';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { PuibeReadonlyDirective } from '../common/readonly.directive';
 import { PuibeFormFieldComponent } from '../form-field/form-field.component';
@@ -55,7 +55,7 @@ class HostComponent {
 describe('PuibeSelectViewSourceDirective', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [importProvidersFrom(TranslateModule.forRoot()), provideNoopAnimations(), providePractices()],
+            providers: [provideTranslateService(), provideNoopAnimations(), providePractices()],
         });
     });
 

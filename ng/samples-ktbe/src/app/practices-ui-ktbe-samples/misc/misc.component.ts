@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     standalone: true,
     selector: 'app-tables',
     templateUrl: './misc.component.html',
-    imports: [TranslateModule],
+    imports: [TranslatePipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MiscComponent {}

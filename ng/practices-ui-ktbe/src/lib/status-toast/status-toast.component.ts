@@ -2,7 +2,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 import { PuiFormularInvalidError } from '@nexplore/practices-ng-forms';
 import { StatusError, StatusEventExt } from '@nexplore/practices-ui';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { PuibeExpansionPanelComponent } from '../expansion-panel/expansion-panel.component';
 import { IconDirection, IconSize } from '../icons/icon.interface';
 import { PuibeToastComponent } from '../toast/toast.component';
@@ -16,7 +16,7 @@ export type StatusTemplateContext<TError = StatusError> = {
     standalone: true,
     templateUrl: './status-toast.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [PuibeToastComponent, NgTemplateOutlet, PuibeExpansionPanelComponent, TranslateModule],
+    imports: [PuibeToastComponent, NgTemplateOutlet, PuibeExpansionPanelComponent, TranslatePipe],
 })
 export class PuibeStatusToastComponent {
     private _translate = inject(TranslateService);

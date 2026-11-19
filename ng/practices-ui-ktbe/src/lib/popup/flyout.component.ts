@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
 import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+
 import { PuibeFlyoutService } from './flyout.service';
 import { Dialog } from '@angular/cdk/dialog';
 
@@ -10,7 +10,7 @@ export const FLYOUT_PROVIDERS = [PuibeFlyoutService, Dialog];
     standalone: true,
     selector: 'puibe-flyout',
     templateUrl: 'flyout.component.html',
-    imports: [NgClass, TranslateModule],
+    imports: [NgClass],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.Eager,
     styles: [

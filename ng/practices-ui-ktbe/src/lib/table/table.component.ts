@@ -10,7 +10,7 @@ import {
     Type,
 } from '@angular/core';
 import { DestroyService, StatusProgressOptions, StatusService } from '@nexplore/practices-ui';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, combineLatest, filter, map, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
 import { setHostClassNames } from '../util/utils';
@@ -28,10 +28,7 @@ export interface ColumnTemplate {
 }
 
 export type TableInteractionEvent =
-    | { type: 'sort' }
-    | { type: 'page'; number: number }
-    | { type: 'page-size'; number: number }
-    | { type: 'filter' };
+    { type: 'sort' } | { type: 'page'; number: number } | { type: 'page-size'; number: number } | { type: 'filter' };
 
 @Component({
     standalone: true,
@@ -42,7 +39,7 @@ export type TableInteractionEvent =
     imports: [
         NgClass,
         AsyncPipe,
-        TranslateModule,
+        TranslatePipe,
         NgTemplateOutlet,
         NgComponentOutlet,
         PuibeIconSpinnerComponent,

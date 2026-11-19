@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { AsyncPipe } from '@angular/common';
 import { PuibeIconSearchComponent } from '../icons/icon-search.component';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
     selector: 'puibe-inpage-search',
     standalone: true,
-    imports: [AsyncPipe, FormsModule, TranslateModule, PuibeIconSearchComponent, PuibeIconSpinnerComponent],
+    imports: [AsyncPipe, FormsModule, TranslatePipe, PuibeIconSearchComponent, PuibeIconSpinnerComponent],
     templateUrl: './inpage-search.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [

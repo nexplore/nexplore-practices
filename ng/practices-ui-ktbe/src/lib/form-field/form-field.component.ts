@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PuiFormFieldDirective } from '@nexplore/practices-ng-forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import {
     BehaviorSubject,
     combineLatest,
@@ -63,7 +63,7 @@ const overlayTextEmptyClassName = 'text-black/60';
         PuibeReadonlyLabelValueComponent,
         NgClass,
         AsyncPipe,
-        TranslateModule,
+        TranslatePipe,
         NgComponentOutlet,
     ],
     hostDirectives: [PuiFormFieldDirective],

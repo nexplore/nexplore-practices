@@ -20,7 +20,7 @@ import {
 } from '@angular/forms';
 import { PuiFormFieldDirective, PuiFormFieldService } from '@nexplore/practices-ng-forms';
 import { DestroyService } from '@nexplore/practices-ui';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, combineLatest, delay, filter, map, merge, of, shareReplay, startWith, switchMap } from 'rxjs';
 import { PuibeReadonlyDirective } from '../common/readonly.directive';
 import { FormFieldStatus } from '../form-field/form-field.service';
@@ -36,7 +36,7 @@ let nextUniqueId = 0;
     selector: 'puibe-checkbox',
     templateUrl: './checkbox.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, AsyncPipe, TranslateModule, PuibeReadonlyLabelValueComponent],
+    imports: [NgClass, AsyncPipe, TranslatePipe, PuibeReadonlyLabelValueComponent],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,

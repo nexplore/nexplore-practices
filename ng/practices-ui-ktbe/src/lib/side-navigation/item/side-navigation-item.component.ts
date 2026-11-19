@@ -1,7 +1,7 @@
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+
 import { PuibeIconArrowBreadcrumbComponent } from '../../icons/icon-arrow-breadcrumb.component';
 
 @Component({
@@ -9,14 +9,7 @@ import { PuibeIconArrowBreadcrumbComponent } from '../../icons/icon-arrow-breadc
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'puibe-side-navigation-item',
     templateUrl: './side-navigation-item.component.html',
-    imports: [
-        NgClass,
-        TranslateModule,
-        PuibeIconArrowBreadcrumbComponent,
-        RouterLink,
-        RouterLinkActive,
-        NgTemplateOutlet,
-    ],
+    imports: [NgClass, PuibeIconArrowBreadcrumbComponent, RouterLink, RouterLinkActive, NgTemplateOutlet],
 })
 export class PuibeSideNavigationItemComponent {
     @HostBinding('class')

@@ -17,7 +17,7 @@ import {
     ChangeDetectionStrategy,
 } from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { combineLatest, merge, Observable, startWith, Subscription, switchMap, takeUntil, tap } from 'rxjs';
 
 import { PuibeIconArrowEndComponent } from '../../icons/icon-arrow-end.component';
@@ -33,7 +33,7 @@ import { PuibeTablePageSizeComponent } from './table-page-size.component';
     templateUrl: './table-pagination.component.html',
     providers: [DestroyService],
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [TranslateModule, PuibeIconArrowEndComponent, PuibeIconArrowSlidingComponent],
+    imports: [TranslatePipe, PuibeIconArrowEndComponent, PuibeIconArrowSlidingComponent],
 })
 export class PuibeTablePaginationComponent implements OnDestroy, OnInit {
     /**
@@ -121,7 +121,11 @@ export class PuibeTablePaginationComponent implements OnDestroy, OnInit {
 
     @Output() currentPageChange = new EventEmitter<number>(false);
 
-    constructor(private _table: PuibeTableComponent, private _destroy$: DestroyService, public page: PageService) {}
+    constructor(
+        private _table: PuibeTableComponent,
+        private _destroy$: DestroyService,
+        public page: PageService
+    ) {}
 
     /*
      * Subscription to the Page service for page changes.

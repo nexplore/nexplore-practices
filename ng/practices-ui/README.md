@@ -48,7 +48,6 @@ A custom `TranslateParser` which rewrites resource types for translations to wor
 
 ```typescript
 import { provideTranslateParser } from '@nexplore/practices-ui';
-import { TranslateModule } from '@ngx-translate/core';
 
 // In your app providers
 const providers = [provideTranslateParser()];

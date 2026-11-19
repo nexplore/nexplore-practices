@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { Command, command, isCommand } from '@nexplore/practices-ng-commands';
 import { CombinedCommandInput } from '@nexplore/practices-ui';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PuibeButtonDirective } from '../button/button.directive';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
 import { PuibeHideIfEmptyTextDirective } from '../util/hide-if-empty-text.directive';
@@ -34,7 +34,7 @@ import { PuibeModalComponent } from './modal.component';
         PuibeModalSubtitleDirective,
         PuibeModalFooterActionDirective,
         PuibeButtonDirective,
-        TranslateModule,
+        TranslatePipe,
         PuibeIconSpinnerComponent,
         DialogTemplateContentComponent,
         PuibeHideIfEmptyTextDirective,

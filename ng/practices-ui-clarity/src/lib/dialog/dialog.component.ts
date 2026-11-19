@@ -14,13 +14,12 @@ import { finalize } from 'rxjs/operators';
 import { DialogAction, DialogOptions } from '.';
 import { ClarityModule } from '@clr/angular';
 import { PortalModule } from '@angular/cdk/portal';
-import { TranslateModule } from '@ngx-translate/core';
 
 export const DIALOG_OPTIONS = new InjectionToken<{}>('DialogOptions');
 
 @Component({
     selector: 'puiclr-dialog',
-    imports: [ClarityModule, PortalModule, TranslateModule],
+    imports: [ClarityModule, PortalModule],
     templateUrl: './dialog.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,

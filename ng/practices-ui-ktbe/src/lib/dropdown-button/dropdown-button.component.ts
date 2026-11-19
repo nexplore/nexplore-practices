@@ -15,7 +15,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { PuibeButtonDirective, Size } from '../button/button.directive';
@@ -58,7 +58,7 @@ let nextUniqueId = 0;
         CdkMenu,
         CdkMenuItem,
         CdkMenuTrigger,
-        TranslateModule,
+        TranslatePipe,
     ],
 })
 export class PuibeDropdownButtonComponent implements AfterViewInit, AfterContentChecked, OnDestroy {

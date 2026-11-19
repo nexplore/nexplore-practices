@@ -14,7 +14,7 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PuibeIconArrowComponent } from '../icons/icon-arrow.component';
 import { isElementVisibleInVerticalScrollView } from '../util/utils';
 
@@ -54,7 +54,7 @@ const bodyExpansionAnimation: AnimationTriggerMetadata = trigger('bodyExpansion'
     selector: 'puibe-expansion-panel',
     templateUrl: './expansion-panel.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CdkAccordionModule, PuibeIconArrowComponent, CommonModule, TranslateModule],
+    imports: [CdkAccordionModule, PuibeIconArrowComponent, CommonModule, TranslatePipe],
     animations: [bodyExpansionAnimation],
 })
 export class PuibeExpansionPanelComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
@@ -155,7 +155,10 @@ export class PuibeExpansionPanelComponent implements OnInit, AfterViewInit, OnCh
 
     private resizeObserver?: ResizeObserver;
 
-    constructor(private elRef: ElementRef<HTMLElement>, private cdr: ChangeDetectorRef) {}
+    constructor(
+        private elRef: ElementRef<HTMLElement>,
+        private cdr: ChangeDetectorRef
+    ) {}
 
     ngOnInit(): void {
         this.isInitiallyCollapsed = !this.isExpanded;

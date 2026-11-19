@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
 import { Component, inject, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PuibeIconCloseComponent } from '../icons/icon-close.component';
 import { PuibeModalService } from './modal.service';
 import { PUIBE_MODAL_CONFIG, PuibeModalConfig } from './types';
@@ -9,7 +9,7 @@ import { PUIBE_MODAL_CONFIG, PuibeModalConfig } from './types';
     standalone: true,
     selector: 'puibe-modal',
     templateUrl: 'modal.component.html',
-    imports: [NgClass, TranslateModule, PuibeIconCloseComponent],
+    imports: [NgClass, TranslatePipe, PuibeIconCloseComponent],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.Eager,
     styles: [
