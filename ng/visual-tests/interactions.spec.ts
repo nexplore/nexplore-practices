@@ -29,7 +29,14 @@ const focusFirst = (page: Page) => page.keyboard.press('Tab');
 const clickButton = (name: string | RegExp) => async (page: Page) => {
     const button = page.getByRole('button', { name }).first();
     await button.hover();
-    await button.evaluate((element) => Promise.all(element.getAnimations().map((animation) => animation.finished)));
+    await button.evaluate((element) =>
+        Promise.all(
+            element
+                .getAnimations()
+                .filter((animation) => animation.effect?.getTiming().iterations !== Infinity)
+                .map((animation) => animation.finished)
+        )
+    );
     await button.click();
 };
 // Click at the start of the select, its center may be covered by the clear button.
@@ -68,7 +75,8 @@ const INTERACTIONS: Interaction[] = [
     { storyId: 'puibe-select--with-metadata-select', name: 'open', act: openSelect },
     { storyId: 'puibe-select--grouped', name: 'open', act: openSelect },
     {
-        // Leave the required select without a value (touched, invalid), then open it again
+        // The required select without value is displayed as invalid (hideInvalidIfUntouched is off by default): open,
+        // close and reopen it, so the panel is shown after an interaction
         storyId: 'puibe-select--required-select',
         name: 'open-invalid',
         act: async (page) => {

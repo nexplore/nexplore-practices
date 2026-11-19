@@ -63,15 +63,19 @@ describe('PuibeSelectDirective', () => {
 
     it('adds the invalid state to the panel when the select is displayed as invalid', async () => {
         const fixture = await render();
+        fixture.componentInstance.formGroup.controls.value.setValue('Pizza');
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        expect(panelClasses(fixture.componentInstance)).not.toContain('puibe-display-invalid');
 
-        fixture.componentInstance.formGroup.controls.value.markAsTouched();
-        fixture.componentInstance.formGroup.controls.value.updateValueAndValidity();
+        fixture.componentInstance.formGroup.controls.value.setValue(null);
         fixture.detectChanges();
         await fixture.whenStable();
         fixture.detectChanges();
 
         expect(panelClasses(fixture.componentInstance)).toEqual(
-            expect.arrayContaining(['my-panel', 'puibe-select-panel-invalid'])
+            expect.arrayContaining(['my-panel', 'puibe-display-invalid'])
         );
     });
 });
