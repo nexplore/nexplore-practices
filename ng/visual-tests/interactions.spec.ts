@@ -24,7 +24,14 @@ interface Interaction {
 
 /** Moves the keyboard focus to the first focusable element, so the focus styles become visible. */
 const focusFirst = (page: Page) => page.keyboard.press('Tab');
-const clickButton = (name: string | RegExp) => (page: Page) => page.getByRole('button', { name }).first().click();
+// Hover first and wait for the hover transition (the buttons scale), so overlays positioned relative to the button
+// (e.g. the flyout) do not measure it in the middle of the transition.
+const clickButton = (name: string | RegExp) => async (page: Page) => {
+    const button = page.getByRole('button', { name }).first();
+    await button.hover();
+    await button.evaluate((element) => Promise.all(element.getAnimations().map((animation) => animation.finished)));
+    await button.click();
+};
 // Click at the start of the select, its center may be covered by the clear button.
 // Open with the keyboard: the button scales on hover (CSS transition), so with the mouse the tooltip would measure its
 // origin in the middle of the transition, depending on timing.

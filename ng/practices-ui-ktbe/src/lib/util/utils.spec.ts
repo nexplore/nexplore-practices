@@ -1,5 +1,11 @@
 import { expect, describe, it } from '@jest/globals';
-import { compareUrlWithWildcards, isDefinedAndNotEmptyArray, splitArrayChunks, trimChars } from './utils';
+import {
+    compareUrlWithWildcards,
+    isDefinedAndNotEmptyArray,
+    splitArrayChunks,
+    toClassRecord,
+    trimChars,
+} from './utils';
 
 describe('trimChars', () => {
     it('should trim /test', () => {
@@ -112,5 +118,20 @@ describe('isDefinedAndNotEmptyArray', () => {
     it('should return false for an empty object', () => {
         const result = isDefinedAndNotEmptyArray({});
         expect(result).toBe(false);
+    });
+});
+
+describe('toClassRecord', () => {
+    it('converts all class values accepted by [class] into a record', () => {
+        expect(toClassRecord('a  b')).toEqual({ a: true, b: true });
+        expect(toClassRecord(['a', 'b c'])).toEqual({ a: true, b: true, c: true });
+        expect(toClassRecord(new Set(['a', 'b']))).toEqual({ a: true, b: true });
+        expect(toClassRecord({ a: true, 'b c': 1, d: false })).toEqual({ a: true, b: true, c: true });
+    });
+
+    it('returns an empty record for empty values', () => {
+        expect(toClassRecord(null)).toEqual({});
+        expect(toClassRecord(undefined)).toEqual({});
+        expect(toClassRecord('')).toEqual({});
     });
 });

@@ -90,17 +90,6 @@ export interface WrapperFormControlAccessor<T = any> {
 }
 
 /**
- * Provides the necessary accessors for the form control to interact with the component.
- *
- * This is a abstraction combining `NG_VALUE_ACCESSOR` and `NG_VALIDATORS` providers.
- *
- * There are multiple methods that can be implemented to customize the behavior of the form control.
- *
- * At the minimum, the `getValueAccessorWrapperFormControl` method should be implemented to return the form control or form group that will be used to read and write values as well as to validate the form control.
- *
- * If you intend to use the form control with values that are DTO constructors, you should implement either the `getValueAccessorEntityDto` or `getValueAccessorEntityDtoSignal` methods to provide the current DTO.
- */
-/**
  * Returns the DTO to clone the form value with: the DTO provided by the component, or else the last written value if it
  * is a DTO.
  *
@@ -120,6 +109,17 @@ export function resolveValueAccessorEntityDto(
     );
 }
 
+/**
+ * Provides the necessary accessors for the form control to interact with the component.
+ *
+ * This is a abstraction combining `NG_VALUE_ACCESSOR` and `NG_VALIDATORS` providers.
+ *
+ * There are multiple methods that can be implemented to customize the behavior of the form control.
+ *
+ * At the minimum, the `getValueAccessorWrapperFormControl` method should be implemented to return the form control or form group that will be used to read and write values as well as to validate the form control.
+ *
+ * If you intend to use the form control with values that are DTO constructors, you should implement either the `getValueAccessorEntityDto` or `getValueAccessorEntityDtoSignal` methods to provide the current DTO.
+ */
 export function provideWrappedFormControlAccessors(component: Type<WrapperFormControlAccessor>): Provider[] {
     // https://github.com/angular/angular/issues/54527
     function safeTakeUntilDestroyed<T>(destroyRef?: DestroyRef): MonoTypeOperatorFunction<T> {

@@ -47,6 +47,8 @@ We therefore recommend to take screenshots of your application with [Playwright]
     }
     ```
 
+    The relative paths need a `baseURL` in `playwright.config.ts`, e.g. `use: { baseURL: 'http://localhost:4200' }`, and a running application (or a [`webServer`](https://playwright.dev/docs/test-webserver) entry that starts it).
+
 3. Create the baseline with `npx playwright test --update-snapshots` and commit the screenshots (with [Git LFS](https://git-lfs.com) to keep the repository small).
 4. Migrate as described below, then run `npx playwright test`. `npx playwright show-report` shows the expected, actual and diff image of every changed screen. Fix unintended changes, then update the screenshots and commit them, so the review shows exactly what changed.
 

@@ -7,26 +7,31 @@ import {
     ElementRef,
     HostBinding,
     HostListener,
+    effect,
     Inject,
+    inject,
+    Injector,
     Input,
     OnInit,
     Optional,
+    runInInjectionContext,
     Self,
     ViewContainerRef,
     ViewEncapsulation,
 } from '@angular/core';
 import { SIGNAL, signalSetFn } from '@angular/core/primitives/signals';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { NgControl } from '@angular/forms';
 import { trace } from '@nexplore/practices-ng-logging';
 import { DestroyService } from '@nexplore/practices-ui';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { TranslateService } from '@ngx-translate/core';
-import { combineLatest, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 import { FormFieldService } from '../form-field/form-field.service';
 import { FORM_CONFIG, FormConfig } from '../form/form.config';
 import { PuibeIconArrowComponent } from '../icons/icon-arrow.component';
 import { PuibeIconSearchComponent } from '../icons/icon-search.component';
-import { isDefinedAndNotEmptyArray, setAttr, setHostClassNames } from '../util/utils';
+import { isDefinedAndNotEmptyArray, setAttr, setHostClassNames, toClassRecord } from '../util/utils';
 
 const baseArrowIconClassName = 'transition-transform duration-300 ease-in-out flex flex-col justify-center scale-50';
 const arrowDownIconClassName = `${baseArrowIconClassName} rotate-0`;
@@ -51,6 +56,8 @@ export class PuibeSelectDeepStyleComponent {
     providers: [DestroyService],
 })
 export class PuibeSelectDirective implements OnInit, AfterViewInit {
+    private readonly _injector = inject(Injector);
+
     @HostListener('blur')
     onBlur() {
         this._formFieldService.markAsTouched();
@@ -134,19 +141,21 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
             );
 
         // Since ng-select 24, the dropdown panel is rendered in an overlay (outside of the ng-select), so the styles for
-        // the invalid and loading state cannot use the classes of the ng-select: pass the state to the panel instead.
-        const userPanelClass = this._readComponentProp<string | string[] | null>('_panelClass');
-        combineLatest([this._formFieldService.displayAsInvalid$, this._formFieldService.loading$])
-            .pipe(takeUntil(this._destroy$))
-            .subscribe(([displayAsInvalid, loading]) => {
-                const panelClasses = [
-                    ...(Array.isArray(userPanelClass) ? userPanelClass : [userPanelClass]),
-                    displayAsInvalid ? 'puibe-select-panel-invalid' : null,
-                    loading ? 'puibe-select-panel-loading' : null,
-                ].filter(Boolean);
-                this._writeComponentProp('panelClass', panelClasses.join(' ') || null);
-                this._cdr.markForCheck();
+        // the invalid and loading state cannot use the classes of the ng-select: pass the state to the panel instead,
+        // merged with the panelClass of the application (re-evaluated whenever it changes).
+        runInInjectionContext(this._injector, () => {
+            const displayAsInvalid = toSignal(this._formFieldService.displayAsInvalid$, { initialValue: false });
+            const loading = toSignal(this._formFieldService.loading$, { initialValue: false });
+            const applicationPanelClass = (this._ngSelectComponent as unknown as { _panelClass?: () => unknown })
+                ._panelClass;
+            effect(() => {
+                this._writeComponentProp('panelClass', {
+                    ...toClassRecord(applicationPanelClass?.()),
+                    'puibe-select-panel-invalid': displayAsInvalid(),
+                    'puibe-select-panel-loading': loading(),
+                });
             });
+        });
 
         // Displays the label as placeholder, until focused, then switches to actual placeholder (if defined)
         this._formFieldService.placeholder$.pipe(takeUntil(this._destroy$)).subscribe((placeholder) => {

@@ -157,3 +157,30 @@ export function isDefinedAndNotEmptyArray(value: any): boolean {
         return true;
     }
 }
+
+/**
+ * Converts a class value as accepted by [class] / [ngClass] (a string with space separated classes, an array or Set
+ * of classes, or an object of class names to booleans) into an object of class names to booleans, e.g. to merge it with
+ * further classes.
+ */
+export function toClassRecord(value: unknown): Record<string, boolean> {
+    const record: Record<string, boolean> = {};
+    const addClasses = (classes: string) =>
+        classes
+            .split(/\s+/)
+            .filter(Boolean)
+            .forEach((className) => (record[className] = true));
+
+    if (typeof value === 'string') {
+        addClasses(value);
+    } else if (Array.isArray(value) || value instanceof Set) {
+        value.forEach((classes) => typeof classes === 'string' && addClasses(classes));
+    } else if (value && typeof value === 'object') {
+        Object.entries(value).forEach(([classes, enabled]) => {
+            if (enabled) {
+                addClasses(classes);
+            }
+        });
+    }
+    return record;
+}
