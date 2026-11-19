@@ -4,141 +4,143 @@ import { signal } from '@angular/core';
 import { of, Subject } from 'rxjs';
 
 describe('enhance', () => {
-  it('should enhance an object with simple properties', () => {
-    const obj = { name: 'Original' };
-    const enhanced = enhance(obj, {
-      age: 30,
-      active: true
+    it('should enhance an object with simple properties', () => {
+        const obj = { name: 'Original' };
+        const enhanced = enhance(obj, {
+            age: 30,
+            active: true,
+        });
+
+        expect(enhanced).toBe(obj); // Same reference
+        expect(enhanced.name).toBe('Original');
+        expect(enhanced.age).toBe(30);
+        expect(enhanced.active).toBe(true);
     });
 
-    expect(enhanced).toBe(obj); // Same reference
-    expect(enhanced.name).toBe('Original');
-    expect(enhanced.age).toBe(30);
-    expect(enhanced.active).toBe(true);
-  });
+    it('should enhance an object using a function', () => {
+        const obj = { count: 10 };
+        const enhanced = enhance(obj, (source) => ({
+            doubled: source.count * 2,
+            description: `Count is ${source.count}`,
+        }));
 
-  it('should enhance an object using a function', () => {
-    const obj = { count: 10 };
-    const enhanced = enhance(obj, (source) => ({
-      doubled: source.count * 2,
-      description: `Count is ${source.count}`
-    }));
-
-    expect(enhanced).toBe(obj);
-    expect(enhanced.count).toBe(10);
-    expect(enhanced.doubled).toBe(20);
-    expect(enhanced.description).toBe('Count is 10');
-  });
-
-  it('should handle signals', () => {
-    // Use a real signal
-    const nameSignal = signal('John');
-    const obj = { id: 1 };
-
-    const enhanced = enhance(obj, {
-      nameSignal: nameSignal
+        expect(enhanced).toBe(obj);
+        expect(enhanced.count).toBe(10);
+        expect(enhanced.doubled).toBe(20);
+        expect(enhanced.description).toBe('Count is 10');
     });
 
-    expect(enhanced.nameSignal()).toBe('John');
+    it('should handle signals', () => {
+        // Use a real signal
+        const nameSignal = signal('John');
+        const obj = { id: 1 };
 
-    nameSignal.set('Jane');
-    expect(enhanced.nameSignal()).toBe('Jane');
-  });
+        const enhanced = enhance(obj, {
+            nameSignal: nameSignal,
+        });
 
-  it('should handle observables', () => {
-    // Use a real observable
-    const statusSubject = new Subject<string>();
-    const obj = { id: 1 };
+        expect(enhanced.nameSignal()).toBe('John');
 
-    const enhanced = enhance(obj, {
-      status: statusSubject
+        nameSignal.set('Jane');
+        expect(enhanced.nameSignal()).toBe('Jane');
     });
 
-    // The enhanced property should be the observable itself
-    expect(enhanced.status).toBe(statusSubject);
-  });
+    it('should handle observables', () => {
+        // Use a real observable
+        const statusSubject = new Subject<string>();
+        const obj = { id: 1 };
 
-  it('should handle property descriptors', () => {
-    const obj = { first: 'John' };
+        const enhanced = enhance(obj, {
+            status: statusSubject,
+        });
 
-    let lastName = 'Doe';
-    const enhanced = enhance(obj, {
-      fullName: {
-        get: () => `${obj.first} ${lastName}`,
-        configurable: true
-      },
-      lastName: {
-        get: () => lastName,
-        set: (value: string) => { lastName = value; },
-        configurable: true
-      }
+        // The enhanced property should be the observable itself
+        expect(enhanced.status).toBe(statusSubject);
     });
 
-    expect(enhanced.fullName).toBe('John Doe');
+    it('should handle property descriptors', () => {
+        const obj = { first: 'John' };
 
-    // Test setter
-    enhanced.lastName = 'Smith';
-    expect(lastName).toBe('Smith');
-    expect(enhanced.fullName).toBe('John Smith');
-  });
+        let lastName = 'Doe';
+        const enhanced = enhance(obj, {
+            fullName: {
+                get: () => `${obj.first} ${lastName}`,
+                configurable: true,
+            },
+            lastName: {
+                get: () => lastName,
+                set: (value: string) => {
+                    lastName = value;
+                },
+                configurable: true,
+            },
+        });
 
-  it('should handle property descriptor with value', () => {
-    const obj = {};
+        expect(enhanced.fullName).toBe('John Doe');
 
-    const enhanced = enhance(obj, {
-      constant: {
-        value: 42,
-        writable: false,
-        configurable: true
-      }
+        // Test setter
+        enhanced.lastName = 'Smith';
+        expect(lastName).toBe('Smith');
+        expect(enhanced.fullName).toBe('John Smith');
     });
 
-    expect(enhanced.constant).toBe(42);
+    it('should handle property descriptor with value', () => {
+        const obj = {};
 
-    // Verify property is not writable
-    expect(() => {
-      (enhanced as any).constant = 100;
-    }).toThrow(TypeError);
-    expect(enhanced.constant).toBe(42);
-  });
+        const enhanced = enhance(obj, {
+            constant: {
+                value: 42,
+                writable: false,
+                configurable: true,
+            },
+        });
 
-  it('should handle complex mixed enhancements', () => {
-    // Use real signal and observable
-    const countSignal = signal(5);
-    const statusObservable = of('pending');
+        expect(enhanced.constant).toBe(42);
 
-    const obj = { name: 'Task' };
-
-    const enhanced = enhance(obj, {
-      count: countSignal,
-      status: statusObservable,
-      isActive: true,
-      description: {
-        get: () => `${obj.name} (Count: ${countSignal()})`,
-        configurable: true
-      }
+        // Verify property is not writable
+        expect(() => {
+            (enhanced as any).constant = 100;
+        }).toThrow(TypeError);
+        expect(enhanced.constant).toBe(42);
     });
 
-    expect(enhanced.name).toBe('Task');
-    expect(enhanced.count).toBe(countSignal);
-    expect(enhanced.status).toBe(statusObservable);
-    expect(enhanced.isActive).toBe(true);
-    expect(enhanced.description).toBe('Task (Count: 5)');
+    it('should handle complex mixed enhancements', () => {
+        // Use real signal and observable
+        const countSignal = signal(5);
+        const statusObservable = of('pending');
 
-    // Update signal and verify description updates
-    countSignal.set(10);
-    expect(enhanced.description).toBe('Task (Count: 10)');
-  });
+        const obj = { name: 'Task' };
 
-  it('should handle null or undefined enhancement values', () => {
-    const obj = { existing: true };
+        const enhanced = enhance(obj, {
+            count: countSignal,
+            status: statusObservable,
+            isActive: true,
+            description: {
+                get: () => `${obj.name} (Count: ${countSignal()})`,
+                configurable: true,
+            },
+        });
 
-    const enhanced = enhance(obj, {
-      nullProp: null,
-      undefinedProp: undefined
+        expect(enhanced.name).toBe('Task');
+        expect(enhanced.count).toBe(countSignal);
+        expect(enhanced.status).toBe(statusObservable);
+        expect(enhanced.isActive).toBe(true);
+        expect(enhanced.description).toBe('Task (Count: 5)');
+
+        // Update signal and verify description updates
+        countSignal.set(10);
+        expect(enhanced.description).toBe('Task (Count: 10)');
     });
 
-    expect(enhanced.nullProp).toBeNull();
-    expect(enhanced.undefinedProp).toBeUndefined();
-  });
+    it('should handle null or undefined enhancement values', () => {
+        const obj = { existing: true };
+
+        const enhanced = enhance(obj, {
+            nullProp: null,
+            undefinedProp: undefined,
+        });
+
+        expect(enhanced.nullProp).toBeNull();
+        expect(enhanced.undefinedProp).toBeUndefined();
+    });
 });

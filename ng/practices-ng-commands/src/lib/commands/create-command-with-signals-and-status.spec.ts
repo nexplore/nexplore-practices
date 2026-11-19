@@ -200,7 +200,10 @@ describe('createCommandWithSignalsAndStatus', () => {
             cmd.trigger();
             cmd.trigger();
 
-            expect({ cancelCount, handlerCalls: handler.mock.calls.length }).toEqual({ cancelCount: 1, handlerCalls: 2 });
+            expect({ cancelCount, handlerCalls: handler.mock.calls.length }).toEqual({
+                cancelCount: 1,
+                handlerCalls: 2,
+            });
         });
     });
 

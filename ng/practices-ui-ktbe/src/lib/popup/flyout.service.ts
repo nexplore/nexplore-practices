@@ -50,7 +50,10 @@ const DEFAULT_CONFIG: PuibeFlyoutConfig = {
 export class PuibeFlyoutService {
     private _dialogRef: DialogRef;
 
-    constructor(private readonly _dialog: Dialog, private readonly _overlay: Overlay) {}
+    constructor(
+        private readonly _dialog: Dialog,
+        private readonly _overlay: Overlay
+    ) {}
 
     open<R = unknown>(
         componentOrTemplateRef: ComponentType<unknown> | TemplateRef<unknown>,
@@ -61,7 +64,7 @@ export class PuibeFlyoutService {
 
         if (buttonRef) {
             const arrowTipOffsetPx = 8; // The offset is needed as the arrow-tip is not part of the overlay itself. Value is based on the tailwindcss plugin configuration.
-            const offset = config.showArrowTips ?? DEFAULT_CONFIG?.showArrowTips ? arrowTipOffsetPx : 0;
+            const offset = (config.showArrowTips ?? DEFAULT_CONFIG?.showArrowTips) ? arrowTipOffsetPx : 0;
             positionStrategy =
                 config?.positionStrategy ??
                 this._overlay

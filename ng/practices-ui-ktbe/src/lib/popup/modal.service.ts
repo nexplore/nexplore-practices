@@ -2,7 +2,7 @@ import { Dialog, DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable, TemplateRef } from '@angular/core';
 
-export type PuibeModalConfig<D = unknown> = DialogConfig<D>
+export type PuibeModalConfig<D = unknown> = DialogConfig<D>;
 
 @Injectable()
 export class PuibeModalService {

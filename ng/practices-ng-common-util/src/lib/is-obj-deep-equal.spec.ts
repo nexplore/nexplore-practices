@@ -25,84 +25,69 @@ describe('isObjDeepEqual', () => {
 
     // Nested objects test
     it('should compare nested objects correctly', () => {
-        expect(
-            isObjDeepEqual(
-                { a: 1, b: { c: 2, d: { e: 3 } } },
-                { a: 1, b: { c: 2, d: { e: 3 } } }
-            )
-        ).toBe(true);
+        expect(isObjDeepEqual({ a: 1, b: { c: 2, d: { e: 3 } } }, { a: 1, b: { c: 2, d: { e: 3 } } })).toBe(true);
 
-        expect(
-            isObjDeepEqual(
-                { a: 1, b: { c: 2, d: { e: 3 } } },
-                { a: 1, b: { c: 2, d: { e: 4 } } }
-            )
-        ).toBe(false);
+        expect(isObjDeepEqual({ a: 1, b: { c: 2, d: { e: 3 } } }, { a: 1, b: { c: 2, d: { e: 4 } } })).toBe(false);
 
-        expect(
-            isObjDeepEqual(
-                { a: 1, b: { c: 2, d: { e: 3 } } },
-                { a: 1, b: { c: 2, d: {} } }
-            )
-        ).toBe(false);
+        expect(isObjDeepEqual({ a: 1, b: { c: 2, d: { e: 3 } } }, { a: 1, b: { c: 2, d: {} } })).toBe(false);
     });
 
     // Basic maximum depth test
     it('should detect differences at deep levels with default depth', () => {
-        const obj1 = { 
-            level1: { 
-                level2: { 
-                    level3: { 
-                        level4: { 
-                            level5: { value: "original" } 
-                        } 
-                    } 
-                } 
-            } 
+        const obj1 = {
+            level1: {
+                level2: {
+                    level3: {
+                        level4: {
+                            level5: { value: 'original' },
+                        },
+                    },
+                },
+            },
         };
-        
-        const obj2 = { 
-            level1: { 
-                level2: { 
-                    level3: { 
-                        level4: { 
-                            level5: { value: "different" } 
-                        } 
-                    } 
-                } 
-            } 
+
+        const obj2 = {
+            level1: {
+                level2: {
+                    level3: {
+                        level4: {
+                            level5: { value: 'different' },
+                        },
+                    },
+                },
+            },
         };
-        
+
         // With default depth (10), should detect difference at level 5
         expect(isObjDeepEqual(obj1, obj2)).toBe(false);
     });
 
     it('should limit comparison by maximum depth parameter', () => {
         // Create objects with difference at level 5
-        const obj1 = { 
-            level1: { 
-                level2: { 
-                    level3: { 
-                        level4: { 
-                            level5: { value: "original" } 
-                        } 
-                    } 
-                } 
-            } 
+        const obj1 = {
+            level1: {
+                level2: {
+                    level3: {
+                        level4: {
+                            level5: { value: 'original' },
+                        },
+                    },
+                },
+            },
         };
-        
-        const obj2 = { 
-            level1: { 
-                level2: { 
-                    level3: { 
-                        level4: { 
-                            level5: { value: "different" } 
-                        } 
-                    } 
-                } 
-            } 
+
+        const obj2 = {
+            level1: {
+                level2: {
+                    level3: {
+                        level4: {
+                            level5: { value: 'different' },
+                        },
+                    },
+                },
+            },
         };
-        
+
         // With depth 4, should compare level4 objects by reference
         // (which are different references)
         expect(isObjDeepEqual(obj1, obj2, { maximumDepth: 4 })).toBe(false);
@@ -111,46 +96,46 @@ describe('isObjDeepEqual', () => {
     it('should properly handle depth 0 (shallow comparison)', () => {
         const shallow1 = { prop: { nested: 1 } };
         const shallow2 = { prop: { nested: 1 } };
-        
+
         // With depth 0, should do shallow comparison (different object references)
         expect(isObjDeepEqual(shallow1, shallow2, { maximumDepth: 0 })).toBe(false);
-        
+
         // Modify shallow2 to have the same reference
         shallow2.prop = shallow1.prop;
-        
+
         // Now with shared reference, should be equal
         expect(isObjDeepEqual(shallow1, shallow2, { maximumDepth: 0 })).toBe(true);
     });
 
     it('should compare objects with same values but different references at various depths', () => {
         // Objects with same structure and values, but different references
-        const refObj1 = { 
-            level1: { 
-                level2: { 
-                    level3: { 
-                        level4: { 
-                            level5: { value: "same" }
-                        } 
-                    } 
-                } 
-            } 
+        const refObj1 = {
+            level1: {
+                level2: {
+                    level3: {
+                        level4: {
+                            level5: { value: 'same' },
+                        },
+                    },
+                },
+            },
         };
-        
-        const refObj2 = { 
-            level1: { 
-                level2: { 
-                    level3: { 
-                        level4: { 
-                            level5: { value: "same" }
-                        } 
-                    } 
-                } 
-            } 
+
+        const refObj2 = {
+            level1: {
+                level2: {
+                    level3: {
+                        level4: {
+                            level5: { value: 'same' },
+                        },
+                    },
+                },
+            },
         };
-        
+
         // With full depth, should detect they are equal by value
         expect(isObjDeepEqual(refObj1, refObj2)).toBe(true);
-        
+
         // Test with different depths
         expect(isObjDeepEqual(refObj1, refObj2, { maximumDepth: 5 })).toBe(true);
         expect(isObjDeepEqual(refObj1, refObj2, { maximumDepth: 4 })).toBe(false); // References differ
@@ -163,25 +148,25 @@ describe('isObjDeepEqual', () => {
                 b: {
                     c: {
                         d: {
-                            e: 1
-                        }
-                    }
-                }
-            }
+                            e: 1,
+                        },
+                    },
+                },
+            },
         };
-        
+
         const multiLevel2 = {
             a: {
                 b: {
                     c: {
                         d: {
-                            e: 2 // Difference at level 5
-                        }
-                    }
-                }
-            }
+                            e: 2, // Difference at level 5
+                        },
+                    },
+                },
+            },
         };
-        
+
         // Every depth here will show false because the references
         // are different at each level
         expect(isObjDeepEqual(multiLevel1, multiLevel2, { maximumDepth: 1 })).toBe(false);
@@ -194,14 +179,14 @@ describe('isObjDeepEqual', () => {
     it('should handle shared references at intermediate levels', () => {
         // Create shared object for testing reference equality
         const shared = { d: { e: 3 } };
-        
+
         // Both objects use the same reference at level 'c'
         const sharedLevel1 = { a: { b: { c: shared } } };
         const sharedLevel2 = { a: { b: { c: shared } } };
-        
+
         // These should be equal at low depths because level 'a.b' objects are different references
         expect(isObjDeepEqual(sharedLevel1, sharedLevel2, { maximumDepth: 1 })).toBe(false);
-        
+
         // But equal at deeper depths because level 'c' shares the same reference
         expect(isObjDeepEqual(sharedLevel1, sharedLevel2, { maximumDepth: 2 })).toBe(true);
         expect(isObjDeepEqual(sharedLevel1, sharedLevel2, { maximumDepth: 5 })).toBe(true);
@@ -211,16 +196,16 @@ describe('isObjDeepEqual', () => {
         // Create objects with simple self-references
         const obj1: any = { a: 1 };
         obj1.self = obj1;
-        
+
         const obj2: any = { a: 1 };
         obj2.self = obj2;
-        
+
         // Should handle cyclic references correctly
         expect(isObjDeepEqual(obj1, obj2)).toBe(true);
-        
+
         // Modify one object
         obj2.a = 2;
-        
+
         // Should detect the difference
         expect(isObjDeepEqual(obj1, obj2)).toBe(false);
     });
@@ -229,17 +214,17 @@ describe('isObjDeepEqual', () => {
         // Create objects with shared references
         const obj1: any = { a: 1, b: { c: 2 } };
         const obj2: any = { a: 1, b: { c: 2 } }; // Different reference for b
-        
+
         // With depth 1, still deep compares the first level's properties
         // Since obj1.b and obj2.b have the same structure, they'll be equal
         expect(isObjDeepEqual(obj1, obj2, { maximumDepth: 1 })).toBe(true);
-        
+
         // If we want to test reference comparison, we should use depth 0
         expect(isObjDeepEqual(obj1, obj2, { maximumDepth: 0 })).toBe(false);
-        
+
         // Share the reference for b
         obj2.b = obj1.b;
-        
+
         // Now should be equal with both depth 0 and 1
         expect(isObjDeepEqual(obj1, obj2, { maximumDepth: 1 })).toBe(true);
         expect(isObjDeepEqual(obj1, obj2, { maximumDepth: 0 })).toBe(true);
@@ -249,24 +234,24 @@ describe('isObjDeepEqual', () => {
         // Simple objects with cyclic references
         const obj1: any = { a: 1, b: { c: 2 } };
         obj1.cycle = obj1; // Self-reference
-        
+
         const obj2: any = { a: 1, b: { c: 2 } };
         obj2.cycle = obj2; // Self-reference
-        
+
         // Share b reference to isolate this test
         obj2.b = obj1.b;
-        
+
         // Properties at level 1 should be equal
         // However, since objects are not strictly identical and we have cyclic refs,
         // the comparison might not work as intuitively expected
         expect(isObjDeepEqual(obj1, obj2, { maximumDepth: 1 })).toBe(false);
-        
+
         // But with full depth, it should recognize they have the same structure
         expect(isObjDeepEqual(obj1, obj2)).toBe(true);
-        
+
         // Change a property at top level
         obj2.a = 3;
-        
+
         // Should detect difference at any depth
         expect(isObjDeepEqual(obj1, obj2, { maximumDepth: 0 })).toBe(false);
         expect(isObjDeepEqual(obj1, obj2, { maximumDepth: 1 })).toBe(false);
@@ -277,17 +262,17 @@ describe('isObjDeepEqual', () => {
         const obj1: any = { a: 1 };
         const nested1: any = { parent: obj1, value: 2 };
         obj1.nested = nested1; // Two-way reference
-        
+
         const obj2: any = { a: 1 };
         const nested2: any = { parent: obj2, value: 2 };
         obj2.nested = nested2; // Two-way reference
-        
+
         // Should handle nested cyclic references
         expect(isObjDeepEqual(obj1, obj2)).toBe(true);
-        
+
         // Change a property in the nested object
         nested2.value = 3;
-        
+
         // Should detect the difference
         expect(isObjDeepEqual(obj1, obj2)).toBe(false);
     });
@@ -300,51 +285,51 @@ describe('isObjDeepEqual', () => {
             parent?: TestNode;
             children: TestNode[];
         }
-        
+
         // Create a tree structure with parent references (creating cycles)
         const createTree = (): TestNode => {
             const root: TestNode = {
                 id: 1,
                 name: 'root',
-                children: []
+                children: [],
             };
-            
+
             const child1: TestNode = {
                 id: 2,
                 name: 'child1',
                 parent: root,
-                children: []
+                children: [],
             };
-            
+
             const child2: TestNode = {
                 id: 3,
                 name: 'child2',
                 parent: root,
-                children: []
+                children: [],
             };
-            
+
             const grandchild: TestNode = {
                 id: 4,
                 name: 'grandchild',
                 parent: child1,
-                children: []
+                children: [],
             };
-            
+
             root.children.push(child1, child2);
             child1.children.push(grandchild);
-            
+
             return root;
         };
-        
+
         const tree1 = createTree();
         const tree2 = createTree();
-        
+
         // Trees should be equal despite the cycles
         expect(isObjDeepEqual(tree1, tree2)).toBe(true);
-        
+
         // Modify a node deep in the tree
         tree2.children[0].children[0].name = 'modified grandchild';
-        
+
         // Should detect the difference
         expect(isObjDeepEqual(tree1, tree2)).toBe(false);
     });
@@ -422,21 +407,21 @@ describe('isObjDeepEqual', () => {
             name: 'test',
             date: new Date('2023-01-01'),
             error: new Error('test error'),
-            nested: { a: 1, b: [1, 2, 3] }
+            nested: { a: 1, b: [1, 2, 3] },
         };
 
         const obj2 = {
             name: 'test',
             date: new Date('2023-01-01'),
             error: new Error('test error'),
-            nested: { a: 1, b: [1, 2, 3] }
+            nested: { a: 1, b: [1, 2, 3] },
         };
 
         const obj3 = {
             name: 'test',
             date: new Date('2023-01-01'),
             error: new Error('test error'),
-            nested: { a: 1, b: [1, 2, 4] }
+            nested: { a: 1, b: [1, 2, 4] },
         };
 
         expect(isObjDeepEqual(obj1, obj2)).toBe(true);

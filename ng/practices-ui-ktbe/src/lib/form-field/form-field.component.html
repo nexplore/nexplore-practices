@@ -73,7 +73,7 @@
             @if (context.isOptional) {
                 <span
                     #optionalBadge
-                    class="text-very-small absolute -top-5 z-10 translate-y-2 rounded-lg bg-white px-1 py-0.5"
+                    class="absolute -top-5 z-10 translate-y-2 rounded-lg bg-white px-1 py-0.5 text-very-small"
                     [ngClass]="{ 'right-[75px]': context.isCustomIconFilled, 'right-3': !context.isCustomIconFilled }"
                     [class.text-red]="context.displayAsInvalid"
                     aria-hidden="true"
@@ -85,7 +85,7 @@
         <ng-content select="[slot='below-input']" />
         <div
             [attr.id]="(id$ | async) + '-error'"
-            class="text-red text-very-small min-h-5 pt-[3px] font-medium"
+            class="min-h-5 pt-[3px] text-very-small font-medium text-red"
             [attr.aria-live]="(dirty$ | async) ? 'assertive' : 'off'"
             aria-atomic="true"
         >

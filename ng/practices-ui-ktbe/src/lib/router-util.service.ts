@@ -13,7 +13,10 @@ import { PuibeMetaRoute } from './side-navigation/side-navigation.interface';
 
 @Injectable({ providedIn: 'root' })
 export class RouterUtilService {
-    constructor(private router: Router, private locationStrategy: LocationStrategy) {}
+    constructor(
+        private router: Router,
+        private locationStrategy: LocationStrategy
+    ) {}
 
     /** Returns a list of route segments for the given url */
     getRoutesForUrl(

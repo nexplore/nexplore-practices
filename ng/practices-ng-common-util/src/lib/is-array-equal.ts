@@ -1,5 +1,5 @@
 /**
- * Compares two arrays for equality by checking if they have the same length and 
+ * Compares two arrays for equality by checking if they have the same length and
  * if each element at the same index is identical (===).
  *
  * @param arr1 The first array to compare.

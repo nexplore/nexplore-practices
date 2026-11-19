@@ -16,12 +16,12 @@
                 {{ screenReaderHint ?? ('Practices.Labels_Hint' | translate) }}
             </span>
         }
-        <div class="max-w-11/12 relative order-1 flex min-w-0 basis-full justify-stretch sm:max-w-none sm:pr-6">
+        <div class="relative order-1 flex max-w-11/12 min-w-0 basis-full justify-stretch sm:max-w-none sm:pr-6">
             <div class="flex min-w-0 flex-auto justify-stretch">
                 @if (showAlertIcon) {
                     <div>
                         <puibe-icon-explanation-mark
-                            class="ml-8 mr-14 mt-1 block w-4 shrink-0"
+                            class="mt-1 mr-14 ml-8 block w-4 shrink-0"
                             [fillClassName]="{
                                 'fill-black': variant === 'default' || variant === 'success',
                                 'fill-white': variant === 'error' || variant === 'info',
@@ -46,7 +46,7 @@
         @if (closeable) {
             <button
                 type="button"
-                class="hover:animate-pop order-1 mt-1 cursor-pointer self-start sm:order-3 sm:ml-4"
+                class="order-1 mt-1 cursor-pointer self-start hover:animate-pop sm:order-3 sm:ml-4"
                 [attr.aria-label]="'Practices.Labels_Toast_Close' | translate"
                 (click)="close()"
             >

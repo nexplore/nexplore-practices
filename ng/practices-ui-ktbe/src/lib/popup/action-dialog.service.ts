@@ -88,7 +88,7 @@ export class PuibeActionDialogService {
         TArgs,
         TResult,
         TActionTemplates extends PuibeDialogActionsTemplates<TResult, TArgs> = typeof PUIBE_DIALOG_ACTIONS,
-        TAction extends PuibeDialogActionTemplate<TResult, TArgs> = TActionTemplates[keyof TActionTemplates]
+        TAction extends PuibeDialogActionTemplate<TResult, TArgs> = TActionTemplates[keyof TActionTemplates],
     >(
         actionConfig: ValueOrGetter<PuibeActionDialogConfig<TAction, TResult, TActionTemplates, TArgs>, TArgs>,
         commandConfig?: CommandOptions<TArgs>,
@@ -98,7 +98,7 @@ export class PuibeActionDialogService {
         TArgs,
         TResult,
         TActionTemplates extends PuibeDialogActionsTemplates<TResult, TArgs> = typeof PUIBE_DIALOG_ACTIONS,
-        TAction extends PuibeDialogActionTemplate<TResult, TArgs> = TActionTemplates[keyof TActionTemplates]
+        TAction extends PuibeDialogActionTemplate<TResult, TArgs> = TActionTemplates[keyof TActionTemplates],
     >(
         actionConfig: ValueOrGetter<PuibeActionDialogConfig<TAction, TResult, TActionTemplates, TArgs>, TArgs>,
         commandConfig?: CommandOptions<TArgs>,
@@ -154,7 +154,7 @@ export class PuibeActionDialogService {
         TResult,
         TActionTemplates extends PuibeDialogActionsTemplates<TResult, TDialogData> = typeof PUIBE_DIALOG_ACTIONS,
         TAction extends PuibeDialogActionTemplate<TResult, TDialogData> = TActionTemplates[keyof TActionTemplates],
-        TDialogData = unknown
+        TDialogData = unknown,
     >(
         actionConfig: PuibeActionDialogConfig<TAction, TResult, TActionTemplates, TDialogData>,
         dialogConfig?: DialogConfig<TDialogData, TResult>
@@ -164,7 +164,7 @@ export class PuibeActionDialogService {
         TResult,
         TActionTemplates extends PuibeDialogActionsTemplates<TResult, TDialogData> = typeof PUIBE_DIALOG_ACTIONS,
         TAction extends PuibeDialogActionTemplate<TResult, TDialogData> = TActionTemplates[keyof TActionTemplates],
-        TDialogData = unknown
+        TDialogData = unknown,
     >(
         actionConfig: PuibeActionDialogConfig<TAction, TResult, TActionTemplates, TDialogData>,
         dialogConfig?: DialogConfig<TDialogData, TResult>

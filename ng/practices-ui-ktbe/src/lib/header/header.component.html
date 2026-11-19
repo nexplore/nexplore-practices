@@ -1,4 +1,4 @@
-<div class="border-gray min-h-40 border-b bg-white pt-2 lg:pt-3" #container>
+<div class="min-h-40 border-b border-gray bg-white pt-2 lg:pt-3" #container>
     <div class="flex min-h-[inherit] justify-between">
         <div class="flex flex-col justify-end pb-[25px]" #headerLogoWrapper>
             <!-- TODO #147455 Check pixel values and try to replace with rem -->
@@ -71,7 +71,7 @@
                     <ul
                         class="inline-block"
                         class="flex list-none flex-wrap items-center"
-                        [ngClass]="narrowMainMenu ? ' gap-x-9' : 'gap-x-14'"
+                        [ngClass]="narrowMainMenu ? 'gap-x-9' : 'gap-x-14'"
                     >
                         <ng-content select="[puibeHeaderMainMenuItem]"></ng-content>
                     </ul>

@@ -1,10 +1,10 @@
-<div class="border-dark-gray-50 hidden w-full sm:inline-block" [class.border-b]="showBorder">
+<div class="hidden w-full border-dark-gray-50 sm:inline-block" [class.border-b]="showBorder">
     @for (item of items; track item) {
         <button
             type="button"
             [ngClass]="item.id === selectedItemId ? activeClassNames : ''"
             (click)="onChange(item.id)"
-            class="mb-3 mr-5 h-12 items-center justify-center overflow-hidden rounded-full px-5 py-3 font-medium transition-all duration-200 ease-linear last:mr-0 hover:scale-105 focus:scale-105 disabled:scale-100"
+            class="mr-5 mb-3 h-12 items-center justify-center overflow-hidden rounded-full px-5 py-3 font-medium transition-all duration-200 ease-linear last:mr-0 hover:scale-105 focus:scale-105 disabled:scale-100"
         >
             {{ item.label }}
         </button>
@@ -16,7 +16,7 @@
         <div
             #arrow
             aria-hidden="true"
-            class="absolute right-0 top-0 z-10 mr-6 mt-5 flex h-4 w-4 flex-col justify-center transition-all duration-300 ease-in-out"
+            class="absolute top-0 right-0 z-10 mt-5 mr-6 flex h-4 w-4 flex-col justify-center transition-all duration-300 ease-in-out"
         >
             <puibe-icon-arrow></puibe-icon-arrow>
         </div>

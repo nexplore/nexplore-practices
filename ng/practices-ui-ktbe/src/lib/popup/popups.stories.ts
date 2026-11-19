@@ -52,7 +52,10 @@ type Args = {
     ],
 })
 class AppFlyoutComponent {
-    constructor(public dialogRef: DialogRef, @Inject(DIALOG_DATA) public data: Args) {}
+    constructor(
+        public dialogRef: DialogRef,
+        @Inject(DIALOG_DATA) public data: Args
+    ) {}
 }
 
 @Component({
@@ -77,14 +80,17 @@ class AppFlyoutComponent {
     ],
 })
 class AppModalComponent {
-    constructor(public dialogRef: DialogRef, @Inject(DIALOG_DATA) public data: Args) {}
+    constructor(
+        public dialogRef: DialogRef,
+        @Inject(DIALOG_DATA) public data: Args
+    ) {}
 }
 /* Component to open modals from buttons */
 @Component({
     standalone: true,
     selector: 'app-launcher',
     template: `<div>
-        <p class="text-h4 mb-2">Click the buttons to see Modal & Flyout in action!</p>
+        <p class="mb-2 text-h4">Click the buttons to see Modal & Flyout in action!</p>
         <button puibeButton (click)="openModal()" class="mr-6">open modal</button>
         <button puibeButton #btn1 (click)="openFlyout(btn1, false)" class="mr-6">open flyout</button>
         <button puibeButton #btn2 (click)="openFlyout(btn2, true)" class="mr-6">open flyout with arrow-tips</button>

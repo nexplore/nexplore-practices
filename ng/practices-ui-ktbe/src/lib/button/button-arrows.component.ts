@@ -32,7 +32,10 @@ export class PuibeButtonArrowsComponent implements OnInit, OnDestroy {
         return this._variantSubject.getValue();
     }
 
-    constructor(private _parentButtonDirective: PuibeButtonDirective, private _elementRef: ElementRef) {}
+    constructor(
+        private _parentButtonDirective: PuibeButtonDirective,
+        private _elementRef: ElementRef
+    ) {}
 
     ngOnInit() {
         this._variantSubject.subscribe((variant) =>

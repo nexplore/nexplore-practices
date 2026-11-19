@@ -16,8 +16,8 @@ export class PuibeCalendarYearViewService {
             diffToRef > this.yearsPerView
                 ? referenceYear - Math.ceil(diffToRef / this.yearsPerView) * this.yearsPerView
                 : diffToRef <= 0
-                ? referenceYear + Math.floor((-1 * diffToRef) / this.yearsPerView) * this.yearsPerView
-                : referenceYear - this.yearsPerView;
+                  ? referenceYear + Math.floor((-1 * diffToRef) / this.yearsPerView) * this.yearsPerView
+                  : referenceYear - this.yearsPerView;
         return startDecade;
     }
 

@@ -1,4 +1,4 @@
-<div [ngClass]="{ 'border-gray border bg-white': variant === 'white', 'bg-sand': variant === 'sand' }">
+<div [ngClass]="{ 'border border-gray bg-white': variant === 'white', 'bg-sand': variant === 'sand' }">
     @if (heading || caption) {
         <div class="p-6" role="heading" [attr.aria-level]="headingLevel">
             <div class="text-h4 font-light">{{ heading }}</div>

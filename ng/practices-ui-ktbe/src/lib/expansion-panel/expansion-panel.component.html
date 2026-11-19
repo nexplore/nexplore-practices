@@ -1,5 +1,5 @@
 <cdk-accordion class="block">
-    <cdk-accordion-item #accordionItem="cdkAccordionItem" class="block" [ngClass]="{ 'border-gray border': isWhite }">
+    <cdk-accordion-item #accordionItem="cdkAccordionItem" class="block" [ngClass]="{ 'border border-gray': isWhite }">
         <div role="heading" [attr.aria-level]="headingLevel" class="font-light">
             <button
                 class="group flex w-full content-center items-center justify-between text-left"
@@ -10,13 +10,13 @@
                 [ngClass]="{
                     'p-6': !compact,
                     'p-3': compact,
-                    'bg-dark-sand aria-expanded:bg-sand hover:bg-sand-hover focus:bg-sand-hover aria-expanded:hover:bg-sand-hover aria-expanded:focus:bg-sand-hover':
+                    'bg-dark-sand hover:bg-sand-hover focus:bg-sand-hover aria-expanded:bg-sand aria-expanded:hover:bg-sand-hover aria-expanded:focus:bg-sand-hover':
                         isSand,
-                    'bg-sand aria-expanded:bg-light-sand hover:bg-sand focus:bg-sand aria-expanded:hover:bg-sand aria-expanded:focus:bg-sand':
+                    'bg-sand hover:bg-sand focus:bg-sand aria-expanded:bg-light-sand aria-expanded:hover:bg-sand aria-expanded:focus:bg-sand':
                         isLightSand,
-                    'hover:bg-very-light-gray focus:bg-very-light-gray aria-expanded:hover:bg-very-light-gray aria-expanded:focus:bg-very-light-gray bg-white aria-expanded:bg-white':
+                    'bg-white hover:bg-very-light-gray focus:bg-very-light-gray aria-expanded:bg-white aria-expanded:hover:bg-very-light-gray aria-expanded:focus:bg-very-light-gray':
                         isWhite,
-                    'hover:bg-red-hover focus:bg-red-hover aria-expanded:hover:bg-red-hover aria-expanded:focus:bg-red-hover bg-red text-white':
+                    'bg-red text-white hover:bg-red-hover focus:bg-red-hover aria-expanded:hover:bg-red-hover aria-expanded:focus:bg-red-hover':
                         isRed,
                 }"
                 (click)="toggle(accordionItem)"
@@ -27,7 +27,7 @@
                         <ng-content select="[slot='heading-before']"></ng-content>
                     </div>
                     <div class="flex min-w-0 flex-1 flex-col items-start">
-                        <div class="flex min-w-0 max-w-full items-center gap-4">
+                        <div class="flex max-w-full min-w-0 items-center gap-4">
                             @if (heading) {
                                 <p
                                     #headingText

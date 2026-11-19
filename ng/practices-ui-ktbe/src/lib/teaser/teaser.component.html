@@ -1,7 +1,7 @@
 <div
     class="h-full w-full p-6"
     [ngClass]="[
-        variant === 'red' ? 'bg-red hover:bg-red-hover text-white' : 'bg-dark-sand hover:bg-sand-hover text-black',
+        variant === 'red' ? 'bg-red text-white hover:bg-red-hover' : 'bg-dark-sand text-black hover:bg-sand-hover',
         teaserLink || navigatable ? 'cursor-pointer' : '',
     ]"
     [attr.aria-describedby]="'teaser-title-' + id + ' teaser-subtitle-' + id"
