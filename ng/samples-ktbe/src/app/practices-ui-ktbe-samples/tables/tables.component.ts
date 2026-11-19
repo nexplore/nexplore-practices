@@ -59,8 +59,8 @@ export const tableSampleLoadFn = <TItem = SampleModel, TFilter = any>(
                     ? 1
                     : -1
                 : b[params.orderings[0].field] > a[params.orderings[0].field]
-                ? 1
-                : -1;
+                  ? 1
+                  : -1;
         });
     }
 

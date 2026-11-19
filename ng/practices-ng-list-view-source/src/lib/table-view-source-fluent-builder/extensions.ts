@@ -23,20 +23,17 @@ export type Extensions = typeof extensions;
 
 export type WithUsedExtensions<
     TTableViewSource extends TableViewSource<any, any> & Partial<Extensions>,
-    TExtensionKey extends string | number | symbol = keyof TTableViewSource
+    TExtensionKey extends string | number | symbol = keyof TTableViewSource,
 > = Omit<TTableViewSource, TExtensionKey>;
 
-export type ExtractFilterTypeFrom<TTableViewSource> = TTableViewSource extends TableViewSource<any, infer TFilter>
-    ? TFilter
-    : never;
+export type ExtractFilterTypeFrom<TTableViewSource> =
+    TTableViewSource extends TableViewSource<any, infer TFilter> ? TFilter : never;
 
-export type ExtractDataTypeFrom<TTableViewSource> = TTableViewSource extends TableViewSource<infer TData, any>
-    ? TData
-    : never;
+export type ExtractDataTypeFrom<TTableViewSource> =
+    TTableViewSource extends TableViewSource<infer TData, any> ? TData : never;
 
-export type ExtractResultTypeFrom<TTableViewSource> = TTableViewSource extends TableViewSource<infer TData, any>
-    ? IListResult<TData>
-    : never;
+export type ExtractResultTypeFrom<TTableViewSource> =
+    TTableViewSource extends TableViewSource<infer TData, any> ? IListResult<TData> : never;
 
 export function createExtendableTableViewSource<TData, TFilter>(
     config: Omit<TableViewSourceConfig<TData>, 'columns'> & {

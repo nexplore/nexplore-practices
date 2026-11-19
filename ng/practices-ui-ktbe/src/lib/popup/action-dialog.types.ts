@@ -34,7 +34,7 @@ export const PUIBE_DIALOG_ACTIONS = {
 export type PuibeDialogActionMap<
     TActionTemplates extends PuibeDialogActionsTemplates<TResult, TArgs>,
     TResult,
-    TArgs = void
+    TArgs = void,
 > = {
     [key in keyof TActionTemplates]?: CombinedCommandInput<TArgs, TResult> | TResult | false;
 };
@@ -123,7 +123,7 @@ export interface PuibeActionDialogConfig<
     TResult,
     TActionTemplates extends PuibeDialogActionsTemplates<TResult, TArgs> = typeof PUIBE_DIALOG_ACTIONS,
     TArgs = void,
-    TActions = TAction[] | PuibeDialogActionMap<TActionTemplates, TResult, TArgs>
+    TActions = TAction[] | PuibeDialogActionMap<TActionTemplates, TResult, TArgs>,
 > extends PuibeActionDialogConfigBasics {
     /**
      * Defintion for the button actions visual representation

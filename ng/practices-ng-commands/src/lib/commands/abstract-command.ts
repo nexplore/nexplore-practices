@@ -12,7 +12,7 @@ export const ABORTED = undefined;
 export abstract class AbstractCommand<
     TArgs,
     TResult,
-    TOptions extends AbstractCommandOptions<TArgs> = AbstractCommandOptions<TArgs>
+    TOptions extends AbstractCommandOptions<TArgs> = AbstractCommandOptions<TArgs>,
 > {
     /** Observable with the results of the handler function */
     abstract readonly result$: Observable<TResult>;

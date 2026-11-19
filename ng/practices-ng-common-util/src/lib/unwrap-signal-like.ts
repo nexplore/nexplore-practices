@@ -11,6 +11,6 @@ export function unwrapSignalLike<T>(valueOrGetter: ValueOrGetter<T>): T {
     return typeof valueOrGetter === 'function'
         ? (valueOrGetter as () => T)()
         : isSignal(valueOrGetter)
-            ? (valueOrGetter() as T)
-            : valueOrGetter;
+          ? (valueOrGetter() as T)
+          : valueOrGetter;
 }

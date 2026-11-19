@@ -36,21 +36,20 @@ export interface AbstractCommandOptions<TArgs = void> {
     afterExecuteHandler?: (params: CommandAfterExecuteResult<TArgs>) => void;
 }
 
-export type CommandWithLifecycleOptions<TArgs> =
-    | AbstractCommandOptions<TArgs> & {
-          /**
-           * Shorthand for `concurrentTriggerBehavior: { type: 'waitForRunning' }`.
-           *
-           * If true, triggering the command while it is still running will wait for the running command to complete, then re-trigger.
-           * If triggered more than once while running, only the last trigger will succeed.
-           */
-          waitForRunning?: boolean;
+export type CommandWithLifecycleOptions<TArgs> = AbstractCommandOptions<TArgs> & {
+    /**
+     * Shorthand for `concurrentTriggerBehavior: { type: 'waitForRunning' }`.
+     *
+     * If true, triggering the command while it is still running will wait for the running command to complete, then re-trigger.
+     * If triggered more than once while running, only the last trigger will succeed.
+     */
+    waitForRunning?: boolean;
 
-          /**
-           * The status options for the command.
-           */
-          status?: StatusProgressOptions;
-      };
+    /**
+     * The status options for the command.
+     */
+    status?: StatusProgressOptions;
+};
 
 export type CommandWithSignalsAndStatus<TArgs, TResult> = AbstractCommand<
     TArgs,

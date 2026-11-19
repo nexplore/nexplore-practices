@@ -11,7 +11,7 @@ export function createSelectViewSourceInternal<
     TLabelKey extends SelectViewSourceLabelKey<TData> = SelectViewSourceLabelKey<TData>,
     TQueryParams = TData,
     TFilter extends SelectViewSourceFilterType<TData, TLabelKey> = SelectViewSourceFilterType<TData, TLabelKey>,
-    TOrdering = TData
+    TOrdering = TData,
 >(
     config: TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams, TOrdering>
 ): EnhancedListViewSource<SelectViewSource<TData, TFilter>> {

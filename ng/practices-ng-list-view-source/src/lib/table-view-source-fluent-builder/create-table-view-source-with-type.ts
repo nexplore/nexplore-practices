@@ -75,7 +75,7 @@ export function createTableViewSourceWithType<
     TData,
     TResult extends Partial<IListResult<TData>> = IListResult<TData>,
     TFilter = unknown,
-    TOrdering = TData
+    TOrdering = TData,
 >(
     config: AdditionalConfig<TData> & TypedTableViewSourceConfig<TData, TResult, TFilter, TOrdering>
 ): TableViewSourceWithSignals<TData, TFilter> & Extensions;
@@ -84,7 +84,7 @@ export function createTableViewSourceWithType<
     TData,
     TResult extends Partial<IListResult<TData>> = IListResult<TData>,
     TFilter = unknown,
-    TOrdering = TData
+    TOrdering = TData,
 >(
     config?: AdditionalConfig<TData> & TypedTableViewSourceConfig<TData, TResult, TFilter, TOrdering>
 ): TypedTableViewSourceFactoryFluentApi<TData> | (TableViewSourceWithSignals<TData, TFilter> & Extensions) {

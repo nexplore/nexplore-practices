@@ -70,5 +70,4 @@ export type LegacyCommandAsyncHandlerFn<TArgs, TResult> = (args: TArgs) => Legac
  * @deprecated import `CommandAsyncHandlerArg` from `@nexplore/practices-ng-commands` instead
  */
 export type LegacyCommandAsyncHandlerArg<TArgs, TResult> =
-    | LegacyCommandAsyncHandlerFn<TArgs, TResult>
-    | Observable<TResult>;
+    LegacyCommandAsyncHandlerFn<TArgs, TResult> | Observable<TResult>;

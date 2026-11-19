@@ -2,7 +2,7 @@ import { Signal, isSignal } from '@angular/core';
 
 /**
  * @deprecated
- * 
+ *
  * Returns the first signal value which is not null.
  *
  * Makes sure that all signal values are read once, so that they are all tracked

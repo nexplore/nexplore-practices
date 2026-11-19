@@ -3,14 +3,14 @@ import { subscribeAndForget } from './subscribe-and-forget';
 import { Observable } from 'rxjs';
 
 describe('subscribeAndForget', () => {
-  it('should subscribe to the observable', () => {
-    const mockSubscribe = jest.fn();
-    const mockObservable = {
-      subscribe: mockSubscribe
-    } as unknown as Observable<unknown>;
+    it('should subscribe to the observable', () => {
+        const mockSubscribe = jest.fn();
+        const mockObservable = {
+            subscribe: mockSubscribe,
+        } as unknown as Observable<unknown>;
 
-    subscribeAndForget(mockObservable);
+        subscribeAndForget(mockObservable);
 
-    expect(mockSubscribe).toHaveBeenCalled();
-  });
+        expect(mockSubscribe).toHaveBeenCalled();
+    });
 });

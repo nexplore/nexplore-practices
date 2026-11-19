@@ -27,7 +27,7 @@ export function createTableViewSource<
     TData,
     TResult extends Partial<IListResult<TData>>,
     TFilter = unknown,
-    TOrdering = TData
+    TOrdering = TData,
 >(
     config: TypedTableViewSourceConfig<TData, TResult, TFilter, TOrdering>
 ): TableViewSourceWithSignals<TData, TFilter> & Extensions {

@@ -97,7 +97,7 @@ export function computedPipe<TSource, TResult = unknown>(
     ...operations: OperatorFunction<any, any>[]
 ): Signal<undefined | TResult> {
     assertInInjectionContext(computedPipe);
-    const sourceObservable = 
+    const sourceObservable =
         signalOrObs instanceof Observable
             ? signalOrObs
             : toObservable(isSignal(signalOrObs) ? signalOrObs : computed(signalOrObs));

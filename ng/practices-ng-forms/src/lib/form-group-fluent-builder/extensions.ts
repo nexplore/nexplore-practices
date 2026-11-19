@@ -61,7 +61,7 @@ function updateFormGroupDefinition(
     Object.entries(controlDefs).forEach(
         ([key, controlDef]: [
             string,
-            AbstractControl<any> | FormControlDefinition<any> | FormControlDefinitionValueOmitted
+            AbstractControl<any> | FormControlDefinition<any> | FormControlDefinitionValueOmitted,
         ]) => {
             if (controlDef instanceof AbstractControl) {
                 formGroup.addControl(key, controlDef, { emitEvent: options.emitChangeEvents });

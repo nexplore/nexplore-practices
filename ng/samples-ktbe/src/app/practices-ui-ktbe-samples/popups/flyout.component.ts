@@ -27,5 +27,8 @@ interface Data {
     ],
 })
 export class AppFlyoutComponent {
-    constructor(public dialogRef: DialogRef, @Inject(DIALOG_DATA) public data: Data) {}
+    constructor(
+        public dialogRef: DialogRef,
+        @Inject(DIALOG_DATA) public data: Data
+    ) {}
 }

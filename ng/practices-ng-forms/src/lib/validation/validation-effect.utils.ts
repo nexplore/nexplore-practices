@@ -1,7 +1,7 @@
 import { effect, EffectRef, inject, Injector, isSignal, runInInjectionContext, Signal } from '@angular/core';
 import { AbstractControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { BoundValidators, ValidatorDefinition } from './validation-types';
-import { validateAsync, validateAsyncConditional, validateConditional, validateDependent, } from './validators';
+import { validateAsync, validateAsyncConditional, validateConditional, validateDependent } from './validators';
 
 /**
  * Creates an effect that configures the validators of a form group.
@@ -68,4 +68,3 @@ export function configureFormValidationsEffect<TControls extends { [K in keyof T
         });
     });
 }
-

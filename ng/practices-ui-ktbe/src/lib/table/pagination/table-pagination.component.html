@@ -11,7 +11,7 @@
         @if (showFirstAndLastPageButton) {
             <button
                 type="button"
-                class="pagination-first disabled:text-dark-gray-50 cursor-pointer transition-all duration-150 hover:scale-125 disabled:scale-100 disabled:cursor-default disabled:transition-none"
+                class="pagination-first cursor-pointer transition-all duration-150 hover:scale-125 disabled:scale-100 disabled:cursor-default disabled:text-dark-gray-50 disabled:transition-none"
                 [disabled]="page.current <= 1"
                 (click)="page.current = 1"
                 [attr.aria-label]="commonStringsKeys.firstPage | translate"
@@ -22,7 +22,7 @@
         }
         <button
             type="button"
-            class="pagination-previous disabled:text-dark-gray-50 cursor-pointer transition-all duration-150 hover:scale-125 disabled:scale-100 disabled:cursor-default disabled:transition-none"
+            class="pagination-previous cursor-pointer transition-all duration-150 hover:scale-125 disabled:scale-100 disabled:cursor-default disabled:text-dark-gray-50 disabled:transition-none"
             [disabled]="page.current <= 1"
             (click)="page.current = page.current - 1"
             [attr.aria-label]="commonStringsKeys.previousPage | translate"
@@ -50,7 +50,7 @@
         <span class="min-w-8" [attr.aria-label]="commonStringsKeys.totalPages | translate">{{ page.last }}</span>
         <button
             type="button"
-            class="pagination-next disabled:text-dark-gray-50 cursor-pointer transition-all duration-150 hover:scale-125 disabled:scale-100 disabled:cursor-default disabled:transition-none"
+            class="pagination-next cursor-pointer transition-all duration-150 hover:scale-125 disabled:scale-100 disabled:cursor-default disabled:text-dark-gray-50 disabled:transition-none"
             [disabled]="page.current >= page.last"
             (click)="page.current = page.current + 1"
             [attr.aria-label]="commonStringsKeys.nextPage | translate"
@@ -61,7 +61,7 @@
         @if (showFirstAndLastPageButton) {
             <button
                 type="button"
-                class="pagination-last disabled:text-dark-gray-50 cursor-pointer transition-all duration-150 hover:scale-125 disabled:scale-100 disabled:cursor-default disabled:transition-none"
+                class="pagination-last cursor-pointer transition-all duration-150 hover:scale-125 disabled:scale-100 disabled:cursor-default disabled:text-dark-gray-50 disabled:transition-none"
                 [disabled]="page.current >= page.last"
                 (click)="page.current = page.last"
                 [attr.aria-label]="commonStringsKeys.lastPage | translate"

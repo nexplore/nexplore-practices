@@ -6,7 +6,10 @@ import { createTableViewSourceWithPersistedParams } from './create-table-view-so
 
 describe('createTableViewSourceWithPersistedParams', () => {
     class TestDto {
-        constructor(public name: string, public age: number) {}
+        constructor(
+            public name: string,
+            public age: number
+        ) {}
     }
 
     type TestFilter = { search?: string };

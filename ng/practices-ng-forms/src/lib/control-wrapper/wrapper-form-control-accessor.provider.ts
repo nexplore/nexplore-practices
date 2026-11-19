@@ -226,9 +226,9 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                                         !isDto(value)
                                     ) {
                                         const entity =
-                                            instance.getValueAccessorEntityDto?.() ??
+                                            (instance.getValueAccessorEntityDto?.() ??
                                             instance.getValueAccessorEntityDtoSignalToAutoResetForm?.()() ??
-                                            isDto(currentDtoValue)
+                                            isDto(currentDtoValue))
                                                 ? currentDtoValue
                                                 : null;
 

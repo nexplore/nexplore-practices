@@ -1,8 +1,8 @@
-import {runInInjectionContext} from '@angular/core';
-import {configureFormValidationsEffect} from '../validation/validation-effect.utils';
-import {BoundValidators, ValidatorDefinition} from '../validation/validation-types';
-import {FormControlsOfGroup} from './form-group-types.internal';
-import {FormGroupEnhancedWithSignals} from './types';
+import { runInInjectionContext } from '@angular/core';
+import { configureFormValidationsEffect } from '../validation/validation-effect.utils';
+import { BoundValidators, ValidatorDefinition } from '../validation/validation-types';
+import { FormControlsOfGroup } from './form-group-types.internal';
+import { FormGroupEnhancedWithSignals } from './types';
 
 /**
  * Extends the form group with validation definitions.

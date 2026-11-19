@@ -22,7 +22,7 @@ import { FormGroupValues, TypedFormGroup } from './form.types';
  */
 export function formFieldsChangeEffect<
     TValue extends FormGroupValues<TForm>,
-    TForm extends FormGroup = TypedFormGroup<TValue>
+    TForm extends FormGroup = TypedFormGroup<TValue>,
 >(
     formSignalOrValue: ValueOrSignal<TForm>,
     effectFn: (value: Exclude<TValue, FormControlState<any>>) => void,

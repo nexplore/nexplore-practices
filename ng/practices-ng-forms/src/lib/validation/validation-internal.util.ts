@@ -60,8 +60,8 @@ export function conditionalValidationEffect(
             validator instanceof Array
                 ? (validator as ValidatorFn[])
                 : typeof validator === 'function'
-                ? ([validator] as ValidatorFn[])
-                : ([() => validator] as ValidatorFn[])
+                  ? ([validator] as ValidatorFn[])
+                  : ([() => validator] as ValidatorFn[])
         );
         const hasValidatorsChanged =
             newValidators.length !== lastValidators.length ||

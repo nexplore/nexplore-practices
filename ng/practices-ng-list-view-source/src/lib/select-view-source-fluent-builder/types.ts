@@ -23,7 +23,7 @@ export type TypedSelectViewSourceConfig<
     TData,
     TLabelKey extends SelectViewSourceLabelKey<TData>,
     TQueryParams = TData,
-    TOrdering = TData
+    TOrdering = TData,
 > = {
     /**
      * The label property to display in the select.

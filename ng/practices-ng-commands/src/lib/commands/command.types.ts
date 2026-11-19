@@ -44,9 +44,7 @@ export type CommandAsyncHandlerArg<TArgs, TResult> = CommandAsyncHandlerFn<TArgs
 export type Command<TArgs = void, TResult = void> = CommandWithSignalsAndStatus<TArgs, TResult>;
 
 export type CommandInput<TArgs = any, TResult = unknown> =
-    | AbstractCommand<TArgs, TResult>
-    | CommandAsyncHandlerFn<TArgs, TResult>
-    | ILegacyCommand<TArgs, TResult>;
+    AbstractCommand<TArgs, TResult> | CommandAsyncHandlerFn<TArgs, TResult> | ILegacyCommand<TArgs, TResult>;
 
 export type CommandOptions<TArgs> = CommandWithLifecycleOptions<TArgs>;
 export type ActionCommand<TArgs, TResult> = CommandWithSignalsAndStatus<TArgs, TResult>;

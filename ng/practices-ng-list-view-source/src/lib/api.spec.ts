@@ -9,7 +9,10 @@ describe('tableViewSource', () => {
     it('should have fromCommand', () => {
         TestBed.runInInjectionContext(() => {
             class TestDto {
-                constructor(public name: string, public age: number) {}
+                constructor(
+                    public name: string,
+                    public age: number
+                ) {}
             }
 
             const cmd = command.action(() => [new TestDto('Test', 22)]);
@@ -26,7 +29,10 @@ describe('tableViewSource', () => {
     it('should have fromCommand with separate config', () => {
         TestBed.runInInjectionContext(() => {
             class TestDto {
-                constructor(public name: string, public age: number) {}
+                constructor(
+                    public name: string,
+                    public age: number
+                ) {}
             }
 
             const cmd = command.action(() => [new TestDto('Test', 22)]);
@@ -44,7 +50,10 @@ describe('tableViewSource', () => {
     it('should have fromCommand with separate config / withPersistedParams', () => {
         TestBed.runInInjectionContext(() => {
             class TestDto {
-                constructor(public name: string, public age: number) {}
+                constructor(
+                    public name: string,
+                    public age: number
+                ) {}
             }
 
             const cmd = command.action(() => [new TestDto('Test', 22)]);
@@ -69,7 +78,10 @@ describe('tableViewSource', () => {
     it('should have fromCommand with separate config / withFilterForm', () => {
         TestBed.runInInjectionContext(() => {
             class TestDto {
-                constructor(public name: string, public age: number) {}
+                constructor(
+                    public name: string,
+                    public age: number
+                ) {}
             }
 
             const cmd = command.action((_params: { nameFilter: string }) => [new TestDto('Test', 22)]);
@@ -92,7 +104,10 @@ describe('tableViewSource', () => {
     it('should have fromCommand with separate config / withFilterForm after', () => {
         TestBed.runInInjectionContext(() => {
             class TestDto {
-                constructor(public name: string, public age: number) {}
+                constructor(
+                    public name: string,
+                    public age: number
+                ) {}
             }
 
             const cmd = command.action((_params: { nameFilter: string }) => [new TestDto('Test', 22)]);
@@ -119,7 +134,10 @@ describe('tableViewSource', () => {
     it('should have fromData', () => {
         TestBed.runInInjectionContext(() => {
             class TestDto {
-                constructor(public name: string, public age: number) {}
+                constructor(
+                    public name: string,
+                    public age: number
+                ) {}
             }
 
             const vs = tableViewSource
@@ -141,7 +159,10 @@ describe('tableViewSource', () => {
     it('should have extensions defined', () => {
         TestBed.runInInjectionContext(() => {
             class TestDto {
-                constructor(public name: string, public age: number) {}
+                constructor(
+                    public name: string,
+                    public age: number
+                ) {}
             }
 
             const filterForm = new FormGroup({
@@ -279,7 +300,11 @@ describe('tableViewSource', () => {
     it('should create tableViewSource with filter form', () => {
         TestBed.runInInjectionContext(() => {
             class Order {
-                constructor(public orderNumber: string, public customerName: string, public amount: number) {}
+                constructor(
+                    public orderNumber: string,
+                    public customerName: string,
+                    public amount: number
+                ) {}
             }
 
             const filterForm = new FormGroup({
@@ -309,7 +334,11 @@ describe('tableViewSource', () => {
     it('should create tableViewSource with persisted params', () => {
         TestBed.runInInjectionContext(() => {
             class Invoice {
-                constructor(public invoiceId: string, public date: Date, public total: number) {}
+                constructor(
+                    public invoiceId: string,
+                    public date: Date,
+                    public total: number
+                ) {}
             }
 
             const source = tableViewSource.withType<Invoice>().withPersistedParams({
@@ -348,7 +377,10 @@ describe('tableViewSource', () => {
             }
 
             class Report {
-                constructor(public title: string, public id: number) {}
+                constructor(
+                    public title: string,
+                    public id: number
+                ) {}
             }
 
             const source = tableViewSource.withType({
@@ -472,7 +504,10 @@ describe('selectViewSource', () => {
         }
 
         class Item {
-            constructor(public label: string, public id: number) {}
+            constructor(
+                public label: string,
+                public id: number
+            ) {}
         }
 
         const fetchItems = (
@@ -511,7 +546,11 @@ describe('selectViewSource', () => {
     it('should create selectViewSource from command', () => {
         TestBed.runInInjectionContext(() => {
             class Product {
-                constructor(public name: string, public id: number, public price: number) {}
+                constructor(
+                    public name: string,
+                    public id: number,
+                    public price: number
+                ) {}
             }
 
             const cmd = command.action(() => [new Product('Product A', 1, 100), new Product('Product B', 2, 200)]);
@@ -531,7 +570,11 @@ describe('selectViewSource', () => {
     it('should create selectViewSource from command without config', () => {
         TestBed.runInInjectionContext(() => {
             class Product {
-                constructor(public name: string, public id: number, public price: number) {}
+                constructor(
+                    public name: string,
+                    public id: number,
+                    public price: number
+                ) {}
             }
 
             const cmd = command.action(() => [new Product('Product A', 1, 100), new Product('Product B', 2, 200)]);
@@ -545,7 +588,10 @@ describe('selectViewSource', () => {
     it('should create selectViewSource with basic config', () => {
         TestBed.runInInjectionContext(() => {
             class Category {
-                constructor(public title: string, public id: number) {}
+                constructor(
+                    public title: string,
+                    public id: number
+                ) {}
             }
 
             const source = selectViewSource.withConfig({

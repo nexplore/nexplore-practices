@@ -2,7 +2,7 @@
     <div class="relative mt-5">
         <div
             [ngClass]="{
-                'flex justify-between border py-4 pl-7 pr-4': !hideGroupBorder,
+                'flex justify-between border py-4 pr-4 pl-7': !hideGroupBorder,
                 'border-red': !hideGroupBorder && (displayAsInvalid$ | async),
                 'border-dark-gray-50': !hideGroupBorder && !(displayAsInvalid$ | async),
             }"
@@ -16,7 +16,7 @@
                 }
                 @if (legendAsLabel) {
                     <legend
-                        class="text-very-small absolute -top-5 left-6 translate-y-2 rounded-lg bg-white px-1 py-0.5"
+                        class="absolute -top-5 left-6 translate-y-2 rounded-lg bg-white px-1 py-0.5 text-very-small"
                         [class.text-red]="displayAsInvalid$ | async"
                         [class.opacity-0]="hideGroupBorder"
                     >
@@ -34,7 +34,7 @@
                     <ng-content></ng-content>
                 </div>
                 @if (hint) {
-                    <div class="mb-2 mt-4 text-base font-light leading-tight" aria-hidden="true">
+                    <div class="mt-4 mb-2 text-base leading-tight font-light" aria-hidden="true">
                         {{ hint }}
                     </div>
                 }
@@ -52,7 +52,7 @@
         </div>
         @if (!hideGroupBorder && (isOptional$ | async)) {
             <span
-                class="text-very-small absolute -top-5 right-3 translate-y-2 rounded-lg bg-white px-1 py-0.5"
+                class="absolute -top-5 right-3 translate-y-2 rounded-lg bg-white px-1 py-0.5 text-very-small"
                 [class.text-red]="displayAsInvalid$ | async"
                 aria-hidden="true"
             >
@@ -61,7 +61,7 @@
         }
         <div
             [attr.id]="id + '-error'"
-            class="text-red text-very-small min-h-5 font-medium"
+            class="min-h-5 text-very-small font-medium text-red"
             [attr.aria-live]="(dirty$ | async) ? 'assertive' : 'off'"
             aria-atomic="true"
         >

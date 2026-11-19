@@ -15,7 +15,7 @@ import { FormGroupValues, FormValueSignalsRecord } from './form.types';
  */
 export function createFormValueSignalsProxyWithAutoTrackingDependencies<
     TForm extends FormGroup,
-    TFormValue extends FormGroupValues<TForm>
+    TFormValue extends FormGroupValues<TForm>,
 >(
     form: TForm,
     options?: {

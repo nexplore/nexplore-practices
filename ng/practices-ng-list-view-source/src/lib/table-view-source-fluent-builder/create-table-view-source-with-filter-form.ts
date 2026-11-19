@@ -68,7 +68,7 @@ export function createTableViewSourceWithFilterForm<
     TFilter extends TypedTableViewSourceFilter<TForm, TResult>,
     TForm extends FormGroup,
     TResult extends Partial<IListResult<TData>>,
-    TOrdering = TData
+    TOrdering = TData,
 >(
     config: AdditionalConfig<TForm> & TypedTableViewSourceConfig<TData, TResult, TFilter, TOrdering>
 ): TableViewSourceWithSignals<TData, TFilter> & Extensions {
@@ -90,7 +90,7 @@ export function createTypedWithFilterFormFactory<TData, TPartialConfig extends R
         TFilter extends TypedTableViewSourceFilter<TForm, TResult>,
         TForm extends FormGroup,
         TResult extends Partial<IListResult<TData>>,
-        TOrdering = TData
+        TOrdering = TData,
     >(
         config: AdditionalConfig<TForm> &
             TypedTableViewSourceConfigPartial<TData, TResult, TFilter, TOrdering, TPartialConfig>
@@ -115,7 +115,7 @@ type ExtendWithFilterFormConfig<TTableViewSource extends TableViewSource<any, an
 /* @internal */
 export function extendWithFilterForm<
     TTableViewSource extends TableViewSource<any, FormGroupValues<TForm> | any>,
-    TForm extends FormGroup
+    TForm extends FormGroup,
 >(this: TTableViewSource, config: ExtendWithFilterFormConfig<TTableViewSource, TForm>): TTableViewSource {
     const filterForm = config instanceof AbstractControl || isSignal(config) ? config : config.filterForm;
     const defaultCondition = defaultShouldApplyFilterFormValue as ShouldApplyFilterFormValueFn<
@@ -124,7 +124,7 @@ export function extendWithFilterForm<
     const shouldApplyFilterFormValue =
         config instanceof AbstractControl || isSignal(config)
             ? defaultCondition
-            : config.shouldApplyFilterFormValue ?? defaultCondition;
+            : (config.shouldApplyFilterFormValue ?? defaultCondition);
     if (filterForm) {
         const formGroupValueSignal = formGroupCurrentValueSignal(filterForm, {
             debounceTime: 300,

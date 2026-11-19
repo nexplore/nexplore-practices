@@ -60,7 +60,7 @@ export function formGroupCurrentValueMappedSignal<
     TFormGroup extends TypedFormGroup<TValue>,
     TControlNames extends Array<keyof TValue>,
     TInput extends Pick<TValue, ElementsOfArray<TControlNames>>,
-    TResult = Pick<TValue, ElementsOfArray<TControlNames>>
+    TResult = Pick<TValue, ElementsOfArray<TControlNames>>,
 >(
     formGroup: ValueOrSignal<TFormGroup>,
     options?: {
@@ -114,7 +114,7 @@ export function formGroupCurrentValueMappedSignal<
  */
 export function formGroupCurrentValueSignal<
     TValue extends FormGroupValues<TFormGroup>,
-    TFormGroup extends FormGroup = TypedFormGroup<TValue>
+    TFormGroup extends FormGroup = TypedFormGroup<TValue>,
 >(
     formGroup: ValueOrSignal<TFormGroup>,
     options?: {
@@ -150,7 +150,7 @@ export function formControlCurrentValueSignal<T>(
         {
             initialValue: (isSignal(formControl)
                 ? null // Signal might not yet be initialized if it is a required input (https://angular.dev/errors/NG0950/)
-                : formControl?.value ?? null) as T,
+                : (formControl?.value ?? null)) as T,
         }
     ) as Signal<Exclude<T, FormControlState<any>> | null>;
 }

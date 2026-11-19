@@ -49,7 +49,7 @@ export function createSelectViewSourceFromCommand<
     TArgs,
     TLabelKey extends SelectViewSourceLabelKey<TData> = SelectViewSourceLabelKey<TData>,
     TQueryParams = TData,
-    TFilter extends SelectViewSourceFilterType<TData, TLabelKey> = SelectViewSourceFilterType<TData, TLabelKey>
+    TFilter extends SelectViewSourceFilterType<TData, TLabelKey> = SelectViewSourceFilterType<TData, TLabelKey>,
 >(
     command: ValueOrGetter<AbstractCommand<TArgs, TData[] | null | undefined>>,
     config?: AdditionalConfig & Omit<TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams>, 'loadFn'>

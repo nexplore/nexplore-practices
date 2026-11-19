@@ -12,8 +12,7 @@ import { LegacyCommandAsyncHandlerFn, LegacyCommandOptions } from './command.typ
  * @deprecated Use `CommandInput` from `@nexplore/practices-ng-commands` instead
  */
 export type ILegacyCommand<TArgs = void, TResult = unknown> =
-    | LegacyCommandBase<TArgs, TResult>
-    | LegacyCommandAsyncHandlerFn<TArgs, TResult>;
+    LegacyCommandBase<TArgs, TResult> | LegacyCommandAsyncHandlerFn<TArgs, TResult>;
 
 // TODO: Remove all references to LegacyCommandBase and LegacyCommandOptions, clean up directives
 /**
@@ -22,9 +21,7 @@ export type ILegacyCommand<TArgs = void, TResult = unknown> =
  * Use `CommandInput`
  */
 export type CombinedCommandInput<TArgs = any, TResult = unknown> =
-    | ILegacyCommand<TArgs, TResult>
-    | AbstractCommand<TArgs, TResult>
-    | CommandAsyncHandlerFn<TArgs, TResult>;
+    ILegacyCommand<TArgs, TResult> | AbstractCommand<TArgs, TResult> | CommandAsyncHandlerFn<TArgs, TResult>;
 
 /**
  * @deprecated

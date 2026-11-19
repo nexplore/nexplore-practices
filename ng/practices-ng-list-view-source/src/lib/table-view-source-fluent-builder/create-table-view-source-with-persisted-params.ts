@@ -78,7 +78,7 @@ export function createTableViewSourceWithPersistedParams<
     TData,
     TFilter,
     TResult extends Partial<IListResult<TData>>,
-    TOrdering = TData
+    TOrdering = TData,
 >(
     config: PersistParamsConfig<TFilter, TData> & TypedTableViewSourceConfig<TData, TResult, TFilter, TOrdering>
 ): TableViewSourceWithSignals<TData, TFilter> & Extensions {

@@ -17,6 +17,6 @@ export function anyToSignal<T, TDefault = undefined>(
     return isSignal(source)
         ? source
         : isObservable(source)
-        ? toSignal(source as Observable<T>, { initialValue: options?.defaultValue as any })
-        : computed(() => source as T);
+          ? toSignal(source as Observable<T>, { initialValue: options?.defaultValue as any })
+          : computed(() => source as T);
 }

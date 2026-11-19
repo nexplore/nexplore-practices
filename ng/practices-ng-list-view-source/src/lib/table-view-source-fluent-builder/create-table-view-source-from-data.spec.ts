@@ -6,7 +6,10 @@ import { createTableViewSourceFromData } from './create-table-view-source-from-d
 
 describe('createTableViewSourceFromData', () => {
     class TestItem {
-        constructor(public name: string, public age: number) {}
+        constructor(
+            public name: string,
+            public age: number
+        ) {}
     }
 
     beforeEach(() => {
@@ -409,4 +412,3 @@ describe('createTableViewSourceFromData', () => {
         });
     });
 });
-

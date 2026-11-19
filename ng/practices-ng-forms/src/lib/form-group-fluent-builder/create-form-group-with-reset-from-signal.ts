@@ -22,14 +22,12 @@ import { extendWithResetFromSignal, ResetWithSignalConfig } from './with-reset-f
  *
  * TODO: The only drawback is, that suggested properties are not shown in the editor.
  */
-type DefinitionSatisfyingSignalValue<
-    TSignalValue extends FormGroupValueBase,
-    TDefinition
-> = TDefinition extends FormGroupDefinition<infer TValue>
-    ? TDefinition extends FormGroupDefinition<AllPropsAMustBeInB<TValue, TSignalValue>>
-        ? TDefinition
-        : never
-    : never;
+type DefinitionSatisfyingSignalValue<TSignalValue extends FormGroupValueBase, TDefinition> =
+    TDefinition extends FormGroupDefinition<infer TValue>
+        ? TDefinition extends FormGroupDefinition<AllPropsAMustBeInB<TValue, TSignalValue>>
+            ? TDefinition
+            : never
+        : never;
 
 /**
  * Creates a form group that resets its value whenever the provided signal emits a new value.
@@ -51,7 +49,7 @@ type DefinitionSatisfyingSignalValue<
 export function createFormGroupWithResetFromSignal<
     TSignalValue extends FormGroupValueBase,
     TValue extends PartialNullable<TSignalValue>,
-    TDefinition extends FormGroupDefinition<TValue>
+    TDefinition extends FormGroupDefinition<TValue>,
 >(
     dtoSignal: Signal<TSignalValue | null | undefined>,
     definition: DefinitionSatisfyingSignalValue<NoInfer<TSignalValue>, TDefinition>,
@@ -66,8 +64,8 @@ export function createFormGroupWithResetFromSignal<
                   TSignalValue
               >
             : TDefinition extends PartialNullable<TSignalValue>
-            ? ValueSatisfyingType<TSignalValue, TDefinition>
-            : never
+              ? ValueSatisfyingType<TSignalValue, TDefinition>
+              : never
     >
 > &
     Omit<Extensions, 'withResetFromSignal'> {

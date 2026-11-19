@@ -20,7 +20,7 @@
         <button puibeButton (click)="logFormFields()">Log all values</button>
     </div>
     <puibe-inpage-search
-        class="max-w-3/4 mt-4 block"
+        class="mt-4 block max-w-3/4"
         (searchTermChange)="search()"
         [pending]="searchPending$ | async"
         [label]="'Seite durchsuchen'"
@@ -49,32 +49,32 @@
         </puibe-radio-button-group>
         <puibe-form-field class="w-1/2">
             <label puibeLabel>Basic Text-Input</label>
-            <input puibeInput type="text" placeholder="Basic Text-Input" formControlName="basicText"/>
+            <input puibeInput type="text" placeholder="Basic Text-Input" formControlName="basicText" />
         </puibe-form-field>
         <puibe-form-field class="w-1/2">
             <label puibeLabel>Basic Text-Input with notice</label>
-            <input puibeInput type="text" placeholder="Basic Text-Input" formControlName="basicTextWithNotice"/>
+            <input puibeInput type="text" placeholder="Basic Text-Input" formControlName="basicTextWithNotice" />
             <p puibeNotice>Hinweis-Text zu diesem Input</p>
         </puibe-form-field>
         <puibe-form-field class="w-1/4">
             <label puibeLabel>Basic Number-Input</label>
-            <input puibeInput type="number" placeholder="Basic Number-Input" formControlName="basicNumber"/>
+            <input puibeInput type="number" placeholder="Basic Number-Input" formControlName="basicNumber" />
         </puibe-form-field>
         <puibe-form-field class="w-1/4">
             <label puibeLabel>Basic Date-Input</label>
-            <input puibeInput type="date" placeholder="Basic Date-Input" formControlName="basicDate"/>
+            <input puibeInput type="date" placeholder="Basic Date-Input" formControlName="basicDate" />
         </puibe-form-field>
         <puibe-form-field class="w-1/4">
             <label puibeLabel>Birthdate-Input</label>
-            <input puibeInput type="date" calendarViewMode="year" formControlName="birthDate"/>
+            <input puibeInput type="date" calendarViewMode="year" formControlName="birthDate" />
         </puibe-form-field>
         <puibe-form-field class="w-1/4">
             <label puibeLabel>Month-Input</label>
-            <input puibeInput type="month" formControlName="monthDate"/>
+            <input puibeInput type="month" formControlName="monthDate" />
         </puibe-form-field>
         <puibe-form-field class="w-1/4">
             <label puibeLabel>Year-Input</label>
-            <input puibeInput type="year" formControlName="year"/>
+            <input puibeInput type="year" formControlName="year" />
         </puibe-form-field>
         <puibe-form-field class="w-1/2">
             <label puibeLabel>Basic Combobox</label>
@@ -124,11 +124,11 @@
         </puibe-form-field>
         <puibe-form-field class="w-1/2">
             <label puibeLabel>Required Text-Input</label>
-            <input puibeInput type="text" placeholder="Required Text-Input" formControlName="requiredText"/>
+            <input puibeInput type="text" placeholder="Required Text-Input" formControlName="requiredText" />
         </puibe-form-field>
         <puibe-form-field class="w-1/4">
             <label puibeLabel>Required Number-Input</label>
-            <input puibeInput type="number" placeholder="Required Number-Input" formControlName="requiredNumber"/>
+            <input puibeInput type="number" placeholder="Required Number-Input" formControlName="requiredNumber" />
         </puibe-form-field>
         <puibe-form-field class="w-1/2">
             <label puibeLabel [alwaysVisible]="true">Input with always visible label</label>
@@ -168,11 +168,11 @@
         </puibe-form-field>
         <puibe-form-field class="w-1/2">
             <label puibeLabel>Async Validator</label>
-            <input puibeInput type="text" placeholder="Async Validator" formControlName="asyncValidator"/>
+            <input puibeInput type="text" placeholder="Async Validator" formControlName="asyncValidator" />
         </puibe-form-field>
         <puibe-form-field class="w-1/2">
             <label puibeLabel>Disabled</label>
-            <input puibeInput type="text" placeholder="Disabled" formControlName="disabled"/>
+            <input puibeInput type="text" placeholder="Disabled" formControlName="disabled" />
         </puibe-form-field>
 
         <puibe-form-field class="w-1/2">
@@ -197,16 +197,16 @@
         </puibe-form-field>
         <puibe-form-field class="w-1/2">
             <label puibeLabel [alwaysVisible]="true">Basic file input</label>
-            <input puibeInput type="file" formControlName="file"/>
+            <input puibeInput type="file" formControlName="file" />
         </puibe-form-field>
         <puibe-form-field class="w-1/2">
             <label puibeLabel>Required file input</label>
-            <input puibeInput type="file" formControlName="requiredFile"/>
+            <input puibeInput type="file" formControlName="requiredFile" />
         </puibe-form-field>
     </form>
 
     <puibe-form-field class="w-1/4">
         <label puibeLabel>Using NgModel</label>
-        <input puibeInput type="number" placeholder="Using NgModel" [(ngModel)]="myCoolModel"/>
+        <input puibeInput type="number" placeholder="Using NgModel" [(ngModel)]="myCoolModel" />
     </puibe-form-field>
 </div>

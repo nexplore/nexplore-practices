@@ -69,8 +69,8 @@ export function sortArrayByQueryParamsInMemory<TData, TFilter>(
                 ? 1
                 : -1
             : sortFieldHandler(b) > sortFieldHandler(a)
-            ? 1
-            : -1
+              ? 1
+              : -1
     );
 }
 

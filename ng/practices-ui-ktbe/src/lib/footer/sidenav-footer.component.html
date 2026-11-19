@@ -1,4 +1,4 @@
-<footer class="border-light-gray bg-sand border-t">
+<footer class="border-t border-light-gray bg-sand">
     <div puibeContainer class="flex flex-col gap-y-16 p-6">
         <ng-content></ng-content>
         <nav [attr.aria-label]="'Practices.Labels_Navigation_FooterNavigation' | translate">
@@ -11,7 +11,7 @@
         <div
             class="flex flex-row flex-wrap items-baseline justify-between gap-y-8"
             [ngClass]="{
-                'flex-row-reverse': languageMenuContent.children.length === 0
+                'flex-row-reverse': languageMenuContent.children.length === 0,
             }"
         >
             <div #languageMenuContent>
