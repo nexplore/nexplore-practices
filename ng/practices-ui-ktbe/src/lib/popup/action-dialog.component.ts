@@ -72,15 +72,20 @@ export class ActionDialogComponent<TAction extends PuibeDialogActionTemplate<any
 
     setActions(value: TAction[]) {
         runInInjectionContext(this._injector, () => {
-            this.actions = value as any;
-            value.forEach((action) => {
-                if (action.command) {
-                    const commandOptions = (action as { commandOptions?: CommandOptions<any> }).commandOptions;
-                    action.command = commandOptions
-                        ? command.fromInput(action.command, commandOptions)
-                        : command.fromInput(action.command);
+            // Copies the actions: they may be reused for several dialogs (e.g. a constant), and the commands created here
+            // belong to this dialog.
+            this.actions = value.map((action) => {
+                if (!action.command) {
+                    return action;
                 }
-            });
+                const commandOptions = (action as { commandOptions?: CommandOptions<any> }).commandOptions;
+                return {
+                    ...action,
+                    command: commandOptions
+                        ? command.fromInput(action.command, commandOptions)
+                        : command.fromInput(action.command),
+                };
+            }) as any;
         });
     }
 

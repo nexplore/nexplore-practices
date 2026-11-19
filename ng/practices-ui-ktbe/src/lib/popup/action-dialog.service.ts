@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, debounceTime, firstValueFrom, map, merge, Observable, of, takeUntil } from 'rxjs';
 import { ActionDialogComponent } from './action-dialog.component';
 import {
+    isActionCommandInput,
     PUIBE_DIALOG_ACTIONS,
     PuibeActionDialogConfig,
     PuibeActionDialogConfigWithDefaultActions,
@@ -190,7 +191,8 @@ export class PuibeActionDialogService {
             dialogRef.componentInstance.setActions(
                 Object.entries(actionConfig.actions).map(([key, action]) => ({
                     ...templates[key],
-                    command: typeof action === 'function' || isCommand(action) ? action : () => action,
+                    // Commands (also legacy commands) are converted by the dialog, other values are the action's result.
+                    command: isActionCommandInput(action) ? action : () => action,
                 }))
             );
         }

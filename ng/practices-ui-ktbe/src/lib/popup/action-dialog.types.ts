@@ -1,5 +1,7 @@
 import type { TemplateRef, Type } from '@angular/core';
 import type { CommandInput, CommandOptions } from '@nexplore/practices-ng-commands';
+import { AbstractCommand } from '@nexplore/practices-ng-commands';
+import { LegacyCommandBase } from '@nexplore/practices-ui';
 import type { CombinedCommandInput } from '@nexplore/practices-ui';
 import type { Variant } from '../button/button.directive';
 
@@ -143,6 +145,16 @@ export interface PuibeActionDialogConfig<
      * Note, will not get called for actions which have a command defined directly on them.
      */
     command?: CombinedCommandInput<TAction, TResult>;
+}
+
+/**
+ * Whether the value of an action is something to execute (a function, a command or a legacy command) rather than the
+ * plain result of the action (e.g. `CANCEL: false`).
+ *
+ * @internal
+ */
+export function isActionCommandInput(value: unknown): value is CombinedCommandInput<any, any> {
+    return typeof value === 'function' || value instanceof AbstractCommand || value instanceof LegacyCommandBase;
 }
 
 /** The default action templates, with the status category for the delete action of `PUIBE_DIALOG_PRESETS.confirmDelete`. */
