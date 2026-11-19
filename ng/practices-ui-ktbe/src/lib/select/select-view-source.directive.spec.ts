@@ -69,4 +69,16 @@ describe('PuibeSelectViewSourceDirective', () => {
         const readonlyValue = fixture.nativeElement.querySelector('puibe-readonly-label-value') as HTMLElement;
         expect(readonlyValue.textContent).toContain('Pizza');
     });
+
+    it('shows the label of the selected item in the editable select once the items are loaded', async () => {
+        const fixture = TestBed.createComponent(HostComponent);
+        fixture.componentInstance.readonly = false;
+
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+
+        const selectedLabel = fixture.nativeElement.querySelector('ng-select .ng-value-label') as HTMLElement;
+        expect(selectedLabel?.textContent).toContain('Pizza');
+    });
 });
