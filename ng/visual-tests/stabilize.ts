@@ -11,7 +11,10 @@ const SETTLE_TIME_MS = 30_000;
  * seeded `Math.random` (some stories use it, e.g. `randomAsyncValidator`).
  */
 export async function preparePage(page: Page): Promise<void> {
-    await page.clock.install({ time: FIXED_NOW });
+    // Pause the clock: time only advances when settle() fast-forwards it, so `new Date()` is the same in every run,
+    // independent of how long loading takes.
+    await page.clock.install({ time: new Date(FIXED_NOW.getTime() - 1000) });
+    await page.clock.pauseAt(FIXED_NOW);
     await page.addInitScript(() => {
         let seed = 42;
         Math.random = () => {
@@ -39,6 +42,9 @@ export async function gotoStory(page: Page, storyId: string): Promise<void> {
  * not cover (e.g. the spinner icon), and waits for fonts and network.
  */
 export async function settle(page: Page): Promise<void> {
+    // Load all declared fonts up front. Otherwise a font weight is only loaded when it is first used, e.g. by an overlay
+    // that is opened later, which then measures its size with the fallback font, depending on timing.
+    await page.evaluate(() => Promise.all([...document.fonts].map((font) => font.load().catch(() => undefined))));
     await page.clock.runFor(SETTLE_TIME_MS);
     // Some work is triggered by real browser events outside of the fake clock (e.g. ResizeObserver callbacks of the
     // label directive) and schedules further timers or animation frames. Give it real time to happen, then run the

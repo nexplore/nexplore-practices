@@ -26,6 +26,12 @@ interface Interaction {
 const focusFirst = (page: Page) => page.keyboard.press('Tab');
 const clickButton = (name: string | RegExp) => (page: Page) => page.getByRole('button', { name }).first().click();
 // Click at the start of the select, its center may be covered by the clear button.
+// Open with the keyboard: the button scales on hover (CSS transition), so with the mouse the tooltip would measure its
+// origin in the middle of the transition, depending on timing.
+const openTooltipWithKeyboard = async (page: Page) => {
+    await page.locator('puibe-tooltip-button button').focus();
+    await page.keyboard.press('Enter');
+};
 const openSelect = (page: Page) =>
     page
         .locator('ng-select .ng-select-container')
@@ -75,12 +81,12 @@ const INTERACTIONS: Interaction[] = [
     {
         storyId: 'puibe-tooltip--default',
         name: 'open',
-        act: (page) => page.locator('puibe-tooltip-button button').click(),
+        act: openTooltipWithKeyboard,
     },
     {
         storyId: 'puibe-tooltip--long-text',
         name: 'open',
-        act: (page) => page.locator('puibe-tooltip-button button').click(),
+        act: openTooltipWithKeyboard,
     },
     { storyId: 'puibe-popups--modal-and-flyout-service', name: 'open-modal', act: clickButton('open modal') },
     { storyId: 'puibe-popups--modal-and-flyout-service', name: 'open-flyout', act: clickButton('open flyout') },
