@@ -1,6 +1,5 @@
 import type { TemplateRef, Type } from '@angular/core';
-import type { CommandInput } from '@nexplore/practices-ng-commands';
-import { command } from '@nexplore/practices-ng-commands';
+import type { CommandInput, CommandOptions } from '@nexplore/practices-ng-commands';
 import type { CombinedCommandInput } from '@nexplore/practices-ui';
 import type { Variant } from '../button/button.directive';
 
@@ -14,6 +13,8 @@ export interface PuibeDialogActionTemplate<TResult = any, TArgs = void> {
     primary?: boolean;
     variant?: Variant;
     command?: CombinedCommandInput<TArgs, TResult>;
+    /** Options for the command created from the action (e.g. the status category), applied when the dialog opens. */
+    commandOptions?: CommandOptions<TArgs>;
     representsDialogClose?: boolean;
 }
 
@@ -144,6 +145,15 @@ export interface PuibeActionDialogConfig<
     command?: CombinedCommandInput<TAction, TResult>;
 }
 
+/** The default action templates, with the status category for the delete action of `PUIBE_DIALOG_PRESETS.confirmDelete`. */
+const CONFIRM_DELETE_ACTION_TEMPLATES: typeof PUIBE_DIALOG_ACTIONS = {
+    ...PUIBE_DIALOG_ACTIONS,
+    DELETE: {
+        ...PUIBE_DIALOG_ACTIONS.DELETE,
+        commandOptions: { status: { statusCategory: 'action-delete' } },
+    } as typeof PUIBE_DIALOG_ACTIONS.DELETE,
+};
+
 export const PUIBE_DIALOG_PRESETS = {
     confirmDelete: <TResult, TArgs = void>(
         deleteAction: CombinedCommandInput<TArgs, TResult>,
@@ -157,9 +167,12 @@ export const PUIBE_DIALOG_PRESETS = {
         >
     > => ({
         actions: {
-            DELETE: command.fromInput(deleteAction, { status: { statusCategory: 'action-delete' } }),
+            // Not converted to a command here: the preset is often created outside of an injection context (e.g. in a
+            // click handler). The dialog converts the action when it opens, with the options of the action template.
+            DELETE: deleteAction,
             CANCEL: false,
         },
+        actionTemplates: CONFIRM_DELETE_ACTION_TEMPLATES,
         titleKey: 'Practices.Labels_Delete',
         contentKey: 'Practices.Labels_DeletePrompt',
         ...overrideConfig,

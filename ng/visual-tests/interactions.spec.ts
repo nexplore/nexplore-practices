@@ -74,6 +74,7 @@ const INTERACTIONS: Interaction[] = [
     { storyId: 'puibe-popups--modal-and-flyout-service', name: 'open-modal', act: clickButton('open modal') },
     { storyId: 'puibe-popups--modal-and-flyout-service', name: 'open-flyout', act: clickButton('open flyout') },
     { storyId: 'puibe-action-dialog--action-dialog', name: 'open-confirmation', act: clickButton('open confirmation') },
+    { storyId: 'puibe-action-dialog--action-dialog', name: 'open-delete', act: clickButton(/DELETE/) },
     { storyId: 'puibe-action-dialog--action-dialog', name: 'open-form', act: clickButton(/FORM/) },
 
     // Expanded panels

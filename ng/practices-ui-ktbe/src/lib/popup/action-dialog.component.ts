@@ -8,6 +8,7 @@ import {
     runInInjectionContext,
     ChangeDetectionStrategy,
 } from '@angular/core';
+import type { CommandOptions } from '@nexplore/practices-ng-commands';
 import { Command, command, isCommand } from '@nexplore/practices-ng-commands';
 import { CombinedCommandInput } from '@nexplore/practices-ui';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -74,7 +75,10 @@ export class ActionDialogComponent<TAction extends PuibeDialogActionTemplate<any
             this.actions = value as any;
             value.forEach((action) => {
                 if (action.command) {
-                    action.command = command.fromInput(action.command);
+                    const commandOptions = (action as { commandOptions?: CommandOptions<any> }).commandOptions;
+                    action.command = commandOptions
+                        ? command.fromInput(action.command, commandOptions)
+                        : command.fromInput(action.command);
                 }
             });
         });
