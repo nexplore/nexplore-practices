@@ -8,7 +8,6 @@
             "!{projectRoot}/tsconfig.spec.json",
             "!{projectRoot}/**/*.spec.[jt]s",
             "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
-            "!{projectRoot}/karma.conf.js",
             "!{projectRoot}/.eslintrc.json",
             "!{projectRoot}/eslint.config.js",
             "!{projectRoot}/jest.config.[jt]s",
@@ -27,7 +26,7 @@
         },
         "test": [
             {
-                "inputs": ["default", "^production", "{workspaceRoot}/karma.conf.js"],
+                "inputs": ["default", "^production"],
                 "cache": true
             },
             {
