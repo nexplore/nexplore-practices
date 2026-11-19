@@ -1,5 +1,5 @@
 import { createSelectViewSourceInternal } from './extensions';
-import {
+import type {
     SelectViewSourceFilterType,
     SelectViewSourceLabelKey,
     SelectViewSourceWithSignals,
@@ -15,7 +15,7 @@ export function createSelectViewSource<
     TLabelKey extends SelectViewSourceLabelKey<TData>,
     TQueryParams = TData,
     TFilter extends SelectViewSourceFilterType<TData, TLabelKey> = SelectViewSourceFilterType<TData, TLabelKey>,
-    TOrdering = TData
+    TOrdering = TData,
 >(
     config: TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams, TOrdering>
 ): SelectViewSourceWithSignals<TData, TFilter> {
@@ -27,7 +27,7 @@ export function createTypedFactory<TData>() {
         TLabelKey extends SelectViewSourceLabelKey<TData>,
         TQueryParams,
         TFilter extends SelectViewSourceFilterType<TData, TLabelKey>,
-        TOrdering = TData
+        TOrdering = TData,
     >(
         config: TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams, TOrdering>
     ): SelectViewSourceWithSignals<TData, TFilter> => createSelectViewSource(config);

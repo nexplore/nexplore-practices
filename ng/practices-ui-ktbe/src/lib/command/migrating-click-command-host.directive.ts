@@ -14,8 +14,7 @@ type StatusProgressOptionsKeys = Array<keyof StatusProgressOptions>;
 type ExtractArgs<TCommandInput> = TCommandInput extends CombinedCommandInput<infer TArgs, any> ? TArgs : never;
 
 type CombinedCommandOptions<TCommandInput> =
-    | CommandOptions<ExtractArgs<TCommandInput>>
-    | LegacyCommandOptionsWithDeprecations<ExtractArgs<TCommandInput>>;
+    CommandOptions<ExtractArgs<TCommandInput>> | LegacyCommandOptionsWithDeprecations<ExtractArgs<TCommandInput>>;
 
 // type CombinedCommandOptions<TCommandInput> = TCommandInput extends ILegacyCommand
 //     ? LegacyCommandOptions<ExtractArgs<TCommandInput>>
@@ -37,7 +36,7 @@ type CombinedCommandOptions<TCommandInput> =
 export class PuibeMigratingClickCommandHostDirective<
     TArgs,
     TResult,
-    TCommandInput extends CombinedCommandInput<TArgs, TResult>
+    TCommandInput extends CombinedCommandInput<TArgs, TResult>,
 > {
     private readonly _modernClickCommandDirective = inject(PuiClickCommandDirective);
     private readonly _legacyClickCommandDirective = inject(PuibeLegacyClickCommandDirective);

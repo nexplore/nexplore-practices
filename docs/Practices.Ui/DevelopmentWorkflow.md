@@ -20,6 +20,10 @@ Samples (Kanton Bern):
 
 You can run all Unit Tests by executing `npm test`. You can add the library specific names after it to only execute tests for a specific project.
 
+### Visual regression tests (Practices.Ui.KtBE)
+
+Changes that may affect the look of the KtBE components (upgrades of Angular or Tailwind, refactorings of templates or styles) can be verified by comparing screenshots of every Storybook story against a release, e.g. `npm run visual:compare -- 12.1.2 --node 22.14.0`. See [ng/visual-tests/README.md](../../ng/visual-tests/README.md).
+
 ## Lint
 
 Execute `npm run lint` before you issue a PR to ensure that the code fulfills our conventions.
@@ -42,6 +46,5 @@ Execute `npm run lint` before you issue a PR to ensure that the code fulfills ou
 ### Style Sharing and Reusability
 - DO share styles by extracting components or directives in Angular
 
-- DO use Tailwind v4 [@theme variables](https://tailwindcss.com/docs/theme) for values used in multiple places 
-    - Alternatively, configure new theming variables or base styles in tailwind.config.js
+- DO configure new theme values (colors, font sizes, spacing, ...) and base styles in the KTBE preset `practices-ui-ktbe/tailwind.config.js`, so that they are shipped to consuming applications (the library uses Tailwind CSS 4 with the JavaScript preset loaded through `@config`)
 - DO configure new utility classes, component classes or variants using the Tailwind plugin system for styles used across components

@@ -16,48 +16,58 @@ npm install @nexplore/practices-ui
 
 ## Features and Usage Examples
 
-### Title Management - [`TitleService`](./src/lib/title/title.service.ts)
+### Title Management - [`TitleService`](./src/lib/services/title.service.ts)
 
-A service implementing Angular's `TitleStrategy` for managing the page title with breadcrumb support:
+A service implementing Angular's `TitleStrategy` for managing the page title (from the route `title`) and the title of the
+breadcrumb leaf (`breadcrumbTitle$`). `providePractices()` registers it as `TitleStrategy`.
 
 ```typescript
 import { TitleService } from '@nexplore/practices-ui';
 import { Component, inject } from '@angular/core';
 
 @Component({...})
-export class AppComponent {
+export class UserDetailComponent {
   private readonly _titleService = inject(TitleService);
 
   ngOnInit() {
-    // Set the application title
-    this._titleService.setTitle('My Application');
+    // Set a custom page title (localized by default, also sets the breadcrumb title)
+    this._titleService.setTitle('Users.Labels_Details');
 
-    // Set page title with breadcrumb
-    this._titleService.setBreadcrumbs([
-      { label: 'Home', route: '/' },
-      { label: 'Users', route: '/users' },
-      { label: 'User Details' }
-    ]);
+    // Set only the title of the breadcrumb leaf, without localization
+    this._titleService.setBreadcrumbTitle('Anna Muster', { localize: false });
   }
 }
 ```
 
-### Translation Support - [`RewriteTranslateParser`](./src/lib/translate/rewrite-translate-parser.ts)
+See [Translations](../../docs/Practices.Ui/Translations.md#titleservice) for the configuration.
 
-A custom `TranslateParser` which rewrites resource types for translations to work well with .NET resource file format:
+### Translation Support - [`RewriteMissingTranslationHandler`](./src/lib/services/missing-translation.handler.ts)
+
+A `MissingTranslationHandler` for ngx-translate which rewrites the prefix (resource type) of keys without translation, e.g. to
+use the translations of your application for the keys of the Practices components:
 
 ```typescript
-import { provideTranslateParser } from '@nexplore/practices-ui';
-import { TranslateModule } from '@ngx-translate/core';
+import { providePractices } from '@nexplore/practices-ui';
+import { provideTranslateService } from '@ngx-translate/core';
 
-// In your app providers
-const providers = [provideTranslateParser()];
-
-// This allows using .NET resource format in translations
-// For example: "Common.Buttons_Save" instead of requiring "Common.Buttons.Save"
+const providers = [
+    provideTranslateService(),
+    providePractices({
+        rewriteResourceConfig: {
+            // "Practices.Labels_Save" is looked up as "App.Labels_Save", then as "Shared.Labels_Save"
+            rewriteTypeConfig: {
+                Practices: { rewriteTo: 'App', fallbackTo: 'Shared' },
+            },
+            // Optional: how keys without any translation are displayed
+            missingKeyTransformFn: (key) => `[${key}]`,
+        },
+    }),
+];
 ```
 
-### Component Lifecycle - [`DestroyService`](./src/lib/destroy/destroy.service.ts)
+See [Translations](../../docs/Practices.Ui/Translations.md) for details.
+
+### Component Lifecycle - [`DestroyService`](./src/lib/services/destroy.service.ts)
 
 A service for handling the `ngOnDestroy` lifecycle hook (deprecated in favor of Angular's `DestroyRef`):
 
@@ -153,8 +163,8 @@ const saveCommand = command.action(() => saveUser(), {
 
 These features are now re-exported from dedicated packages and might be removed from this package in the future:
 
--   **ListViewSource**: Re-exported from [@nexplore/practices-ng-list-view-source](../practices-ng-list-view-source/README.md)
--   **StatusHubService**: Re-exported from [@nexplore/practices-ng-status](../practices-ng-status/README.md)
+- **ListViewSource**: Re-exported from [@nexplore/practices-ng-list-view-source](../practices-ng-list-view-source/README.md)
+- **StatusHubService**: Re-exported from [@nexplore/practices-ng-status](../practices-ng-status/README.md)
 
 For new code, it's recommended to import these directly from their respective packages.
 
@@ -162,8 +172,8 @@ For new code, it's recommended to import these directly from their respective pa
 
 This library complements the modern `practices-ng-*` packages and is used alongside:
 
--   **[@nexplore/practices-ui-ktbe](../practices-ui-ktbe/README.md)** - KTBE-styled UI component library
--   **[@nexplore/practices-ui-clarity](../practices-ui-clarity/README.md)** - Extensions for Clarity Design System
+- **[@nexplore/practices-ui-ktbe](../practices-ui-ktbe/README.md)** - KTBE-styled UI component library
+- **[@nexplore/practices-ui-clarity](../practices-ui-clarity/README.md)** - Extensions for Clarity Design System
 
 ## Running unit tests
 

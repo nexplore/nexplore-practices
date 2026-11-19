@@ -1,7 +1,7 @@
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, HostBinding, Input, Optional } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PuibeIconArrowBreadcrumbComponent } from '../../icons/icon-arrow-breadcrumb.component';
 import { PuibeIconHomeComponent } from '../../icons/icon-home.component';
 import { PuibeShellService } from '../../shell/shell.service';
@@ -15,7 +15,7 @@ import { A11yModule } from '@angular/cdk/a11y';
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         NgClass,
-        TranslateModule,
+        TranslatePipe,
         PuibeIconHomeComponent,
         PuibeIconArrowBreadcrumbComponent,
         RouterLink,
@@ -79,7 +79,10 @@ export class PuibeBreadcrumbItemComponent {
         return 'default';
     }
 
-    constructor(@Optional() private router: Router, @Optional() readonly shellService: PuibeShellService) {}
+    constructor(
+        @Optional() private router: Router,
+        @Optional() readonly shellService: PuibeShellService
+    ) {}
 
     get isHome() {
         if (this.hasHomeIcon !== undefined) {

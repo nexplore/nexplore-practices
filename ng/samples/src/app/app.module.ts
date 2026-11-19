@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { provideTranslateService, TranslateService } from '@ngx-translate/core';
 
 import { AppComponent } from './app.component';
 import { APP_ROUTES } from './app.routes';
@@ -12,14 +12,8 @@ import { translations } from './translations';
 
 @NgModule({
     declarations: [AppComponent, StatusAlertComponent],
-    imports: [
-        BrowserModule,
-        ClarityModule,
-        RouterModule.forRoot(APP_ROUTES),
-        TranslateModule.forRoot(),
-        BrowserAnimationsModule,
-    ],
-    providers: [],
+    imports: [BrowserModule, ClarityModule, RouterModule.forRoot(APP_ROUTES), BrowserAnimationsModule],
+    providers: [provideTranslateService()],
     bootstrap: [AppComponent],
 })
 export class AppModule {

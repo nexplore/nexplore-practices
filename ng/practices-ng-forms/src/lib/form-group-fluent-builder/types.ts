@@ -1,5 +1,5 @@
-import { Injector, Signal } from '@angular/core';
-import {
+import type { Injector, Signal } from '@angular/core';
+import type {
     AbstractControl,
     AsyncValidatorFn,
     FormBuilder,
@@ -7,10 +7,14 @@ import {
     FormGroup,
     ValidatorFn,
 } from '@angular/forms';
-import { FormGroupControlsValues, FormValueSignalsRecordWithoutPostfix, PartialNullable } from '../utils/form.types';
-import { Extensions } from './extensions';
-import { FormGroupValueWithSignals } from './form-group-types';
-import { FormControlsOfValues } from './form-group-types.internal';
+import type {
+    FormGroupControlsValues,
+    FormValueSignalsRecordWithoutPostfix,
+    PartialNullable,
+} from '../utils/form.types';
+import type { Extensions } from './extensions';
+import type { FormGroupValueWithSignals } from './form-group-types';
+import type { FormControlsOfValues } from './form-group-types.internal';
 
 export type FormGroupEnhancedWithSignals<TControls = any> = TControls extends {
     [K in keyof TControls]: AbstractControl;
@@ -59,7 +63,7 @@ export type FormGroupValueBase = Record<string, any>;
 
 export type ValueSatisfyingType<
     TSatisfiesType extends FormGroupValueBase,
-    TValue extends PartialNullable<TSatisfiesType>
+    TValue extends PartialNullable<TSatisfiesType>,
 > = {
     [KEY in keyof TValue]: TValue[KEY] extends null
         ? KEY extends string
@@ -72,7 +76,7 @@ export type ValueSatisfyingType<
 
 export type FormGroupSatisfyingTypeOfValue<
     TSatisfiesType extends FormGroupValueBase,
-    TValue extends PartialNullable<TSatisfiesType>
+    TValue extends PartialNullable<TSatisfiesType>,
 > = FormGroupEnhancedWithSignals<FormControlsOfValues<ValueSatisfyingType<TSatisfiesType, TValue>>>;
 
 export type FormControlDefinition<T> = {
@@ -134,39 +138,35 @@ type AddNullableIfConfigured<TControlDef, TFallback = TControlDef> = TControlDef
 }
     ? TValue | null
     : TControlDef extends FormControlDefinition<infer TValue>
-    ? TValue
-    : TControlDef extends FormControlDefinitionValueOmitted & { nullable: true }
-    ? TFallback | null
-    : TControlDef extends FormControlDefinitionValueOmitted & { nullable: false }
-    ? TFallback
-    : TControlDef extends AbstractControl<infer TValue>
-    ? TValue
-    : Exclude<TControlDef, FormControlDefinitionValueOmitted>;
+      ? TValue
+      : TControlDef extends FormControlDefinitionValueOmitted & { nullable: true }
+        ? TFallback | null
+        : TControlDef extends FormControlDefinitionValueOmitted & { nullable: false }
+          ? TFallback
+          : TControlDef extends AbstractControl<infer TValue>
+            ? TValue
+            : Exclude<TControlDef, FormControlDefinitionValueOmitted>;
 
 type MapNullable<TDefinition, THintType> = {
     [K in keyof TDefinition]: AddNullableIfConfigured<TDefinition[K], K extends keyof THintType ? THintType[K] : never>;
 };
 
-export type FormGroupDefinitionValue<
-    TDefinition extends FormGroupDefinition<FormGroupValueBase>,
-    THintType
-> = TDefinition extends BuildFromGroupValueFn<infer TValue> ? TValue : MapNullable<TDefinition, THintType>;
+export type FormGroupDefinitionValue<TDefinition extends FormGroupDefinition<FormGroupValueBase>, THintType> =
+    TDefinition extends BuildFromGroupValueFn<infer TValue> ? TValue : MapNullable<TDefinition, THintType>;
 
 export type FormGroupDefinition<TValue extends FormGroupValueBase> =
-    | TValue
-    | BuildFromGroupValueFn<TValue>
-    | FormGroupDefinitionRecord<TValue>;
+    TValue | BuildFromGroupValueFn<TValue> | FormGroupDefinitionRecord<TValue>;
 
 export type ExtractActualValueFromDefinition<
     TDefinitionInput extends FormGroupDefinition<FormGroupValueBase>,
-    THintType
+    THintType,
 > = TDefinitionInput extends ((_: FormBuilder) => infer TDefinition) | (() => infer TDefinition)
     ? MapNullable<TDefinition, THintType>
     : FormGroupDefinitionValue<TDefinitionInput, THintType>;
 
 export type TypedExtendedFormGroup<
     TDefinition extends FormGroupDefinition<FormGroupValueBase> = FormGroupDefinition<FormGroupValueBase>,
-    THintType = never
+    THintType = never,
 > = FormGroupEnhancedWithSignals<FormControlsOfValues<ExtractActualValueFromDefinition<TDefinition, THintType>>> &
     Extensions;
 
@@ -175,14 +175,14 @@ type PickRightNullability<TValue, TOriginal> = TValue extends null
         ? TValue
         : TOriginal | null
     : TValue extends undefined
-    ? TValue extends TOriginal
+      ? TValue extends TOriginal
+          ? TValue
+          : TOriginal | undefined
+      : TValue extends TOriginal
         ? TValue
-        : TOriginal | undefined
-    : TValue extends TOriginal
-    ? TValue
-    : TOriginal extends TValue
-    ? TOriginal | null
-    : TOriginal;
+        : TOriginal extends TValue
+          ? TOriginal | null
+          : TOriginal;
 
 /**
  * Crazy type that makes sure that if a value is defined with null, it gets the original type added to it
@@ -199,25 +199,25 @@ type PickRightNullability<TValue, TOriginal> = TValue extends null
  * // formGroup.value.prop2 is string | null - without this type, it would just be `null`
  * ```
  **/
-export type DefinitionWithNullValuesInferredFromValue<TDefinition, TOriginal> = TDefinition extends FormGroupDefinition<
-    infer TValue
->
-    ? FormGroupDefinition<{
-          [K in keyof TValue]: TDefinition extends { [P in K]: any }
-              ? TOriginal extends { [P in K]?: any }
-                  ? TValue[K] extends FormControlDefinitionValueOmitted
-                      ? AddNullableIfConfigured<TDefinition[K], TOriginal[K]>
-                      : PickRightNullability<TValue[K], TOriginal[K]>
-                  : TValue[K]
-              : Exclude<TValue[K], FormControlDefinitionValueOmitted>;
-      }>
-    : never;
+export type DefinitionWithNullValuesInferredFromValue<TDefinition, TOriginal> =
+    TDefinition extends FormGroupDefinition<infer TValue>
+        ? FormGroupDefinition<{
+              [K in keyof TValue]: TDefinition extends { [P in K]: any }
+                  ? TOriginal extends { [P in K]?: any }
+                      ? TValue[K] extends FormControlDefinitionValueOmitted
+                          ? AddNullableIfConfigured<TDefinition[K], TOriginal[K]>
+                          : PickRightNullability<TValue[K], TOriginal[K]>
+                      : TValue[K]
+                  : Exclude<TValue[K], FormControlDefinitionValueOmitted>;
+          }>
+        : never;
 
 export type ValueSatisfying<
     TValueOrDef extends PartialNullable<TSatisfy> | FormGroupDefinitionRecord<PartialNullable<TSatisfy>>,
-    TSatisfy extends FormGroupValueBase
-> = TValueOrDef extends FormGroupDefinitionRecord<any>
-    ? ExtractActualValueFromDefinition<DefinitionWithNullValuesInferredFromValue<TValueOrDef, TSatisfy>, TSatisfy>
-    : TValueOrDef extends PartialNullable<TSatisfy>
-    ? ValueSatisfyingType<TSatisfy, TValueOrDef>
-    : never;
+    TSatisfy extends FormGroupValueBase,
+> =
+    TValueOrDef extends FormGroupDefinitionRecord<any>
+        ? ExtractActualValueFromDefinition<DefinitionWithNullValuesInferredFromValue<TValueOrDef, TSatisfy>, TSatisfy>
+        : TValueOrDef extends PartialNullable<TSatisfy>
+          ? ValueSatisfyingType<TSatisfy, TValueOrDef>
+          : never;

@@ -1,8 +1,8 @@
-import { Signal } from '@angular/core';
-import { StatusProgressOptions } from '@nexplore/practices-ng-status';
-import { Observable } from 'rxjs';
-import { AbstractCommand } from './abstract-command';
-import { CommandAfterExecuteResult, ConcurrentTriggerBehavior } from './command.types';
+import type { Signal } from '@angular/core';
+import type { StatusProgressOptions } from '@nexplore/practices-ng-status';
+import type { Observable } from 'rxjs';
+import type { AbstractCommand } from './abstract-command';
+import type { CommandAfterExecuteResult, ConcurrentTriggerBehavior } from './command.types';
 
 export interface AbstractCommandOptions<TArgs = void> {
     /**
@@ -36,21 +36,20 @@ export interface AbstractCommandOptions<TArgs = void> {
     afterExecuteHandler?: (params: CommandAfterExecuteResult<TArgs>) => void;
 }
 
-export type CommandWithLifecycleOptions<TArgs> =
-    | AbstractCommandOptions<TArgs> & {
-          /**
-           * Shorthand for `concurrentTriggerBehavior: { type: 'waitForRunning' }`.
-           *
-           * If true, triggering the command while it is still running will wait for the running command to complete, then re-trigger.
-           * If triggered more than once while running, only the last trigger will succeed.
-           */
-          waitForRunning?: boolean;
+export type CommandWithLifecycleOptions<TArgs> = AbstractCommandOptions<TArgs> & {
+    /**
+     * Shorthand for `concurrentTriggerBehavior: { type: 'waitForRunning' }`.
+     *
+     * If true, triggering the command while it is still running will wait for the running command to complete, then re-trigger.
+     * If triggered more than once while running, only the last trigger will succeed.
+     */
+    waitForRunning?: boolean;
 
-          /**
-           * The status options for the command.
-           */
-          status?: StatusProgressOptions;
-      };
+    /**
+     * The status options for the command.
+     */
+    status?: StatusProgressOptions;
+};
 
 export type CommandWithSignalsAndStatus<TArgs, TResult> = AbstractCommand<
     TArgs,

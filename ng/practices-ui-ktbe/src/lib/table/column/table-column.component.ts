@@ -10,7 +10,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import { DestroyService, OrderDirection } from '@nexplore/practices-ui';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, combineLatest, map, shareReplay, Subscription, switchMap, takeUntil } from 'rxjs';
 
 import { A11yModule } from '@angular/cdk/a11y';
@@ -19,6 +19,7 @@ import { PuibeIconSpinnerComponent } from '../../icons/icon-spinner.component';
 import { setHostAttr, setHostClassNames } from '../../util/utils';
 import { ClassNames } from '../constants';
 import { TableColumnItem } from '../table-view-source';
+// eslint-disable-next-line import-x/no-cycle -- Angular parent/child pattern: the table components inject their parents and query their children at runtime (forwardRef).
 import { PuibeTableComponent } from '../table.component';
 import {
     combineTranslationPrefixAndKey,
@@ -33,7 +34,7 @@ import { computedPipe, subscriptionEffect } from '@nexplore/practices-ng-signals
     selector: 'puibe-table-column',
     templateUrl: './table-column.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, AsyncPipe, TranslateModule, PuibeIconArrowComponent, PuibeIconSpinnerComponent, A11yModule],
+    imports: [NgClass, AsyncPipe, PuibeIconArrowComponent, PuibeIconSpinnerComponent, A11yModule],
     providers: [DestroyService],
 })
 export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterViewInit {
@@ -123,7 +124,10 @@ export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterVie
         private _destroy$: DestroyService,
         _renderer: Renderer2
     ) {
-        const sortableSignal = computedPipe(this._column$, map((column) => column?.sortable));
+        const sortableSignal = computedPipe(
+            this._column$,
+            map((column) => column?.sortable)
+        );
         subscriptionEffect(() => {
             const sortable = sortableSignal();
             // This is a workaround for accessibility reasons (if a element has a click handler, screen-reader emits "clickable", which we don't want, when its not sortable)

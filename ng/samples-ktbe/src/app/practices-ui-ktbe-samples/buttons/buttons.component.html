@@ -25,7 +25,7 @@
 <div class="mt-8 flex justify-around">
     <puibe-dropdown-button [options]="options1">Router Links</puibe-dropdown-button>
     <puibe-dropdown-button [options]="options1" (menuOpen)="menuOpenHandler()" (menuClose)="menuCloseHandler()"
-    >menuOpen/menuClose => Console output
+        >menuOpen/menuClose => Console output
     </puibe-dropdown-button>
     <puibe-dropdown-button [options]="options2">
         <puibe-icon-login class="inline-flex" size="s"></puibe-icon-login>
@@ -39,8 +39,8 @@
             {
                 iconTemplate: customDropdownOptionIcon,
                 onClickHandler: customDropdownOptionHandler,
-                labelContent: 'Login'
-            }
+                labelContent: 'Login',
+            },
         ]"
     >
         <puibe-icon-login class="inline-flex" size="s"></puibe-icon-login>
@@ -55,25 +55,25 @@
 </div>
 
 <div class="mt-2 flex justify-stretch">
-    <button type="button" puibeButton class="flex-grow">
+    <button type="button" puibeButton class="grow">
         <puibe-button-arrows variant="left-arrow">Button with left arrow</puibe-button-arrows>
     </button>
-    <button type="button" puibeButton class="flex-grow">
+    <button type="button" puibeButton class="grow">
         <puibe-button-arrows variant="right-arrow">Button with right arrow</puibe-button-arrows>
     </button>
 </div>
 
 <div class="mt-2 flex justify-stretch">
-    <button type="button" puibeButton class="flex-grow" disabled="true">
+    <button type="button" puibeButton class="grow" disabled="true">
         <puibe-button-arrows variant="left-arrow">Disabled button with left arrow</puibe-button-arrows>
     </button>
-    <button type="button" puibeButton class="flex-grow" disabled="true">
+    <button type="button" puibeButton class="grow" disabled="true">
         <puibe-button-arrows variant="right-arrow">Disabled button with right arrow</puibe-button-arrows>
     </button>
 </div>
 
 <h4 class="mt-8">Async commands</h4>
-<app-commands/>
+<app-commands />
 
 <h4 class="mt-8">Async commands (Legacy)</h4>
-<app-legacy-commands/>
+<app-legacy-commands />

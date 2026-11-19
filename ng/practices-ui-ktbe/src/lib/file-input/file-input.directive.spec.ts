@@ -1,9 +1,9 @@
 import '@angular/compiler';
 import { ElementRef } from '@angular/core';
-import { DestroyService } from '@nexplore/practices-ui';
-import { TranslateService } from '@ngx-translate/core';
+import type { DestroyService } from '@nexplore/practices-ui';
+import type { TranslateService } from '@ngx-translate/core';
 import { EMPTY, Subject } from 'rxjs';
-import { FormFieldService } from '../form-field/form-field.service';
+import type { FormFieldService } from '../form-field/form-field.service';
 import { PuibeFileInputDirective } from './file-input.directive';
 
 describe('PuibeFileInputDirective', () => {

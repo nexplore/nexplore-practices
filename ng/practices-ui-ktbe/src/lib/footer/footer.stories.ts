@@ -1,6 +1,7 @@
-import { IsActiveMatchOptions } from '@angular/router';
+import type { IsActiveMatchOptions } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 
 import { PuibeFooterCopyrightDirective } from './footer-copyright.directive';
 import { PuibeFooterMenuItemDirective } from './footer-menu-item.directive';

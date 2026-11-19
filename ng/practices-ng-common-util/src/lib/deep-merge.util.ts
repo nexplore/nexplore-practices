@@ -21,11 +21,12 @@ function mergeRecursive(obj: any, newObj: any, visited: any[] = []): any {
     });
 }
 
-type DeepPartial<T> = T extends Record<string, any>
-    ? {
-          [P in keyof T]?: DeepPartial<T[P]>;
-      }
-    : T;
+type DeepPartial<T> =
+    T extends Record<string, any>
+        ? {
+              [P in keyof T]?: DeepPartial<T[P]>;
+          }
+        : T;
 
 export function deepMerge<T extends Record<string, any>>(options?: T, newOptions?: DeepPartial<T>): T {
     const merged: any = {

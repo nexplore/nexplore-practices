@@ -182,7 +182,7 @@ export class StatusHubService {
                         blocking: false,
                         busy: false,
                         success: prev?.success
-                            ? this.unwrapMessage(progressOptions?.successMessage, prev.result) ?? prev.success
+                            ? (this.unwrapMessage(progressOptions?.successMessage, prev.result) ?? prev.success)
                             : prev?.success,
                     }),
                     progressOptions

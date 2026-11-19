@@ -1,7 +1,11 @@
-import { WritableSignal } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AbstractCommand } from './abstract-command';
-import { CommandWithLifecycleOptions, CommandWithSignalsAndStatus, ILegacyCommand } from './command-internal.types';
+import type { WritableSignal } from '@angular/core';
+import type { Observable } from 'rxjs';
+import type { AbstractCommand } from './abstract-command';
+import type {
+    CommandWithLifecycleOptions,
+    CommandWithSignalsAndStatus,
+    ILegacyCommand,
+} from './command-internal.types';
 
 export interface CommandAfterExecuteResult<TArgs = void | never | undefined> {
     args: TArgs;
@@ -44,9 +48,7 @@ export type CommandAsyncHandlerArg<TArgs, TResult> = CommandAsyncHandlerFn<TArgs
 export type Command<TArgs = void, TResult = void> = CommandWithSignalsAndStatus<TArgs, TResult>;
 
 export type CommandInput<TArgs = any, TResult = unknown> =
-    | AbstractCommand<TArgs, TResult>
-    | CommandAsyncHandlerFn<TArgs, TResult>
-    | ILegacyCommand<TArgs, TResult>;
+    AbstractCommand<TArgs, TResult> | CommandAsyncHandlerFn<TArgs, TResult> | ILegacyCommand<TArgs, TResult>;
 
 export type CommandOptions<TArgs> = CommandWithLifecycleOptions<TArgs>;
 export type ActionCommand<TArgs, TResult> = CommandWithSignalsAndStatus<TArgs, TResult>;

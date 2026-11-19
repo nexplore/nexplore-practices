@@ -1,5 +1,5 @@
 import { isSignal } from '@angular/core';
-import { ValueOrSignal } from './types';
+import type { ValueOrSignal } from './types';
 
 /**
  * Extracts the value from a signal or returns the value directly if it's not a signal.

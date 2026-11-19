@@ -1,11 +1,6 @@
-import {
-    IListResult,
-    IListViewSource,
-    IOrdering,
-    IQueryParams,
-    ListViewSource,
-} from '@nexplore/practices-ng-list-view-source';
-import { Observable } from 'rxjs';
+import type { IListResult, IListViewSource, IOrdering, IQueryParams } from '@nexplore/practices-ng-list-view-source';
+import { ListViewSource } from '@nexplore/practices-ng-list-view-source';
+import type { Observable } from 'rxjs';
 
 export {
     FilterableListViewSource,

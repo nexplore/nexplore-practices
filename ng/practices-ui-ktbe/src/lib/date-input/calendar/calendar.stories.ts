@@ -1,9 +1,10 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ArgTypes, Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { ArgTypes, Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 import { PuibeCalendarFlyoutComponent } from './calendar-flyout.component';
 
 import { add, format } from 'date-fns';
-import { CalendarPeriodType } from '../services/calendar-period.service';
+import type { CalendarPeriodType } from '../services/calendar-period.service';
 import { PuibeCalendarComponent } from './calendar.component';
 
 type Args = {

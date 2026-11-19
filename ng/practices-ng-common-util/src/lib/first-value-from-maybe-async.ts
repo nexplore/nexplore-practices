@@ -1,4 +1,5 @@
-import { firstValueFrom, isObservable, Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { firstValueFrom, isObservable } from 'rxjs';
 
 /**
  * Returns a promise that resolves with the first value emitted by the observable,

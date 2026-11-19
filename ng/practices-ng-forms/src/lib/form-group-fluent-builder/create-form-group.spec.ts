@@ -2,7 +2,7 @@ import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Validators } from '@angular/forms';
 import { formGroup } from './api';
-import { FormGroupDefinitionRecord } from './types';
+import type { FormGroupDefinitionRecord } from './types';
 
 describe('withBuilder', () => {
     it('should create a basic form group', () => {

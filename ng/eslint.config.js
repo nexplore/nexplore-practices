@@ -1,5 +1,9 @@
+const path = require('path');
 const nx = require('@nx/eslint-plugin');
 const rxjs = require('eslint-plugin-rxjs-x').default;
+const tseslint = require('typescript-eslint');
+const importX = require('eslint-plugin-import-x');
+const { createTypeScriptImportResolver } = require('eslint-import-resolver-typescript');
 
 module.exports = [
     ...nx.configs['flat/base'],
@@ -13,7 +17,7 @@ module.exports = [
     {
         languageOptions: {
             parserOptions: {
-                parser: require('@typescript-eslint/parser'),
+                parser: tseslint.parser,
                 project: ['./tsconfig.*?.json'],
             },
         },
@@ -79,17 +83,35 @@ module.exports = [
             '@angular-eslint/template/no-autofocus': 'warn',
         },
     },
+    // Import hygiene within the projects (the dependencies between projects are checked by @nx/enforce-module-boundaries).
     {
-        files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
-        // Override or add rules here
-        rules: {},
+        files: ['**/*.ts'],
+        ...importX.flatConfigs.recommended,
     },
     {
-        files: ['**/*.json'],
-        rules: {
-            '@nx/dependency-checks': ['error', { ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs}'] }],
+        files: ['**/*.ts'],
+        ...importX.flatConfigs.typescript,
+    },
+    {
+        files: ['**/*.ts'],
+        settings: {
+            // Resolve the TypeScript path aliases (@nexplore/*) of the workspace.
+            'import-x/resolver-next': [
+                createTypeScriptImportResolver({
+                    alwaysTryTypes: true,
+                    project: path.join(__dirname, 'tsconfig.base.json'),
+                }),
+            ],
         },
-        languageOptions: { parser: require('jsonc-eslint-parser') },
+        rules: {
+            // `import type` is removed by TypeScript, so cycles that only consist of type imports are not reported.
+            // (@typescript-eslint/consistent-type-imports cannot be enabled: with type-aware linting it would convert
+            // constructor parameter types of Angular classes, which are needed as values for dependency injection.)
+            'import-x/no-cycle': 'error',
+            'import-x/no-duplicates': 'error',
+            'import-x/no-self-import': 'error',
+            'import-x/no-useless-path-segments': 'error',
+        },
     },
     {
         files: ['**/*.json'],

@@ -1,4 +1,4 @@
-import { ElementRef } from '@angular/core';
+import type { ElementRef } from '@angular/core';
 
 export function setAttr(attr: string, value: string | boolean, element: HTMLElement) {
     if (value === undefined || value === null || value === false) {
@@ -99,7 +99,7 @@ export function compareUrlWithWildcards(url: string | null, wildcardText: string
     const urlSplitted = url.split('/');
     wildcardText = wildcardText
         .split('/')
-        .map((t, i) => (t.startsWith(':') ? urlSplitted[i] ?? t : t))
+        .map((t, i) => (t.startsWith(':') ? (urlSplitted[i] ?? t) : t))
         .join('/');
 
     // "."  => Find a single character, except newline or line terminator

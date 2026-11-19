@@ -1,14 +1,11 @@
 import { toSignal } from '@angular/core/rxjs-interop';
 import { enhance, firstCharToUpper } from '@nexplore/practices-ng-common-util';
 import { map } from 'rxjs/operators';
-import { FilterableListViewSource, ListViewSource } from '../implementation/list-view-source';
-import {
-    EnhancedListViewSource,
-    ListViewSourceEnhancements,
-    OrderDirection,
-    TypedQueryParamsWithFilter,
-} from '../types';
-import { HasTypedQueryParams } from '../types-internal';
+import type { ListViewSource } from '../implementation/list-view-source';
+import { FilterableListViewSource } from '../implementation/list-view-source';
+import type { EnhancedListViewSource, ListViewSourceEnhancements, TypedQueryParamsWithFilter } from '../types';
+import { OrderDirection } from '../types';
+import type { HasTypedQueryParams } from '../types-internal';
 import { enhanceWithMutableData } from './common-extensions';
 
 export function getDefaultQueryParams<TFilter, TQueryParams>(

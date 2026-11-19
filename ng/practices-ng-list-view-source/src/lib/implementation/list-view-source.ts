@@ -1,4 +1,5 @@
-import { BehaviorSubject, combineLatest, defer, EMPTY, Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, defer, EMPTY } from 'rxjs';
 import {
     catchError,
     debounceTime,
@@ -11,7 +12,7 @@ import {
     take,
     tap,
 } from 'rxjs/operators';
-import {
+import type {
     IFilterableListViewSource,
     IListResult,
     IListViewSource,

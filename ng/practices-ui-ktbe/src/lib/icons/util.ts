@@ -1,4 +1,4 @@
-import { ElementRef } from '@angular/core';
+import type { ElementRef } from '@angular/core';
 import { setHostClassNames } from '../util/utils';
 import { IconDirection } from './icon.interface';
 

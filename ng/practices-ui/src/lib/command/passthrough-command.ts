@@ -1,6 +1,6 @@
 import { combineLatest, defer, EMPTY, map, shareReplay, startWith } from 'rxjs';
 import { LegacyCommandBase } from './command-base';
-import { LegacyCommandOptions, LegacyCommandTriggerOptions } from './command.types';
+import type { LegacyCommandOptions, LegacyCommandTriggerOptions } from './command.types';
 
 /** Links the command with another command, adding default options */
 export class PassthroughCommand<TArgs = void, TResult = void> extends LegacyCommandBase<TArgs, TResult> {
@@ -49,7 +49,7 @@ export class PassthroughCommand<TArgs = void, TResult = void> extends LegacyComm
 
                           return defaultOptions?.beforeExecuteHandler?.(args);
                       }
-                    : baseCommand.options?.beforeExecuteHandler ?? defaultOptions?.beforeExecuteHandler,
+                    : (baseCommand.options?.beforeExecuteHandler ?? defaultOptions?.beforeExecuteHandler),
 
             afterExecuteHandler:
                 baseCommand.options?.afterExecuteHandler && defaultOptions?.afterExecuteHandler
@@ -57,7 +57,7 @@ export class PassthroughCommand<TArgs = void, TResult = void> extends LegacyComm
                           defaultOptions.afterExecuteHandler?.(args);
                           baseCommand.options?.afterExecuteHandler?.(args);
                       }
-                    : baseCommand.options?.afterExecuteHandler ?? defaultOptions?.afterExecuteHandler,
+                    : (baseCommand.options?.afterExecuteHandler ?? defaultOptions?.afterExecuteHandler),
         };
     }
 

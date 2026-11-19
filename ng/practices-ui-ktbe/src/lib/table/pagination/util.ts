@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of https://github.com/vmware-clarity/ng-clarity.
  */
 
-import { Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 
 /*

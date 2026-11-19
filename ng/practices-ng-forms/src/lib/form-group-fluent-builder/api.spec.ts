@@ -6,7 +6,10 @@ import { formGroup } from './api';
 describe('formGroup', () => {
     it('Works as expected when signal reset and validation are combined', () => {
         class TestDto {
-            constructor(public name: string, public nickname: string | null = null) {}
+            constructor(
+                public name: string,
+                public nickname: string | null = null
+            ) {}
         }
 
         TestBed.runInInjectionContext(() => {

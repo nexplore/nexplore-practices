@@ -2,7 +2,7 @@ import { effect, inject, Injector, signal, untracked } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { enhance } from '@nexplore/practices-ng-common-util';
 import { trace } from '@nexplore/practices-ng-logging';
-import { CommandAsyncHandlerArg, QueryCommand, QueryOptions } from '../../commands/command.types';
+import type { CommandAsyncHandlerArg, QueryCommand, QueryOptions } from '../../commands/command.types';
 import { createCommandWithSignalsAndStatus } from '../../commands/create-command-with-signals-and-status-util';
 
 export function createQueryCommand<TArg, TResult>(

@@ -10,7 +10,7 @@ import { PuibeIconDirectiveBase } from './icon.directive';
     template: `<svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
-        class="m-auto min-w-[12px] max-w-[4rem]"
+        class="m-auto max-w-[4rem] min-w-[12px]"
         viewBox="0 0 100 100"
         preserveAspectRatio="xMidYMid"
     >

@@ -1,5 +1,6 @@
 import { RouterTestingModule } from '@angular/router/testing';
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 import { PuibeBreadcrumbComponent } from './breadcrumb.component';
 import { PuibeBreadcrumbItemComponent } from './item/breadcrumb-item.component';
 

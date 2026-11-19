@@ -1,4 +1,4 @@
-import { Route } from '@angular/router';
+import type { Route } from '@angular/router';
 
 import { DatagridViewComponent } from './datagrid/datagrid-view/datagrid-view.component';
 import { DatePickerViewComponent } from './date-picker/date-picker-view.component';

@@ -13,8 +13,8 @@ import { provideRouter } from '@angular/router';
 import { provideConsoleLogging } from '@nexplore/practices-ng-logging';
 import { providePractices } from '@nexplore/practices-ui';
 import { PracticesKtbeShellModule, providePracticesKtbe } from '@nexplore/practices-ui-ktbe';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
+import { provideTranslateService, TranslateService } from '@ngx-translate/core';
+import type { Observable } from 'rxjs';
 
 import { removeValidatorsOnReadonlyFieldsBehavior } from '@nexplore/practices-ng-forms';
 import { AppComponent } from './app/app.component';
@@ -36,12 +36,13 @@ bootstrapApplication(AppComponent, {
         provideZoneChangeDetection(),
         { provide: LOCALE_ID, useFactory: InitializeLanguage },
         provideAppInitializer(() => {
-            const initializerFn = (InitializeAppFactory)(inject(TranslateService));
+            const initializerFn = InitializeAppFactory(inject(TranslateService));
             return initializerFn();
         }),
         provideConsoleLogging(),
         provideRouter(APP_ROUTES),
-        importProvidersFrom(TranslateModule.forRoot(), BrowserAnimationsModule, PracticesKtbeShellModule),
+        provideTranslateService(),
+        importProvidersFrom(BrowserAnimationsModule, PracticesKtbeShellModule),
         providePractices({
             rewriteResourceConfig: {
                 rewriteTypeConfig: {

@@ -1,6 +1,5 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { IQueryParamsWithFilter, OrderDirection } from '@nexplore/practices-ui';
 import {
     PuibeIconArrowComponent,
     PuibeSelectableDirective,
@@ -23,66 +22,9 @@ import {
     PuibeTwoColumnNavComponent,
     TableViewSource,
 } from '@nexplore/practices-ui-ktbe';
-import { map, timer } from 'rxjs';
+import type { SampleModel } from './table-sample-data';
+import { tableSampleLoadFn } from './table-sample-data';
 import { TableExampleComponent } from './table-example/table-example.component';
-
-export interface SampleModel {
-    id: number;
-    name: string;
-    created: Date;
-}
-
-function generateItem<TItem>(i: number) {
-    return { id: i, name: `Eintrag ${i}`, created: new Date() } as TItem;
-}
-
-function generateSampleData<TItem = SampleModel>(size: number, generateItemFn = generateItem<TItem>) {
-    const data = [];
-    for (let i = 0; i < size; i++) {
-        data.push(generateItemFn(i));
-    }
-
-    return data as TItem[];
-}
-
-export const tableSampleLoadFn = <TItem = SampleModel, TFilter = any>(
-    params: IQueryParamsWithFilter<TFilter>,
-    size: number,
-    generateItemFn = generateItem<TItem>
-) => {
-    let data = generateSampleData(size, generateItemFn);
-
-    if (params.orderings && params.orderings.length > 0) {
-        data = data.sort((a, b) => {
-            return params.orderings[0].direction === OrderDirection.Asc
-                ? a[params.orderings[0].field] > b[params.orderings[0].field]
-                    ? 1
-                    : -1
-                : b[params.orderings[0].field] > a[params.orderings[0].field]
-                ? 1
-                : -1;
-        });
-    }
-
-    if (params.filter) {
-        data = data.filter((d) => {
-            return Object.entries(params.filter).every(([key, value]) =>
-                value === null ? true : d[key]?.toString()?.includes(value?.toString())
-            );
-        });
-    }
-
-    if (params.skip != null && params.take != null) {
-        data = data.slice(params.skip, params.skip + params.take);
-    }
-
-    return timer(1000).pipe(
-        map((_) => ({
-            data: data,
-            total: size,
-        }))
-    );
-};
 
 @Component({
     standalone: true,

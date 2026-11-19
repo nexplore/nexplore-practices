@@ -1,5 +1,6 @@
-import { effect, EffectRef, runInInjectionContext } from '@angular/core';
-import { FormGroupEnhancedWithSignals } from './types';
+import type { EffectRef } from '@angular/core';
+import { effect, runInInjectionContext } from '@angular/core';
+import type { FormGroupEnhancedWithSignals } from './types';
 
 /**
  * Accepts either an EffectRef, or a function that will be run as an effect, with the form group as an argument.

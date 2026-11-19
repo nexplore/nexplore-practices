@@ -8,13 +8,13 @@ List views are a common UI pattern in applications, and this library offers a st
 
 ## Features
 
--   **Fluent API** - Builder pattern for intuitive, chainable configuration
--   **Data Loading** - Standardized approach for loading data with server-side pagination and filtering
--   **Sorting & Filtering** - Built-in support for column sorting and configurable filtering
--   **Signal-based State** - Reactive state management using Angular signals
--   **Persistence Options** - Api to enable custom persistence strategies for sorting and filtering
--   **TypeScript Integration** - Fully typed APIs for improved developer experience
--   **Status Integration** - Automatic handling of loading states, errors, and success messages
+- **Fluent API** - Builder pattern for intuitive, chainable configuration
+- **Data Loading** - Standardized approach for loading data with server-side pagination and filtering
+- **Sorting & Filtering** - Built-in support for column sorting and configurable filtering
+- **Signal-based State** - Reactive state management using Angular signals
+- **Persistence Options** - Api to enable custom persistence strategies for sorting and filtering
+- **TypeScript Integration** - Fully typed APIs for improved developer experience
+- **Status Integration** - Automatic handling of loading states, errors, and success messages
 
 ## Installation
 

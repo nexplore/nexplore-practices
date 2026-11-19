@@ -1,5 +1,5 @@
 import { isSignal } from '@angular/core';
-import { ValueOrGetter } from './types';
+import type { ValueOrGetter } from './types';
 
 /**
  * Extracts the value from a signal-like object, function, or returns the value directly if it's not a function or signal.
@@ -11,6 +11,6 @@ export function unwrapSignalLike<T>(valueOrGetter: ValueOrGetter<T>): T {
     return typeof valueOrGetter === 'function'
         ? (valueOrGetter as () => T)()
         : isSignal(valueOrGetter)
-            ? (valueOrGetter() as T)
-            : valueOrGetter;
+          ? (valueOrGetter() as T)
+          : valueOrGetter;
 }

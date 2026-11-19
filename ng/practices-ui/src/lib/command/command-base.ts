@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs';
-import { LegacyCommandOptions, LegacyCommandTriggerOptions } from './command.types';
+import type { Observable } from 'rxjs';
+import type { LegacyCommandOptions, LegacyCommandTriggerOptions } from './command.types';
 
 /**
  * @deprecated

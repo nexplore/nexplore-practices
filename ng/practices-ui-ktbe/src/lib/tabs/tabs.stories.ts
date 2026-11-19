@@ -1,5 +1,7 @@
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
-import { PuibeTabsComponent, PuibeTabSelectionItem } from './tabs.component';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
+import type { PuibeTabSelectionItem } from './tabs.component';
+import { PuibeTabsComponent } from './tabs.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgSelectModule } from '@ng-select/ng-select';

@@ -1,7 +1,9 @@
-import { TemplateRef, Type } from '@angular/core';
-import { CommandInput, command } from '@nexplore/practices-ng-commands';
-import { CombinedCommandInput } from '@nexplore/practices-ui';
-import { Variant } from '../button/button.directive';
+import type { TemplateRef, Type } from '@angular/core';
+import type { CommandInput, CommandOptions } from '@nexplore/practices-ng-commands';
+import { AbstractCommand } from '@nexplore/practices-ng-commands';
+import { LegacyCommandBase } from '@nexplore/practices-ui';
+import type { CombinedCommandInput } from '@nexplore/practices-ui';
+import type { Variant } from '../button/button.directive';
 
 export type DialogAction<TAction> = TAction & { command?: CommandInput<void, any> };
 
@@ -13,6 +15,8 @@ export interface PuibeDialogActionTemplate<TResult = any, TArgs = void> {
     primary?: boolean;
     variant?: Variant;
     command?: CombinedCommandInput<TArgs, TResult>;
+    /** Options for the command created from the action (e.g. the status category), applied when the dialog opens. */
+    commandOptions?: CommandOptions<TArgs>;
     representsDialogClose?: boolean;
 }
 
@@ -34,7 +38,7 @@ export const PUIBE_DIALOG_ACTIONS = {
 export type PuibeDialogActionMap<
     TActionTemplates extends PuibeDialogActionsTemplates<TResult, TArgs>,
     TResult,
-    TArgs = void
+    TArgs = void,
 > = {
     [key in keyof TActionTemplates]?: CombinedCommandInput<TArgs, TResult> | TResult | false;
 };
@@ -123,7 +127,7 @@ export interface PuibeActionDialogConfig<
     TResult,
     TActionTemplates extends PuibeDialogActionsTemplates<TResult, TArgs> = typeof PUIBE_DIALOG_ACTIONS,
     TArgs = void,
-    TActions = TAction[] | PuibeDialogActionMap<TActionTemplates, TResult, TArgs>
+    TActions = TAction[] | PuibeDialogActionMap<TActionTemplates, TResult, TArgs>,
 > extends PuibeActionDialogConfigBasics {
     /**
      * Defintion for the button actions visual representation
@@ -143,6 +147,25 @@ export interface PuibeActionDialogConfig<
     command?: CombinedCommandInput<TAction, TResult>;
 }
 
+/**
+ * Whether the value of an action is something to execute (a function, a command or a legacy command) rather than the
+ * plain result of the action (e.g. `CANCEL: false`).
+ *
+ * @internal
+ */
+export function isActionCommandInput(value: unknown): value is CombinedCommandInput<any, any> {
+    return typeof value === 'function' || value instanceof AbstractCommand || value instanceof LegacyCommandBase;
+}
+
+/** The default action templates, with the status category for the delete action of `PUIBE_DIALOG_PRESETS.confirmDelete`. */
+const CONFIRM_DELETE_ACTION_TEMPLATES: typeof PUIBE_DIALOG_ACTIONS = {
+    ...PUIBE_DIALOG_ACTIONS,
+    DELETE: {
+        ...PUIBE_DIALOG_ACTIONS.DELETE,
+        commandOptions: { status: { statusCategory: 'action-delete' } },
+    } as typeof PUIBE_DIALOG_ACTIONS.DELETE,
+};
+
 export const PUIBE_DIALOG_PRESETS = {
     confirmDelete: <TResult, TArgs = void>(
         deleteAction: CombinedCommandInput<TArgs, TResult>,
@@ -156,9 +179,12 @@ export const PUIBE_DIALOG_PRESETS = {
         >
     > => ({
         actions: {
-            DELETE: command.fromInput(deleteAction, { status: { statusCategory: 'action-delete' } }),
+            // Not converted to a command here: the preset is often created outside of an injection context (e.g. in a
+            // click handler). The dialog converts the action when it opens, with the options of the action template.
+            DELETE: deleteAction,
             CANCEL: false,
         },
+        actionTemplates: CONFIRM_DELETE_ACTION_TEMPLATES,
         titleKey: 'Practices.Labels_Delete',
         contentKey: 'Practices.Labels_DeletePrompt',
         ...overrideConfig,

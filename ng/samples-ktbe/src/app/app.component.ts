@@ -68,7 +68,7 @@ export class AppComponent {
 
     currentLang$ = this._translateService.onLangChange.pipe(
         map((l) => l.lang),
-        startWith(this._translateService.currentLang)
+        startWith(this._translateService.getCurrentLang())
     );
 
     // Without the debounce we will get a `ExpressionChangedAfterItHasBeenCheckedError`
@@ -110,7 +110,7 @@ export class AppComponent {
     }
 
     isLanguageActive(language: string): boolean {
-        return this._translateService.currentLang === this.languageKeys[language.toLowerCase()];
+        return this._translateService.getCurrentLang() === this.languageKeys[language.toLowerCase()];
     }
 
     onLanguageChange(language: string) {

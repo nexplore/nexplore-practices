@@ -144,7 +144,7 @@ const meta: Meta<Args> = {
         <ng-container *puibeIfErrorStatus="let status;">
             Etwas ist schief gelaufen!
             @if (status.error?.stack) {
-                <puibe-expansion-panel caption="Details" class="text-black flex-grow-0" [enableContentScroll]="true">
+                <puibe-expansion-panel caption="Details" class="text-black grow-0" [enableContentScroll]="true">
                     <code class="whitespace-pre">{{ status.error.stack }}</code>
                 </puibe-expansion-panel>
             }

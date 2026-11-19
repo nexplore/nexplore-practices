@@ -11,7 +11,7 @@ import {
     TemplateRef,
     ChangeDetectionStrategy,
 } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PuibeSideNavigationComponent } from '../side-navigation/side-navigation.component';
 import { PuibeHeaderLogoComponent } from './header-logo.component';
 
@@ -20,7 +20,7 @@ import { PuibeIconHamburgerComponent } from '../icons/icon-hamburger.component';
 import { map } from 'rxjs/operators';
 import { PuibeHeaderMobileMenuItemDirective } from './header-mobile-menu-item.directive';
 import { Routes } from '@angular/router';
-import { PuibeObserveSizeDirective } from '../../lib/util/observe-size.directive';
+import { PuibeObserveSizeDirective } from '../util/observe-size.directive';
 import { PuibeMetaRoute } from '../side-navigation/side-navigation.interface';
 import { PUIBE_BREAKPOINT_MAX_W_LG } from '../util/constants';
 import { PuibeShellService } from '../shell/shell.service';
@@ -33,7 +33,7 @@ import { PuibeShellService } from '../shell/shell.service';
     imports: [
         NgClass,
         AsyncPipe,
-        TranslateModule,
+        TranslatePipe,
         PuibeSideNavigationComponent,
         PuibeHeaderLogoComponent,
         PortalModule,
@@ -161,7 +161,10 @@ export class PuibeHeaderComponent implements OnInit {
         })
     );
 
-    constructor(private breakpointObserver: BreakpointObserver, private shellService: PuibeShellService) {}
+    constructor(
+        private breakpointObserver: BreakpointObserver,
+        private shellService: PuibeShellService
+    ) {}
 
     ngOnInit() {
         this.headerLogoWrapperPortal = new DomPortal(this.headerLogoWrapper);

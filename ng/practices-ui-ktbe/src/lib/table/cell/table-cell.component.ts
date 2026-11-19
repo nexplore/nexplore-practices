@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 import { PuibeAddTitleIfEllipsisDirective } from '../../util/add-title-if-ellipsis.directive';
+// eslint-disable-next-line import-x/no-cycle -- Angular parent/child pattern: the table components inject their parents and query their children at runtime (forwardRef).
 import { PuibeTableCellDirective } from './table-cell.directive';
 
 @Component({

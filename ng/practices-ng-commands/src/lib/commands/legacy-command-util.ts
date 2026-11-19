@@ -1,4 +1,5 @@
-import { Observable, Subscription, takeUntil } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { Subscription, takeUntil } from 'rxjs';
 
 type LegacyCommandLike = {
     trigger: (args: any, options?: any) => boolean;

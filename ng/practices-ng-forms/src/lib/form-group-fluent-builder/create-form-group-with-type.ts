@@ -1,12 +1,13 @@
-import { Injector, Type } from '@angular/core';
+import type { Injector, Type } from '@angular/core';
 import { trace } from '@nexplore/practices-ng-logging';
-import { PartialNullable } from '../utils/form.types';
+import type { PartialNullable } from '../utils/form.types';
 import { createTypedFactory } from './create-form-group';
 import { createTypedFormGroupWithResetFromSignalFactory } from './create-form-group-with-reset-from-signal';
 
-import { createExtendedFormGroup, Extensions } from './extensions';
-import { AllPropsAMustBeInB, FormControlsOfValues } from './form-group-types.internal';
-import {
+import type { Extensions } from './extensions';
+import { createExtendedFormGroup } from './extensions';
+import type { AllPropsAMustBeInB, FormControlsOfValues } from './form-group-types.internal';
+import type {
     FormGroupDefinition,
     FormGroupDefinitionRecord,
     FormGroupEnhancedWithSignals,
@@ -19,14 +20,12 @@ import {
  *
  * TODO: The only drawback is, that suggested properties are not shown in the editor.
  */
-type DefinitionSatisfyingType<
-    TFOrmGroupValue extends FormGroupValueBase,
-    TDefinition
-> = TDefinition extends FormGroupDefinition<infer TValue>
-    ? TDefinition extends FormGroupDefinition<AllPropsAMustBeInB<TValue, TFOrmGroupValue>>
-        ? TDefinition
-        : never
-    : never;
+type DefinitionSatisfyingType<TFOrmGroupValue extends FormGroupValueBase, TDefinition> =
+    TDefinition extends FormGroupDefinition<infer TValue>
+        ? TDefinition extends FormGroupDefinition<AllPropsAMustBeInB<TValue, TFOrmGroupValue>>
+            ? TDefinition
+            : never
+        : never;
 
 type TypedFormGroupFactoryFluentApi<T extends FormGroupValueBase> = {
     withConfig: ReturnType<typeof createTypedFactory<T>>;
@@ -65,7 +64,7 @@ export function createFormGroupWithType<T extends FormGroupValueBase>(): TypedFo
  */
 export function createFormGroupWithType<
     TSatisfy extends FormGroupValueBase,
-    TValueOrDef extends PartialNullable<TSatisfy> | FormGroupDefinitionRecord<PartialNullable<TSatisfy>>
+    TValueOrDef extends PartialNullable<TSatisfy> | FormGroupDefinitionRecord<PartialNullable<TSatisfy>>,
 >(
     typeToSatisfy: Type<TSatisfy>,
     initialValueOrDefinition: DefinitionSatisfyingType<NoInfer<TSatisfy>, TValueOrDef>,
@@ -76,7 +75,7 @@ export function createFormGroupWithType<
 
 export function createFormGroupWithType<
     TSatisfy extends FormGroupValueBase,
-    TValueOrDef extends PartialNullable<TSatisfy> | FormGroupDefinitionRecord<PartialNullable<TSatisfy>>
+    TValueOrDef extends PartialNullable<TSatisfy> | FormGroupDefinitionRecord<PartialNullable<TSatisfy>>,
 >(
     typeToSatisfy?: Type<TSatisfy>,
     initialValueOrDefinition?: DefinitionSatisfyingType<NoInfer<TSatisfy>, TValueOrDef>,

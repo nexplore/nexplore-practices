@@ -1,4 +1,5 @@
-import { from, isObservable, Observable, of } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { from, isObservable, of } from 'rxjs';
 
 /**
  * Converts a value, promise, or observable to an observable.

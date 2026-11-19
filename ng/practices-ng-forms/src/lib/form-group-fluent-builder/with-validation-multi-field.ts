@@ -1,8 +1,8 @@
-import {runInInjectionContext} from '@angular/core';
-import {ConditionalValidatorResult} from "../validation/validation-internal.util";
-import {FormGroupEnhancedWithSignals} from './types';
+import { runInInjectionContext } from '@angular/core';
+import type { ConditionalValidatorResult } from '../validation/validation-internal.util';
+import type { FormGroupEnhancedWithSignals } from './types';
 import { validateMultiField } from '../validation/validators';
-import {DeepKeyOfFormGroup, FormGroupValues} from '../utils/form.types';
+import type { DeepKeyOfFormGroup, FormGroupValues } from '../utils/form.types';
 
 /**
  * Extends the form group with a multi-field validation.

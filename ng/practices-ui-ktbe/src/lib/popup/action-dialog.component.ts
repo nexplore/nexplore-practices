@@ -8,9 +8,10 @@ import {
     runInInjectionContext,
     ChangeDetectionStrategy,
 } from '@angular/core';
+import type { CommandOptions } from '@nexplore/practices-ng-commands';
 import { Command, command, isCommand } from '@nexplore/practices-ng-commands';
 import { CombinedCommandInput } from '@nexplore/practices-ui';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PuibeButtonDirective } from '../button/button.directive';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
 import { PuibeHideIfEmptyTextDirective } from '../util/hide-if-empty-text.directive';
@@ -34,7 +35,7 @@ import { PuibeModalComponent } from './modal.component';
         PuibeModalSubtitleDirective,
         PuibeModalFooterActionDirective,
         PuibeButtonDirective,
-        TranslateModule,
+        TranslatePipe,
         PuibeIconSpinnerComponent,
         DialogTemplateContentComponent,
         PuibeHideIfEmptyTextDirective,
@@ -71,12 +72,20 @@ export class ActionDialogComponent<TAction extends PuibeDialogActionTemplate<any
 
     setActions(value: TAction[]) {
         runInInjectionContext(this._injector, () => {
-            this.actions = value as any;
-            value.forEach((action) => {
-                if (action.command) {
-                    action.command = command.fromInput(action.command);
+            // Copies the actions: they may be reused for several dialogs (e.g. a constant), and the commands created here
+            // belong to this dialog.
+            this.actions = value.map((action) => {
+                if (!action.command) {
+                    return action;
                 }
-            });
+                const commandOptions = (action as { commandOptions?: CommandOptions<any> }).commandOptions;
+                return {
+                    ...action,
+                    command: commandOptions
+                        ? command.fromInput(action.command, commandOptions)
+                        : command.fromInput(action.command),
+                };
+            }) as any;
         });
     }
 

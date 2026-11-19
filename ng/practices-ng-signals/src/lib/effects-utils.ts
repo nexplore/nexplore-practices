@@ -1,6 +1,7 @@
-import { effect, EffectRef, inject, Injector, runInInjectionContext } from '@angular/core';
+import type { EffectRef } from '@angular/core';
+import { effect, inject, Injector, runInInjectionContext } from '@angular/core';
 import { trace } from '@nexplore/practices-ng-logging';
-import { Subscription } from 'rxjs';
+import type { Subscription } from 'rxjs';
 
 /**
  * Passes through the provided source object and allows applying the provided effects to it.

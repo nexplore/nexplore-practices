@@ -1,4 +1,4 @@
-import { Route } from '@angular/router';
+import type { Route } from '@angular/router';
 
 import { ListViewComponent } from './list/list-view/list-view.component';
 import { StatusViewComponent } from './status/status-view/status-view.component';

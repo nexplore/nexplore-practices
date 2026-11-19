@@ -1,10 +1,6 @@
-import { InjectionToken, Provider } from '@angular/core';
-import {
-    providePuiFormFieldConfig,
-    PUI_FORM_FIELD_CONFIG,
-    PuiFormFieldConfig,
-    PuiFormStateConfig,
-} from '@nexplore/practices-ng-forms';
+import type { InjectionToken, Provider } from '@angular/core';
+import type { PuiFormFieldConfig, PuiFormStateConfig } from '@nexplore/practices-ng-forms';
+import { providePuiFormFieldConfig, PUI_FORM_FIELD_CONFIG } from '@nexplore/practices-ng-forms';
 
 export type FormConfig = Partial<PuiFormFieldConfig> &
     Partial<PuiFormStateConfig> & {

@@ -10,10 +10,11 @@ import {
     Type,
 } from '@angular/core';
 import { DestroyService, StatusProgressOptions, StatusService } from '@nexplore/practices-ui';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, combineLatest, filter, map, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
 import { setHostClassNames } from '../util/utils';
+// eslint-disable-next-line import-x/no-cycle -- Angular parent/child pattern: the table components inject their parents and query their children at runtime (forwardRef).
 import { PuibeTableColumnComponent } from './column/table-column.component';
 import { ClassNames } from './constants';
 import { PageService } from './pagination/page.service';
@@ -28,10 +29,7 @@ export interface ColumnTemplate {
 }
 
 export type TableInteractionEvent =
-    | { type: 'sort' }
-    | { type: 'page'; number: number }
-    | { type: 'page-size'; number: number }
-    | { type: 'filter' };
+    { type: 'sort' } | { type: 'page'; number: number } | { type: 'page-size'; number: number } | { type: 'filter' };
 
 @Component({
     standalone: true,
@@ -42,7 +40,7 @@ export type TableInteractionEvent =
     imports: [
         NgClass,
         AsyncPipe,
-        TranslateModule,
+        TranslatePipe,
         NgTemplateOutlet,
         NgComponentOutlet,
         PuibeIconSpinnerComponent,

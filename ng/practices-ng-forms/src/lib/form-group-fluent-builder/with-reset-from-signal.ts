@@ -1,6 +1,7 @@
-import {effect, runInInjectionContext, Signal} from "@angular/core";
-import {FormGroupEnhancedWithSignals } from "./types";
-import {FormControlValue, FormGroupValues } from "../utils/form.types";
+import type { Signal } from '@angular/core';
+import { effect, runInInjectionContext } from '@angular/core';
+import type { FormGroupEnhancedWithSignals } from './types';
+import type { FormControlValue, FormGroupValues } from '../utils/form.types';
 /**
  * Configuration for the reset with signal
  * @param mapValue - Maps the signal value to the form group value
@@ -8,7 +9,6 @@ import {FormControlValue, FormGroupValues } from "../utils/form.types";
 export type ResetWithSignalConfig<TDto, TFormGroupValues> = {
     mapValue?: (dto: TDto) => TFormGroupValues;
 };
-
 
 /**
  * Extends the form with an effect, that resets its value whenever the provided signal emits a new value.
@@ -23,7 +23,7 @@ export type ResetWithSignalConfig<TDto, TFormGroupValues> = {
  */
 export function extendWithResetFromSignal<
     TFormGroup extends FormGroupEnhancedWithSignals,
-    TSignalValue extends Required<FormControlValue<TFormGroup>>
+    TSignalValue extends Required<FormControlValue<TFormGroup>>,
 >(
     this: TFormGroup,
     dtoSignal: Signal<TSignalValue | null | undefined>,

@@ -10,7 +10,7 @@ import {
     ChangeDetectionStrategy,
 } from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, combineLatest, map, takeUntil, tap } from 'rxjs';
 import { PuibeIconSpinnerComponent } from '../../icons/icon-spinner.component';
 import { DEFAULT_PAGE_SIZE } from '../pagination/config';
@@ -20,7 +20,7 @@ import { PuibeTableComponent } from '../table.component';
     standalone: true,
     selector: 'puibe-table-pagination-infinite-scroll',
     templateUrl: './table-pagination-infinite-scroll.component.html',
-    imports: [AsyncPipe, TranslateModule, PuibeIconSpinnerComponent],
+    imports: [AsyncPipe, TranslatePipe, PuibeIconSpinnerComponent],
     changeDetection: ChangeDetectionStrategy.Eager,
     providers: [DestroyService],
 })
@@ -50,7 +50,10 @@ export class PuibeTablePaginationInfiniteScrollComponent implements OnInit, Afte
 
     readonly tableNoItems$ = this._table.noItems$;
 
-    constructor(private _table: PuibeTableComponent, private _destroy$: DestroyService) {}
+    constructor(
+        private _table: PuibeTableComponent,
+        private _destroy$: DestroyService
+    ) {}
 
     ngOnInit() {
         // Hook up with view source -> to reset prefetched in case the params get updated.

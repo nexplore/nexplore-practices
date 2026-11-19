@@ -1,5 +1,5 @@
 import { CommandImpl } from './command-impl';
-import { Command } from './command.types';
+import type { Command } from './command.types';
 
 /**
  * Returns whether the provided value is a command.

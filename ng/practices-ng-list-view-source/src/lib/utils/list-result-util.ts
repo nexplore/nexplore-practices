@@ -1,6 +1,7 @@
-import { Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IListResult, IQueryParamsWithFilter, OrderDirection } from '../types';
+import type { IListResult, IQueryParamsWithFilter } from '../types';
+import { OrderDirection } from '../types';
 
 /**
  * An Rx operator that converts an array observable to a list result observable.
@@ -69,8 +70,8 @@ export function sortArrayByQueryParamsInMemory<TData, TFilter>(
                 ? 1
                 : -1
             : sortFieldHandler(b) > sortFieldHandler(a)
-            ? 1
-            : -1
+              ? 1
+              : -1
     );
 }
 

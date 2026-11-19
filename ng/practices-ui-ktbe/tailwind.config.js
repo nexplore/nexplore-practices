@@ -1,95 +1,124 @@
 /** @type {import('tailwindcss').Config} */
 
+const path = require('path');
 const plugin = require('tailwindcss/plugin');
 const defaultTheme = require('tailwindcss/defaultTheme');
 const tooltipArrowPlugin = require('./tailwind-tooltip-arrow.plugin');
 
+// Colors of the KTBE style guide, exposed as `text-*`, `bg-*`, `border-*`, ... utilities.
+const colors = {
+    transparent: 'transparent',
+    red: '#EA161F',
+    black: '#000000',
+    'light-sand': '#FCF8F3',
+    sand: '#FAF1E3',
+    'dark-sand': '#F7E9D2',
+    'sand-hover': '#F2E0C3',
+    cappuchino: '#EBD3AE',
+    anthrazit: 'rgba(78,78,78,0.95)',
+    'anthrazit-solid': '#565656',
+    'anthrazit-hover': '#404040',
+    'dark-gray': 'rgba(112,112,112,1)',
+    'dark-gray-68': 'rgba(112,112,112,0.68)',
+    'dark-gray-50': 'rgba(112,112,112,0.50)',
+    'dark-gray-50-solid': '#B6B6B6',
+    gray: '#DEDEDE',
+    'light-gray': '#F2F2F2',
+    'very-light-gray': '#F8F8F8',
+    white: '#FFFFFF',
+    'red-hover': '#D01018',
+    green: '#3D8608',
+    'success-green': '#DCF7D2',
+};
+
+// Line heights of the KTBE typography. Used by the font sizes below and exposed as `leading-ktbe-*` utilities.
+const lineHeights = {
+    'ktbe-extra-small': '1.125rem',
+    'ktbe-very-small': '1.0625rem',
+    'ktbe-small': '1.125rem',
+    'ktbe-logo-caption': '1.0625rem',
+    'ktbe-base': '1.625rem',
+    'ktbe-intro-text': '1.75rem',
+    'ktbe-h6': '1.3125rem',
+    'ktbe-h5': '1.5625rem',
+    'ktbe-h4': '1.75rem',
+    'ktbe-h3': '2rem',
+    'ktbe-large': '2.25rem',
+    'ktbe-h2': '2.25rem',
+    'ktbe-h1': '3.875rem',
+    'ktbe-very-large': '4.625rem',
+};
+
+// Font sizes of the KTBE typography, exposed as `text-*` utilities together with the matching line height.
+const fontSizes = {
+    'extra-small': '0.75rem',
+    'very-small': '0.8125rem',
+    small: '0.875rem',
+    'logo-caption': '1rem',
+    base: '1rem',
+    'intro-text': '1.125rem',
+    h6: '1.125rem',
+    h5: '1.3125rem',
+    h4: '1.5rem',
+    h3: '1.625rem',
+    large: '1.75rem',
+    h2: '1.875rem',
+    h1: '3.375rem',
+    'very-large': '4.0625rem',
+};
+
+// Font weights of the KTBE typography, exposed as `font-*` utilities.
+const fontWeights = {
+    thin: '100',
+    light: '300',
+    normal: '400',
+    medium: '500',
+    bold: '700',
+};
+
+// Breakpoints of the KTBE layout, exposed as `xs:`, `sm:`, ... variants.
+const screens = {
+    xs: '375px',
+    sm: '600px',
+    md: '900px',
+    lg: '1180px',
+    xl: '1480px',
+};
+
 module.exports = {
-    content: ['./practices-ui-ktbe/src/**/*.{html,ts}'],
+    // Sources of the library: the sources in this repository and the compiled bundles in the published package.
+    // The paths are absolute, because Tailwind resolves relative paths of a preset against the configuration that uses it
+    // (e.g. an application's tailwind.config.js loaded with `@config`), not against this file.
+    content: [path.join(__dirname, 'src/**/*.{html,ts}'), path.join(__dirname, 'fesm2022/**/*.mjs')],
     theme: {
-        colors: ({ colors }) => ({
-            transparent: colors.transparent,
-            red: '#EA161F',
-            black: '#000000',
-            'light-sand': '#FCF8F3',
-            sand: '#FAF1E3',
-            'dark-sand': '#F7E9D2',
-            'sand-hover': '#F2E0C3',
-            cappuchino: '#EBD3AE',
-            anthrazit: 'rgba(78,78,78,0.95)',
-            'anthrazit-solid': '#565656',
-            'anthrazit-hover': '#404040',
-            'dark-gray': 'rgba(112,112,112,1)',
-            'dark-gray-68': 'rgba(112,112,112,0.68)',
-            'dark-gray-50': 'rgba(112,112,112,0.50)',
-            'dark-gray-50-solid': '#B6B6B6',
-            gray: '#DEDEDE',
-            'light-gray': '#F2F2F2',
-            'very-light-gray': '#F8F8F8',
-            white: '#FFFFFF',
-            'red-hover': '#D01018',
-            green: '#3D8608',
-            'success-green': '#DCF7D2',
-        }),
-        fontSize: ({ theme }) => ({
-            'extra-small': ['0.75rem', { lineHeight: theme('lineHeight.ktbe-extra-small') }],
-            'very-small': ['0.8125rem', { lineHeight: theme('lineHeight.ktbe-very-small') }],
-            small: ['0.875rem', { lineHeight: theme('lineHeight.ktbe-small') }],
-            'logo-caption': ['1rem', { lineHeight: theme('lineHeight.ktbe-logo-caption') }],
-            base: ['1rem', { lineHeight: theme('lineHeight.ktbe-base') }],
-            'intro-text': ['1.125rem', { lineHeight: theme('lineHeight.ktbe-intro-text') }],
-            h6: ['1.125rem', { lineHeight: theme('lineHeight.ktbe-h6') }],
-            h5: ['1.3125rem', { lineHeight: theme('lineHeight.ktbe-h5') }],
-            h4: ['1.5rem', { lineHeight: theme('lineHeight.ktbe-h4') }],
-            h3: ['1.625rem', { lineHeight: theme('lineHeight.ktbe-h3') }],
-            large: ['1.75rem', { lineHeight: theme('lineHeight.ktbe-large') }],
-            h2: ['1.875rem', { lineHeight: theme('lineHeight.ktbe-h2') }],
-            h1: ['3.375rem', { lineHeight: theme('lineHeight.ktbe-h1') }],
-            'very-large': ['4.0625rem', { lineHeight: theme('lineHeight.ktbe-very-large') }],
-        }),
-        fontWeight: {
-            thin: '100',
-            light: '300',
-            normal: '400',
-            medium: '500',
-            bold: '700',
+        colors,
+        // The values are defined as constants above and referenced directly: inside this preset (function-valued theme sections
+        // and plugins), Tailwind 4 resolves `theme(...)` of the keys that it defines itself (colors, fontSize, fontWeight,
+        // lineHeight, screens, ...) against its default theme instead of the values of this preset. Custom keys such as
+        // `tooltipArrows` (used by the tooltip arrow plugin) resolve to the values of this preset.
+        fontSize: {
+            'extra-small': [fontSizes['extra-small'], { lineHeight: lineHeights['ktbe-extra-small'] }],
+            'very-small': [fontSizes['very-small'], { lineHeight: lineHeights['ktbe-very-small'] }],
+            small: [fontSizes.small, { lineHeight: lineHeights['ktbe-small'] }],
+            'logo-caption': [fontSizes['logo-caption'], { lineHeight: lineHeights['ktbe-logo-caption'] }],
+            base: [fontSizes.base, { lineHeight: lineHeights['ktbe-base'] }],
+            'intro-text': [fontSizes['intro-text'], { lineHeight: lineHeights['ktbe-intro-text'] }],
+            h6: [fontSizes.h6, { lineHeight: lineHeights['ktbe-h6'] }],
+            h5: [fontSizes.h5, { lineHeight: lineHeights['ktbe-h5'] }],
+            h4: [fontSizes.h4, { lineHeight: lineHeights['ktbe-h4'] }],
+            h3: [fontSizes.h3, { lineHeight: lineHeights['ktbe-h3'] }],
+            large: [fontSizes.large, { lineHeight: lineHeights['ktbe-large'] }],
+            h2: [fontSizes.h2, { lineHeight: lineHeights['ktbe-h2'] }],
+            h1: [fontSizes.h1, { lineHeight: lineHeights['ktbe-h1'] }],
+            'very-large': [fontSizes['very-large'], { lineHeight: lineHeights['ktbe-very-large'] }],
         },
-        screens: {
-            xs: '375px',
-            // => @media (min-width: 375px) { ... }
-
-            sm: '600px',
-            // => @media (min-width: 600px) { ... }
-
-            md: '900px',
-            // => @media (min-width: 900px) { ... }
-
-            lg: '1180px',
-            // => @media (min-width: 1180px) { ... }
-
-            xl: '1480px',
-            // => @media (min-width: 1480px) { ... }
-        },
+        fontWeight: fontWeights,
+        screens,
         extend: {
             fontFamily: {
                 sans: ['Roboto', ...defaultTheme.fontFamily.sans],
             },
-            lineHeight: {
-                'ktbe-extra-small': '1.125rem',
-                'ktbe-very-small': '1.0625rem',
-                'ktbe-small': '1.125rem',
-                'ktbe-logo-caption': '1.0625rem',
-                'ktbe-base': '1.625rem',
-                'ktbe-intro-text': '1.75rem',
-                'ktbe-h6': '1.3125rem',
-                'ktbe-h5': '1.5625rem',
-                'ktbe-h4': '1.75rem',
-                'ktbe-h3': '2rem',
-                'ktbe-large': '2.25rem',
-                'ktbe-h2': '2.25rem',
-                'ktbe-h1': '3.875rem',
-                'ktbe-very-large': '4.625rem',
-            },
+            lineHeight: lineHeights,
             spacing: {
                 'ktbe-4.5': '1.125rem',
                 'ktbe-5.5': '1.375rem',
@@ -111,28 +140,16 @@ module.exports = {
             animation: {
                 pop: 'pop 0.7s linear 1',
             },
-            minHeight: ({ theme }) => ({
-                ...theme('height'),
-            }),
-            minWidth: ({ theme }) => ({
-                ...theme('width'),
-            }),
-            maxHeight: ({ theme }) => ({
-                ...theme('height'),
-            }),
-            maxWidth: ({ theme }) => ({
-                ...theme('width'),
-            }),
             scrollbarGutter: {
                 stable: 'stable',
                 'stable-both': 'stable both-edges',
             },
         },
-        tooltipArrows: (theme) => {
+        tooltipArrows: (() => {
             const common = {
-                borderColor: theme('colors.gray'),
+                borderColor: colors.gray,
                 borderWidth: 1,
-                backgroundColor: theme('colors.white'),
+                backgroundColor: colors.white,
                 size: 10,
             };
             return {
@@ -153,54 +170,63 @@ module.exports = {
                     offset: `calc(100% - 10px)`,
                 },
             };
-        },
+        })(),
     },
     plugins: [
         tooltipArrowPlugin(),
-        plugin(function ({ addBase, theme, addComponents, addUtilities }) {
+        plugin(function ({ addBase, addComponents, addUtilities }) {
             addBase({
-                h1: headingStylingRules(theme).h1,
-                h2: headingStylingRules(theme).h2,
-                h3: headingStylingRules(theme).h3,
-                h4: headingStylingRules(theme).h4,
-                h5: headingStylingRules(theme).h5,
-                h6: headingStylingRules(theme).h6,
+                h1: headingStylingRules().h1,
+                h2: headingStylingRules().h2,
+                h3: headingStylingRules().h3,
+                h4: headingStylingRules().h4,
+                h5: headingStylingRules().h5,
+                h6: headingStylingRules().h6,
                 p: {
-                    fontSize: theme('fontSize.base'),
-                    lineHeight: theme('lineHeight.ktbe-base'),
-                    fontWeight: theme('fontWeight.light'),
+                    fontSize: fontSizes.base,
+                    lineHeight: lineHeights['ktbe-base'],
+                    fontWeight: fontWeights.light,
                 },
                 small: {
-                    fontSize: theme('fontSize.small'),
-                    lineHeight: theme('lineHeight.ktbe-small'),
-                    fontWeight: theme('fontWeight.normal'),
+                    fontSize: fontSizes.small,
+                    lineHeight: lineHeights['ktbe-small'],
+                    fontWeight: fontWeights.normal,
                 },
                 a: {
-                    fontSize: theme('fontSize.base'),
-                    lineHeight: theme('lineHeight.ktbe-base'),
-                    fontWeight: theme('fontWeight.light'),
+                    fontSize: fontSizes.base,
+                    lineHeight: lineHeights['ktbe-base'],
+                    fontWeight: fontWeights.light,
                     textDecoration: 'underline',
                 },
                 'a:hover': {
-                    color: theme('colors.red'),
+                    color: colors.red,
                     cursor: 'pointer',
                 },
                 ul: {
                     listStyleType: 'square',
-                    lineHeight: theme('lineHeight.ktbe-base'),
+                    lineHeight: lineHeights['ktbe-base'],
                     margin: '2.25rem 0 2.25rem 1.25rem',
-                    fontWeight: theme('fontWeight.light'),
+                    fontWeight: fontWeights.light,
                 },
                 li: {
                     margin: '0 0 0 0.75rem',
                 },
                 'li::marker': {
-                    color: theme('colors.red'),
+                    color: colors.red,
                 },
                 /* <ul> elements are sometimes used for non-list components e.g. navigation or menu.
                     Make sure those components have the class 'list-none' set, so that the default styles of <ul> elements are not applied */
                 'ul.list-none, ul.list-none>li': {
                     margin: '0',
+                },
+                // Tailwind 4 no longer sets `cursor: pointer` on buttons. Keep the Tailwind 3 behaviour for KTBE.
+                'button:not(:disabled), [role="button"]:not(:disabled)': {
+                    cursor: 'pointer',
+                },
+                // Tailwind 4's preflight resets the padding of all elements, Tailwind 3 kept the browser default of
+                // table cells. Keep the Tailwind 3 behaviour, the tables of KTBE are laid out with it.
+                'td, th': {
+                    padding: '1px',
                 },
                 body: {
                     // Provide a global default fill value for svg based icons, using the inherited text `color`.
@@ -209,13 +235,13 @@ module.exports = {
                 },
             });
             addComponents({
-                '.h1': headingStylingRules(theme).h1,
-                '.h2': headingStylingRules(theme).h2,
-                '.h3': headingStylingRules(theme).h3,
-                '.h4': headingStylingRules(theme).h4,
-                '.h5': headingStylingRules(theme).h5,
-                '.h6': headingStylingRules(theme).h6,
-                '.scrollbar-thin': scrollbarThinRule(theme),
+                '.h1': headingStylingRules().h1,
+                '.h2': headingStylingRules().h2,
+                '.h3': headingStylingRules().h3,
+                '.h4': headingStylingRules().h4,
+                '.h5': headingStylingRules().h5,
+                '.h6': headingStylingRules().h6,
+                '.scrollbar-thin': scrollbarThinRule(),
             });
             addUtilities({
                 '.scrollbar-gutter-stable': {
@@ -229,105 +255,105 @@ module.exports = {
     ],
 };
 
-const headingStylingRules = (theme) => {
+const headingStylingRules = () => {
     return {
         h1: {
-            fontSize: theme('fontSize.h1'),
-            lineHeight: theme('lineHeight.ktbe-h1'),
-            fontWeight: theme('fontWeight.thin'),
+            fontSize: fontSizes.h1,
+            lineHeight: lineHeights['ktbe-h1'],
+            fontWeight: fontWeights.thin,
             margin: `0 0 2.75rem 0`,
 
-            [`@media (max-width: ${theme('screens.md')})`]: {
+            [`@media (max-width: ${screens.md})`]: {
                 fontSize: '3rem',
                 lineHeight: '3.5rem',
                 margin: `0 0 1.75rem 0`,
             },
 
-            [`@media (max-width: ${theme('screens.sm')})`]: {
+            [`@media (max-width: ${screens.sm})`]: {
                 fontSize: '2rem',
                 lineHeight: '2.375rem',
                 margin: `2.75rem 0 1.5rem 0`,
-                fontWeight: theme('fontWeight.light'),
+                fontWeight: fontWeights.light,
             },
         },
         h2: {
-            fontSize: theme('fontSize.h2'),
-            lineHeight: theme('lineHeight.ktbe-h2'),
-            fontWeight: theme('fontWeight.light'),
+            fontSize: fontSizes.h2,
+            lineHeight: lineHeights['ktbe-h2'],
+            fontWeight: fontWeights.light,
             margin: `0 0 0.75rem 0`,
 
-            [`@media (max-width: ${theme('screens.md')})`]: {
+            [`@media (max-width: ${screens.md})`]: {
                 fontSize: '1.5rem',
                 lineHeight: '1.8125rem',
                 margin: `0 0 0.5rem 0`,
             },
 
-            [`@media (max-width: ${theme('screens.sm')})`]: {
+            [`@media (max-width: ${screens.sm})`]: {
                 fontSize: '1.3125rem',
                 lineHeight: '1.625rem',
                 margin: `0 0 0.75rem 0`,
             },
         },
         h3: {
-            fontSize: theme('fontSize.h3'),
-            lineHeight: theme('lineHeight.ktbe-h3'),
-            fontWeight: theme('fontWeight.light'),
+            fontSize: fontSizes.h3,
+            lineHeight: lineHeights['ktbe-h3'],
+            fontWeight: fontWeights.light,
             fontStyle: 'italic',
             margin: `0 0 0.75rem 0`,
 
-            [`@media (max-width: ${theme('screens.md')})`]: {
+            [`@media (max-width: ${screens.md})`]: {
                 fontSize: '1.5rem',
                 lineHeight: '1.8125rem',
                 margin: `0 0 0.5rem 0`,
             },
 
-            [`@media (max-width: ${theme('screens.sm')})`]: {
+            [`@media (max-width: ${screens.sm})`]: {
                 fontSize: '1.3125rem',
                 lineHeight: '1.625rem',
                 margin: `0 0 0.75rem 0`,
             },
         },
         h4: {
-            fontSize: theme('fontSize.h4'),
-            lineHeight: theme('lineHeight.ktbe-h4'),
-            fontWeight: theme('fontWeight.light'),
+            fontSize: fontSizes.h4,
+            lineHeight: lineHeights['ktbe-h4'],
+            fontWeight: fontWeights.light,
             margin: `0 0 0.75rem 0`,
 
-            [`@media (max-width: ${theme('screens.sm')})`]: {
+            [`@media (max-width: ${screens.sm})`]: {
                 fontSize: '1.3125rem',
                 lineHeight: '1.625rem',
             },
         },
         h5: {
-            fontSize: theme('fontSize.h5'),
-            lineHeight: theme('lineHeight.ktbe-h5'),
-            fontWeight: theme('fontWeight.light'),
+            fontSize: fontSizes.h5,
+            lineHeight: lineHeights['ktbe-h5'],
+            fontWeight: fontWeights.light,
             fontStyle: 'italic',
-            [`@media (max-width: ${theme('screens.sm')})`]: {
+            [`@media (max-width: ${screens.sm})`]: {
                 fontSize: '1.125rem',
                 lineHeight: '1.3125rem',
             },
         },
         h6: {
-            fontSize: theme('fontSize.h6'),
-            lineHeight: theme('lineHeight.ktbe-h6'),
-            fontWeight: theme('fontWeight.light'),
+            fontSize: fontSizes.h6,
+            lineHeight: lineHeights['ktbe-h6'],
+            fontWeight: fontWeights.light,
         },
     };
 };
 
 // TODO: Use `scrollbar-width: thin` once available in all browsers (https://caniuse.com/?search=scrollbar-width)
-const scrollbarThinRule = (theme) => {
+const scrollbarThinRule = () => {
     return {
         '&::-webkit-scrollbar': {
             width: '.8rem',
             cursor: 'default',
         },
         '&::-webkit-scrollbar-track': {
-            background: theme('colors.light-gray'),
+            background: colors['light-gray'],
         },
         '&::-webkit-scrollbar-thumb': {
-            background: theme('colors.dark-gray-68'),
+            background: colors['dark-gray-68'],
             transition: 'all 1s ease-in-out',
             border: '1px solid',
             borderWidth: '2px',
@@ -338,7 +364,7 @@ const scrollbarThinRule = (theme) => {
             clipPath: 'circle(40%)',
         },
         '&::-webkit-scrollbar-thumb:hover': {
-            background: theme('colors.dark-gray'),
+            background: colors['dark-gray'],
             backgroundClip: 'padding-box',
         },
     };

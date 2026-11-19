@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 import { DatagridModule, DatePickerInputModule, DialogModule } from '@nexplore/practices-ui-clarity';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { DatagridViewComponent } from './datagrid/datagrid-view/datagrid-view.component';
 import { DatagridWithFilterComponent } from './datagrid/datagrid-with-filter/datagrid-with-filter.component';
@@ -18,7 +17,6 @@ import { SubnavigationComponent } from './subnavigation/subnavigation.component'
     imports: [
         CommonModule,
         RouterModule.forChild(PRACTICES_UI_CLARITY_SAMPLES_ROUTES),
-        TranslateModule.forChild(),
         ClarityModule,
         FormsModule,
         ReactiveFormsModule,

@@ -1,9 +1,9 @@
-import { Type } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { MaybeAsync } from '@angular/router';
-import { FormGroupValues, TypedPartialFormGroup, TypedPartialFormGroupValues } from '@nexplore/practices-ng-forms';
-import { TableViewSource } from '../implementation/table-view-source';
-import {
+import type { Type } from '@angular/core';
+import type { FormGroup } from '@angular/forms';
+import type { MaybeAsync } from '@angular/router';
+import type { FormGroupValues, TypedPartialFormGroup, TypedPartialFormGroupValues } from '@nexplore/practices-ng-forms';
+import type { TableViewSource } from '../implementation/table-view-source';
+import type {
     EnhancedListViewSource,
     IListResult,
     IQueryParamsWithFilter,
@@ -11,18 +11,16 @@ import {
     TableColumnItem,
     TableViewSourceConfig,
 } from '../types';
-import { HasTypedQueryParams } from '../types-internal';
+import type { HasTypedQueryParams } from '../types-internal';
 
 export type Data<TResult extends Partial<IListResult<any>>> = TResult extends IListResult<infer T> ? T : never;
 
-export type TypedTableViewSourceFilter<
-    TForm,
-    TResult extends Partial<IListResult<any>>
-> = TForm extends TypedPartialFormGroup<Data<TResult>>
-    ? TypedPartialFormGroupValues<TForm, Data<TResult>>
-    : TForm extends FormGroup
-    ? FormGroupValues<TForm>
-    : any;
+export type TypedTableViewSourceFilter<TForm, TResult extends Partial<IListResult<any>>> =
+    TForm extends TypedPartialFormGroup<Data<TResult>>
+        ? TypedPartialFormGroupValues<TForm, Data<TResult>>
+        : TForm extends FormGroup
+          ? FormGroupValues<TForm>
+          : any;
 
 type TypedTableViewSourceConfigCore<TData, TResult extends Partial<IListResult<TData>>, TFilter, TOrdering> = Omit<
     TableViewSourceConfig<TData>,
@@ -49,7 +47,7 @@ export type TypedTableViewSourceConfig<
     TData,
     TResult extends Partial<IListResult<TData>>,
     TFilter,
-    TOrdering
+    TOrdering,
 > = TypedTableViewSourceConfigCore<TData, TResult, TFilter, TOrdering> & HasTypedQueryParams<TFilter, TOrdering>;
 
 export type TypedTableViewSourceConfigPartial<
@@ -57,7 +55,7 @@ export type TypedTableViewSourceConfigPartial<
     TResult extends Partial<IListResult<TData>>,
     TFilter,
     TOrdering,
-    TOmit extends Record<string, any> | {}
+    TOmit extends Record<string, any> | {},
 > = Omit<TypedTableViewSourceConfigCore<TData, TResult, TFilter, TOrdering>, keyof TOmit> &
     HasTypedQueryParams<TFilter, TOrdering>;
 
@@ -65,7 +63,7 @@ export type TypedTableViewSourceConfigWithoutLoadFn<
     TData,
     TResult extends IListResult<TData>,
     TFilter,
-    TOrdering
+    TOrdering,
 > = Omit<TypedTableViewSourceConfig<TData, TResult, TFilter, TOrdering>, 'loadFn'> & {
     /** Type is used solely for type inference. Unfortunately, typescript cannot properly infer the type without it */
     type?: Type<TData> | 'no-infer';

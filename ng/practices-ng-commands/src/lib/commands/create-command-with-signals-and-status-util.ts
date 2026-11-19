@@ -1,9 +1,9 @@
 import { assertInInjectionContext, inject, Injector } from '@angular/core';
 import { deepMerge } from '@nexplore/practices-ng-common-util';
 import { CommandImpl } from './command-impl';
-import { CommandWithLifecycleOptions, CommandWithSignalsAndStatus } from './command-internal.types';
+import type { CommandWithLifecycleOptions, CommandWithSignalsAndStatus } from './command-internal.types';
 import { enhanceCommandWithStatus } from './command-status-util';
-import { CommandAsyncHandlerArg } from './command.types';
+import type { CommandAsyncHandlerArg } from './command.types';
 
 export function createCommandWithSignalsAndStatus<TArgs = void, TResult = void>(
     handler: CommandAsyncHandlerArg<TArgs, TResult>,

@@ -17,7 +17,10 @@ export class DialogViewComponent {
     deletionWithHtmlMessageConfirmDialogResponse: boolean | undefined;
     chooseLanguageResponse: string | undefined;
 
-    constructor(private dialogService: DialogService, private translateService: TranslateService) {}
+    constructor(
+        private dialogService: DialogService,
+        private translateService: TranslateService
+    ) {}
 
     openAlertDialog() {
         this.dialogService

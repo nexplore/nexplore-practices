@@ -1,4 +1,4 @@
-import { ActionCommand, CommandAsyncHandlerArg, CommandOptions } from '../commands/command.types';
+import type { ActionCommand, CommandAsyncHandlerArg, CommandOptions } from '../commands/command.types';
 import { createCommandWithSignalsAndStatus } from '../commands/create-command-with-signals-and-status-util';
 
 /**

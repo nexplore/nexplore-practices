@@ -60,7 +60,7 @@
     <ng-container *puibeIfErrorStatus="let status">
         Etwas ist schief gelaufen!
         @if (status.error?.stack ?? status.error?.message) {
-            <puibe-expansion-panel caption="Details" class="flex-grow-0 text-black" [enableContentScroll]="true">
+            <puibe-expansion-panel caption="Details" class="grow-0 text-black" [enableContentScroll]="true">
                 @if (status.error.stack) {
                     <code class="whitespace-pre">{{ status?.error.stack ?? status.error?.message }}</code>
                 }

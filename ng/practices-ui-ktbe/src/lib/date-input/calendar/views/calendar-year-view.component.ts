@@ -10,7 +10,7 @@ import {
     inject,
     signal,
 } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+
 import { PuibeCalendarItemComponent } from '../presentation/calendar-item.component';
 import { CalendarPeriodItem, CalendarPeriodRow } from '../../services/calendar-period.service';
 import { PuibeCalendarToolbarItemDirective } from '../presentation/calendar-toolbar-item.directive';
@@ -26,7 +26,6 @@ import { PuibeCalendarGridLayoutComponent } from '../presentation/calendar-grid-
         PuibeCalendarItemComponent,
         PuibeCalendarGridLayoutComponent,
         PuibeCalendarToolbarItemDirective,
-        TranslateModule,
         A11yModule,
     ],
 })

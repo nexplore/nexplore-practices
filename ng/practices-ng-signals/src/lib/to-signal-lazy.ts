@@ -1,6 +1,9 @@
-import { assertInInjectionContext, DestroyRef, inject, Signal, untracked } from '@angular/core';
-import { toSignal, ToSignalOptions } from '@angular/core/rxjs-interop';
-import { connectable, Observable, Subscription } from 'rxjs';
+import type { Signal } from '@angular/core';
+import { assertInInjectionContext, DestroyRef, inject, untracked } from '@angular/core';
+import type { ToSignalOptions } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
+import type { Observable, Subscription } from 'rxjs';
+import { connectable } from 'rxjs';
 
 export function toSignalLazy<T>(
     source: Observable<T>,

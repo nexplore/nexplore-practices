@@ -124,14 +124,20 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
         this._formFieldService.isRequired$
             .pipe(takeUntil(this._destroy$))
             .subscribe((isRequired) => setAttr('required', isRequired, this.ngSelectInputElement()));
-        this._formFieldService.loading$
-            .pipe(takeUntil(this._destroy$))
-            .subscribe((loading) => setHostClassNames({ 'puibe-loading': loading }, this._elementRef));
-        this._formFieldService.displayAsInvalid$
-            .pipe(takeUntil(this._destroy$))
-            .subscribe((displayAsInvalid) =>
-                setHostClassNames({ 'puibe-hide-invalid': !displayAsInvalid }, this._elementRef)
+        // Since ng-select 24, the dropdown panel is rendered in an overlay (outside of the ng-select). ng-select copies the
+        // host classes (except the Angular form classes like ng-invalid) to the panel after rendering, so the panel styles
+        // use these state classes: mark for check, so the panel follows a change.
+        this._formFieldService.loading$.pipe(takeUntil(this._destroy$)).subscribe((loading) => {
+            setHostClassNames({ 'puibe-loading': loading }, this._elementRef);
+            this._cdr.markForCheck();
+        });
+        this._formFieldService.displayAsInvalid$.pipe(takeUntil(this._destroy$)).subscribe((displayAsInvalid) => {
+            setHostClassNames(
+                { 'puibe-hide-invalid': !displayAsInvalid, 'puibe-display-invalid': displayAsInvalid },
+                this._elementRef
             );
+            this._cdr.markForCheck();
+        });
 
         // Displays the label as placeholder, until focused, then switches to actual placeholder (if defined)
         this._formFieldService.placeholder$.pipe(takeUntil(this._destroy$)).subscribe((placeholder) => {

@@ -1,4 +1,4 @@
-import { ElementRef } from '@angular/core';
+import type { ElementRef } from '@angular/core';
 import { setHostAttr } from './utils';
 
 export function applyLanguageAriaAttributes(elementRef: ElementRef<HTMLElement>, locale: string) {

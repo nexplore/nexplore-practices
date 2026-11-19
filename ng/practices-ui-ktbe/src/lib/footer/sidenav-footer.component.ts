@@ -1,5 +1,5 @@
 import { Component, HostListener, ChangeDetectionStrategy, ElementRef, inject } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { PuibeContainerDirective } from '../common/container.directive';
 import { NgClass } from '@angular/common';
@@ -9,7 +9,7 @@ import { NgClass } from '@angular/common';
     selector: 'puibe-sidenav-footer',
     templateUrl: './sidenav-footer.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [PuibeContainerDirective, TranslateModule, NgClass],
+    imports: [PuibeContainerDirective, TranslatePipe, NgClass],
 })
 export class PuibeSidenavFooterComponent {
     private readonly _host = inject<ElementRef<HTMLElement>>(ElementRef);

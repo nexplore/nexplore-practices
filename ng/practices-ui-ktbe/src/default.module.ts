@@ -2,11 +2,12 @@ import { AsyncPipe, DatePipe, DecimalPipe, NgClass, NgFor, NgIf, NgTemplateOutle
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateDirective, TranslatePipe } from '@ngx-translate/core';
 import { DEFAULT_FORM_COMPONENT_IMPORTS } from './form.module';
 
 const DEFAULT_COMPONENT_IMPORTS = [
-    TranslateModule,
+    TranslatePipe,
+    TranslateDirective,
     NgFor,
     NgIf,
     NgClass,

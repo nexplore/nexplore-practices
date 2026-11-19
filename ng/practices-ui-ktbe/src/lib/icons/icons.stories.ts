@@ -1,4 +1,5 @@
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 import { PuibeIconArrowBreadcrumbComponent } from './icon-arrow-breadcrumb.component';
 import { PuibeIconArrowComponent } from './icon-arrow.component';
 import { PuibeIconDatepickerComponent } from './icon-datepicker.component';

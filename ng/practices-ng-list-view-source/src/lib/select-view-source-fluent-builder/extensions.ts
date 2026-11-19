@@ -1,9 +1,9 @@
 import { maybeAsyncToObservable } from '@nexplore/practices-ng-common-util';
 import { map } from 'rxjs/operators';
 import { SelectViewSource } from '../implementation/select-view-source';
-import { EnhancedListViewSource, IListResult } from '../types';
+import type { EnhancedListViewSource, IListResult } from '../types';
 import { enhanceListViewSource, getDefaultQueryParams } from '../utils/internal-util';
-import { SelectViewSourceFilterType, SelectViewSourceLabelKey, TypedSelectViewSourceConfig } from './types';
+import type { SelectViewSourceFilterType, SelectViewSourceLabelKey, TypedSelectViewSourceConfig } from './types';
 
 /* @internal */
 export function createSelectViewSourceInternal<
@@ -11,7 +11,7 @@ export function createSelectViewSourceInternal<
     TLabelKey extends SelectViewSourceLabelKey<TData> = SelectViewSourceLabelKey<TData>,
     TQueryParams = TData,
     TFilter extends SelectViewSourceFilterType<TData, TLabelKey> = SelectViewSourceFilterType<TData, TLabelKey>,
-    TOrdering = TData
+    TOrdering = TData,
 >(
     config: TypedSelectViewSourceConfig<TData, TLabelKey, TQueryParams, TOrdering>
 ): EnhancedListViewSource<SelectViewSource<TData, TFilter>> {

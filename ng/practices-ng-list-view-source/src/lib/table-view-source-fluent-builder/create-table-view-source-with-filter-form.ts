@@ -1,15 +1,20 @@
 import { effect, isSignal, untracked } from '@angular/core';
-import { AbstractControl, FormGroup, UntypedFormGroup } from '@angular/forms';
-import { isObjDeepEqual, isObjShallowEqual, unwrapSignalLike, ValueOrSignal } from '@nexplore/practices-ng-common-util';
-import { formGroupCurrentValueSignal, FormGroupValues, TypedFormGroup } from '@nexplore/practices-ng-forms';
+import type { FormGroup, UntypedFormGroup } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
+import type { ValueOrSignal } from '@nexplore/practices-ng-common-util';
+import { isObjDeepEqual, isObjShallowEqual, unwrapSignalLike } from '@nexplore/practices-ng-common-util';
+import type { FormGroupValues, TypedFormGroup } from '@nexplore/practices-ng-forms';
+import { formGroupCurrentValueSignal } from '@nexplore/practices-ng-forms';
 import { trace } from '@nexplore/practices-ng-logging';
 import { subscriptionEffect } from '@nexplore/practices-ng-signals';
-import { TableViewSource } from '../implementation/table-view-source';
-import { IListResult } from '../types';
-import { HasTypedQueryParams } from '../types-internal';
+import type { TableViewSource } from '../implementation/table-view-source';
+import type { IListResult } from '../types';
+import type { HasTypedQueryParams } from '../types-internal';
 import { getDefaultQueryParams } from '../utils/internal-util';
-import { createExtendableTableViewSource, Extensions } from './extensions';
-import {
+import type { Extensions } from './extensions';
+// eslint-disable-next-line import-x/no-cycle -- fluent builder: the view source and its extensions only reference each other inside functions.
+import { createExtendableTableViewSource } from './extensions';
+import type {
     TableViewSourceWithSignals,
     TypedTableViewSourceConfig,
     TypedTableViewSourceConfigPartial,
@@ -68,7 +73,7 @@ export function createTableViewSourceWithFilterForm<
     TFilter extends TypedTableViewSourceFilter<TForm, TResult>,
     TForm extends FormGroup,
     TResult extends Partial<IListResult<TData>>,
-    TOrdering = TData
+    TOrdering = TData,
 >(
     config: AdditionalConfig<TForm> & TypedTableViewSourceConfig<TData, TResult, TFilter, TOrdering>
 ): TableViewSourceWithSignals<TData, TFilter> & Extensions {
@@ -90,7 +95,7 @@ export function createTypedWithFilterFormFactory<TData, TPartialConfig extends R
         TFilter extends TypedTableViewSourceFilter<TForm, TResult>,
         TForm extends FormGroup,
         TResult extends Partial<IListResult<TData>>,
-        TOrdering = TData
+        TOrdering = TData,
     >(
         config: AdditionalConfig<TForm> &
             TypedTableViewSourceConfigPartial<TData, TResult, TFilter, TOrdering, TPartialConfig>
@@ -115,7 +120,7 @@ type ExtendWithFilterFormConfig<TTableViewSource extends TableViewSource<any, an
 /* @internal */
 export function extendWithFilterForm<
     TTableViewSource extends TableViewSource<any, FormGroupValues<TForm> | any>,
-    TForm extends FormGroup
+    TForm extends FormGroup,
 >(this: TTableViewSource, config: ExtendWithFilterFormConfig<TTableViewSource, TForm>): TTableViewSource {
     const filterForm = config instanceof AbstractControl || isSignal(config) ? config : config.filterForm;
     const defaultCondition = defaultShouldApplyFilterFormValue as ShouldApplyFilterFormValueFn<
@@ -124,7 +129,7 @@ export function extendWithFilterForm<
     const shouldApplyFilterFormValue =
         config instanceof AbstractControl || isSignal(config)
             ? defaultCondition
-            : config.shouldApplyFilterFormValue ?? defaultCondition;
+            : (config.shouldApplyFilterFormValue ?? defaultCondition);
     if (filterForm) {
         const formGroupValueSignal = formGroupCurrentValueSignal(filterForm, {
             debounceTime: 300,

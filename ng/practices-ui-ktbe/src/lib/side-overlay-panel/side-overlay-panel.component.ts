@@ -2,16 +2,18 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { A11yModule } from '@angular/cdk/a11y';
 import { CdkPortalOutlet, ComponentPortal, ComponentType, Portal, PortalModule } from '@angular/cdk/portal';
 import { Component, EventEmitter, model, Output, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PuibeIconCloseComponent } from '../icons/icon-close.component';
 
 @Component({
     selector: 'puibe-side-overlay-panel',
     standalone: true,
-    imports: [CdkPortalOutlet, PortalModule, PuibeIconCloseComponent, A11yModule, TranslateModule],
+    imports: [CdkPortalOutlet, PortalModule, PuibeIconCloseComponent, A11yModule, TranslatePipe],
     templateUrl: './side-overlay-panel.component.html',
     styles: [
         `
+            @reference '../../../tailwind.css';
+
             :where(puibe-side-overlay-panel) {
                 @apply h-full w-full;
             }

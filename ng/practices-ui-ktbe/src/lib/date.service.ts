@@ -83,7 +83,8 @@ export class DateService {
     constructor(@Optional() private translateService?: TranslateService) {
         this.translateService?.onLangChange
             .pipe(
-                startWith({ lang: this.translateService.currentLang }),
+                // getCurrentLang() works with ngx-translate 17 and 18 (`currentLang` became a signal in 18).
+                startWith({ lang: this.translateService.getCurrentLang() }),
                 distinctUntilChanged((a, b) => a.lang === b.lang),
                 filter((v) => !!v)
             )

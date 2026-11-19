@@ -1,6 +1,6 @@
 import { Directive, ElementRef, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 
-export type SizeChange = DOMRect
+export type SizeChange = DOMRect;
 
 @Directive({
     standalone: true,

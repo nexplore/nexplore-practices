@@ -49,7 +49,10 @@ export class DatagridListViewSourceDirective implements AfterViewInit, OnDestroy
     @Input()
     filterConverter: (filter: {}[]) => {};
 
-    constructor(private datagrid: ClrDatagrid, private cdr: ChangeDetectorRef) {}
+    constructor(
+        private datagrid: ClrDatagrid,
+        private cdr: ChangeDetectorRef
+    ) {}
 
     ngAfterViewInit() {
         this.subscription = this.listViewSourceSubject

@@ -1,4 +1,4 @@
-import { Falsy } from 'rxjs';
+import type { Falsy } from 'rxjs';
 
 export type NotFalseOrNothing<T> = Exclude<T, Falsy>;
 
@@ -7,7 +7,7 @@ export function wrapArrayAndFilterFalsyValues<T>(itemOrItems: T | T[] | null): N
         ? Array.isArray(itemOrItems)
             ? itemOrItems.filter((item): item is NotFalseOrNothing<T> => !!item)
             : !itemOrItems
-            ? []
-            : ([itemOrItems] as NotFalseOrNothing<T>[])
+              ? []
+              : ([itemOrItems] as NotFalseOrNothing<T>[])
         : [];
 }

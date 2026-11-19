@@ -1,5 +1,5 @@
-import { ActivatedRouteSnapshot, MaybeAsync, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import type { ActivatedRouteSnapshot, MaybeAsync, RouterStateSnapshot, UrlTree } from '@angular/router';
+import type { Observable, Subscription } from 'rxjs';
 
 export interface IPuibeFormState {
     dirty: boolean;

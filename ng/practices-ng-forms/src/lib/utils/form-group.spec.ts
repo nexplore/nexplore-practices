@@ -1,5 +1,4 @@
-import {FormControl, FormGroup} from '@angular/forms';
-
+import { FormControl, FormGroup } from '@angular/forms';
 
 describe('FormGroup assumptions', () => {
     // Test some assumptions of how the form group behaves internally.

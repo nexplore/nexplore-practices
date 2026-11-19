@@ -14,5 +14,8 @@ interface Data {
     imports: [PracticesKtbeDialogModule, PuibeButtonDirective],
 })
 export class AppModalComponent {
-    constructor(public dialogRef: DialogRef, @Inject(DIALOG_DATA) public data: Data) {}
+    constructor(
+        public dialogRef: DialogRef,
+        @Inject(DIALOG_DATA) public data: Data
+    ) {}
 }

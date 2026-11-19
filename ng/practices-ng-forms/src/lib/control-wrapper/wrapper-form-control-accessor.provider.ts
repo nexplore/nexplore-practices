@@ -1,15 +1,10 @@
-import { DestroyRef, effect, inject, isSignal, Provider, Signal, Type, untracked } from '@angular/core';
+import type { Provider, Signal, Type } from '@angular/core';
+import { DestroyRef, effect, inject, isSignal, untracked } from '@angular/core';
 import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
-import {
-    AbstractControl,
-    ControlValueAccessor,
-    NG_VALIDATORS,
-    NG_VALUE_ACCESSOR,
-    TouchedChangeEvent,
-    ValidationErrors,
-    Validator,
-} from '@angular/forms';
+import type { AbstractControl, ControlValueAccessor, ValidationErrors, Validator } from '@angular/forms';
+import { NG_VALIDATORS, NG_VALUE_ACCESSOR, TouchedChangeEvent } from '@angular/forms';
 import { trace } from '@nexplore/practices-ng-logging';
+import type { MonoTypeOperatorFunction, Observable } from 'rxjs';
 import {
     catchError,
     debounceTime,
@@ -19,9 +14,7 @@ import {
     EMPTY,
     filter,
     map,
-    MonoTypeOperatorFunction,
     NEVER,
-    Observable,
     of,
     pipe,
     switchMap,
@@ -29,7 +22,7 @@ import {
 } from 'rxjs';
 import { combineDirectiveControlErrors } from '../utils/combine-directive-control-errors';
 import { cloneDtoWith, isDto } from '../utils/dto-nswag-utils';
-import { INswagGeneratedType, TypedPartialFormGroup } from '../utils/form.types';
+import type { INswagGeneratedType, TypedPartialFormGroup } from '../utils/form.types';
 
 export interface WrapperFormControlAccessor<T = any> {
     /**
@@ -94,6 +87,26 @@ export interface WrapperFormControlAccessor<T = any> {
      * If implemented, this method will be called when the form control is disabled or enabled.
      */
     setDisabledState?(isDisabled: boolean): void;
+}
+
+/**
+ * Returns the DTO to clone the form value with: the DTO provided by the component, or else the last written value if it
+ * is a DTO.
+ *
+ * @internal Exported for tests.
+ */
+export function resolveValueAccessorEntityDto(
+    instance: Pick<
+        WrapperFormControlAccessor,
+        'getValueAccessorEntityDto' | 'getValueAccessorEntityDtoSignalToAutoResetForm'
+    >,
+    currentDtoValue: unknown
+): INswagGeneratedType | null {
+    return (
+        instance.getValueAccessorEntityDto?.() ??
+        instance.getValueAccessorEntityDtoSignalToAutoResetForm?.()() ??
+        (isDto(currentDtoValue) ? (currentDtoValue as INswagGeneratedType) : null)
+    );
 }
 
 /**
@@ -225,12 +238,7 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                                             currentDtoValue) &&
                                         !isDto(value)
                                     ) {
-                                        const entity =
-                                            instance.getValueAccessorEntityDto?.() ??
-                                            instance.getValueAccessorEntityDtoSignalToAutoResetForm?.()() ??
-                                            isDto(currentDtoValue)
-                                                ? currentDtoValue
-                                                : null;
+                                        const entity = resolveValueAccessorEntityDto(instance, currentDtoValue);
 
                                         if (entity && value !== null) {
                                             value = cloneDtoWith(entity, value);

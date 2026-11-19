@@ -1,4 +1,5 @@
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 import { map, timer } from 'rxjs';
 import { PuibeTableComponent } from './table.component';
 import { TableViewSource } from './table-view-source';
@@ -21,7 +22,7 @@ import { PuibeTableRowComponent } from './row/table-row.component';
 import { PuibeButtonDirective } from '../button/button.directive';
 import { PuibeTablePaginationInfiniteScrollComponent } from './infinite-scroll/table-pagination-infinite-scroll.component';
 import { PuibeTableCellDirective } from './cell/table-cell.directive';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateDirective } from '@ngx-translate/core';
 import { PuibeTableColumnTranslateDirective } from './column/table-column-translate.directive';
 import { PuibeIconSearchComponent } from '../icons/icon-search.component';
 
@@ -72,7 +73,7 @@ const meta: Meta<Args> = {
                 PuibeTableColActionsComponent,
                 PuibeButtonDirective,
                 PuibeTableCellDirective,
-                TranslateModule,
+                TranslateDirective,
                 PuibeIconSearchComponent,
                 PuibeTableColumnTranslateDirective,
             ],

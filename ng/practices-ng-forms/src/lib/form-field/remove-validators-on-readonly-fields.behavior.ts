@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
-import { AsyncValidatorFn, NgControl, ValidatorFn, Validators } from '@angular/forms';
+import type { AsyncValidatorFn, NgControl, ValidatorFn } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { combineLatest, distinctUntilChanged, of, skipWhile } from 'rxjs';
-import { PuiFormFieldService } from './form-field.service';
+import type { PuiFormFieldService } from './form-field.service';
 import { PuiReadonlyDirective } from './readonly.directive';
 
 export const removeValidatorsOnReadonlyFieldsBehavior =

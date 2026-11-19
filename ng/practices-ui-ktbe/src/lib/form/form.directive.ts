@@ -26,7 +26,6 @@ export class PuibeFormDirective {
     @Output()
     readonly formStateChange = getElementFormStates$(this._elementRef.nativeElement);
 
-
     public markAsTouched() {
         this._innerDirective.markAsTouched();
     }

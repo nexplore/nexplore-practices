@@ -4,7 +4,10 @@ import { createTableViewSourceFromCommand } from './create-table-view-source-fro
 
 describe('fromCommand', () => {
     class TestDto {
-        constructor(public name: string, public age: number) {}
+        constructor(
+            public name: string,
+            public age: number
+        ) {}
     }
 
     beforeAll(() => {
@@ -14,7 +17,10 @@ describe('fromCommand', () => {
     it('should create table view source from command', () => {
         TestBed.runInInjectionContext(() => {
             class TestDto {
-                constructor(public name: string, public age: number) {}
+                constructor(
+                    public name: string,
+                    public age: number
+                ) {}
             }
 
             const cmd = command.action(() => [new TestDto('Test', 22)]);

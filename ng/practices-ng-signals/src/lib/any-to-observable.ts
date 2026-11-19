@@ -1,7 +1,8 @@
 import { isSignal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { isObservable, Observable, of } from 'rxjs';
-import { SignalOrObservable } from './types';
+import type { Observable } from 'rxjs';
+import { isObservable, of } from 'rxjs';
+import type { SignalOrObservable } from './types';
 
 /**
  * Converts any signal or observable to an observable.

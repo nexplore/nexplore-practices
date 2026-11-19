@@ -8,13 +8,13 @@ The library addresses the need for controlled logging in web applications, espec
 
 ## Features
 
--   **Topic-based Logging** - Organize log messages by specific topics or components
--   **Configurable Logging Levels** - Support for regular logs and more detailed trace logs
--   **Runtime Configuration** - Enable/disable logging for specific topics at runtime
--   **URL-based Configuration** - Enable logging via URL parameters for debugging in production
--   **Local Storage Persistence** - Save logging preferences across browser sessions
--   **Visual Differentiation** - Color-coded console output for better readability
--   **Browser Console API** - Global methods to control logging from the browser console
+- **Topic-based Logging** - Organize log messages by specific topics or components
+- **Configurable Logging Levels** - Support for regular logs and more detailed trace logs
+- **Runtime Configuration** - Enable/disable logging for specific topics at runtime
+- **URL-based Configuration** - Enable logging via URL parameters for debugging in production
+- **Local Storage Persistence** - Save logging preferences across browser sessions
+- **Visual Differentiation** - Color-coded console output for better readability
+- **Browser Console API** - Global methods to control logging from the browser console
 
 ## Installation
 
