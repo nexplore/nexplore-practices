@@ -12,8 +12,11 @@ jobs:
           fetch-tags: true
       - uses: actions/setup-dotnet@v5.4.0
         with:
-          global-json-file: dotnet/global.json
-          dotnet-version: "8.x"
+          global-json-file: global.json
+          # Runtimes for the net8.0/net9.0 test runs (the SDK comes from global.json)
+          dotnet-version: |
+            8.x
+            9.x
       - uses: actions/setup-node@v6.4.0
         with:
           node-version: "22.14.0"
