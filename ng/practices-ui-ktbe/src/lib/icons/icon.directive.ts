@@ -48,6 +48,12 @@ export class PuibeIconDirectiveBase implements OnChanges, AfterViewInit {
     }
 
     ngAfterViewInit() {
+        // Safari/WebKit renders without width attribute as 0x0 inside a non-stretching flex host
+        const svg = this._elementRef.nativeElement.querySelector('svg');
+        if (svg && !svg.hasAttribute('width')) {
+            svg.setAttribute('width', '100%');
+        }
+
         // Set transition only after initial load, so there is no weird initial animations
         this.getHostElement().classList.add('transition-all');
 
