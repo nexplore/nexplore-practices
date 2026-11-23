@@ -67,18 +67,6 @@
             "options": {
                 "buildTarget": "samples-tailwind:build"
             }
-        },
-        "test": {
-            "executor": "@nx/jest:jest",
-            "options": {
-                "jestConfig": "samples-tailwind/jest.config.js"
-            }
-        },
-        "lint": {
-            "executor": "@nx/eslint:lint",
-            "options": {
-                "lintFilePatterns": ["samples-tailwind/**/*.ts", "samples-tailwind/package.json"]
-            }
         }
     }
 }
