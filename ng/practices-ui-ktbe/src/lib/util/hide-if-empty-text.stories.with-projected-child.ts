@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { Component, EventEmitter, Output, input } from '@angular/core';
+import { Component, EventEmitter, Output, input, ChangeDetectionStrategy } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { delay } from 'rxjs';
 import { PuibeHideIfEmptyTextDirective } from './hide-if-empty-text.directive';
@@ -11,6 +11,7 @@ import { PuibeHideIfEmptyTextDirective } from './hide-if-empty-text.directive';
         <ng-content />
     </div>`,
     imports: [PuibeHideIfEmptyTextDirective],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
 export class ComponentWrapper {
@@ -28,6 +29,7 @@ export class ComponentWrapper {
         @if (showDelayed()) { I am here }
     </div>`,
     imports: [PuibeHideIfEmptyTextDirective],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
 export class ComponentProjectedChild {

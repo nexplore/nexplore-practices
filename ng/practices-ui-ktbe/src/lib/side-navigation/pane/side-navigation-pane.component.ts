@@ -1,12 +1,9 @@
-import { AnimationTriggerMetadata, trigger, style, transition, animate } from '@angular/animations';
-import { NgClass, NgIf } from '@angular/common';
-import { Component, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
+import { animate, AnimationTriggerMetadata, style, transition, trigger } from '@angular/animations';
+import { A11yModule } from '@angular/cdk/a11y';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PuibeIconArrowComponent } from '../../icons/icon-arrow.component';
 import { PuibeIconCloseComponent } from '../../icons/icon-close.component';
-import { PuibeIconHomeComponent } from '../../icons/icon-home.component';
-import { PuibeSideNavigationItemComponent } from '../item/side-navigation-item.component';
-import { A11yModule } from '@angular/cdk/a11y';
 
 export const panelExpansionAnimation: AnimationTriggerMetadata = trigger('sidePanelAnim', [
     transition(':enter', [
@@ -24,18 +21,8 @@ export const panelExpansionAnimation: AnimationTriggerMetadata = trigger('sidePa
     standalone: true,
     selector: 'puibe-side-navigation-pane',
     templateUrl: './side-navigation-pane.component.html',
-    imports: [
-        NgClass,
-        TranslateModule,
-        NgClass,
-        NgIf,
-        TranslateModule,
-        PuibeIconHomeComponent,
-        PuibeIconCloseComponent,
-        PuibeIconArrowComponent,
-        PuibeSideNavigationItemComponent,
-        A11yModule,
-    ],
+    imports: [TranslateModule, PuibeIconCloseComponent, PuibeIconArrowComponent, A11yModule],
+    changeDetection: ChangeDetectionStrategy.Eager,
     animations: [panelExpansionAnimation],
 })
 export class PuibeSideNavigationPaneComponent {

@@ -3,11 +3,13 @@
     <clr-dg-column [clrDgSortBy]="'firstname'">Firstname</clr-dg-column>
     <clr-dg-column [clrDgSortBy]="'lastname'">Lastname</clr-dg-column>
 
-    <clr-dg-row *ngFor="let user of userSource.pageData$ | async; trackBy: trackById">
-        <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-        <clr-dg-cell>{{ user.firstname }}</clr-dg-cell>
-        <clr-dg-cell>{{ user.lastname }}</clr-dg-cell>
-    </clr-dg-row>
+    @for (user of userSource.pageData$ | async; track trackById($index, user)) {
+        <clr-dg-row>
+            <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+            <clr-dg-cell>{{ user.firstname }}</clr-dg-cell>
+            <clr-dg-cell>{{ user.lastname }}</clr-dg-cell>
+        </clr-dg-row>
+    }
 
     <clr-dg-footer>
         <clr-dg-pagination #pagination puiclrPagination

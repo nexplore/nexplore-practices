@@ -9,7 +9,7 @@ import { PuibeNoticeDirective } from '../form-field/notice.directive';
 import { PuibeReadonlyDirective } from '../common/readonly.directive';
 
 type Args = {
-    label: string;
+    labelText: string;
     labelAlwaysVisible: boolean;
     placeholder: string;
     value: string;
@@ -25,7 +25,7 @@ const meta: Meta<Args> = {
     component: PuibeFormFieldComponent,
     tags: ['autodocs'],
     argTypes: {
-        label: { type: 'string' },
+        labelText: { type: 'string' },
         labelAlwaysVisible: { type: 'boolean', defaultValue: false },
         placeholder: { type: 'string' },
         value: {
@@ -66,7 +66,7 @@ const meta: Meta<Args> = {
         },
         template: `
         <puibe-form-field class="w-1/2" [formGroup]="formGroup" [puibeReadonly]="readonly">
-            ${args.label ? '<label puibeLabel alwaysVisible="{{labelAlwaysVisible}}">{{label}}</label>' : ''}
+            ${args.labelText ? `<label puibeLabel alwaysVisible="{{labelAlwaysVisible}}">${args.labelText}</label>` : ''}
             <input puibeInput type="file"
                    formControlName="value"
                    [placeholder]="placeholder"/>
@@ -80,29 +80,29 @@ export default meta;
 type Story = StoryObj<Args>;
 
 export const Default: Story = {
-    args: { label: 'Default' },
+    args: { labelText: 'Default' },
 };
 
 export const WithNoticeInput: Story = {
-    args: { label: 'With Notice Input', notice: 'Only Pdf' },
+    args: { labelText: 'With Notice Input', notice: 'Only Pdf' },
 };
 
 export const WithCustomPlaceholder: Story = {
-    args: { label: 'With Custom Placeholder', placeholder: 'I am unique' },
+    args: { labelText: 'With Custom Placeholder', placeholder: 'I am unique' },
 };
 
 export const RequiredInput: Story = {
-    args: { label: 'Required Input', required: true },
+    args: { labelText: 'Required Input', required: true },
 };
 
 export const DisabledInput: Story = {
-    args: { label: 'Disabled Input', disabled: true },
+    args: { labelText: 'Disabled Input', disabled: true },
 };
 
 export const ReadonlyInput: Story = {
-    args: { label: 'Readonly Input', readonly: true, value: 'hallo.pdf' },
+    args: { labelText: 'Readonly Input', readonly: true, value: 'hallo.pdf' },
 };
 
 export const AsyncValidatorInput: Story = {
-    args: { label: 'Async Validator Input', asyncValidator: true },
+    args: { labelText: 'Async Validator Input', asyncValidator: true },
 };

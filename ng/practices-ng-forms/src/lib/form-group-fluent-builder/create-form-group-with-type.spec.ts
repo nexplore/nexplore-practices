@@ -47,7 +47,7 @@ describe('withType', () => {
                 age: {nullable: true}
             })
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
 
             expect(fg.value).toEqual({name: 'John Doe', age: 40});
@@ -89,7 +89,7 @@ describe('withType', () => {
                     age: [dependent(({name}) => !name && Validators.required)],
                 }));
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             fg.controls.age.setValue(30);
 

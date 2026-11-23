@@ -1,6 +1,5 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { CommonModule } from '@angular/common';
-import { Component, Inject, inject } from '@angular/core';
+import { Component, Inject, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import {
     PracticesKtbeDefaultModule,
@@ -21,6 +20,7 @@ import { SampleListEntry, SampleType } from './table-example.component';
     standalone: true,
     selector: 'app-table-detail-modal',
     templateUrl: 'detail-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         PuibeModalComponent,
         PuibeModalContentDirective,
@@ -29,8 +29,6 @@ import { SampleListEntry, SampleType } from './table-example.component';
         PuibeModalFooterActionDirective,
         PuibeButtonDirective,
         PuibeIconEnumerationComponent,
-
-        CommonModule,
         PracticesKtbeDefaultModule,
         NgSelectModule,
         PracticesKtbeFormComponentsModule,

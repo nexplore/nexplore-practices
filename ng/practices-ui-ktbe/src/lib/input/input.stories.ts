@@ -11,7 +11,7 @@ import { PuibeInputDirective } from './input.directive';
 
 type Args = {
     value?: string | number;
-    label?: string;
+    labelText?: string;
     required?: boolean;
     disabled?: boolean;
     notice?: string;
@@ -56,7 +56,7 @@ const meta: Meta<Args> = {
     tags: ['autodocs'],
     argTypes: {
         value: { type: 'string' },
-        label: { type: 'string' },
+        labelText: { type: 'string' },
         required: { type: 'boolean', defaultValue: false },
         disabled: { type: 'boolean', defaultValue: false },
         notice: { type: 'string' },
@@ -93,7 +93,7 @@ const meta: Meta<Args> = {
                         : ''
                 }
                 [useSmallTextForReadonlyLabel]="useSmallTextForReadonlyLabel" [puibeReadonly]="readonly" class="w-1/2" [formGroup]="formGroup">
-                <label puibeLabel [alwaysVisible]="${args.labelAlwaysVisible}">${args.label}</label>
+                <label puibeLabel [alwaysVisible]="${args.labelAlwaysVisible}">${args.labelText}</label>
                 <input puibeInput type="${args.inputType}" 
                     ${args.placeholder ? `[placeholder]="placeholder"` : ''}
                     formControlName="value" 
@@ -109,7 +109,7 @@ const meta: Meta<Args> = {
                         : ''
                 }
                 [useSmallTextForReadonlyLabel]="useSmallTextForReadonlyLabel" [puibeReadonly]="readonly" class="w-1/2" [formGroup]="formGroup">
-                <label puibeLabel [alwaysVisible]="${args.labelAlwaysVisible}">${args.label}</label>
+                <label puibeLabel [alwaysVisible]="${args.labelAlwaysVisible}">${args.labelText}</label>
                 <textarea puibeInput
                     ${args.placeholder ? `[placeholder]="placeholder"` : ''}
                     formControlName="value">
@@ -140,14 +140,14 @@ type Story = StoryObj<Args>;
 
 export const TextInput: Story = {
     args: {
-        label: 'Basic Text-Input',
+        labelText: 'Basic Text-Input',
         required: false,
         inputType: 'text',
     },
 };
 export const TextInputWithDifferentPlaceholder: Story = {
     args: {
-        label: 'Basic Text-Input',
+        labelText: 'Basic Text-Input',
         placeholder: 'With different placeholder',
         required: false,
         inputType: 'text',
@@ -156,7 +156,7 @@ export const TextInputWithDifferentPlaceholder: Story = {
 
 export const TextInputWithNoPlaceholder: Story = {
     args: {
-        label: 'Basic Text-Input',
+        labelText: 'Basic Text-Input',
 
         placeholder: null,
         required: false,
@@ -165,7 +165,7 @@ export const TextInputWithNoPlaceholder: Story = {
 };
 export const TextInputWithNotice: Story = {
     args: {
-        label: 'Basic Text-Input',
+        labelText: 'Basic Text-Input',
         required: false,
         notice: 'Hinweis-Text zu diesem Input',
         inputType: 'text',
@@ -174,7 +174,7 @@ export const TextInputWithNotice: Story = {
 
 export const TextInputWithVisibleLabel: Story = {
     args: {
-        label: 'Basic Text-Input',
+        labelText: 'Basic Text-Input',
         required: false,
         inputType: 'text',
         labelAlwaysVisible: true,
@@ -183,7 +183,7 @@ export const TextInputWithVisibleLabel: Story = {
 
 export const TextInputWithVisibleLabelAndDifferentPlaceholder: Story = {
     args: {
-        label: 'Basic Text-Input',
+        labelText: 'Basic Text-Input',
         placeholder: 'Different placheolder',
         required: false,
         inputType: 'text',
@@ -193,7 +193,7 @@ export const TextInputWithVisibleLabelAndDifferentPlaceholder: Story = {
 
 export const TextInputWithHiddenOptional: Story = {
     args: {
-        label: 'Basic Text-Input',
+        labelText: 'Basic Text-Input',
         required: false,
         inputType: 'text',
         labelHideOptional: true,
@@ -202,7 +202,7 @@ export const TextInputWithHiddenOptional: Story = {
 
 export const TextInputWithSVNrFormatter: Story = {
     args: {
-        label: 'SV Nr',
+        labelText: 'SV Nr',
         required: false,
         inputType: 'text',
         labelHideOptional: true,
@@ -213,7 +213,7 @@ export const TextInputWithSVNrFormatter: Story = {
 export const RequiredInput: Story = {
     args: {
         value: null,
-        label: 'Required Input',
+        labelText: 'Required Input',
         required: true,
         inputType: 'number',
     },
@@ -222,7 +222,7 @@ export const RequiredInput: Story = {
 export const NumberInput: Story = {
     args: {
         value: 3,
-        label: 'Basic Number-Input',
+        labelText: 'Basic Number-Input',
         required: false,
         inputType: 'number',
     },
@@ -230,7 +230,7 @@ export const NumberInput: Story = {
 
 export const DateInput: Story = {
     args: {
-        label: 'Basic Date-Input',
+        labelText: 'Basic Date-Input',
         required: false,
         inputType: 'date',
     },
@@ -239,7 +239,7 @@ export const DateInput: Story = {
 export const DisabledInput: Story = {
     args: {
         value: null,
-        label: 'Disabled Input',
+        labelText: 'Disabled Input',
         disabled: true,
     },
 };
@@ -247,7 +247,7 @@ export const DisabledInput: Story = {
 export const ReadonlyInput: Story = {
     args: {
         value: null,
-        label: 'Disabled Input',
+        labelText: 'Disabled Input',
         readonly: true,
     },
 };
@@ -255,7 +255,7 @@ export const ReadonlyInput: Story = {
 export const ReadonlyInputWithValue: Story = {
     args: {
         value: 'Etwas Text',
-        label: 'Readonly Input',
+        labelText: 'Readonly Input',
         readonly: true,
     },
 };
@@ -263,14 +263,14 @@ export const ReadonlyInputWithValue: Story = {
 export const AsyncValidator: Story = {
     args: {
         value: null,
-        label: 'Async Validated Input',
+        labelText: 'Async Validated Input',
         asyncValidator: true,
     },
 };
 
 export const ReadonlyInputWithCustomEmptyPlaceholder: Story = {
     args: {
-        label: 'Custom No Entry Value Input',
+        labelText: 'Custom No Entry Value Input',
         inputType: 'number',
         readonly: true,
         readonlyEmptyValuePlaceholder: 'Custom Value',
@@ -279,7 +279,7 @@ export const ReadonlyInputWithCustomEmptyPlaceholder: Story = {
 
 export const Textarea: Story = {
     args: {
-        label: 'Basic Text-Area',
+        labelText: 'Basic Text-Area',
         required: false,
         inputType: 'textarea',
     },
@@ -287,7 +287,7 @@ export const Textarea: Story = {
 
 export const TextareaWithVisibleLabel: Story = {
     args: {
-        label: 'Basic Text-Area',
+        labelText: 'Basic Text-Area',
         required: false,
         inputType: 'textarea',
         labelAlwaysVisible: true,
@@ -296,7 +296,7 @@ export const TextareaWithVisibleLabel: Story = {
 
 export const TextareaWithHiddenOptional: Story = {
     args: {
-        label: 'Basic Text-Area',
+        labelText: 'Basic Text-Area',
         required: false,
         inputType: 'textarea',
         labelHideOptional: true,
@@ -305,7 +305,7 @@ export const TextareaWithHiddenOptional: Story = {
 
 export const RequiredTextarea: Story = {
     args: {
-        label: 'Basic Text-Area',
+        labelText: 'Basic Text-Area',
         required: true,
         inputType: 'textarea',
     },
@@ -313,7 +313,7 @@ export const RequiredTextarea: Story = {
 
 export const DisabledTextarea: Story = {
     args: {
-        label: 'Basic Text-Area',
+        labelText: 'Basic Text-Area',
         disabled: true,
         value: 'Hello World',
         inputType: 'textarea',
@@ -322,7 +322,7 @@ export const DisabledTextarea: Story = {
 
 export const ReadonlyTextarea: Story = {
     args: {
-        label: 'Basic Text-Area',
+        labelText: 'Basic Text-Area',
         disabled: true,
         value: 'Hello World',
         inputType: 'textarea',
@@ -332,7 +332,7 @@ export const ReadonlyTextarea: Story = {
 
 export const ReadonlyTextareaWithCustomEmptyPlaceholder: Story = {
     args: {
-        label: 'Custom Readonly No Entry Value Text-Area',
+        labelText: 'Custom Readonly No Entry Value Text-Area',
         inputType: 'textarea',
         readonly: true,
         readonlyEmptyValuePlaceholder: 'Custom Value',
@@ -347,7 +347,7 @@ export const LongLabelTextInput: Story = {
     name: 'Long label - text input (filled)',
     args: {
         value: 'Ein bereits eingegebener Wert',
-        label: LONG_LABEL,
+        labelText: LONG_LABEL,
         inputType: 'text',
     },
 };
@@ -355,7 +355,7 @@ export const LongLabelTextInput: Story = {
 export const LongLabelTextInputEmpty: Story = {
     name: 'Long label - text input (empty / placeholder)',
     args: {
-        label: LONG_LABEL,
+        labelText: LONG_LABEL,
         inputType: 'text',
     },
 };
@@ -363,7 +363,7 @@ export const LongLabelTextInputEmpty: Story = {
 export const LongLabelAlwaysVisible: Story = {
     name: 'Long label - always visible',
     args: {
-        label: VERY_LONG_LABEL,
+        labelText: VERY_LONG_LABEL,
         inputType: 'text',
         labelAlwaysVisible: true,
     },
@@ -373,7 +373,7 @@ export const LongLabelTextarea: Story = {
     name: 'Long label - textarea (filled)',
     args: {
         value: 'Bereits eingegeben',
-        label: VERY_LONG_LABEL,
+        labelText: VERY_LONG_LABEL,
         inputType: 'textarea',
     },
 };

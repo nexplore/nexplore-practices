@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, forwardRef, Input, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, forwardRef, Input, ViewChild, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import {
     AbstractControl,
     ControlValueAccessor,
@@ -14,7 +13,7 @@ import { ClarityModule, ClrDateInput } from '@clr/angular';
 
 @Component({
     selector: 'puiclr-date-picker-input',
-    imports: [CommonModule, ClarityModule, ReactiveFormsModule],
+    imports: [ClarityModule, ReactiveFormsModule],
     standalone: true,
     template: `
         <div [formGroup]="form">
@@ -50,6 +49,7 @@ import { ClarityModule, ClrDateInput } from '@clr/angular';
         },
     ],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.Eager,
     styles: [
         `
             clr-date-container label.clr-control-label > label {

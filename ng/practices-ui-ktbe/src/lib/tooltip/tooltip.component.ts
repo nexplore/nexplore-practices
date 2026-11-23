@@ -1,6 +1,6 @@
 import { CdkOverlayOrigin, ConnectedPosition, Overlay, OverlayModule, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -13,6 +13,7 @@ import {
     inject,
     input,
     viewChild,
+    DOCUMENT,
 } from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
 import { TranslateModule } from '@ngx-translate/core';

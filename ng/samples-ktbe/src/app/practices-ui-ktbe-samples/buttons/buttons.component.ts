@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
     DropdownMenuOption,
     PuibeButtonArrowsComponent,
@@ -14,6 +14,7 @@ import { LegacyCommandsComponent } from './legacy-commands/commands.component';
     standalone: true,
     selector: 'app-buttons',
     templateUrl: './buttons.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         PuibeIconLoginComponent,
         PuibeButtonDirective,
