@@ -99,6 +99,8 @@ export function addComponent(options: AddComponentOptions): Rule {
         const IMPORT_RE = /import\s+(?:[^'";]+?from\s+)?['"]([^'";]+)['"];?/g;
         const pkgName = LIB_PKG_NAME;
         expandPlan(planned, ctxResolve, (rel) => readPackagedFile(tree, rel), pkgName);
+        // The plan is complete, rewriting import specifiers below must not add files to it anymore
+        ctxResolve.ensureFilePlanned = () => undefined;
 
         context.logger.debug(
             `[add-component] Planned total files: ${planned.size} (components: ${selected.length}, external deps: ${

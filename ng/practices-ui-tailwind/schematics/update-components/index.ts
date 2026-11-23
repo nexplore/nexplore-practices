@@ -60,6 +60,8 @@ export function updateComponents(options: UpdateComponentsOptions): Rule {
         const IMPORT_RE = /import\s+(?:[^'";]+?from\s+)?['"]([^'";]+)['"];?/g;
         const pkgName = '@nexplore/practices-ui-tailwind';
         expandPlan(planned, ctxResolve, (rel) => readPackagedFile(tree, rel), pkgName);
+        // The plan is complete, rewriting import specifiers below must not add files to it anymore
+        ctxResolve.ensureFilePlanned = () => undefined;
 
         // Now iterate all planned originals and perform update logic
         for (const originalRel of planned) {

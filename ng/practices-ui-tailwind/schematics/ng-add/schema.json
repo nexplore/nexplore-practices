@@ -13,6 +13,7 @@
         "features": {
             "type": "array",
             "description": "List of features to add",
+            "default": ["shell", "providers"],
             "items": {
                 "type": "string"
             },

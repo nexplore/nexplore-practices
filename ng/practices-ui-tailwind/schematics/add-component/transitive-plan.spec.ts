@@ -28,7 +28,11 @@ const FILES: Record<string, string> = {
     'src/lib/badge/badge.component.html': '<span>badge</span>',
     'src/lib/badge/badge.component.css': ':host { display: inline-block; }',
     'src/lib/badge/badge.stories.ts': "export default { title: 'Badge' };",
-    'src/lib/util/helper.ts': 'export const helper = 1;',
+    'src/lib/util/helper.ts': [
+        "// import { Gone } from './gone';",
+        '/* import { AlsoGone } from "./also-gone"; */',
+        'export const helper = 1;',
+    ].join('\n'),
     'src/lib/util/helper.spec.ts': "describe('helper', () => {});",
     'src/lib/util/spec/test-route-config.ts': 'export const routes = [];',
 };
@@ -78,6 +82,15 @@ describe('add-component planning', () => {
         expect(tree.exists('/src/app/ui/lib/badge/badge.component.css')).toBe(true);
         // and transitive imports of the discovered file
         expect(tree.exists('/src/app/ui/lib/util/helper.ts')).toBe(true);
+    });
+
+    it('ignores commented out imports', async () => {
+        const messages: string[] = [];
+        runner.logger.subscribe((entry) => messages.push(entry.message));
+
+        await runner.runSchematic('add-component', { names: 'card', dest: 'src/app/ui', rewriteImports: true }, seed());
+
+        expect(messages.filter((m) => m.includes('Missing planned file'))).toEqual([]);
     });
 
     it('never copies stories, specs and test fixtures, even if an old manifest lists them', async () => {

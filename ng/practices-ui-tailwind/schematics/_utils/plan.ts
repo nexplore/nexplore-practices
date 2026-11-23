@@ -22,6 +22,10 @@ export function readPackagedFile(tree: Tree, originalRel: string): Buffer | null
     return null;
 }
 
+function stripComments(source: string): string {
+    return source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]*\/\/.*$/gm, '');
+}
+
 /** Relative resources (`templateUrl`, `styleUrl`, `styleUrls`) referenced by an Angular component source. */
 export function findResourceReferences(source: string): string[] {
     const refs = new Set<string>();
@@ -59,7 +63,8 @@ export function expandPlan(
 
         const buf = readOriginal(rel);
         if (!buf) continue;
-        const content = buf.toString('utf8');
+        // Commented out imports must not pull in (non existing) files
+        const content = stripComments(buf.toString('utf8'));
 
         const importRe = /import\s+(?:[^'";]+?from\s+)?['"]([^'";]+)['"];?/g;
         let match: RegExpExecArray | null;

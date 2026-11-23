@@ -4,7 +4,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as ts from 'typescript';
 import { readHashDb, writeHashDb } from '../_utils/hash-db';
-import { findAndCacheGlobalStylesEntry } from '../_utils/styles-entry';
+import { MANIFEST_RELATIVE_PREFIX } from '../_utils/plan';
+import {
+    copyLibraryStyle,
+    ensurePostcssConfig,
+    ensureTailwindDependencies,
+    setupGlobalStyles,
+} from '../_utils/tailwind-setup';
 
 type NgAddOptions = JsonObject & {
     theme?: string;
@@ -17,7 +23,7 @@ const COLLECTION_PATH = './collection.json';
 
 export function ngAdd(options: NgAddOptions): Rule {
     return (tree: Tree, context: SchematicContext) => {
-        const themes = discoverThemes();
+        const themes = discoverThemes(tree);
         const chosenTheme = validateTheme(options.theme, themes, context);
 
         const hashDb = readHashDb(tree);
@@ -27,11 +33,15 @@ export function ngAdd(options: NgAddOptions): Rule {
             hashDb.dest = destRoot;
             writeHashDb(tree, hashDb);
         }
-        // Copy theme file like code file if present.
-        copyTheme(tree, context, chosenTheme, destRoot);
 
-        // Inject @import for the theme into the main styles file declared in angular.json
-        addThemeImport(tree, context, chosenTheme, destRoot);
+        // Theme tokens and the library's base styles live next to the copied components, the consumer owns them
+        copyLibraryStyle(tree, context, chosenTheme, destRoot);
+        copyLibraryStyle(tree, context, 'tailwind.css', destRoot);
+
+        // Tailwind CSS 4 itself: import + @source in the global stylesheet, PostCSS plugin, packages
+        setupGlobalStyles(tree, context, chosenTheme, destRoot);
+        ensurePostcssConfig(tree, context);
+        ensureTailwindDependencies(tree, context);
 
         const rules: Rule[] = [];
 
@@ -55,19 +65,26 @@ export function ngAdd(options: NgAddOptions): Rule {
             }
         }
 
-        rules.push(logTutorial(themes, chosenTheme, !options.skipProvider));
+        const requestedFeatures: unknown[] = Array.isArray(options.features) ? options.features : [];
+        const providerInjected = !options.skipProvider && requestedFeatures.includes('providers');
+        rules.push(logTutorial(themes, chosenTheme, providerInjected));
         return chain(rules)(tree, context);
     };
 }
 
-function discoverThemes(): string[] {
+function discoverThemes(tree: Tree): string[] {
     const themes: string[] = [];
-    // New snapshot layout copies entire src under /schematics/add-component/files/src
-    // Read theme files from the published package (not the host tree), just like copyTheme.
+    const isTheme = (file: string) => /^theme(-.*)?\.css$/.test(file);
+    // Unit tests (and tools) provide the snapshot through the tree
+    const snapshotDir = tree.getDir(MANIFEST_RELATIVE_PREFIX + 'src');
+    snapshotDir.subfiles.forEach((file) => {
+        if (isTheme(file)) themes.push(file);
+    });
+    // Published package: the snapshot is next to the compiled schematics, not part of the host tree
     const themesDir = path.resolve(__dirname, '..', 'add-component', 'files', 'src');
     if (fs.existsSync(themesDir)) {
         for (const file of fs.readdirSync(themesDir)) {
-            if (/^theme(-.*)?\.css$/.test(file)) themes.push(file);
+            if (isTheme(file)) themes.push(file);
         }
     }
     // Only return actual discovered themes (no placeholder injection)
@@ -82,22 +99,6 @@ function validateTheme(requested: string | undefined, themes: string[], context:
     // Prefer theme.css if present; else first available; else no-op
     if (themes.includes('theme.css')) return 'theme.css';
     return themes[0] || 'theme.css';
-}
-
-function copyTheme(tree: Tree, context: SchematicContext, theme: string, destRoot: string) {
-    // Theme files live inside the published package, not the host tree.
-    const fsPath = path.resolve(__dirname, '..', 'add-component', 'files', 'src', theme);
-    if (!fs.existsSync(fsPath)) {
-        context.logger.warn(`[ng-add] Theme asset ${theme} not found in package at ${fsPath}; skipping copy.`);
-        return;
-    }
-    const buf = fs.readFileSync(fsPath);
-
-    // Place theme at destination root (not under /lib) to allow consumer to decide import placement.
-    const destPath = `/${destRoot.replace(/\\/g, '/')}/${theme}`;
-    if (tree.exists(destPath)) return;
-    tree.create(destPath, buf);
-    context.logger.info(`[ng-add] Copied theme file ${theme} to ${destPath}`);
 }
 
 function injectProvider(tree: Tree, context: SchematicContext) {
@@ -382,34 +383,6 @@ function computeRelativeSpecifier(fromAbs: string, toAbsNoExt: string): string {
     const down = toParts.slice(i).join('/');
     const rel = (up ? new Array(up).fill('..').join('/') + (down ? '/' : '') : '.') + down;
     return rel.startsWith('.') ? rel : './' + rel;
-}
-
-// Add @import statement to the primary global styles file (from angular.json) for the generated theme file
-function addThemeImport(tree: Tree, context: SchematicContext, theme: string, destRoot: string) {
-    const angularJsonPath = '/angular.json';
-    if (!tree.exists(angularJsonPath)) return;
-    const buf = tree.read(angularJsonPath);
-    if (!buf) return;
-    let angularConfig: { projects?: Record<string, unknown> } | undefined;
-    try {
-        angularConfig = JSON.parse(buf.toString('utf8'));
-    } catch (_err) {
-        return;
-    }
-    const styleFilePath = findAndCacheGlobalStylesEntry(tree);
-    if (!styleFilePath) return;
-    if (!tree.exists(styleFilePath)) return;
-    const styleBuf = tree.read(styleFilePath);
-    if (!styleBuf) return;
-    const styleContent = styleBuf.toString('utf8');
-    const themeFilePath = `/${destRoot.replace(/\\/g, '/')}/${theme}`;
-    const rel = path.posix.relative(path.posix.dirname(styleFilePath), themeFilePath) || themeFilePath;
-    let relImport = rel;
-    if (!relImport.startsWith('.') && !relImport.startsWith('/')) relImport = './' + relImport;
-    if (styleContent.includes(themeFilePath) || styleContent.includes(relImport)) return;
-    const importLine = `@import '${relImport}';\n`;
-    tree.overwrite(styleFilePath, importLine + styleContent);
-    context.logger.info(`[ng-add] Inserted @import for theme (${relImport}) into ${styleFilePath}`);
 }
 
 // moved to _utils/styles-entry.ts
