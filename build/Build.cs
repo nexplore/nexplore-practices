@@ -170,7 +170,7 @@ partial class Build : NukeBuild
             {
                 var projectDirectory = NgDistributionDirectory / project;
                 var packagesFile = projectDirectory / "package.json";
-                if (!File.Exists(packagesFile))
+                if (!packagesFile.FileExists())
                     continue;
 
                 packagesFile.ReplaceContent("0.0.0-VERSION", version);
