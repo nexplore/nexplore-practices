@@ -1,7 +1,7 @@
 import { AfterViewInit, Directive, ElementRef, HostBinding, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { setHostClassNames } from '../util/utils';
 import { puiIconDefaults } from './defaults';
-import { IconDirection, IconSize } from './icon.interface';
+import { IconDirection, IconDirectionInput, IconSize, IconSizeInput } from './icon.interface';
 import { applyIconDirection } from './util';
 
 /**
@@ -22,13 +22,13 @@ export class PuiIconDirectiveBase implements OnChanges, AfterViewInit {
      * Rotates the icon into the specified direction
      */
     @Input()
-    direction: IconDirection;
+    direction: IconDirectionInput;
 
     /**
      * Allows to customize the size of the icon. By default, no size is applied.
      */
     @Input()
-    size: IconSize = IconSize.NONE;
+    size: IconSizeInput = IconSize.NONE;
 
     ngOnChanges(_changes: SimpleChanges): void {
         this.applyChanges();

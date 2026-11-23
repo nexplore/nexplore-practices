@@ -1,6 +1,6 @@
 import { ElementRef } from '@angular/core';
 import { setHostClassNames } from '../util/utils';
-import { IconDirection } from './icon.interface';
+import { IconDirection, IconDirectionInput } from './icon.interface';
 
 /** Reads item at index of array, however in a circular manner: `circularAccess(['a','b','c'], 3)` returns 'a' */
 function circularAccess<T>(arr: Array<T>, i: number) {
@@ -8,8 +8,8 @@ function circularAccess<T>(arr: Array<T>, i: number) {
 }
 
 export function applyIconDirection(
-    dir: IconDirection,
-    defaultDir: IconDirection,
+    dir: IconDirectionInput,
+    defaultDir: IconDirectionInput,
     elementRef: HTMLElement | ElementRef<HTMLElement>
 ) {
     if (!defaultDir || !dir) {
@@ -25,7 +25,7 @@ export function applyIconDirection(
         );
     } else {
         const order = [IconDirection.RIGHT, IconDirection.DOWN, IconDirection.LEFT, IconDirection.UP];
-        const start = order.indexOf(defaultDir);
+        const start = order.indexOf(defaultDir as IconDirection);
         setHostClassNames(
             {
                 'origin-center': true,
