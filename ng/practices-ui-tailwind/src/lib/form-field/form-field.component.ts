@@ -28,7 +28,7 @@ import {
 import { PuiIconCloseComponent } from '../icons/icon-close.component';
 import { PuiIconInvalidComponent } from '../icons/icon-invalid.component';
 import { PuiIconSpinnerComponent } from '../icons/icon-spinner.component';
-import { PuiReadonyLabelValueComponent } from '../readonly-label-value/readonly-label-value.component';
+import { PuiReadonlyLabelValueComponent } from '../readonly-label-value/readonly-label-value.component';
 import { FormFieldIconConfig, FormFieldService } from './form-field.service';
 import { PuiLabelDirective } from './label.directive';
 
@@ -56,7 +56,7 @@ const overlayTextEmptyClassName = 'text-opacity-60';
         PuiIconInvalidComponent,
         PuiIconSpinnerComponent,
         PuiIconCloseComponent,
-        PuiReadonyLabelValueComponent,
+        PuiReadonlyLabelValueComponent,
         NgClass,
         AsyncPipe,
         TranslateModule,

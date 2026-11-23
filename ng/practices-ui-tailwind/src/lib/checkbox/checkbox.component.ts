@@ -23,7 +23,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, combineLatest, delay, EMPTY, filter, map, merge, of, shareReplay, startWith, switchMap } from 'rxjs';
 import { FormFieldStatus } from '../form-field/form-field.service';
 import { FORM_CONFIG, FormConfig } from '../form/form.config';
-import { PuiReadonyLabelValueComponent } from '../readonly-label-value/readonly-label-value.component';
+import { PuiReadonlyLabelValueComponent } from '../readonly-label-value/readonly-label-value.component';
 import { getElementFormStates$ } from '../util/form.utils';
 import { PuiCheckboxGroupComponent } from './checkbox-group.component';
 
@@ -34,7 +34,7 @@ let nextUniqueId = 0;
     selector: 'pui-checkbox',
     templateUrl: './checkbox.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, AsyncPipe, TranslateModule, PuiReadonyLabelValueComponent],
+    imports: [NgClass, AsyncPipe, TranslateModule, PuiReadonlyLabelValueComponent],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,

@@ -7,7 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { combineLatestWith, map, of, skip, takeUntil } from 'rxjs';
 import { PuiIconInvalidComponent } from '../icons/icon-invalid.component';
 import { PuiIconSpinnerComponent } from '../icons/icon-spinner.component';
-import { PuiReadonyLabelValueComponent } from '../readonly-label-value/readonly-label-value.component';
+import { PuiReadonlyLabelValueComponent } from '../readonly-label-value/readonly-label-value.component';
 import { RadioButtonGroupService } from './radio-button-group.service';
 import { PuiRadioButtonComponent } from './radio-button.component';
 
@@ -23,7 +23,7 @@ import { PuiRadioButtonComponent } from './radio-button.component';
     AsyncPipe,
     TranslateModule,
     PuiIconSpinnerComponent,
-    PuiReadonyLabelValueComponent
+    PuiReadonlyLabelValueComponent
 ],
     providers: [
         {
