@@ -3,6 +3,7 @@ import { DestroyService, StatusProgressOptions, StatusService } from '@nexplore/
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { BehaviorSubject, combineLatest, filter, map, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 import { FormFieldService } from '../form-field/form-field.service';
+import { readNgSelectProp, writeNgSelectProp } from './ng-select-props';
 import { SelectViewSource } from './select-view-source';
 import { PuiSelectDirective } from './select.directive';
 
@@ -65,7 +66,9 @@ export class PuiSelectViewSourceDirective<T = unknown> implements OnInit, OnDest
     }
 
     constructor() {
-        this._ngSelectComponent.items = []; // force ng-select to use items instead of ngOptions
+        // This is a dangerous hack because it relies on the internals of ng-select. Prevents ng-select from trying to override items from ng-options
+        (this._ngSelectComponent as any)['_itemsAreUsed'] = true;
+        writeNgSelectProp(this._ngSelectComponent, 'items', []);
     }
 
     ngOnInit() {
@@ -73,29 +76,29 @@ export class PuiSelectViewSourceDirective<T = unknown> implements OnInit, OnDest
             .pipe(takeUntil(this._destroy$))
             .subscribe((viewSource) => {
                 if ((viewSource as any).label != null && typeof (viewSource as any).label === 'string') {
-                    this._ngSelectComponent.bindLabel = (viewSource as any).label;
+                    writeNgSelectProp(this._ngSelectComponent, 'bindLabel', (viewSource as any).label);
                 } else {
-                    (viewSource as any).label = this._ngSelectComponent.bindLabel;
+                    (viewSource as any).label = readNgSelectProp(this._ngSelectComponent, 'bindLabel');
                 }
 
                 if ((viewSource as any).value != null && typeof (viewSource as any).value === 'string') {
-                    this._ngSelectComponent.bindValue = (viewSource as any).value;
+                    writeNgSelectProp(this._ngSelectComponent, 'bindValue', (viewSource as any).value);
                 } else {
-                    (viewSource as any).value = this._ngSelectComponent.bindValue;
+                    (viewSource as any).value = readNgSelectProp(this._ngSelectComponent, 'bindValue');
                 }
 
                 if (viewSource.searchable != null) {
-                    this._ngSelectComponent.searchable = viewSource.searchable;
+                    writeNgSelectProp(this._ngSelectComponent, 'searchable', viewSource.searchable);
                 } else {
-                    viewSource.searchable = this._ngSelectComponent.searchable;
+                    viewSource.searchable = readNgSelectProp(this._ngSelectComponent, 'searchable');
                 }
 
                 this.setSearchMode(viewSource.searchable, viewSource.localSearch);
             });
 
         const _subBusy$ = this._busy$.pipe(takeUntil(this._destroy$)).subscribe((busy) => {
-            this._ngSelectComponent.loading = busy;
-            if (this._ngSelectComponent.isOpen) {
+            writeNgSelectProp(this._ngSelectComponent, 'loading', busy);
+            if (readNgSelectProp(this._ngSelectComponent, 'isOpen')) {
                 this._formFieldService.setLoading(busy);
             } else {
                 this._formFieldService.setLoading(false);
@@ -103,7 +106,7 @@ export class PuiSelectViewSourceDirective<T = unknown> implements OnInit, OnDest
         });
 
         const _subData$ = this._data$.pipe(takeUntil(this._destroy$)).subscribe((data) => {
-            this._ngSelectComponent.items = data;
+            writeNgSelectProp(this._ngSelectComponent, 'items', data);
 
             // This is a dangerous hack because it relies on the internals of ng-select
             // It is necessary because angular does not call ngOnChanges when we set properties manually and ng-select uses this to detect changes of items.
@@ -117,7 +120,10 @@ export class PuiSelectViewSourceDirective<T = unknown> implements OnInit, OnDest
                 takeUntil(this._destroy$),
             )
             .subscribe(([searchInput, viewSource]) => {
-                const labelKey = this._ngSelectComponent.bindLabel ?? (viewSource as any).label ?? 'label';
+                const labelKey =
+                    readNgSelectProp<string | undefined>(this._ngSelectComponent, 'bindLabel') ??
+                    (viewSource as any).label ??
+                    'label';
                 (viewSource as any).filter({ [labelKey]: searchInput });
             });
     }
@@ -140,10 +146,11 @@ export class PuiSelectViewSourceDirective<T = unknown> implements OnInit, OnDest
     }
 
     private setSearchMode(searchable: boolean | undefined, localSearch: boolean | undefined) {
-        if (searchable && !localSearch && !this._ngSelectComponent.typeahead) {
-            this._ngSelectComponent.typeahead = this._searchInputSubject;
-        } else if (this._ngSelectComponent.typeahead === this._searchInputSubject) {
-            this._ngSelectComponent.typeahead = null;
+        const currentTypeahead = readNgSelectProp(this._ngSelectComponent, 'typeahead');
+        if (searchable && !localSearch && !currentTypeahead) {
+            writeNgSelectProp(this._ngSelectComponent, 'typeahead', this._searchInputSubject);
+        } else if (currentTypeahead === this._searchInputSubject) {
+            writeNgSelectProp(this._ngSelectComponent, 'typeahead', null);
         }
     }
 }

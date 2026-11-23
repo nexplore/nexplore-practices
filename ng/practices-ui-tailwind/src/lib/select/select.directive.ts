@@ -23,6 +23,7 @@ import { FORM_CONFIG, FormConfig } from '../form/form.config';
 import { PuiIconArrowComponent } from '../icons/icon-arrow.component';
 import { PuiIconSearchComponent } from '../icons/icon-search.component';
 import { isDefinedAndNotEmptyArray, setAttr, setHostClassNames } from '../util/utils';
+import { readNgSelectProp, writeNgSelectProp } from './ng-select-props';
 
 const baseArrowIconClassName = 'transition-transform duration-300 ease-in-out flex flex-col justify-center scale-50';
 const arrowDownIconClassName = `${baseArrowIconClassName} rotate-0`;
@@ -64,14 +65,14 @@ export class PuiSelectDirective implements OnInit, AfterViewInit {
 
     @HostListener('open')
     onOpen() {
-        if (!this.useSearchIconIfSearchable || !this._ngSelectComponent.searchable) {
+        if (!this.useSearchIconIfSearchable || !readNgSelectProp(this._ngSelectComponent, 'searchable')) {
             this._formFieldService.updateIcon({ className: arrowUpIconClassName });
         }
     }
 
     @HostListener('close')
     onClose() {
-        if (!this.useSearchIconIfSearchable || !this._ngSelectComponent.searchable) {
+        if (!this.useSearchIconIfSearchable || !readNgSelectProp(this._ngSelectComponent, 'searchable')) {
             this._formFieldService.updateIcon({ className: arrowDownIconClassName });
         }
     }
@@ -101,12 +102,13 @@ export class PuiSelectDirective implements OnInit, AfterViewInit {
 
         this._formFieldService.registerNgControl(
             this._ngControl,
-            this._ngSelectComponent.searchInput?.nativeElement ?? this._elementRef.nativeElement,
+            readNgSelectProp<ElementRef<HTMLInputElement> | undefined>(this._ngSelectComponent, 'searchInput')?.nativeElement ??
+                this._elementRef.nativeElement,
         );
         this._formFieldService.setReadonlyValueFunction(() => this.getReadOnlyValue());
 
         const _subId$ = this._formFieldService.id$.pipe(takeUntil(this._destroy$)).subscribe((id) => {
-            this._ngSelectComponent.labelForId = id;
+            writeNgSelectProp(this._ngSelectComponent, 'labelForId', id);
             setAttr('autocomplete', 'off', this.ngSelectInputElement());
 
             const ariaDescribedByError = `${id}-error`;
@@ -131,7 +133,7 @@ export class PuiSelectDirective implements OnInit, AfterViewInit {
         const _subPlaceholder$ = this._formFieldService.placeholder$
             .pipe(takeUntil(this._destroy$))
             .subscribe((placeholder) => {
-                this._ngSelectComponent.placeholder = placeholder;
+                writeNgSelectProp(this._ngSelectComponent, 'placeholder', placeholder);
                 this._cdr.markForCheck();
             });
 
@@ -152,7 +154,7 @@ export class PuiSelectDirective implements OnInit, AfterViewInit {
                 input.ariaLabel = label ? `${label} ${value}` : (value ?? '');
             });
 
-        if (this._ngSelectComponent.clearable) {
+        if (readNgSelectProp(this._ngSelectComponent, 'clearable')) {
             const _subValue$ = this._formFieldService.value$.pipe(takeUntil(this._destroy$)).subscribe((value) => {
                 this._formFieldService.setClearable(isDefinedAndNotEmptyArray(value));
             });
@@ -167,14 +169,14 @@ export class PuiSelectDirective implements OnInit, AfterViewInit {
         // This need to be done after view init, because the select-view-source directive set searchable at on init
         this._formFieldService.setIcon({
             component:
-                this.useSearchIconIfSearchable && this._ngSelectComponent.searchable
+                this.useSearchIconIfSearchable && readNgSelectProp(this._ngSelectComponent, 'searchable')
                     ? PuiIconSearchComponent
                     : PuiIconArrowComponent,
             className:
-                this.useSearchIconIfSearchable && this._ngSelectComponent.searchable ? '' : arrowDownIconClassName,
+                this.useSearchIconIfSearchable && readNgSelectProp(this._ngSelectComponent, 'searchable') ? '' : arrowDownIconClassName,
         });
 
-        if (this._ngSelectComponent.searchable) {
+        if (readNgSelectProp(this._ngSelectComponent, 'searchable')) {
             this._formFieldService.setFocusedPlaceholder(this._translate.instant('Practices.Labels_Select_SearchText'));
         }
     }
@@ -184,10 +186,9 @@ export class PuiSelectDirective implements OnInit, AfterViewInit {
         // find the correspondig label and format a string
         let selectedValuesString = '';
         // get all labels of selected values
+        const bindLabel = readNgSelectProp<string | undefined>(this._ngSelectComponent, 'bindLabel') ?? 'label';
         this._ngSelectComponent.selectedValues.forEach(
-            (elem, index) =>
-                (selectedValuesString +=
-                    (index > 0 ? ', ' : '') + (elem[this._ngSelectComponent.bindLabel ?? 'label'] || '')),
+            (elem, index) => (selectedValuesString += (index > 0 ? ', ' : '') + (elem[bindLabel] || '')),
         );
         return selectedValuesString;
     }
