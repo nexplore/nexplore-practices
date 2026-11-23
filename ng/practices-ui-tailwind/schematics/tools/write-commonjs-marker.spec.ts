@@ -20,8 +20,12 @@ describe('writeCommonJsMarker', () => {
                 '\n'
             )
         );
-        // `node -e` exposes a global `exports` and would hide the problem, so load through a script file
-        fs.writeFileSync(path.join(root, 'load.cjs'), "console.log(require('./schematics/index.js').value);\n");
+        // `node -e` exposes a global `exports` and would hide the problem, so load through a script file.
+        // process.stdout.write: console.log colors numbers when the environment forces colors (e.g. Nx runs)
+        fs.writeFileSync(
+            path.join(root, 'load.cjs'),
+            "process.stdout.write(String(require('./schematics/index.js').value));\n",
+        );
         return { root, schematics };
     }
 
