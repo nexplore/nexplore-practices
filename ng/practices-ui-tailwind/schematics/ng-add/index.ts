@@ -4,7 +4,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as ts from 'typescript';
 import { readHashDb, writeHashDb } from '../_utils/hash-db';
-import { loadManifest, updateManifest } from '../_utils/manifest';
 import { findAndCacheGlobalStylesEntry } from '../_utils/styles-entry';
 
 type NgAddOptions = JsonObject & {
@@ -35,7 +34,6 @@ export function ngAdd(options: NgAddOptions): Rule {
         addThemeImport(tree, context, chosenTheme, destRoot);
 
         const rules: Rule[] = [];
-        rules.push(getPackageDependencyVersions);
 
         if (options.features && isJsonArray(options.features)) {
             options.features.forEach((feat) => {
@@ -60,39 +58,6 @@ export function ngAdd(options: NgAddOptions): Rule {
         rules.push(logTutorial(themes, chosenTheme, !options.skipProvider));
         return chain(rules)(tree, context);
     };
-}
-
-async function getPackageDependencyVersions() {
-    // Root is the practices-ui-tailwind package root
-    const root = path.resolve(__dirname, '..', '..');
-
-    // Read versions from this library's package.json peerDependencies (fall back to dependencies/devDependencies if absent)
-    const manifest = loadManifest();
-    let externalDependencyVersions: Record<string, string> = manifest.externalDependencyVersions || {};
-    try {
-        const pkgJsonPath = path.join(root, 'package.json');
-        const pkgRaw = await fs.promises.readFile(pkgJsonPath, 'utf8');
-        const pkg = JSON.parse(pkgRaw);
-        const versionSources: Record<string, string> = {
-            ...(pkg.peerDependencies || {}),
-            ...(pkg.dependencies || {}),
-            ...(pkg.devDependencies || {}),
-        };
-        for (const dep of Object.keys(externalDependencyVersions)) {
-            const ver = versionSources[dep];
-            if (ver === '?') {
-                externalDependencyVersions[dep] = versionSources[dep] || 'latest';
-            }
-        }
-
-        // Write updated manifest back to disk
-        updateManifest({
-            ...manifest,
-            externalDependencyVersions: externalDependencyVersions,
-        });
-    } catch (e) {
-        console.warn('[generate-manifest] Could not read package.json for version mapping:', e.message || e);
-    }
 }
 
 function discoverThemes(): string[] {

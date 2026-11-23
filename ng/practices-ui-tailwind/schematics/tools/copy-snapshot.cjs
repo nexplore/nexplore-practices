@@ -2,6 +2,8 @@
 const fs = require('fs');
 const path = require('path');
 const fg = require('fast-glob');
+const { writeCommonJsMarker } = require('./write-commonjs-marker.cjs');
+const excludes = require('./snapshot-excludes.cjs');
 
 function ensureDir(p) {
     if (!fs.existsSync(p)) fs.mkdirSync(p, { recursive: true });
@@ -22,7 +24,7 @@ if (!fs.existsSync(srcLib)) {
     process.exit(1);
 }
 
-const entries = fg.sync(['**/*.{ts,html,scss,css}'], { cwd: srcLib });
+const entries = fg.sync(['**/*.{ts,html,scss,css}'], { cwd: srcLib, ignore: excludes });
 if (dryRun) {
     console.log('[copy-snapshot] Dry-run: would copy', entries.length, 'files to', out);
     for (const e of entries.slice(0, 200)) {
@@ -31,6 +33,9 @@ if (dryRun) {
     if (entries.length > 200) console.log('  ...', entries.length - 200, 'more files');
     process.exit(0);
 }
+
+// Start from a clean snapshot, files that were removed or are excluded now must not linger from earlier builds
+fs.rmSync(out, { recursive: true, force: true });
 
 let copied = 0;
 for (const e of entries) {
@@ -62,6 +67,8 @@ try {
         ensureDir(destDir);
         fs.copyFileSync(schemaSrc, path.join(destDir, 'schema.json'));
     }
+    // The package is published as ESM, the schematics are CommonJS
+    writeCommonJsMarker(schematicsRootDest);
     console.log('[copy-snapshot] Ensured collection.json and schemas copied to dist schematics root');
 } catch (e) {
     console.error('[copy-snapshot] Failed copying collection/schema files:', e);

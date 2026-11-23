@@ -1,5 +1,6 @@
 import { Tree } from '@angular-devkit/schematics';
 import * as fs from 'fs';
+import * as path from 'path';
 
 export interface ManifestComponentEntry {
     files: string[];
@@ -46,9 +47,39 @@ export function loadManifest(tree?: Tree): ComponentManifest {
     return parsed as ComponentManifest;
 }
 
-export function updateManifest(manifest: ComponentManifest) {
-    const manifestPath = '/schematics/add-component/files/component-manifest.json';
-    fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), 'utf8');
+export interface LibraryPackageJson {
+    version?: string;
+    peerDependencies?: Record<string, string>;
+    dependencies?: Record<string, string>;
+}
+
+/** package.json of the installed `@nexplore/practices-ui-tailwind` package (two levels above the compiled schematics). */
+export function readLibraryPackageJson(): LibraryPackageJson {
+    try {
+        const pkgPath = path.resolve(__dirname, '..', '..', 'package.json');
+        return JSON.parse(fs.readFileSync(pkgPath, 'utf8')) as LibraryPackageJson;
+    } catch {
+        return {};
+    }
+}
+
+/**
+ * Version range to use for an external dependency of a copied component.
+ *
+ * The manifest only lists the names (the version is `?`, it is not known when the manifest is generated), the version
+ * is taken from the package.json of the library that is being installed. Returns undefined if it cannot be determined,
+ * a placeholder such as `?` or an unreplaced `0.0.0-VERSION` must never be written into a package.json.
+ */
+export function resolveExternalDependencyVersion(
+    manifest: ComponentManifest,
+    dep: string,
+    libraryPackageJson: LibraryPackageJson = readLibraryPackageJson(),
+): string | undefined {
+    const isUsable = (v: string | undefined): v is string => !!v && v !== '?' && !v.includes('VERSION');
+    const fromManifest = manifest.externalDependencyVersions?.[dep];
+    if (isUsable(fromManifest)) return fromManifest;
+    const fromLibrary = libraryPackageJson.peerDependencies?.[dep] ?? libraryPackageJson.dependencies?.[dep];
+    return isUsable(fromLibrary) ? fromLibrary : undefined;
 }
 
 export interface SelectionOptions {

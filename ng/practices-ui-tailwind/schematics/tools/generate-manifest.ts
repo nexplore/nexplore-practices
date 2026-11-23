@@ -2,6 +2,7 @@ const fg = require('fast-glob');
 const fs = require('fs').promises;
 const path = require('path');
 const { Project, SyntaxKind } = require('ts-morph');
+const snapshotExcludes: string[] = require('./snapshot-excludes.cjs');
 
 interface ManifestComponentEntry {
     files: string[];
@@ -33,10 +34,11 @@ async function main() {
 
     for (const dir of componentDirs) {
         const absDir = path.join(libSrc, dir);
-        const filePaths = await fg(['**/*.ts', '**/*.html', '**/*.scss', '**/*.css'], { cwd: absDir });
-        const files = filePaths
-            .filter((f) => !f.endsWith('.spec.ts') && !f.endsWith('.story.ts'))
-            .map((f) => path.join('src/lib', dir, f).replace(/\\/g, '/'));
+        const filePaths = await fg(['**/*.ts', '**/*.html', '**/*.scss', '**/*.css'], {
+            cwd: absDir,
+            ignore: snapshotExcludes,
+        });
+        const files = filePaths.map((f) => path.join('src/lib', dir, f).replace(/\\/g, '/'));
 
         const deps = new Set<string>();
         const externalDeps = new Set<string>();

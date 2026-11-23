@@ -41,3 +41,34 @@ export function writeHashDb(tree: Tree, db: HashDb) {
 export function sha256(content: string | Buffer): string {
     return crypto.createHash('sha256').update(content).digest('hex');
 }
+
+/**
+ * Normalizes source text so that two files compare equal when they only differ in formatting.
+ *
+ * The Angular CLI formats every file a schematic creates with the Prettier of the workspace (whitespace, quotes,
+ * trailing commas, semicolons). A plain hash of the packaged content would therefore never match the file on disk.
+ */
+export function normalizeForCompare(content: string): string {
+    return content
+        .replace(/\s+/g, '')
+        .replace(/"/g, "'")
+        .replace(/,(?=[\]})>])/g, '')
+        .replace(/;/g, '');
+}
+
+/** Formatting insensitive hash used to detect local modifications. */
+export function contentHash(content: string | Buffer): string {
+    return sha256(normalizeForCompare(content.toString()));
+}
+
+export function isSameContent(a: string, b: string): boolean {
+    return normalizeForCompare(a) === normalizeForCompare(b);
+}
+
+/**
+ * True if `current` is what was recorded in the hash db (also for entries recorded as plain hash by earlier versions).
+ */
+export function matchesRecordedHash(current: string, recordedHash: string): boolean {
+    return contentHash(current) === recordedHash || sha256(current) === recordedHash;
+}
+

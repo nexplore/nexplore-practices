@@ -1,13 +1,18 @@
 import { JsonObject } from '@angular-devkit/core';
 import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
-import * as fs from 'fs';
 import * as path from 'path';
 import { getExtractionLayoutConfig } from '../_utils/config';
-import { readHashDb, sha256, writeHashDb } from '../_utils/hash-db';
+import { contentHash, isSameContent, readHashDb, writeHashDb } from '../_utils/hash-db';
 import { ImportResolutionContext, mapOriginalToNew, resolveAndRewriteImport } from '../_utils/import-resolver';
-import { loadManifest, resolveSelectedComponents } from '../_utils/manifest';
+import {
+    loadManifest,
+    readLibraryPackageJson,
+    resolveExternalDependencyVersion,
+    resolveSelectedComponents,
+} from '../_utils/manifest';
+import { expandPlan, readPackagedFile } from '../_utils/plan';
 import { findAndCacheGlobalStylesEntry, getCachedGlobalStylesEntry } from '../_utils/styles-entry';
-import { isWhitelisted } from '../_utils/whitelist';
+import { isExcluded, isWhitelisted } from '../_utils/whitelist';
 
 type AddComponentOptions = JsonObject & {
     dest: string;
@@ -18,7 +23,6 @@ type AddComponentOptions = JsonObject & {
 };
 
 const LIB_PKG_NAME = '@nexplore/practices-ui-tailwind';
-const MANIFEST_RELATIVE_PREFIX = '/schematics/add-component/files/';
 
 export function addComponent(options: AddComponentOptions): Rule {
     return (tree: Tree, context: SchematicContext) => {
@@ -58,7 +62,7 @@ export function addComponent(options: AddComponentOptions): Rule {
         }
         const effectiveDest = hashDb.dest;
 
-        const pkgVersion = readPackageVersion(tree);
+        const pkgVersion = readLibraryPackageJson().version;
         hashDb.libVersion = pkgVersion;
         hashDb.manifestVersion = manifest.version;
 
@@ -75,7 +79,7 @@ export function addComponent(options: AddComponentOptions): Rule {
             const entry = manifest.components[comp];
             if (!entry) continue;
             componentToFiles.set(comp, entry.files);
-            entry.files.forEach((f) => planned.add(f));
+            entry.files.filter((f) => !isExcluded(f)).forEach((f) => planned.add(f));
         }
 
         // Import resolution context
@@ -91,38 +95,10 @@ export function addComponent(options: AddComponentOptions): Rule {
             },
         };
 
-        // Phase 2: scan imports to discover shared deps (single pass heuristic)
+        // Phase 2: discover shared dependencies (imports) and resources (templates, styles) of every planned file
         const IMPORT_RE = /import\s+(?:[^'";]+?from\s+)?['"]([^'";]+)['"];?/g;
         const pkgName = LIB_PKG_NAME;
-        for (const comp of selected) {
-            const files = componentToFiles.get(comp) || [];
-            for (const fileRel of files) {
-                const srcPath = MANIFEST_RELATIVE_PREFIX + fileRel;
-                let buf = tree.read(srcPath);
-                if (!buf) {
-                    try {
-                        const baseDir = path.resolve(__dirname, '..', 'add-component', 'files');
-                        const candidate = path.join(baseDir, fileRel);
-                        if (fs.existsSync(candidate)) {
-                            buf = fs.readFileSync(candidate);
-                        }
-                    } catch (_e) {
-                        // ignore fallback FS errors
-                    }
-                }
-                if (!buf) continue;
-                const content = buf.toString('utf8');
-                if (fileRel.endsWith('.ts')) {
-                    let m: RegExpExecArray | null;
-                    while ((m = IMPORT_RE.exec(content))) {
-                        const spec = m[1];
-                        resolveAndRewriteImport(fileRel, '', spec, ctxResolve, pkgName); // ensure planning of target (ignore returned path here)
-                    }
-                } else {
-                    planned.add(fileRel); // include non-TS files referenced by component
-                }
-            }
-        }
+        expandPlan(planned, ctxResolve, (rel) => readPackagedFile(tree, rel), pkgName);
 
         context.logger.debug(
             `[add-component] Planned total files: ${planned.size} (components: ${selected.length}, external deps: ${
@@ -134,17 +110,7 @@ export function addComponent(options: AddComponentOptions): Rule {
         for (const originalRel of planned) {
             const compName = originalRel.split('/')[2]; // src/lib/<comp>/...
             const isComponentFile = selected.includes(compName);
-            const srcPath = MANIFEST_RELATIVE_PREFIX + originalRel;
-            let buf = tree.read(srcPath);
-            if (!buf) {
-                try {
-                    const baseDir = path.resolve(__dirname, '..', 'add-component', 'files');
-                    const candidate = path.join(baseDir, originalRel);
-                    if (fs.existsSync(candidate)) buf = fs.readFileSync(candidate);
-                } catch (_e) {
-                    // ignore fallback FS errors
-                }
-            }
+            const buf = readPackagedFile(tree, originalRel);
             if (!buf) {
                 context.logger.warn(`[add-component] Missing planned file ${originalRel}`);
                 continue;
@@ -174,13 +140,13 @@ export function addComponent(options: AddComponentOptions): Rule {
             }
             if (tree.exists(destPath)) {
                 const existingBuf = tree.read(destPath);
-                if (existingBuf && existingBuf.toString('utf8') === content) {
+                if (existingBuf && isSameContent(existingBuf.toString('utf8'), content)) {
                     context.logger.debug(`[add-component] Skipping identical file: ${destPath}`);
                     summary.skippedIdentical++;
                     continue;
                 } else if (existingBuf) {
                     const existing = existingBuf.toString('utf8');
-                    const currentHash = sha256(existing);
+                    const currentHash = contentHash(existing);
                     hashDb.files[destPath] = {
                         hash: currentHash,
                         component: isComponentFile ? compName : 'shared',
@@ -197,7 +163,7 @@ export function addComponent(options: AddComponentOptions): Rule {
             summary.created++;
             context.logger.debug(`[add-component] Created file: ${destPath}, ${content.length} bytes`);
             hashDb.files[destPath] = {
-                hash: sha256(content),
+                hash: contentHash(content),
                 component: isComponentFile ? compName : 'shared',
                 sourceVersion: pkgVersion,
                 lastUpdatedByRunId: runId,
@@ -233,7 +199,7 @@ export function addComponent(options: AddComponentOptions): Rule {
                     const toAdd: Record<string, string> = {};
                     for (const dep of externalDeps) {
                         if (already.has(dep)) continue;
-                        const version = manifest.externalDependencyVersions?.[dep];
+                        const version = resolveExternalDependencyVersion(manifest, dep);
                         if (!version) {
                             context.logger.warn(
                                 `[add-component] No version found for external dependency ${dep}; skipping automatic add.`,
@@ -266,18 +232,6 @@ export function addComponent(options: AddComponentOptions): Rule {
         );
         return tree;
     };
-}
-
-function readPackageVersion(tree: Tree): string | undefined {
-    const pkgPath = '/package.json';
-    const buf = tree.read(pkgPath);
-    if (!buf) return undefined;
-    try {
-        const parsed: { version?: string } = JSON.parse(buf.toString('utf8'));
-        return parsed.version;
-    } catch {
-        return undefined;
-    }
 }
 
 function normalizePath(p: string): string {
