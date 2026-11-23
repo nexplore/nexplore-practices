@@ -12,7 +12,9 @@
     "targets": {
         "build": {
             "executor": "@nx/angular:package",
-            "dependsOn": ["^build"],
+            "dependsOn": [
+                "^build"
+            ],
             "options": {
                 "tsConfig": "practices-ui-tailwind/tsconfig.lib.json",
                 "project": "practices-ui-tailwind/ng-package.json"
@@ -23,44 +25,55 @@
                 }
             }
         },
-        "test": {
-            "executor": "@nx/jest:jest",
-            "options": {
-                "jestConfig": "practices-ui-tailwind/jest.config.js"
-            }
-        },
-        "lint": {
-            "executor": "@nx/eslint:lint",
-            "options": {
-                "lintFilePatterns": ["practices-ui-tailwind/**/*.ts", "practices-ui-tailwind/package.json"]
-            }
-        },
         "storybook": {
             "executor": "@storybook/angular:start-storybook",
+            "continuous": true,
             "options": {
                 "configDir": "practices-ui-tailwind/.storybook",
                 "browserTarget": "practices-ui-tailwind:build-storybook",
-                "styles": ["samples-tailwind/src/styles.css"],
+                "styles": [
+                    "samples-tailwind/src/styles.css"
+                ],
                 "compodoc": true,
-                "compodocArgs": ["-e", "json", "-d", "practices-ui-tailwind"],
+                "compodocArgs": [
+                    "-e",
+                    "json",
+                    "-d",
+                    "practices-ui-tailwind"
+                ],
                 "port": 6006
+            },
+            "readyWhen": {
+                "port": "{env.SBCONFIG_PORT ?? options.port ?? 9009}",
+                "host": "{env.SBCONFIG_HOSTNAME ?? options.host ?? localhost}"
             }
         },
         "build-storybook": {
             "executor": "@storybook/angular:build-storybook",
-            "outputs": ["{options.outputDir}"],
+            "outputs": [
+                "{options.outputDir}"
+            ],
             "options": {
                 "configDir": "practices-ui-tailwind/.storybook",
                 "browserTarget": "practices-ui-tailwind:build-storybook",
-                "styles": ["samples-tailwind/src/styles.css"],
+                "styles": [
+                    "samples-tailwind/src/styles.css"
+                ],
                 "compodoc": true,
-                "compodocArgs": ["-e", "json", "-d", "practices-ui-tailwind"],
+                "compodocArgs": [
+                    "-e",
+                    "json",
+                    "-d",
+                    "practices-ui-tailwind"
+                ],
                 "outputDir": "dist/storybook/practices-ui-tailwind"
             }
         },
         "static-storybook": {
             "executor": "@nx/web:file-server",
-            "dependsOn": ["build-storybook"],
+            "dependsOn": [
+                "build-storybook"
+            ],
             "options": {
                 "buildTarget": "practices-ui-tailwind:build-storybook",
                 "staticFilePath": "dist/storybook/practices-ui-tailwind",
@@ -72,29 +85,25 @@
                 }
             }
         },
-        "gen-manifest": {
-            "executor": "@nx/js:node",
-            "options": {
-                "outputPath": "dist/tmp",
-                "main": "practices-ui-tailwind/tools/generate-manifest.ts",
-                "tsConfig": "practices-ui-tailwind/tsconfig.schematics.json"
-            }
-        },
         "build-schematics": {
             "executor": "nx:run-commands",
             "options": {
-                "command": "npm run build:schematics"
+                "command": "npm run build:schematics",
+                "cwd": "{projectRoot}"
             },
-            "dependsOn": ["build"]
+            "dependsOn": [
+                "build"
+            ]
         },
         "test-schematics": {
-            "executor": "@nx/jest:jest",
-            "outputs": ["{workspaceRoot}/coverage/practices-ui-tailwind-schematics"],
+            "executor": "nx:run-commands",
+            "outputs": [
+                "{workspaceRoot}/coverage/practices-ui-tailwind-schematics"
+            ],
             "options": {
-                "jestConfig": "practices-ui-tailwind/jest-schematics.config.js",
-                "passWithNoTests": false
+                "command": "jest --config practices-ui-tailwind/jest-schematics.config.js --passWithNoTests=false",
+                "cwd": "{workspaceRoot}"
             }
         }
     }
 }
-
