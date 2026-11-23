@@ -104,14 +104,10 @@
     </div>
 } @else {
     <pui-readonly-label-value [label]="labelString" [useSmallLabel]="useSmallTextForReadonlyLabel">
-        @if (ngControlValueSignal(); as value) {
-            @if (hasValueSignal()) {
-                <ng-content select="[slot='readonly-prefix']" />
-                {{ value }}
-                <ng-content select="[slot='readonly-postfix']" />
-            } @else {
-                {{ readonlyEmptyValuePlaceholder ?? ('Practices.Labels_Input_NoInputValue' | translate) }}
-            }
+        @if (hasValueSignal()) {
+            <ng-content select="[slot='readonly-prefix']" />
+            {{ ngControlValueSignal() }}
+            <ng-content select="[slot='readonly-postfix']" />
         } @else {
             {{ readonlyEmptyValuePlaceholder ?? ('Practices.Labels_Input_NoInputValue' | translate) }}
         }
