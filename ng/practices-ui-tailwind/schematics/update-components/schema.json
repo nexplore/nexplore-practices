@@ -6,12 +6,11 @@
     "properties": {
         "dest": {
             "type": "string",
-            "description": "Destination root folder for component sources",
-            "default": "src/app/components"
+            "description": "Not used, the folder recorded in .practices-ui/schematics.hashdb.json is updated"
         },
         "names": {
             "type": "string",
-            "description": "Comma separated component names to update"
+            "description": "Comma separated component names to update. Without names, all and moduleExports, every component that was added before is updated"
         },
         "all": {
             "type": "boolean",
@@ -33,7 +32,6 @@
             "default": true
         }
     },
-    "oneOf": [{ "required": ["all"] }, { "required": ["names"] }, { "required": ["moduleExports"] }],
     "additionalProperties": false
 }
 

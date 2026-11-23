@@ -6,8 +6,7 @@
     "properties": {
         "dest": {
             "type": "string",
-            "description": "Destination root folder for all copied components",
-            "default": "src/practices-ui-tailwind"
+            "description": "Destination root folder for all copied components. Defaults to the folder used before (see .practices-ui/schematics.hashdb.json), or src/practices-ui-tailwind"
         },
         "names": {
             "type": "string",

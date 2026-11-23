@@ -1,6 +1,6 @@
 import { JsonObject } from '@angular-devkit/core';
 import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
-import { contentHash, matchesRecordedHash, readHashDb, writeHashDb } from '../_utils/hash-db';
+import { contentHash, HashDb, matchesRecordedHash, readHashDb, writeHashDb } from '../_utils/hash-db';
 import { ImportResolutionContext, mapOriginalToNew, resolveAndRewriteImport } from '../_utils/import-resolver';
 import { loadManifest, resolveSelectedComponents } from '../_utils/manifest';
 import { expandPlan, readPackagedFile } from '../_utils/plan';
@@ -20,14 +20,17 @@ export function updateComponents(options: UpdateComponentsOptions): Rule {
         const runId = Date.now().toString(36);
         const start = Date.now();
         const manifest = loadManifest(tree);
-        const selected = resolveSelectedComponents(manifest, options);
-        if (!selected.length) {
-            context.logger.warn('[update-components] No components selected.');
-            return tree;
-        }
         const hashDb = readHashDb(tree);
         if (!hashDb.dest) {
             context.logger.error('[update-components] Hash DB missing dest. Run add-component first.');
+            return tree;
+        }
+        const hasExplicitSelection = !!(options.all || options.names || options.moduleExports);
+        const selected = hasExplicitSelection
+            ? resolveSelectedComponents(manifest, options)
+            : resolveSelectedComponents(manifest, { names: installedComponents(hashDb).join(',') });
+        if (!selected.length) {
+            context.logger.warn('[update-components] No components selected (and none were added before).');
             return tree;
         }
         const destRoot = hashDb.dest;
@@ -131,6 +134,15 @@ export function updateComponents(options: UpdateComponentsOptions): Rule {
         );
         return tree;
     };
+}
+
+/** Components that were added before, taken from the hash db (files shared between components are not listed). */
+function installedComponents(hashDb: HashDb): string[] {
+    const names = new Set<string>();
+    Object.values(hashDb.files).forEach((entry) => {
+        if (entry.component && entry.component !== 'shared') names.add(entry.component);
+    });
+    return Array.from(names).sort();
 }
 
 // Removed legacy helpers (rewriteImports path-based update logic now inlined above)
