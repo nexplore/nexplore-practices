@@ -1,13 +1,13 @@
-import { Directive, ElementRef, HostBinding, Input, OnInit, inject } from '@angular/core';
+import { Directive, effect, ElementRef, inject, input, OnInit, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { DestroyService } from '@nexplore/practices-ui';
-import { BehaviorSubject, combineLatest, Observable, takeUntil } from 'rxjs';
+import { Observable, shareReplay, takeUntil } from 'rxjs';
 import { combineLatestWith } from 'rxjs/operators';
 import { setHostAttr, setHostClassNames } from '../util/utils';
-import { PuiFormFieldComponent } from './form-field.component';
 import { FormFieldService } from './form-field.service';
 
 const className =
-    'z-20 text-very-small absolute -top-5 left-6 bg-white rounded-lg px-1 py-0.5 transition-all duration-200 ease-out';
+    'z-20 text-very-small absolute bottom-full top-auto left-6 bg-white rounded-lg px-1 py-0.5 transition-all duration-200 ease-out';
 const invalidClassName = 'text-red';
 const visibleClassName = 'translate-y-2 opacity-100';
 const hiddenClassName = 'translate-y-7 opacity-0';
@@ -16,34 +16,44 @@ const hiddenClassName = 'translate-y-7 opacity-0';
     standalone: true,
     selector: 'label[puiLabel]',
     providers: [DestroyService],
+    host: { class: className },
 })
 export class PuiLabelDirective implements OnInit {
-    private _elementRef = inject<ElementRef<HTMLLabelElement>>(ElementRef);
-    private _formFieldService = inject(FormFieldService);
-    private _formFieldComponent = inject(PuiFormFieldComponent);
-    private _destroy$ = inject(DestroyService);
+    private readonly _elementRef = inject<ElementRef<HTMLLabelElement>>(ElementRef);
+    private readonly _formFieldService = inject(FormFieldService);
+    private readonly _destroy$ = inject(DestroyService);
 
-    private _alwaysVisibleSubject = new BehaviorSubject<boolean>(false);
+    public readonly alwaysVisibleSignal = input(false, { alias: 'alwaysVisible' });
 
-    @Input()
-    set alwaysVisible(value: boolean) {
-        this._alwaysVisibleSubject.next(value);
+    private readonly _heightSignal = signal(0);
+    public readonly heightSignal = this._heightSignal.asReadonly();
+
+    private readonly _labelTextSignal = signal('');
+    public readonly labelTextSignal = this._labelTextSignal.asReadonly();
+
+    private readonly _rightBoundarySignal = signal<number | null>(null);
+
+    private readonly _shouldShowAboveFieldSignal = signal(false);
+
+    private readonly _alwaysVisible$ = toObservable(this.alwaysVisibleSignal);
+
+    constructor() {
+        effect(() => {
+            const boundary = this._rightBoundarySignal();
+            const el = this._elementRef.nativeElement;
+            el.style.maxWidth = boundary == null ? '' : `${Math.max(0, boundary - el.offsetLeft)}px`;
+        });
+
+        effect(() => {
+            const hidden = !this._shouldShowAboveFieldSignal() && !this.alwaysVisibleSignal();
+            setHostClassNames({ [hiddenClassName]: hidden, [visibleClassName]: !hidden }, this._elementRef);
+        });
     }
-
-    @HostBinding('class')
-    className = className;
 
     ngOnInit() {
         this._formFieldService.id$
             .pipe(takeUntil(this._destroy$))
             .subscribe((id) => setHostAttr('for', id, this._elementRef));
-
-        combineLatest([this._alwaysVisibleSubject, this._formFieldComponent.shouldShowLabelAboveField$])
-            .pipe(takeUntil(this._destroy$))
-            .subscribe(([alwaysVisible, shouldShowLabelAboveField]) => {
-                const hidden = !shouldShowLabelAboveField && !alwaysVisible;
-                setHostClassNames({ [hiddenClassName]: hidden, [visibleClassName]: !hidden }, this._elementRef);
-            });
 
         this._formFieldService.displayAsInvalid$
             .pipe(takeUntil(this._destroy$))
@@ -51,8 +61,12 @@ export class PuiLabelDirective implements OnInit {
                 setHostClassNames({ [invalidClassName]: displayAsInvalid }, this._elementRef),
             );
 
-        this._getLabelText$()
-            .pipe(combineLatestWith(this._alwaysVisibleSubject), takeUntil(this._destroy$))
+        const labelText$ = this._getLabelText$().pipe(shareReplay({ refCount: true, bufferSize: 1 }));
+
+        labelText$.pipe(takeUntil(this._destroy$)).subscribe((labelText) => this._labelTextSignal.set(labelText));
+
+        labelText$
+            .pipe(combineLatestWith(this._alwaysVisible$), takeUntil(this._destroy$))
             .subscribe(([labelText, alwaysVisible]) => {
                 if (!alwaysVisible) {
                     this._formFieldService.setLabelAsPlaceholder(labelText);
@@ -60,10 +74,35 @@ export class PuiLabelDirective implements OnInit {
                     this._formFieldService.setLabelAsPlaceholder(null);
                 }
             });
+
+        this._observeHeight();
     }
 
-    getLabel() {
+    public setRightBoundary(rightBoundaryPx: number | null): void {
+        this._rightBoundarySignal.set(rightBoundaryPx);
+    }
+
+    public setShouldShowAboveField(value: boolean): void {
+        this._shouldShowAboveFieldSignal.set(value);
+    }
+
+    /**
+     * @deprecated Use {@link labelTextSignal} instead. Kept for backwards compatibility.
+     */
+    getLabel(): string {
         return this._elementRef.nativeElement.innerText;
+    }
+
+    private _observeHeight() {
+        const el = this._elementRef.nativeElement;
+
+        const update = () => this._heightSignal.set(el.offsetHeight);
+        update();
+
+        const observer = new ResizeObserver(update);
+        observer.observe(el);
+
+        this._destroy$.subscribe(() => observer.disconnect());
     }
 
     private _getLabelText$() {

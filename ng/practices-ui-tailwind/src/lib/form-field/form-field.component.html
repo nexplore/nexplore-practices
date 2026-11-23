@@ -1,5 +1,5 @@
 @if ((isReadonly$ | async) === false) {
-    <div class="relative mt-5">
+    <div class="relative">
         <ng-content select="label[puiLabel]"></ng-content>
         @if (overlayTextValue$ | async; as overlayTextValue) {
             <div [ngClass]="overlayTextClassName$ | async" aria-hidden="true">
@@ -72,6 +72,7 @@
         ) {
             @if (context.isOptional) {
                 <span
+                    #optionalBadge
                     class="text-very-small absolute -top-5 z-10 translate-y-2 rounded-lg bg-white px-1 py-0.5"
                     [ngClass]="{ 'right-[75px]': context.isCustomIconFilled, 'right-3': !context.isCustomIconFilled }"
                     [class.text-red]="context.displayAsInvalid"
@@ -103,7 +104,7 @@
         <ng-content></ng-content>
     </div>
 } @else {
-    <pui-readonly-label-value [label]="labelString" [useSmallLabel]="useSmallTextForReadonlyLabel">
+    <pui-readonly-label-value [label]="labelStringSignal()" [useSmallLabel]="useSmallTextForReadonlyLabel">
         @if (ngControlValueSignal(); as value) {
             @if (hasValueSignal()) {
                 <ng-content select="[slot='readonly-prefix']" />

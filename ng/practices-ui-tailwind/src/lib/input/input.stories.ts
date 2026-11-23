@@ -339,3 +339,98 @@ export const ReadonlyTextareaWithCustomEmptyPlaceholder: Story = {
     },
 };
 
+const LONG_LABEL = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut';
+const VERY_LONG_LABEL =
+    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et';
+
+export const LongLabelTextInput: Story = {
+    name: 'Long label - text input (filled)',
+    args: {
+        value: 'Ein bereits eingegebener Wert',
+        label: LONG_LABEL,
+        inputType: 'text',
+    },
+};
+
+export const LongLabelTextInputEmpty: Story = {
+    name: 'Long label - text input (empty / placeholder)',
+    args: {
+        label: LONG_LABEL,
+        inputType: 'text',
+    },
+};
+
+export const LongLabelAlwaysVisible: Story = {
+    name: 'Long label - always visible',
+    args: {
+        label: VERY_LONG_LABEL,
+        inputType: 'text',
+        labelAlwaysVisible: true,
+    },
+};
+
+export const LongLabelTextarea: Story = {
+    name: 'Long label - textarea (filled)',
+    args: {
+        value: 'Bereits eingegeben',
+        label: VERY_LONG_LABEL,
+        inputType: 'textarea',
+    },
+};
+
+export const LongLabelWithError: Story = {
+    name: 'Long label - required with error',
+    render: () => {
+        const control = new FormControl('', Validators.required);
+        control.markAsTouched();
+        return {
+            props: { formGroup: new FormGroup({ value: control }) },
+            template: `
+                <pui-form-field class="w-1/2" [formGroup]="formGroup">
+                    <label puiLabel>${LONG_LABEL}</label>
+                    <input puiInput type="text" formControlName="value" />
+                </pui-form-field>`,
+        };
+    },
+};
+
+export const LongLabelWithErrorAlwaysVisible: Story = {
+    name: 'Long label - required with error (always visible)',
+    render: () => {
+        const control = new FormControl('', Validators.required);
+        control.markAsTouched();
+        return {
+            props: { formGroup: new FormGroup({ value: control }) },
+            template: `
+                <pui-form-field class="w-1/2" [formGroup]="formGroup">
+                    <label puiLabel [alwaysVisible]="true">${LONG_LABEL}</label>
+                    <input puiInput type="text" formControlName="value" />
+                </pui-form-field>`,
+        };
+    },
+};
+
+export const LongLabelsStacked: Story = {
+    name: 'Long labels - stacked (no overlap between fields)',
+    render: () => ({
+        props: {
+            formGroup: new FormGroup({
+                first: new FormControl('Erster Wert'),
+                second: new FormControl('Zweiter Wert'),
+            }),
+        },
+        template: `
+            <div class="flex w-1/2 flex-col gap-4" [formGroup]="formGroup">
+                <p>Two stacked fields with long labels, the lower label grows upwards and does not overlap the field above it.</p>
+                <pui-form-field>
+                    <label puiLabel>${VERY_LONG_LABEL}</label>
+                    <textarea puiInput formControlName="first"></textarea>
+                </pui-form-field>
+                <pui-form-field>
+                    <label puiLabel>${LONG_LABEL}</label>
+                    <input puiInput type="text" formControlName="second" />
+                </pui-form-field>
+            </div>`,
+    }),
+};
+

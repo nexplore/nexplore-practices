@@ -1,13 +1,14 @@
 import { AsyncPipe, NgClass, NgComponentOutlet } from '@angular/common';
 import {
-    AfterViewInit,
     ChangeDetectionStrategy,
     Component,
-    ContentChild,
-    HostBinding,
-    Input,
     computed,
+    contentChild,
+    effect,
+    ElementRef,
     inject,
+    Input,
+    viewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PuiFormFieldDirective, PuiReadonlyDirective } from '@nexplore/practices-ng-forms';
@@ -33,6 +34,8 @@ import { FormFieldIconConfig, FormFieldService } from './form-field.service';
 import { PuiLabelDirective } from './label.directive';
 
 const className = 'block';
+const fieldTopSpacingPx = 20;
+const labelBadgeGapPx = 8;
 
 const iconContainerDefaultClassName =
     'absolute right-[2px] top-[2px] z-10 flex h-[calc(var(--spacing-pui-controlsize)-4px))] items-center';
@@ -66,13 +69,17 @@ const overlayTextEmptyClassName = 'text-opacity-60';
     selector: 'pui-form-field',
     standalone: true,
     templateUrl: './form-field.component.html',
+    host: {
+        class: className,
+        '[style.padding-top]': 'hostPaddingTopSignal()',
+    },
 })
-export class PuiFormFieldComponent implements AfterViewInit {
-    private _formFieldService = inject(FormFieldService);
+export class PuiFormFieldComponent {
+    private readonly _formFieldService = inject(FormFieldService);
     private readonly _readonlyDirective = inject(PuiReadonlyDirective, { optional: true });
+    private readonly _elementRef = inject(ElementRef<HTMLElement>);
 
     isReadonly$ = this._readonlyDirective?.isReadonly$ ?? of(false);
-    labelString: string;
     protected readonly ngControlValueSignal = toSignal(this._formFieldService.readonlyValue$);
     protected readonly hasValueSignal = computed(() => {
         const value = this.ngControlValueSignal();
@@ -98,12 +105,24 @@ export class PuiFormFieldComponent implements AfterViewInit {
     }
 
     @Input()
-    readonlyEmptyValuePlaceholder: string;
+    readonlyEmptyValuePlaceholder: string | null = null;
 
-    @ContentChild(PuiLabelDirective) label: PuiLabelDirective;
+    private readonly _labelSignal = contentChild(PuiLabelDirective);
 
-    @HostBinding('class')
-    className = className;
+    get label(): PuiLabelDirective | undefined {
+        return this._labelSignal();
+    }
+
+    private readonly _optionalBadgeSignal = viewChild<ElementRef<HTMLElement>>('optionalBadge');
+
+    public readonly labelStringSignal = computed(() => this._labelSignal()?.labelTextSignal() ?? '');
+
+    /**
+     * @deprecated Use {@link labelStringSignal} instead. Kept for backwards compatibility.
+     */
+    get labelString(): string {
+        return this.labelStringSignal();
+    }
 
     id$ = this._formFieldService.id$;
     isOptional$ = this._formFieldService.isRequired$.pipe(
@@ -176,7 +195,7 @@ export class PuiFormFieldComponent implements AfterViewInit {
             }
 
             return Object.entries(errors)
-                .map(([key, value]) => [this.capitalizeFirstLetter(key), value] as const)
+                .map(([key, value]) => [this._capitalizeFirstLetter(key), value] as const)
                 .map(([key, value]) => ({
                     key: `Messages.Validation_${key}`,
                     param: value,
@@ -203,8 +222,39 @@ export class PuiFormFieldComponent implements AfterViewInit {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
-    ngAfterViewInit() {
-        this.labelString = this.label?.getLabel();
+    private readonly _shouldShowLabelAboveFieldSignal = toSignal(this.shouldShowLabelAboveField$, {
+        initialValue: false,
+    });
+    protected readonly hostPaddingTopSignal = computed(() => {
+        const label = this._labelSignal();
+        if (!label) {
+            return `${fieldTopSpacingPx}px`;
+        }
+
+        const reservedTopSpacingPx = Math.max(fieldTopSpacingPx, label.heightSignal());
+        return `${reservedTopSpacingPx}px`;
+    });
+
+    constructor() {
+        effect(() => {
+            this._labelSignal()?.setShouldShowAboveField(!!this._shouldShowLabelAboveFieldSignal());
+        });
+
+        effect((onCleanup) => {
+            const badge = this._optionalBadgeSignal()?.nativeElement;
+            const label = this._labelSignal();
+            if (!badge || !label) {
+                label?.setRightBoundary(null);
+                return;
+            }
+
+            const update = () => label.setRightBoundary(badge.offsetLeft - labelBadgeGapPx);
+            update();
+
+            const observer = new ResizeObserver(update);
+            observer.observe(this._elementRef.nativeElement);
+            onCleanup(() => observer.disconnect());
+        });
     }
 
     onClear() {
@@ -264,7 +314,7 @@ export class PuiFormFieldComponent implements AfterViewInit {
         );
     }
 
-    private capitalizeFirstLetter(value: string) {
+    private _capitalizeFirstLetter(value: string) {
         return value.charAt(0).toUpperCase() + value.slice(1);
     }
 }
