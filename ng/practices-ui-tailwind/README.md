@@ -29,12 +29,6 @@ This library provides a comprehensive set of Angular components, directives, and
 - [Footer](./src/lib/footer/footer.component.ts) - Footer component
 - [Skip Link](./src/lib/skip-link/skip-link.component.ts) - Accessibility feature to skip to main content
 
-- [Shell components](./src/lib/shell/shell.component.ts) - Application layout structure
-- [Two-column container](./src/lib/common/two-column-container.component.ts) - Flexible layout patterns ([Storybook](./src/lib/common/two-column-container.stories.ts))
-- [Header](./src/lib/header/header.component.ts) - Header component ([Storybook](./src/lib/header/header.stories.ts))
-- [Footer](./src/lib/footer/footer.component.ts) - Footer component
-- [Skip Link](./src/lib/skip-link/skip-link.component.ts) - Accessibility feature to skip to main content
-
 ### Navigation Components
 
 - [Breadcrumb](./src/lib/breadcrumb/breadcrumb.component.ts) - Path-based navigation ([Storybook](./src/lib/breadcrumb/breadcrumb.stories.ts))
@@ -53,10 +47,6 @@ This library provides a comprehensive set of Angular components, directives, and
 - [Two-column navigation](./src/lib/two-column-nav/two-column-nav.component.ts) - Split-view navigation layout ([Storybook](./src/lib/two-column-nav/two-column-nav.stories.ts))
 - [Table Hover Emphasis](./src/lib/table/cell/hover-emphasis.directive.ts) - Highlights columns on hover
 
-- [Teaser](./src/lib/teaser/teaser.component.ts) - Content preview ([Storybook](./src/lib/teaser/teaser.stories.ts))
-- [Two-column navigation](./src/lib/two-column-nav/two-column-nav.component.ts) - Split-view navigation layout ([Storybook](./src/lib/two-column-nav/two-column-nav.stories.ts))
-- [Table Hover Emphasis](./src/lib/table/cell/hover-emphasis.directive.ts) - Highlights columns on hover
-
 ### Feedback & Status
 
 - [Status Hub](./src/lib/status-hub/status-hub.component.ts) - Central status management for providing user feedback ([Storybook](./src/lib/status-hub/status-hub.stories.ts))
@@ -66,19 +56,7 @@ This library provides a comprehensive set of Angular components, directives, and
 - [In-page Search](./src/lib/inpage-search/inpage-search.component.ts) - Search within the current page ([Storybook](./src/lib/inpage-search/inpage-search.stories.ts))
 - [Side Overlay Panel](./src/lib/side-overlay-panel/side-overlay-panel.service.ts) – Service-based slide-in panel for contextual content or workflows, supporting dynamic content injection, title translation, and full lifecycle management via Angular CDK overlay
 
-- [Status Hub](./src/lib/status-hub/status-hub.component.ts) - Central status management for providing user feedback ([Storybook](./src/lib/status-hub/status-hub.stories.ts))
-- [Toast](./src/lib/toast/toast.component.ts) - Notification messages ([Storybook](./src/lib/toast/toast.stories.ts))
-- [Modal](./src/lib/popup/modal.component.ts) and [Flyout](./src/lib/popup/flyout.component.ts) - Dialog interfaces ([Storybook](./src/lib/popup/popups.stories.ts))
-- [Action Dialog](./src/lib/popup/action-dialog.service.ts) - Pre-configured confirmation dialogs ([Storybook](./src/lib/popup/action-dialog.stories.ts))
-- [In-page Search](./src/lib/inpage-search/inpage-search.component.ts) - Search within the current page ([Storybook](./src/lib/inpage-search/inpage-search.stories.ts))
-
 ### Buttons & Interactions
-
-- [Button](./src/lib/button/button.directive.ts) - Standard and variant buttons ([Storybook](./src/lib/button/button.stories.ts))
-- [Button Arrows](./src/lib/button/button-arrows.component.ts) - Buttons with directional arrows
-- [Button Spinner](./src/lib/button/button-spinner.component.ts) - Loading indicator for buttons
-- [Dropdown Button](./src/lib/dropdown-button/dropdown-button.component.ts) - Button with dropdown menu
-- [Selection](./src/lib/selection/index.ts) - Components for item selection
 
 - [Button](./src/lib/button/button.directive.ts) - Standard and variant buttons ([Storybook](./src/lib/button/button.stories.ts))
 - [Button Arrows](./src/lib/button/button-arrows.component.ts) - Buttons with directional arrows
@@ -96,12 +74,6 @@ The library includes a basic set of svg-based icons:
 - Enumeration icon (displays numbers as icons)
 - And many more
 
-- Navigation icons (arrows, hamburger menu, home)
-- Action icons (edit, download, upload)
-- Status icons (valid, invalid, spinner)
-- Enumeration icon (displays numbers as icons)
-- And many more
-
 ### Utility Directives
 
 - [Hide If Empty Text](./src/lib/util/hide-if-empty-text.directive.ts) - Hides elements with empty text ([Storybook](./src/lib/util/hide-if-empty-text.stories.ts))
@@ -111,18 +83,65 @@ The library includes a basic set of svg-based icons:
 - [Sticky](./src/lib/util/sticky.directive.ts) - Create sticky positioned elements
 - [Add Title If Ellipsis](./src/lib/util/add-title-if-ellipsis.directive.ts) - Auto-add title attributes
 
-- [Hide If Empty Text](./src/lib/util/hide-if-empty-text.directive.ts) - Hides elements with empty text ([Storybook](./src/lib/util/hide-if-empty-text.stories.ts))
-- [Observe Screen Position](./src/lib/util/observe-screen-position.directive.ts) - Track element position
-- [Observe Scroll Position](./src/lib/util/observe-scroll-position.directive.ts) - Track scroll events
-- [Observe Size](./src/lib/util/observe-size.directive.ts) - Track element size changes
-- [Sticky](./src/lib/util/sticky.directive.ts) - Create sticky positioned elements
-- [Add Title If Ellipsis](./src/lib/util/add-title-if-ellipsis.directive.ts) - Auto-add title attributes
+## Requirements
+
+- Angular 22 (`>=22.0.0 <23.0.0`), Tailwind CSS 4 (`>=4 <5`), `@ng-select/ng-select` 24, `@ngx-translate/core` 17
+- a global **CSS** stylesheet (Tailwind CSS 4 does not process Sass/Less)
 
 ## Installation
 
 ```bash
-npm install @nexplore/practices-ui-tailwind
+ng add @nexplore/practices-ui-tailwind
 ```
+
+`ng add` installs the package and then
+
+1. copies the theme (`theme.css`, choose another one with `--theme theme-nexplore.css`) and the library styles
+   (`tailwind.css`) to `src/practices-ui-tailwind/`
+2. adds the Tailwind CSS setup to your global stylesheet: `@import 'tailwindcss'`, the theme, the library styles and a
+   `@source` for the installed package (Tailwind skips `node_modules`, without the `@source` the classes used by the
+   package would not be generated). If the app has no global stylesheet, one is created and registered in `angular.json`.
+   For a Sass/Less app a separate CSS entry (`src/practices-ui-tailwind/styles.css`) is added in front of your styles
+3. adds the `@tailwindcss/postcss` plugin to `.postcssrc.json` (created if needed) and `tailwindcss`,
+   `@tailwindcss/postcss` and `postcss` to the `devDependencies`
+4. adds the shell and `providePracticesTailwind()` (features `shell` and `providers`, selected by default; pick more
+   components with the prompt, they are copied as source into your app)
+
+Running it again is safe: nothing is added twice and files you changed are left untouched.
+
+### Manual setup
+
+```bash
+npm install @nexplore/practices-ui-tailwind tailwindcss @tailwindcss/postcss postcss
+```
+
+`.postcssrc.json`
+
+```json
+{ "plugins": { "@tailwindcss/postcss": {} } }
+```
+
+`src/styles.css`
+
+```css
+@import 'tailwindcss';
+@import './practices-ui-tailwind/theme.css'; /* tokens, copy it from the package's schematics snapshot */
+@import './practices-ui-tailwind/tailwind.css';
+@source '../node_modules/@nexplore/practices-ui-tailwind';
+```
+
+### Keeping copied components up to date
+
+```bash
+ng g @nexplore/practices-ui-tailwind:update-components            # every component that was added before
+ng g @nexplore/practices-ui-tailwind:update-components --names header,footer
+ng g @nexplore/practices-ui-tailwind:update-components --apply all # overwrite local changes as well
+```
+
+Components you changed are reported as conflicts and left untouched (`--apply auto`, the default).
+
+> **Known limitation:** the copied sources are written without `strict` TypeScript settings. In an app that has
+> `strict: true` (the default with TypeScript 6) they produce type errors; set `"strict": false` for now.
 
 ## Usage
 
@@ -183,9 +202,9 @@ import {
     PuiFooterComponent,
     PuiFooterDirective,
     PuiStatusHubComponent,
-    PuiGlobalDirtyGuardDirective,
     // Import other needed components
 } from '@nexplore/practices-ui-tailwind';
+import { PuiGlobalDirtyGuardDirective } from '@nexplore/practices-ng-dirty-guard';
 
 @Component({
     selector: 'app-root',
@@ -843,10 +862,6 @@ Create elements that stick to the viewport during scrolling:
 ```
 
 Key features:
-
-- Stick to any edge: `puiStickyDir="top|bottom|left|right"`
-- Custom offset: `[puiStickyThresholdPx]="64"` (in pixels)
-- Apply classes conditionally: `puiStickyClass="my-sticky-class"`
 
 - Stick to any edge: `puiStickyDir="top|bottom|left|right"`
 - Custom offset: `[puiStickyThresholdPx]="64"` (in pixels)
