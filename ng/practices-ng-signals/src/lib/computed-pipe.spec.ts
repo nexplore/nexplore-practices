@@ -20,10 +20,10 @@ describe('computedPipe', () => {
       const results: (number | undefined)[] = [];
       const result = computedPipe(source);
       // Flush effects before capturing the initial value
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       source.set(20);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       expect(results).toEqual([10, 20]);
     });
@@ -37,10 +37,10 @@ describe('computedPipe', () => {
       const results: number[] = [];
       const result = computedPipe(source);
       // Flush effects before capturing the initial value
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       innerSignal.set(20);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       expect(results).toEqual([10, 20]);
     });
@@ -64,10 +64,10 @@ describe('computedPipe', () => {
         map(arr => arr.reduce((sum, val) => sum + val, 0))
       );
       // Flush effects before capturing the initial value
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       source.set([1, 2, 3]);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       expect(results).toEqual([0, 12]);
     });
@@ -80,10 +80,10 @@ describe('computedPipe', () => {
       const result = computedPipe(subject, map(x => x * 2));
       results.push(result());
       subject.next(5);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       subject.next(10);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       expect(results).toEqual([undefined, 10, 20]);
     });
@@ -96,10 +96,10 @@ describe('computedPipe', () => {
       const result = computedPipe(subject, filter(x => x > 10));
       results.push(result());
       subject.next(5); // filtered out
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       subject.next(15); // passes filter
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       expect(results).toEqual([undefined, undefined, 15]);
     });
@@ -115,10 +115,10 @@ describe('computedPipe', () => {
         map(x => x + 1)
       );
       // Flush effects before capturing the initial value
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       source.set(4);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       expect(results).toEqual([7, 13]); // [(2*3)+1, (4*3)+1]
     });
@@ -135,11 +135,11 @@ describe('computedPipe', () => {
       );
       results.push(result());
       jest.advanceTimersByTime(500);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       source.set(20);
       jest.advanceTimersByTime(500);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       expect(results).toEqual([undefined, 20, 40]);
     });
@@ -155,11 +155,11 @@ describe('computedPipe', () => {
       const result = computedPipe(source, map(x => x * 2));
       
       // Flush effects before capturing the initial value
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       
       source.set(10);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       
       // Assert
@@ -181,11 +181,11 @@ describe('computedPipe', () => {
       );
       
       // Flush effects before capturing the initial value
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       
       source.set(10);
-      TestBed.flushEffects();
+      TestBed.tick();
       
       results.push(result());
       
@@ -209,11 +209,11 @@ describe('computedPipe', () => {
       );
       
       // Flush effects before capturing the initial value
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       
       source.set([1, 2, 3]);
-      TestBed.flushEffects();
+      TestBed.tick();
       
       results.push(result());
       
@@ -240,12 +240,12 @@ describe('computedPipe', () => {
       // Emit values
       subject.next(1); // filtered out
       subject.next(2); // passes filter
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       
       subject.next(3); // filtered out
       subject.next(4); // passes filter
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       
       // Assert
@@ -270,17 +270,17 @@ describe('computedPipe', () => {
       
       // Fast-forward time
       jest.advanceTimersByTime(1000);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       
       // Change source and check again
       source.set(20);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       
       // Fast-forward time
       jest.advanceTimersByTime(1000);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       
       // Assert
@@ -302,11 +302,11 @@ describe('computedPipe', () => {
       );
       
       // Flush effects before capturing the initial value
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       
       source.set(10);
-      TestBed.flushEffects();
+      TestBed.tick();
       
       results.push(result());
       
@@ -334,15 +334,15 @@ describe('computedPipe', () => {
       
       // Emit values
       subject.next(1);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       
       subject.next(2);
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       
       subject.next(3); // Should be ignored due to take(2)
-      TestBed.flushEffects();
+      TestBed.tick();
       results.push(result());
       
       // Assert

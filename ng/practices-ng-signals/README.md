@@ -17,7 +17,7 @@ Angular's signals API introduced a powerful new reactive primitive, but there ar
 ## Installation
 
 ```bash
-pnpm install @nexplore/practices-ng-signals
+npm install @nexplore/practices-ng-signals
 ```
 
 ## Features and Usage Examples

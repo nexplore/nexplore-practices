@@ -13,7 +13,7 @@ import { PuibeYearInputDirective } from './year-input.directive';
 import { PuibeReadonlyDirective } from '../common/readonly.directive';
 
 type Args = {
-    label: string;
+    labelText: string;
     value: 'none' | string | Date;
     calendarInitialDate: 'none' | string | Date;
     required?: boolean;
@@ -60,7 +60,7 @@ const meta: Meta<Args> = {
     component: PuibeFormFieldComponent,
     tags: ['autodocs'],
     argTypes: {
-        label: { type: 'string' },
+        labelText: { type: 'string' },
         value: {
             type: { name: 'enum', value: ['01.12.2020', '8.2.23', '01.01.25', 'none'] },
             defaultValue: 'none',
@@ -164,7 +164,7 @@ const meta: Meta<Args> = {
                     : ''
             }
             >
-            <label puibeLabel>${args.label}</label>
+            <label puibeLabel>${args.labelText}</label>
             <input puibeInput type="${args.type ?? 'date'}" 
                    ${args.type === 'month' ? '[endOfMonth]="endOfMonth"' : ''}
                    [disableCalendar]="${args.disableCalendar}" 
@@ -188,58 +188,58 @@ export default meta;
 type Story = StoryObj<Args>;
 
 export const Default: Story = {
-    args: { label: 'date-input' },
+    args: { labelText: 'date-input' },
 };
 
 export const Month: Story = {
-    args: { label: 'month-input', type: 'month' },
+    args: { labelText: 'month-input', type: 'month' },
 };
 export const Year: Story = {
-    args: { label: 'year-input', type: 'year' },
+    args: { labelText: 'year-input', type: 'year' },
 };
 
 export const Birthdate: Story = {
-    args: { label: 'Enter birthdate', type: 'date', calendarViewMode: 'year' },
+    args: { labelText: 'Enter birthdate', type: 'date', calendarViewMode: 'year' },
 };
 
 export const WithInitialStringValue: Story = {
-    args: { label: 'date-input', value: '12.12.1993' },
+    args: { labelText: 'date-input', value: '12.12.1993' },
 };
 
 export const WithCalendarInitialDate: Story = {
-    args: { label: 'date-input', calendarInitialDate: '12.12.1993' },
+    args: { labelText: 'date-input', calendarInitialDate: '12.12.1993' },
 };
 
 export const WithCalendarInitialMonth: Story = {
-    args: { label: 'date-input', calendarViewMode: 'month', calendarInitialDate: '1993' },
+    args: { labelText: 'date-input', calendarViewMode: 'month', calendarInitialDate: '1993' },
 };
 
 export const WithCalendarInitialYear: Story = {
-    args: { label: 'date-input', calendarViewMode: 'year', calendarInitialDate: '1993' },
+    args: { labelText: 'date-input', calendarViewMode: 'year', calendarInitialDate: '1993' },
 };
 
 export const WithInitialDateValue: Story = {
-    args: { label: 'date-input', value: new Date() },
+    args: { labelText: 'date-input', value: new Date() },
 };
 
 export const RequiredInput: Story = {
-    args: { label: 'required date-input', required: true },
+    args: { labelText: 'required date-input', required: true },
 };
 
 export const MinMaxInput: Story = {
-    args: { label: 'min/max date-input', min: add(new Date(), { weeks: -3 }), max: add(new Date(), { days: 4 }) },
+    args: { labelText: 'min/max date-input', min: add(new Date(), { weeks: -3 }), max: add(new Date(), { days: 4 }) },
 };
 
 export const CustomRangeValidator: Story = {
     args: {
-        label: 'min/max date-input',
+        labelText: 'min/max date-input',
         customRangeValidator: { min: add(new Date(), { weeks: -3 }), max: add(new Date(), { days: 4 }) },
     },
 };
 
 export const CustomRangeValidatorPlusMinMax: Story = {
     args: {
-        label: 'min/max date-input',
+        labelText: 'min/max date-input',
         min: add(new Date(), { weeks: -3 }),
         max: add(new Date(), { days: 4 }),
         customRangeValidator: { min: add(new Date(), { weeks: -2 }), max: add(new Date(), { days: 2 }) },
@@ -248,7 +248,7 @@ export const CustomRangeValidatorPlusMinMax: Story = {
 
 export const MinMaxMonth: Story = {
     args: {
-        label: 'min/max month-input',
+        labelText: 'min/max month-input',
         type: 'month',
         min: add(new Date(), { months: -3 }),
         max: add(new Date(), { months: 4 }),
@@ -257,7 +257,7 @@ export const MinMaxMonth: Story = {
 
 export const MinMaxYear: Story = {
     args: {
-        label: 'min/max year-input',
+        labelText: 'min/max year-input',
         type: 'year',
         min: add(new Date(), { years: -3 }),
         max: add(new Date(), { years: 4 }),
@@ -265,19 +265,19 @@ export const MinMaxYear: Story = {
 };
 
 export const DisabledInput: Story = {
-    args: { label: 'disabled date-input', disabled: true },
+    args: { labelText: 'disabled date-input', disabled: true },
 };
 
 export const AsyncValidator: Story = {
-    args: { label: 'async date-input', asyncValidator: true },
+    args: { labelText: 'async date-input', asyncValidator: true },
 };
 
 export const DisableCalendar: Story = {
-    args: { label: 'disableCalendar', disableCalendar: true },
+    args: { labelText: 'disableCalendar', disableCalendar: true },
 };
 
 export const DisableCalendarKeyboardActivation: Story = {
-    args: { label: 'disableCalendarKeyboardActivation', disableCalendarKeyboardActivation: true },
+    args: { labelText: 'disableCalendarKeyboardActivation', disableCalendarKeyboardActivation: true },
 };
 
 export const WithNgModel: Story = {
@@ -305,13 +305,13 @@ export const WithNgModel: Story = {
 };
 
 export const ReadonlyEmptyValuePlaceholder: Story = {
-    args: { label: 'readonlyEmptyValuePlaceholder', readonly: true, readonlyEmptyValuePlaceholder: 'Custom value' },
+    args: { labelText: 'readonlyEmptyValuePlaceholder', readonly: true, readonlyEmptyValuePlaceholder: 'Custom value' },
 };
 
 export const MonthEndOfMonth: Story = {
-    args: { label: 'month-input', value: new Date(), type: 'month', endOfMonth: true },
+    args: { labelText: 'month-input', value: new Date(), type: 'month', endOfMonth: true },
 };
 
 export const MonthEndOfMonthReadonly: Story = {
-    args: { label: 'month-input', value: new Date(), type: 'month', endOfMonth: true, readonly: true },
+    args: { labelText: 'month-input', value: new Date(), type: 'month', endOfMonth: true, readonly: true },
 };

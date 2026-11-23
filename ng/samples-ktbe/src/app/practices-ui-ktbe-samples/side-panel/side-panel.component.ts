@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
     PuibeButtonDirective,
     PuibeSideOverlayPanelService,
@@ -11,6 +11,7 @@ import { AppSideOverlayPanelComponent } from './side-overlay-panel.component';
     selector: 'app-side-panel',
     templateUrl: './side-panel.component.html',
     imports: [PuibeButtonDirective],
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [...SIDE_OVERLAY_PANEL_PROVIDERS],
 })
 export class SidePanelExampleComponent {

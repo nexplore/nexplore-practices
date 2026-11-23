@@ -19,7 +19,7 @@ List views are a common UI pattern in applications, and this library offers a st
 ## Installation
 
 ```bash
-pnpm install @nexplore/practices-ng-list-view-source
+npm install @nexplore/practices-ng-list-view-source
 ```
 
 ## Features and Usage Examples

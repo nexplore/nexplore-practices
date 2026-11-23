@@ -2,9 +2,9 @@
     "name": "samples-ktbe",
     "$schema": "../node_modules/nx/schemas/project-schema.json",
     "projectType": "application",
-    "generators": {},
     "sourceRoot": "samples-ktbe/src",
     "prefix": "app",
+    "generators": {},
     "targets": {
         "build": {
             "executor": "@angular/build:application",
@@ -48,8 +48,7 @@
                     ],
                     "tsConfig": "samples-ktbe/tsconfig.app.prod.json"
                 }
-            },
-            "defaultConfiguration": ""
+            }
         },
         "serve": {
             "executor": "@angular/build:dev-server",
@@ -60,24 +59,15 @@
                 "production": {
                     "buildTarget": "samples-ktbe:build:production"
                 }
+            },
+            "readyWhen": {
+                "signal": true
             }
         },
         "extract-i18n": {
             "executor": "@angular/build:extract-i18n",
             "options": {
                 "buildTarget": "samples-ktbe:build"
-            }
-        },
-        "test": {
-            "executor": "@nx/jest:jest",
-            "options": {
-                "jestConfig": "samples-ktbe/jest.config.js"
-            }
-        },
-        "lint": {
-            "executor": "@nx/eslint:lint",
-            "options": {
-                "lintFilePatterns": ["samples-ktbe/**/*.ts", "samples-ktbe/package.json"]
             }
         }
     }

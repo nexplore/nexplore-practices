@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgComponentOutlet, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass, NgComponentOutlet } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -59,8 +59,6 @@ const overlayTextEmptyClassName = 'text-opacity-60';
         PuibeIconSpinnerComponent,
         PuibeIconCloseComponent,
         PuibeReadonlyLabelValueComponent,
-        NgIf,
-        NgFor,
         NgClass,
         AsyncPipe,
         TranslateModule,

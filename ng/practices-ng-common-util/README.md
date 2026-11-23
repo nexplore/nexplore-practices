@@ -20,7 +20,7 @@ These utilities serve as building blocks for library authors and application dev
 ## Installation
 
 ```bash
-pnpm install @nexplore/practices-ng-common-util
+npm install @nexplore/practices-ng-common-util
 ```
 
 ## Features and Usage Examples

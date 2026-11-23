@@ -19,7 +19,7 @@ Commands encapsulate common logic and state handling, typically required to rend
 ## Installation
 
 ```bash
-pnpm install @nexplore/practices-ng-commands
+npm install @nexplore/practices-ng-commands
 ```
 
 ## Features and Usage Examples
@@ -158,7 +158,9 @@ export class UserDetailComponent {
 In the template:
 
 ```html
-<div *ngIf="userQuery.busySignal()">Loading user...</div>
+@if (userQuery.busySignal()) {
+<div>Loading user...</div>
+}
 
 @if (userSignal(); as user) {
 <div class="user-details">

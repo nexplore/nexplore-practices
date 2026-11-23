@@ -17,7 +17,7 @@
                     'hover:bg-very-light-gray focus:bg-very-light-gray aria-expanded:hover:bg-very-light-gray aria-expanded:focus:bg-very-light-gray bg-white aria-expanded:bg-white':
                         isWhite,
                     'hover:bg-red-hover focus:bg-red-hover aria-expanded:hover:bg-red-hover aria-expanded:focus:bg-red-hover bg-red text-white':
-                        isRed
+                        isRed,
                 }"
                 (click)="toggle(accordionItem)"
             >
@@ -28,22 +28,25 @@
                     </div>
                     <div class="flex min-w-0 flex-1 flex-col items-start">
                         <div class="flex min-w-0 max-w-full items-center gap-4">
-                            <p
-                                #headingText
-                                *ngIf="heading"
-                                class="min-w-0"
-                                [ngClass]="[
-                                    compact ? 'text-base' : 'text-h4',
-                                    truncateHeading ? 'truncate' : 'whitespace-normal'
-                                ]"
-                                [attr.title]="truncateHeading ? heading : null"
-                            >
-                                {{ heading }}
-                            </p>
+                            @if (heading) {
+                                <p
+                                    #headingText
+                                    class="min-w-0"
+                                    [ngClass]="[
+                                        compact ? 'text-base' : 'text-h4',
+                                        truncateHeading ? 'truncate' : 'whitespace-normal',
+                                    ]"
+                                    [attr.title]="truncateHeading ? heading : null"
+                                >
+                                    {{ heading }}
+                                </p>
+                            }
 
                             <span #headingAfterInlineHost class="inline-flex shrink-0 items-center"></span>
                         </div>
-                        <p class="mt-1" *ngIf="caption">{{ caption }}</p>
+                        @if (caption) {
+                            <p class="mt-1">{{ caption }}</p>
+                        }
                         <ng-content select="[slot='caption-after']"></ng-content>
                     </div>
                 </div>
@@ -75,7 +78,7 @@
                 'p-6': addItemPadding && !compact && !isInitiallyCollapsed,
                 'p-3': addItemPadding && compact,
                 'h-0 overflow-y-hidden p-0': isInitiallyCollapsed,
-                'overflow-x-auto': enableContentScroll
+                'overflow-x-auto': enableContentScroll,
             }"
             role="region"
             [attr.id]="'accordion-body-' + id"

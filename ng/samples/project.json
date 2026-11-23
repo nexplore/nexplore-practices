@@ -2,9 +2,9 @@
     "name": "samples",
     "$schema": "../node_modules/nx/schemas/project-schema.json",
     "projectType": "application",
-    "generators": {},
     "sourceRoot": "samples/src",
     "prefix": "app",
+    "generators": {},
     "targets": {
         "build": {
             "executor": "@angular/build:application",
@@ -56,8 +56,7 @@
                     ],
                     "tsConfig": "samples/tsconfig.app.prod.json"
                 }
-            },
-            "defaultConfiguration": ""
+            }
         },
         "serve": {
             "executor": "@angular/build:dev-server",
@@ -68,24 +67,15 @@
                 "production": {
                     "buildTarget": "samples:build:production"
                 }
+            },
+            "readyWhen": {
+                "signal": true
             }
         },
         "extract-i18n": {
             "executor": "@angular/build:extract-i18n",
             "options": {
                 "buildTarget": "samples:build"
-            }
-        },
-        "test": {
-            "executor": "@nx/jest:jest",
-            "options": {
-                "jestConfig": "samples/jest.config.js"
-            }
-        },
-        "lint": {
-            "executor": "@nx/eslint:lint",
-            "options": {
-                "lintFilePatterns": ["samples/**/*.ts", "samples/package.json"]
             }
         }
     }

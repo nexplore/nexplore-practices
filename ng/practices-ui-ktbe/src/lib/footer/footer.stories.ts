@@ -68,10 +68,12 @@ const meta: Meta<Args> = {
         template: `
         <puibe-footer [flexBreakpoint]="flexBreakpoint">
             <span puibeFooterCopyright>{{ copyright }}</span>
-            <a puibeFooterMenuItem *ngFor="let menuItem of footerMenuItems"
-                [routerLink]="menuItem.routerLink"
-                [withAnimation]="menuItem.withAnimation"
-                [routerLinkActiveOptions]="menuItem.routerLinkActiveOptions">{{ menuItem.label }}</a>
+            @for (menuItem of footerMenuItems; track menuItem) {
+                <a puibeFooterMenuItem
+                    [routerLink]="menuItem.routerLink"
+                    [withAnimation]="menuItem.withAnimation"
+                    [routerLinkActiveOptions]="menuItem.routerLinkActiveOptions">{{ menuItem.label }}</a>
+            }
         </puibe-footer>`,
     }),
 };
@@ -153,10 +155,12 @@ export const SidenavFooter: Story = {
         template: `
         <puibe-sidenav-footer>
             <span puibeFooterCopyright>{{ copyright }}</span>
-            <a puibeFooterMenuItem *ngFor="let menuItem of footerMenuItems"
-                [routerLink]="menuItem.routerLink"
-                [withAnimation]="menuItem.withAnimation"
-                [routerLinkActiveOptions]="menuItem.routerLinkActiveOptions">{{ menuItem.label }}</a>
+            @for (menuItem of footerMenuItems; track menuItem) {
+                <a puibeFooterMenuItem
+                    [routerLink]="menuItem.routerLink"
+                    [withAnimation]="menuItem.withAnimation"
+                    [routerLinkActiveOptions]="menuItem.routerLinkActiveOptions">{{ menuItem.label }}</a>
+            }
         </puibe-sidenav-footer>`,
     }),
 };

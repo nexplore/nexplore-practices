@@ -2,7 +2,7 @@ import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
 import { map, timer } from 'rxjs';
 import { PuibeTableComponent } from './table.component';
 import { TableViewSource } from './table-view-source';
-import { DatePipe, NgFor } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { PuibeTablePageSizeComponent } from './pagination/table-page-size.component';
 import { PuibeTablePaginationComponent } from './pagination/table-pagination.component';
 import { PuibeTableFooterComponent } from './footer/table-footer.component';
@@ -54,7 +54,6 @@ const meta: Meta<Args> = {
         moduleMetadata({
             imports: [
                 DatePipe,
-                NgFor,
                 PuibeTableComponent,
                 PuibeTableRowComponent,
                 PuibeTableColumnComponent,
@@ -169,12 +168,14 @@ export const EmptyTable: Story = {
             <puibe-table-column [fieldName]="tableSource.columns.created" [sortable]="true" class="min-w-[8rem]"></puibe-table-column>
             <puibe-table-column>Actions</puibe-table-column>
 
-            <puibe-table-row *ngFor="let item of tableSource.pageData$ | async">
-                <puibe-table-cell>{{item.id}}</puibe-table-cell>
-                <puibe-table-cell >{{item.name}}</puibe-table-cell>
-                <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
-                <puibe-table-cell></puibe-table-cell>
-            </puibe-table-row>
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row>
+                    <puibe-table-cell>{{item.id}}</puibe-table-cell>
+                    <puibe-table-cell >{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
+                    <puibe-table-cell></puibe-table-cell>
+                </puibe-table-row>
+            }
 
         </puibe-table>`,
     }),
@@ -219,12 +220,14 @@ export const TableWithViewSource: Story = {
             <puibe-table-column [fieldName]="tableSource.columns.created" [sortable]="true" align="right" class="min-w-[8rem]"></puibe-table-column>
             <puibe-table-column>Actions</puibe-table-column>
 
-            <puibe-table-row *ngFor="let item of tableSource.pageData$ | async">
-                <puibe-table-cell>{{item.id}}</puibe-table-cell>
-                <puibe-table-cell >{{item.name}}</puibe-table-cell>
-                <puibe-table-cell align="right">{{item.created | date}}</puibe-table-cell>
-                <puibe-table-cell></puibe-table-cell>
-            </puibe-table-row>
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row>
+                    <puibe-table-cell>{{item.id}}</puibe-table-cell>
+                    <puibe-table-cell >{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell align="right">{{item.created | date}}</puibe-table-cell>
+                    <puibe-table-cell></puibe-table-cell>
+                </puibe-table-row>
+            }
 
         </puibe-table>`,
     }),
@@ -248,12 +251,14 @@ export const SelectableTable: Story = {
             <puibe-table-column [fieldName]="tableSource.columns.created" [sortable]="true" class="min-w-[8rem]"></puibe-table-column>
             <puibe-table-column>Actions</puibe-table-column>
 
-            <puibe-table-row *ngFor="let item of tableSource.pageData$ | async" [selectable]="item">
-                <puibe-table-cell>{{item.id}}</puibe-table-cell>
-                <puibe-table-cell >{{item.name}}</puibe-table-cell>
-                <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
-                <puibe-table-cell></puibe-table-cell>
-            </puibe-table-row>
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row [selectable]="item">
+                    <puibe-table-cell>{{item.id}}</puibe-table-cell>
+                    <puibe-table-cell >{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
+                    <puibe-table-cell></puibe-table-cell>
+                </puibe-table-row>
+            }
 
             <puibe-table-footer>
                 <h3>Selected: {{selectedItem?.name ?? 'None'}}</h3>
@@ -280,12 +285,14 @@ export const TableMultiSelect: Story = {
             <puibe-table-column [fieldName]="tableSource.columns.created" [sortable]="true" class="min-w-[8rem]"></puibe-table-column>
             <puibe-table-column>Actions</puibe-table-column>
 
-            <puibe-table-row *ngFor="let item of tableSource.pageData$ | async" [selectable]="item">
-                <puibe-table-cell>{{item.id}}</puibe-table-cell>
-                <puibe-table-cell >{{item.name}}</puibe-table-cell>
-                <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
-                <puibe-table-cell></puibe-table-cell>
-            </puibe-table-row>
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row [selectable]="item">
+                    <puibe-table-cell>{{item.id}}</puibe-table-cell>
+                    <puibe-table-cell >{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
+                    <puibe-table-cell></puibe-table-cell>
+                </puibe-table-row>
+            }
 
             <puibe-table-footer>
                 <h3>{{selectedItems?.length}} items selected</h3>
@@ -313,12 +320,14 @@ export const TableWithPaging: Story = {
             <puibe-table-column [fieldName]="tableSource.columns.created" [sortable]="true" class="min-w-[8rem]"></puibe-table-column>
             <puibe-table-column>Actions</puibe-table-column>
 
-            <puibe-table-row *ngFor="let item of tableSource.pageData$ | async">
-                <puibe-table-cell>{{item.id}}</puibe-table-cell>
-                <puibe-table-cell >{{item.name}}</puibe-table-cell>
-                <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
-                <puibe-table-cell></puibe-table-cell>
-            </puibe-table-row>
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row>
+                    <puibe-table-cell>{{item.id}}</puibe-table-cell>
+                    <puibe-table-cell >{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
+                    <puibe-table-cell></puibe-table-cell>
+                </puibe-table-row>
+            }
 
             <puibe-table-footer>
                 <puibe-table-pagination>
@@ -348,12 +357,14 @@ export const TableWithPagingEndArrows: Story = {
             <puibe-table-column [fieldName]="tableSource.columns.created" [sortable]="true" class="min-w-[8rem]"></puibe-table-column>
             <puibe-table-column>Actions</puibe-table-column>
 
-            <puibe-table-row *ngFor="let item of tableSource.pageData$ | async">
-                <puibe-table-cell>{{item.id}}</puibe-table-cell>
-                <puibe-table-cell >{{item.name}}</puibe-table-cell>
-                <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
-                <puibe-table-cell></puibe-table-cell>
-            </puibe-table-row>
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row>
+                    <puibe-table-cell>{{item.id}}</puibe-table-cell>
+                    <puibe-table-cell >{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
+                    <puibe-table-cell></puibe-table-cell>
+                </puibe-table-row>
+            }
 
             <puibe-table-footer>
                 <puibe-table-pagination [showFirstAndLastPageButton]="true">
@@ -382,12 +393,14 @@ export const TableWithInfiniteScroll: Story = {
             <puibe-table-column [fieldName]="tableSource.columns.created" [sortable]="true" class="min-w-[8rem]"></puibe-table-column>
             <puibe-table-column>Actions</puibe-table-column>
 
-            <puibe-table-row *ngFor="let item of tableSource.pageData$ | async">
-                <puibe-table-cell>{{item.id}}</puibe-table-cell>
-                <puibe-table-cell >{{item.name}}</puibe-table-cell>
-                <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
-                <puibe-table-cell></puibe-table-cell>
-            </puibe-table-row>
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row>
+                    <puibe-table-cell>{{item.id}}</puibe-table-cell>
+                    <puibe-table-cell >{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
+                    <puibe-table-cell></puibe-table-cell>
+                </puibe-table-row>
+            }
 
             <puibe-table-footer>
                 <puibe-table-pagination-infinite-scroll [pageSize]="30"></puibe-table-pagination-infinite-scroll>
@@ -419,12 +432,14 @@ export const TableWithViewSourceAndAutomaticColumnConfig: Story = {
             <puibe-table-column [field]="tableSource.columns.created" class="min-w-[8rem]"></puibe-table-column>
             <puibe-table-column>Actions</puibe-table-column>
 
-            <puibe-table-row *ngFor="let item of tableSource.pageData$ | async">
-                <puibe-table-cell>{{item.id}}</puibe-table-cell>
-                <puibe-table-cell>{{item.name}}</puibe-table-cell>
-                <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
-                <puibe-table-cell></puibe-table-cell>
-            </puibe-table-row>
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row>
+                    <puibe-table-cell>{{item.id}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
+                    <puibe-table-cell></puibe-table-cell>
+                </puibe-table-row>
+            }
 
         </puibe-table>`,
     }),
@@ -447,14 +462,18 @@ export const TableWithViewSourceArray: Story = {
         },
         template: `
         <puibe-table [tableViewSource]="tableSource" class="w-full">
-            <puibe-table-column *ngFor="let columnDef of tableSource.columnsArray$ | async" [field]="columnDef"></puibe-table-column>
+            @for (columnDef of tableSource.columnsArray$ | async; track columnDef) {
+                <puibe-table-column [field]="columnDef"></puibe-table-column>
+            }
      
-            <puibe-table-row *ngFor="let item of tableSource.pageData$ | async">
-                <puibe-table-cell>{{item.id}}</puibe-table-cell>
-                <puibe-table-cell class="w-full">{{item.name}}</puibe-table-cell>
-                <puibe-table-cell class="min-w-[8rem]">{{item.created | date}}</puibe-table-cell>
-                <puibe-table-cell></puibe-table-cell>
-            </puibe-table-row>
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row>
+                    <puibe-table-cell>{{item.id}}</puibe-table-cell>
+                    <puibe-table-cell class="w-full">{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell class="min-w-[8rem]">{{item.created | date}}</puibe-table-cell>
+                    <puibe-table-cell></puibe-table-cell>
+                </puibe-table-row>
+            }
 
         </puibe-table>`,
     }),
@@ -476,14 +495,18 @@ export const TableWithTableViewSourceLabelKey: Story = {
         },
         template: `
         <puibe-table [tableViewSource]="tableSource"  class="w-full">
-            <puibe-table-column *ngFor="let columnDef of tableSource.columnsArray$ | async" [field]="columnDef"></puibe-table-column>
+            @for (columnDef of tableSource.columnsArray$ | async; track columnDef) {
+                <puibe-table-column [field]="columnDef"></puibe-table-column>
+            }
      
-            <puibe-table-row *ngFor="let item of tableSource.pageData$ | async">
-                <puibe-table-cell>{{item.id}}</puibe-table-cell>
-                <puibe-table-cell>{{item.name}}</puibe-table-cell>
-                <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
-                <puibe-table-cell></puibe-table-cell>
-            </puibe-table-row>
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row>
+                    <puibe-table-cell>{{item.id}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
+                    <puibe-table-cell></puibe-table-cell>
+                </puibe-table-row>
+            }
 
         </puibe-table>`,
     }),
@@ -506,14 +529,18 @@ export const TableWithViewSourceLabelPrefix: Story = {
         },
         template: `
         <puibe-table [tableViewSource]="tableSource" columnTranslationPrefix="Labels_SampleTable_" class="w-full">
-            <puibe-table-column *ngFor="let columnDef of tableSource.columnsArray$ | async" [field]="columnDef"></puibe-table-column>
+            @for (columnDef of tableSource.columnsArray$ | async; track columnDef) {
+                <puibe-table-column [field]="columnDef"></puibe-table-column>
+            }
      
-            <puibe-table-row *ngFor="let item of tableSource.pageData$ | async">
-                <puibe-table-cell>{{item.id}}</puibe-table-cell>
-                <puibe-table-cell>{{item.name}}</puibe-table-cell>
-                <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
-                <puibe-table-cell></puibe-table-cell>
-            </puibe-table-row>
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row>
+                    <puibe-table-cell>{{item.id}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
+                    <puibe-table-cell></puibe-table-cell>
+                </puibe-table-row>
+            }
 
         </puibe-table>`,
     }),
@@ -542,17 +569,19 @@ export const TableWithColActions: Story = {
                 </puibe-table-col-actions>
             </puibe-table-column>
 
-            <puibe-table-row *ngFor="let item of tableSource.pageData$ | async">
-                <puibe-table-cell>{{item.id}}</puibe-table-cell>
-                <puibe-table-cell >{{item.name}}</puibe-table-cell>
-                <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
-                <puibe-table-cell>
-                    <puibe-table-col-actions>
-                        <button puibeButton variant="secondary" size="small" type="button" title="Akzeptieren" aria-label="Akzeptieren" (click)="onActionClick('accept', item.id)">✓</button>
-                        <button puibeButton variant="danger" size="small" type="button" title="Löschen" aria-label="Löschen" (click)="onActionClick('delete', item.id)">x</button>
-                    </puibe-table-col-actions>
-                </puibe-table-cell>
-            </puibe-table-row>
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row>
+                    <puibe-table-cell>{{item.id}}</puibe-table-cell>
+                    <puibe-table-cell >{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
+                    <puibe-table-cell>
+                        <puibe-table-col-actions>
+                            <button puibeButton variant="secondary" size="small" type="button" title="Akzeptieren" aria-label="Akzeptieren" (click)="onActionClick('accept', item.id)">✓</button>
+                            <button puibeButton variant="danger" size="small" type="button" title="Löschen" aria-label="Löschen" (click)="onActionClick('delete', item.id)">x</button>
+                        </puibe-table-col-actions>
+                    </puibe-table-cell>
+                </puibe-table-row>
+            }
 
         </puibe-table>`,
     }),
@@ -585,17 +614,19 @@ export const TableWithColActionsMenu: Story = {
                 </puibe-table-col-actions>
             </puibe-table-column>
 
-            <puibe-table-row *ngFor="let item of tableSource.pageData$ | async">
-                <puibe-table-cell>{{item.id}}</puibe-table-cell>
-                <puibe-table-cell >{{item.name}}</puibe-table-cell>
-                <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
-                <puibe-table-cell>
-                    <puibe-table-col-actions [showOptionsMenu]="${args.showOptionsMenu}">
-                        <button (click)="onActionClick('accept', item.id)"><span class="font-bold mr-2">✓</span>Akzeptieren</button>
-                        <button (click)="onActionClick('delete', item.id)"><span class="font-bold mr-2">x</span>Löschen</button>
-                    </puibe-table-col-actions>
-                </puibe-table-cell>
-            </puibe-table-row>
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row>
+                    <puibe-table-cell>{{item.id}}</puibe-table-cell>
+                    <puibe-table-cell >{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
+                    <puibe-table-cell>
+                        <puibe-table-col-actions [showOptionsMenu]="${args.showOptionsMenu}">
+                            <button (click)="onActionClick('accept', item.id)"><span class="font-bold mr-2">✓</span>Akzeptieren</button>
+                            <button (click)="onActionClick('delete', item.id)"><span class="font-bold mr-2">x</span>Löschen</button>
+                        </puibe-table-col-actions>
+                    </puibe-table-cell>
+                </puibe-table-row>
+            }
 
         </puibe-table>`,
     }),
@@ -620,19 +651,21 @@ export const TableWithRowAction: Story = {
             <puibe-table-column [fieldName]="tableSource.columns.created" [sortable]="true" class="min-w-[8rem]"></puibe-table-column>
             <puibe-table-column></puibe-table-column>
 
-            <puibe-table-row puibeTableRowActionTrigger *ngFor="let item of tableSource.pageData$ | async">
-                <puibe-table-cell>
-                    <a puibeTableRowAction href="https://google.com" target="_blank">{{item.id}}</a>
-                </puibe-table-cell>
-                <puibe-table-cell >{{item.name}}</puibe-table-cell>
-                <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
-                <puibe-table-cell>
-                    <puibe-table-col-actions>
-                        <button puibeButton variant="secondary" size="small" type="button" title="Akzeptieren" aria-label="Akzeptieren" (click)="onActionClick('accept', item.id)">✓</button>
-                        <button puibeButton variant="danger" size="small" type="button" title="Löschen" aria-label="Löschen" (click)="onActionClick('delete', item.id)">x</button>
-                    </puibe-table-col-actions>
-                </puibe-table-cell>
-            </puibe-table-row>
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row puibeTableRowActionTrigger>
+                    <puibe-table-cell>
+                        <a puibeTableRowAction href="https://google.com" target="_blank">{{item.id}}</a>
+                    </puibe-table-cell>
+                    <puibe-table-cell >{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
+                    <puibe-table-cell>
+                        <puibe-table-col-actions>
+                            <button puibeButton variant="secondary" size="small" type="button" title="Akzeptieren" aria-label="Akzeptieren" (click)="onActionClick('accept', item.id)">✓</button>
+                            <button puibeButton variant="danger" size="small" type="button" title="Löschen" aria-label="Löschen" (click)="onActionClick('delete', item.id)">x</button>
+                        </puibe-table-col-actions>
+                    </puibe-table-cell>
+                </puibe-table-row>
+            }
         </puibe-table>`,
     }),
 };
@@ -657,13 +690,15 @@ export const TableWithToggleRowActionTrigger: Story = {
             <puibe-table-column [fieldName]="tableSource.columns.name" [sortable]="true" class="w-full"></puibe-table-column>
             <puibe-table-column [fieldName]="tableSource.columns.created" [sortable]="true" class="min-w-[8rem]"></puibe-table-column>
 
-            <puibe-table-row puibeTableRowActionTrigger [puibeTableRowActionTriggerDisabled]="puibeTableRowActionTriggerDisabled" *ngFor="let item of tableSource.pageData$ | async">
-                <puibe-table-cell>
-                    <a puibeTableRowAction href="https://google.com" target="_blank">{{item.id}}</a>
-                </puibe-table-cell>
-                <puibe-table-cell >{{item.name}}</puibe-table-cell>
-                <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
-            </puibe-table-row>
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row puibeTableRowActionTrigger [puibeTableRowActionTriggerDisabled]="puibeTableRowActionTriggerDisabled">
+                    <puibe-table-cell>
+                        <a puibeTableRowAction href="https://google.com" target="_blank">{{item.id}}</a>
+                    </puibe-table-cell>
+                    <puibe-table-cell >{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
+                </puibe-table-row>
+            }
         </puibe-table>`,
     }),
 };
@@ -685,11 +720,13 @@ export const RightSortableAlignmentTable: Story = {
             <puibe-table-column [fieldName]="tableSource.columns.name" align='right' [sortable]='true'></puibe-table-column>
             <puibe-table-column [fieldName]="tableSource.columns.created"></puibe-table-column>
 
-            <puibe-table-row *ngFor="let item of tableSource.pageData$ | async">
-                <puibe-table-cell>{{item.id}}</puibe-table-cell>
-                <puibe-table-cell align='right'>{{item.name}}</puibe-table-cell>
-                <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
-            </puibe-table-row>
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row>
+                    <puibe-table-cell>{{item.id}}</puibe-table-cell>
+                    <puibe-table-cell align='right'>{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
+                </puibe-table-row>
+            }
         </puibe-table>`,
     }),
 };

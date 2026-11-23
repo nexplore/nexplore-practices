@@ -4,8 +4,7 @@ namespace Nexplore.Practices.Syncfusion.Pdf.ReportBuilder.Components
     using System.IO;
     using global::Syncfusion.Drawing;
     using global::Syncfusion.Pdf.Graphics;
-    using SixLabors.ImageSharp.Formats.Png;
-    using Image = SixLabors.ImageSharp.Image;
+    using ImageMagick;
 
     public interface IPdfImageBuilder
     {
@@ -22,7 +21,7 @@ namespace Nexplore.Practices.Syncfusion.Pdf.ReportBuilder.Components
 
     internal sealed class PdfImageBuilder : PdfComponentBuilderBase, IPdfImageBuilder
     {
-        private Image image;
+        private byte[] image;
         private float? layoutWidth;
         private float? layoutHeight;
         private RectangleF? layoutRectangle;
@@ -34,8 +33,8 @@ namespace Nexplore.Practices.Syncfusion.Pdf.ReportBuilder.Components
 
         public void WithImage(byte[] data)
         {
-            using var memoryStream = new MemoryStream(data);
-            this.image = Image.Load(memoryStream);
+            using var magickImage = new MagickImage(data);
+            this.image = magickImage.ToByteArray(MagickFormat.Png);
 
             this.layoutRectangle = null;
             this.layoutWidth = null;
@@ -71,8 +70,7 @@ namespace Nexplore.Practices.Syncfusion.Pdf.ReportBuilder.Components
 
         public override PdfComponentBuilderDrawAction BuildDrawAction()
         {
-            using var stream = new MemoryStream();
-            this.image.Save(stream, new PngEncoder());
+            using var stream = new MemoryStream(this.image);
 
             var pdfImage = PdfImage.FromStream(stream);
             var targetBounds = this.GetScaledTargetBounds(pdfImage.Width, pdfImage.Height, out var scaledTargetBounds);

@@ -11,7 +11,7 @@ This library serves as a foundational layer for Angular applications, providing 
 ## Installation
 
 ```bash
-pnpm install @nexplore/practices-ui
+npm install @nexplore/practices-ui
 ```
 
 ## Features and Usage Examples

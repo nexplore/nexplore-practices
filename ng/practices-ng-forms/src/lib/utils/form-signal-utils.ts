@@ -33,6 +33,20 @@ export function formGroupValueChangesSignal<TValue = any>(
 }
 
 /**
+ * Default comparator of `formGroupCurrentValueMappedSignal`:
+ * Two values are equal if they have the same number of own properties and every property is strictly equal (`===`).
+ */
+function hasSameEntries(a: unknown, b: unknown): boolean {
+    if (!a || !b || typeof a !== 'object' || typeof b !== 'object') {
+        return a === b;
+    }
+
+    const aEntries = Object.entries(a);
+    const bEntries = new Map(Object.entries(b));
+    return aEntries.length === bEntries.size && aEntries.every(([key, value]) => value === bEntries.get(key));
+}
+
+/**
  * Creates a signal that emits the current value of a form group.
  *
  * Allows to define the control names to only emit the values of the specified controls.
@@ -75,21 +89,7 @@ export function formGroupCurrentValueMappedSignal<
                             return value;
                         }
                     }),
-                    distinctUntilChanged(
-                        options?.distinctComparator ??
-                            ((a, b) => {
-                                if (!a || !b) {
-                                    return a === b;
-                                }
-
-                                const aEntries = Object.entries(a);
-                                const bEntries = Object.entries(b);
-                                return (
-                                    aEntries.length === bEntries.length &&
-                                    aEntries.every(([key, value]) => value === b[key])
-                                );
-                            })
-                    ),
+                    distinctUntilChanged(options?.distinctComparator ?? hasSameEntries),
                     debounceTime(options?.debounceTime ?? 1),
                     filter(options?.filter ?? (() => true)),
                     map(options?.map ?? ((v) => v as unknown as TResult))

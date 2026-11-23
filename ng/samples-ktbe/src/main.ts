@@ -1,6 +1,12 @@
 import { registerLocaleData } from '@angular/common';
 import localeDECH from '@angular/common/locales/de-CH';
-import { importProvidersFrom, LOCALE_ID, inject, provideAppInitializer } from '@angular/core';
+import {
+    importProvidersFrom,
+    LOCALE_ID,
+    inject,
+    provideAppInitializer,
+    provideZoneChangeDetection,
+} from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
@@ -27,6 +33,7 @@ function InitializeAppFactory(translateService: TranslateService): () => Observa
 
 bootstrapApplication(AppComponent, {
     providers: [
+        provideZoneChangeDetection(),
         { provide: LOCALE_ID, useFactory: InitializeLanguage },
         provideAppInitializer(() => {
             const initializerFn = (InitializeAppFactory)(inject(TranslateService));

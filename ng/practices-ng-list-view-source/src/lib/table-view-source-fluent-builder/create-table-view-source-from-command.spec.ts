@@ -44,15 +44,15 @@ describe('fromCommand', () => {
 
             vs.pageData$.subscribe((data) => results.at(-1)?.length !== data?.length && results.push(data));
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             cmd.trigger(1);
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             cmd.trigger(3);
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results.map((r) => r.length)).toEqual([0, 1, 3]);
         });
@@ -73,7 +73,7 @@ describe('fromCommand', () => {
             });
 
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results).toEqual([]);
         });
@@ -95,7 +95,7 @@ describe('fromCommand', () => {
 
             vs.refresh();
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results).toEqual([]);
         });
@@ -119,7 +119,7 @@ describe('fromCommand', () => {
             vs.filter(3);
 
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results).toEqual(['triggered']);
         });
@@ -142,15 +142,15 @@ describe('fromCommand', () => {
 
             vs.pageData$.subscribe((data) => results.at(-1)?.length !== data?.length && results.push(data));
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             cmd.trigger(1);
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             cmd.resultSignal.set([new TestDto('Test 1', 1), new TestDto('Test 2', 2), new TestDto('Test 3', 3)]);
             jest.runAllTimers();
-            TestBed.flushEffects();
+            TestBed.tick();
 
             expect(results.map((r) => r.length)).toEqual([0, 1, 3]);
         });

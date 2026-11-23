@@ -17,9 +17,9 @@ This is a monorepo consisting of multiple library-packages for angular:
 
 # Typescript
 
-- Run `Format Document` vscode command after generating code (or terminal `pnpm run format`).
+- Run `Format Document` vscode command after generating code (or terminal `npm run format`).
 - Always check if the code actually typechecks and compiles (See problems tab, or run typescript typechecker), if any doubt, run `npx nx build PROJECTNAME`, for example `npx nx build practices-ng-forms`.
-- to run the ktbe samples app, run: `pnpm run start-ktbe`
+- to run the ktbe samples app, run: `npm run start-ktbe`
 - When moving code to new files, make sure to update the index.ts file in the root of the corresponding package.
 - Do not create new index files in sub-directories, try to find the root index file.
 - For occurence of repeating code, or verbose or complicated code, create utility functions in separate files.
@@ -109,9 +109,11 @@ This is a monorepo consisting of multiple library-packages for angular:
             template: `
             <puibe-toast [closeable]="closeable" [variant]="variant" [showAlertIcon]="showAlertIcon">
                 ${args.text}
-                <button puibeToastAction *ngFor="let action of actions;">
-                    {{ action.text }}
-                </button>
+                @for (action of actions; track action) {
+                    <button puibeToastAction>
+                        {{ action.text }}
+                    </button>
+                }
             </puibe-toast>`,
         }),
     };
@@ -148,7 +150,7 @@ This is a monorepo consisting of multiple library-packages for angular:
     // ... Try to add at least an example for every Input and its options
     ```
 
-- When you fully completed a feature for the KTBE library, automatically run `pnpm run storybook-ktbe` to demonstrate the storybook for the new components.
+- When you fully completed a feature for the KTBE library, automatically run `npm run storybook-ktbe` to demonstrate the storybook for the new components.
 - When running terminal commands, understand that we are probably in a windows environment, for example, the `&&` command might not work.
 
 # Angular templates

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -23,11 +23,11 @@ import { PuibeBreadcrumbItemComponent } from './item/breadcrumb-item.component';
     selector: 'puibe-breadcrumb',
     templateUrl: './breadcrumb.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [AsyncPipe, NgIf, NgFor, TranslateModule, PuibeBreadcrumbItemComponent],
+    imports: [AsyncPipe, TranslateModule, PuibeBreadcrumbItemComponent],
     providers: [DestroyService],
 })
 export class PuibeBreadcrumbComponent implements OnInit {
-    @HostBinding('role')
+    @HostBinding('attr.role')
     readonly role = 'navigation';
 
     @HostBinding('aria-label')

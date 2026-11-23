@@ -1,0 +1,9 @@
+# .git stays in the context: the OSS scanner proposes patches against the checkout in the image.
+**/node_modules
+**/bin
+**/obj
+ng/dist
+ng/.nx
+ng/.angular
+ng/coverage
+.nuke/temp

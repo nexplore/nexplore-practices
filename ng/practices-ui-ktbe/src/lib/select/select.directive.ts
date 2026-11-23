@@ -107,7 +107,7 @@ export class PuibeSelectDirective implements OnInit, AfterViewInit {
 
         this._formFieldService.registerNgControl(
             this._ngControl,
-            this._ngSelectComponent.searchInput?.nativeElement ?? this._elementRef.nativeElement
+            this._ngSelectComponent.searchInput()?.nativeElement ?? this._elementRef.nativeElement
         );
         this._formFieldService.setReadonlyValueFunction(() => this.getReadOnlyValue());
 

@@ -19,7 +19,7 @@ The dirty guard system acts as a safety net for users working with forms in Angu
 ## Installation
 
 ```bash
-pnpm install @nexplore/practices-ng-dirty-guard
+npm install @nexplore/practices-ng-dirty-guard
 ```
 
 ## Features and Usage Examples

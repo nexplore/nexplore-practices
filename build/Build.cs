@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using Nexplore.Practices.Build.Helpers;
 using Nuke.Common;
 using Nuke.Common.IO;
@@ -7,6 +6,7 @@ using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
+using Nuke.Common.Tools.Npm;
 
 namespace Nexplore.Practices.Build;
 
@@ -20,7 +20,6 @@ partial class Build : NukeBuild
         (RootDirectory / "dotnet/Nexplore.Practices.sln").ReadSolution();
 
     private AbsolutePath OutputDirectory => TemporaryDirectory / "output";
-    private AbsolutePath TemplateDirectory => RootDirectory / "build" / "templates";
     private AbsolutePath TestResultDirectory => TemporaryDirectory / "test-results";
     private readonly AbsolutePath NgDirectory = RootDirectory / "ng";
     private AbsolutePath NgDistributionDirectory => NgDirectory / "dist";
@@ -39,16 +38,6 @@ partial class Build : NukeBuild
         "practices-ng-commands",
         "practices-ng-list-view-source"
     ];
-
-    private readonly string[] NgAppProjects = ["samples", "samples-ktbe", "samples-tailwind"];
-
-    private void EnablePnpm() =>
-        ProcessTasks.StartProcess("corepack", "enable", NgDirectory)
-            .AssertZeroExitCode();
-
-    private void Pnpm(string arguments) =>
-        ProcessTasks.StartProcess("pnpm", arguments, NgDirectory, logger: LogHelpers.OverrideNpmLogger)
-            .AssertZeroExitCode();
 
     Target Clean => _ => _
         .Executes(() =>
@@ -80,10 +69,13 @@ partial class Build : NukeBuild
         .After(BuildDotNet)
         .Executes(() =>
         {
-            EnablePnpm();
-            Pnpm("install --frozen-lockfile");
+            NpmTasks.NpmCi(settings => settings
+                .SetProcessWorkingDirectory(NgDirectory));
 
-            Pnpm("run build-all");
+            NpmTasks.NpmRun(settings => settings
+                   .SetCommand("build-all")
+                   .SetProcessLogger(LogHelpers.OverrideNpmLogger)
+                   .SetProcessWorkingDirectory(NgDirectory));
         });
 
     Target AnalyzeDotNet => _ => _
@@ -101,7 +93,10 @@ partial class Build : NukeBuild
         .After(AnalyzeDotNet)
         .Executes(() =>
         {
-            Pnpm("run lint-all-errors");
+            NpmTasks.NpmRun(settings => settings
+                .SetCommand("lint-all-errors")
+                .SetProcessLogger(LogHelpers.OverrideNpmLogger)
+                .SetProcessWorkingDirectory(NgDirectory));
         });
 
     Target TestDotNet => _ => _
@@ -125,7 +120,10 @@ partial class Build : NukeBuild
         {
             Environment.SetEnvironmentVariable("JEST_JUNIT_OUTPUT_DIR", TestResultDirectory);
 
-            Pnpm("run test-ci");
+            NpmTasks.NpmRun(settings => settings
+                .SetCommand("test-ci")
+                .SetProcessLogger(LogHelpers.OverrideNpmLogger)
+                .SetProcessWorkingDirectory(NgDirectory));
         });
 
     Target BuildKtBeStorybook => _ => _
@@ -133,7 +131,10 @@ partial class Build : NukeBuild
         .After(TestNg)
         .Executes(() =>
         {
-            Pnpm("run build-storybook-ktbe");
+            NpmTasks.NpmRun(settings => settings
+                .SetCommand("build-storybook-ktbe")
+                .SetProcessLogger(LogHelpers.OverrideNpmLogger)
+                .SetProcessWorkingDirectory(NgDirectory));
         });
 
     Target PackDotNet => _ => _

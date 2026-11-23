@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { TitleService } from '@nexplore/practices-ui';
@@ -8,7 +7,7 @@ import { PuibeBreadcrumbComponent } from '@nexplore/practices-ui-ktbe';
     standalone: true,
     selector: 'app-breadcrumb',
     templateUrl: './breadcrumb.component.html',
-    imports: [PuibeBreadcrumbComponent, RouterModule, NgIf],
+    imports: [PuibeBreadcrumbComponent, RouterModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BreadcrumbComponent {
@@ -30,7 +29,7 @@ export class BreadcrumbComponent {
     standalone: true,
     selector: 'app-breadcrumb2',
     templateUrl: './breadcrumb.component.html',
-    imports: [PuibeBreadcrumbComponent, RouterModule, NgIf],
+    imports: [PuibeBreadcrumbComponent, RouterModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Breadcrumb2Component {
@@ -41,7 +40,7 @@ export class Breadcrumb2Component {
     standalone: true,
     selector: 'app-breadcrumb3',
     templateUrl: './breadcrumb.component.html',
-    imports: [PuibeBreadcrumbComponent, RouterModule, NgIf],
+    imports: [PuibeBreadcrumbComponent, RouterModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Breadcrumb3Component {

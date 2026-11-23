@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -33,15 +33,7 @@ import { computedPipe, subscriptionEffect } from '@nexplore/practices-ng-signals
     selector: 'puibe-table-column',
     templateUrl: './table-column.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        NgIf,
-        NgClass,
-        AsyncPipe,
-        TranslateModule,
-        PuibeIconArrowComponent,
-        PuibeIconSpinnerComponent,
-        A11yModule,
-    ],
+    imports: [NgClass, AsyncPipe, TranslateModule, PuibeIconArrowComponent, PuibeIconSpinnerComponent, A11yModule],
     providers: [DestroyService],
 })
 export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterViewInit {

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { map } from 'rxjs';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
@@ -9,7 +9,7 @@ import { PuibeButtonDirective, Variant } from './button.directive';
     selector: 'puibe-button-spinner',
     templateUrl: './button-spinner.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [PuibeIconSpinnerComponent, NgIf, NgClass, AsyncPipe],
+    imports: [PuibeIconSpinnerComponent, NgClass, AsyncPipe],
 })
 export class PuibeButtonSpinnerComponent {
     readonly busy$ = this._parentButtonDirective.busy$;

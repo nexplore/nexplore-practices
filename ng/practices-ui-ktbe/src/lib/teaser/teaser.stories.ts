@@ -2,7 +2,6 @@ import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
 import { PuibeTeaserComponent } from './teaser.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CommonModule } from '@angular/common';
 
 type Args = {
     text: string;
@@ -20,7 +19,7 @@ const meta: Meta<Args> = {
     argTypes: {},
     decorators: [
         moduleMetadata({
-            imports: [PuibeTeaserComponent, BrowserAnimationsModule, RouterTestingModule, CommonModule],
+            imports: [PuibeTeaserComponent, BrowserAnimationsModule, RouterTestingModule],
         }),
     ],
     render: (args) => ({
@@ -29,7 +28,9 @@ const meta: Meta<Args> = {
         },
         template: `
         <puibe-teaser [title]="title" [titleLevel]="titleLevel" [subtitleLevel]="subtitleLevel" [subtitle]="subtitle" [teaserLink]="teaserLink">
-            <ng-container *ngIf="text">${args.text}</ng-container>
+            @if (text) {
+                ${args.text}
+            }
         </puibe-teaser>`,
     }),
 };

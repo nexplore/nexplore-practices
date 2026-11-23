@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -31,13 +31,11 @@ import { PuibeRadioButtonComponent } from './radio-button.component';
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        NgFor,
         NgClass,
         PuibeIconInvalidComponent,
         AsyncPipe,
         TranslateModule,
         PuibeIconSpinnerComponent,
-        NgIf,
         PuibeReadonlyLabelValueComponent,
     ],
     providers: [

@@ -1,5 +1,5 @@
-import { NgClass, NgIf } from '@angular/common';
-import { Component, inject, Input, ViewEncapsulation } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { Component, inject, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PuibeIconCloseComponent } from '../icons/icon-close.component';
 import { PuibeModalService } from './modal.service';
@@ -9,8 +9,9 @@ import { PUIBE_MODAL_CONFIG, PuibeModalConfig } from './types';
     standalone: true,
     selector: 'puibe-modal',
     templateUrl: 'modal.component.html',
-    imports: [NgIf, NgClass, TranslateModule, PuibeIconCloseComponent],
+    imports: [NgClass, TranslateModule, PuibeIconCloseComponent],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.Eager,
     styles: [
         // The following rule uses the :where() pseudo-class to match attribute selector, but keeping the low specificity, so it can be easily overriden.
         `

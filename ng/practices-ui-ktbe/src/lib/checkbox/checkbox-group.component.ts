@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnDestroy, Optional } from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
 import { TranslateModule } from '@ngx-translate/core';
@@ -16,7 +16,7 @@ let nextUniqueId = 0;
     selector: 'puibe-checkbox-group',
     templateUrl: './checkbox-group.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgFor, NgClass, PuibeIconInvalidComponent, AsyncPipe, TranslateModule, PuibeIconSpinnerComponent, NgIf],
+    imports: [NgClass, PuibeIconInvalidComponent, AsyncPipe, TranslateModule, PuibeIconSpinnerComponent],
     providers: [DestroyService],
 })
 export class PuibeCheckboxGroupComponent implements OnDestroy {

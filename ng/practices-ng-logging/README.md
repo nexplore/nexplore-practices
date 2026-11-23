@@ -19,7 +19,7 @@ The library addresses the need for controlled logging in web applications, espec
 ## Installation
 
 ```bash
-pnpm install @nexplore/practices-ng-logging
+npm install @nexplore/practices-ng-logging
 ```
 
 ## Features and Usage Examples

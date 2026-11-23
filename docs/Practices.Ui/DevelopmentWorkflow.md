@@ -10,19 +10,19 @@ To get things running, you have to decide which samples you want to run, NX will
 
 Samples (Clarity):
 
-- Run the Samples: `pnpm run start-clarity`
+- Run the Samples: `npm run start-clarity`
 
 Samples (Kanton Bern):
 
-- Run the Samples: `pnpm run start-ktbe`
+- Run the Samples: `npm run start-ktbe`
 
 ## Run Tests
 
-You can run all Unit Tests by executing `pnpm test`. You can add the library specific names after it to only execute tests for a specific project.
+You can run all Unit Tests by executing `npm test`. You can add the library specific names after it to only execute tests for a specific project.
 
 ## Lint
 
-Execute `pnpm run lint` before you issue a PR to ensure that the code fulfills our conventions.
+Execute `npm run lint` before you issue a PR to ensure that the code fulfills our conventions.
 
 ## Practices.Ui.KtBE Do's and Don'ts
 

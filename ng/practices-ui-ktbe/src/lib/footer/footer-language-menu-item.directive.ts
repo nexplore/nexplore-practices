@@ -9,7 +9,6 @@ import { PuibeHeaderLanguageMenuItemDirective } from '../..';
         {
             directive: PuibeHeaderLanguageMenuItemDirective,
             inputs: ['isActive', 'language'],
-            // eslint-disable-next-line @angular-eslint/no-outputs-metadata-property
             outputs: ['languageChanged'],
         },
     ],

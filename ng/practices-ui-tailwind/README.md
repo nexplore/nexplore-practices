@@ -121,7 +121,7 @@ The library includes a basic set of svg-based icons:
 ## Installation
 
 ```bash
-pnpm install @nexplore/practices-ui-tailwind
+npm install @nexplore/practices-ui-tailwind
 ```
 
 ## Usage

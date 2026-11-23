@@ -31,8 +31,12 @@ const meta: Meta = {
         </div>
         
         <puibe-two-column-nav [heading]="heading" [headingSelectors]="headingSelectors">
-            <p above-nav *ngIf="aboveText">{{ aboveText }}</p>
-            <p below-nav *ngIf="belowText">{{ belowText }}</p>
+            @if (aboveText) {
+                <p above-nav>{{ aboveText }}</p>
+            }
+            @if (belowText) {
+                <p below-nav>{{ belowText }}</p>
+            }
             <div class="bg-white text-black px-3 m-0">
                 <h1 id="heading-1" class="pt-3 pb-40">h1</h1>
                 <p  class="pb-40">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
