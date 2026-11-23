@@ -118,6 +118,21 @@ describe('formatting insensitive hashing', () => {
         expect(isSameContent(packaged, formatted)).toBe(true);
     });
 
+    it('ignores trailing commas in parameter and argument lists', () => {
+        const packaged = 'export function f(a: number, b: number) { return g(a, b); }';
+        const formatted = 'export function f(\n    a: number,\n    b: number,\n) {\n    return g(a, b,);\n}';
+
+        expect(isSameContent(packaged, formatted)).toBe(true);
+    });
+
+    it('does not mistake the // of a URL for a comment', () => {
+        const packaged = 'const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="17"></svg>`;';
+        const formatted = 'const svg = `<svg\n  xmlns="http://www.w3.org/2000/svg"\n  width="16"\n  height="17"\n></svg>`;';
+
+        expect(isSameContent(packaged, formatted)).toBe(true);
+        expect(isSameContent(packaged, formatted.replace('height="17"', 'height="18"'))).toBe(false);
+    });
+
     it('ignores HTML comments', () => {
         expect(isSameContent('<p>a</p><!-- note -->', '<p>a</p>')).toBe(true);
     });

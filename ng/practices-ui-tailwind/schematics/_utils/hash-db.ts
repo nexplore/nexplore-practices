@@ -56,11 +56,11 @@ export function normalizeForCompare(content: string): string {
     return content
         .replace(/<!--[\s\S]*?-->/g, '')
         .replace(/\/\*[\s\S]*?\*\//g, '')
-        .replace(/\/\/[^\n]*/g, '')
+        .replace(/(^|[^:'"])\/\/[^\n]*/gm, '$1')
         .replace(/\s+/g, '')
-        .replace(/[();]/g, '')
         .replace(/"/g, "'")
-        .replace(/,(?=[\]}>])/g, '');
+        .replace(/,(?=[)\]}>])/g, '')
+        .replace(/[();]/g, '');
 }
 
 /** Formatting insensitive hash used to detect local modifications. */
