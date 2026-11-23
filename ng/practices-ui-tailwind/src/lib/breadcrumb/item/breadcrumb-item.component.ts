@@ -28,7 +28,7 @@ export class PuiBreadcrumbItemComponent {
     private router = inject(Router, { optional: true });
     readonly shellService = inject(PuiShellService, { optional: true });
 
-    @HostBinding('role')
+    @HostBinding('attr.role')
     readonly role = 'listitem';
 
     @HostBinding('class')

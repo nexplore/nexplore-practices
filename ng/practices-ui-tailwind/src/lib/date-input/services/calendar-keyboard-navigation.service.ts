@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Duration } from 'date-fns/types';
+import { Duration } from 'date-fns';
 import { DateService } from '../../date.service';
 import { CalendarPeriodType, PuiCalendarPeriodService } from './calendar-period.service';
 import { PuiCalendarYearViewService } from './calendar-year-view.service';

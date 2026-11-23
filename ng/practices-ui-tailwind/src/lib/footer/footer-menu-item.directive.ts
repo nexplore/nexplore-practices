@@ -36,7 +36,7 @@ export class PuiFooterMenuItemDirective implements OnInit, OnDestroy {
     @HostBinding('class')
     readonly className = className;
 
-    @HostBinding('role')
+    @HostBinding('attr.role')
     readonly role = 'listitem';
 
     // eslint-disable-next-line @angular-eslint/no-input-rename

@@ -35,7 +35,7 @@ export class PuiBreadcrumbComponent implements OnInit {
     private _destroy$ = inject(DestroyService);
     private routerUtilService = inject(RouterUtilService);
 
-    @HostBinding('role')
+    @HostBinding('attr.role')
     readonly role = 'navigation';
 
     @HostBinding('aria-label')

@@ -12,6 +12,7 @@ export class PuiErrorStatusDirective {
     // template of this directive will be rendered
     static ngTemplateContextGuard(
         _directive: PuiErrorStatusDirective,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         context: unknown,
     ): context is StatusTemplateContext<any> {
         return true;

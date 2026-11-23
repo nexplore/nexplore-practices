@@ -11,7 +11,7 @@ import { set } from 'date-fns/set';
 import { setDay } from 'date-fns/setDay';
 import { startOfWeek } from 'date-fns/startOfWeek';
 import { startOfYear } from 'date-fns/startOfYear';
-import { Locale } from 'date-fns/types';
+import { Locale } from 'date-fns';
 import { distinctUntilChanged, filter, startWith } from 'rxjs';
 
 const dateParseFormats = ['d.M.yy', 'd.M.yyyy', 'dd-MM-yyyy'];
