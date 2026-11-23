@@ -45,15 +45,22 @@ export function sha256(content: string | Buffer): string {
 /**
  * Normalizes source text so that two files compare equal when they only differ in formatting.
  *
- * The Angular CLI formats every file a schematic creates with the Prettier of the workspace (whitespace, quotes,
- * trailing commas, semicolons). A plain hash of the packaged content would therefore never match the file on disk.
+ * The Angular CLI formats every file a schematic creates with the Prettier of the workspace: whitespace, quotes,
+ * trailing commas, semicolons, parentheses around multi-line expressions and the layout of comments change. A plain
+ * hash of the packaged content would therefore never match the file on disk. The normalized text is only used to
+ * detect local modifications, it is never written anywhere.
+ *
+ * Trade-off: parentheses and comments are ignored, a change that consists only of those is not detected.
  */
 export function normalizeForCompare(content: string): string {
     return content
+        .replace(/<!--[\s\S]*?-->/g, '')
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .replace(/\/\/[^\n]*/g, '')
         .replace(/\s+/g, '')
+        .replace(/[();]/g, '')
         .replace(/"/g, "'")
-        .replace(/,(?=[\]})>])/g, '')
-        .replace(/;/g, '');
+        .replace(/,(?=[\]}>])/g, '');
 }
 
 /** Formatting insensitive hash used to detect local modifications. */

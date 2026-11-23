@@ -94,6 +94,34 @@ describe('formatting insensitive hashing', () => {
         expect(contentHash(PACKAGED_V1)).toBe(contentHash(FORMATTED_V1));
     });
 
+    it('ignores parentheses Prettier adds around multi-line expressions and the layout of comments', () => {
+        const packaged = [
+            'export const f = (x: number) => {',
+            '  return x > 1 && x < 5; // in range',
+            '};',
+            '/** Doubles',
+            ' * the value */',
+        ].join('\n');
+        const formatted = [
+            'export const f = (x: number) => {',
+            '  return (',
+            '    x > 1 &&',
+            '    x < 5',
+            '  ); // in range',
+            '};',
+            '/**',
+            ' * Doubles the value',
+            ' */',
+            '',
+        ].join('\n');
+
+        expect(isSameContent(packaged, formatted)).toBe(true);
+    });
+
+    it('ignores HTML comments', () => {
+        expect(isSameContent('<p>a</p><!-- note -->', '<p>a</p>')).toBe(true);
+    });
+
     it('detects real changes', () => {
         expect(isSameContent(PACKAGED_V1, PACKAGED_V1.replace('signal(1)', 'signal(2)'))).toBe(false);
         expect(normalizeForCompare('a b')).toBe(normalizeForCompare('ab'));
