@@ -10,11 +10,17 @@
 .tabs-component .ng-select .ng-select-container:focus-within {
     @apply rounded-xs border border-solid border-black outline-0;
 }
-/* The dropdown panel is rendered in an overlay (outside of .tabs-component), it is identified by its panelClass. */
-.ng-dropdown-panel.tabs-component-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked {
+/*
+ * ng-select >= 24 renders the dropdown panel in an overlay (outside of .tabs-component), it is identified by its panelClass.
+ * ng-select 21 (Angular 21) has no panelClass and renders the panel inside the ng-select (.tabs-component .ng-dropdown-panel).
+ * Remove the descendant selectors when Angular 21 is no longer supported.
+ */
+.ng-dropdown-panel.tabs-component-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked,
+.tabs-component .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked {
     @apply border-l-dark-gray;
 }
 
-.ng-dropdown-panel.tabs-component-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+.ng-dropdown-panel.tabs-component-panel .ng-dropdown-panel-items .ng-option.ng-option-marked,
+.tabs-component .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
     @apply border-l-dark-gray bg-sand text-black;
 }

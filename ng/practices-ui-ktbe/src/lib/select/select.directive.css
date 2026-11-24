@@ -88,29 +88,41 @@
 .ng-dropdown-panel {
     @apply left-0 border border-solid border-black bg-white;
 }
-.ng-dropdown-panel.puibe-display-invalid {
+/*
+ * The state classes (puibe-display-invalid, puibe-loading) are set on the ng-select host.
+ * ng-select >= 24 renders the panel in an overlay and copies the host classes to it (.ng-dropdown-panel.puibe-...).
+ * ng-select 21 (Angular 21) renders the panel inside the ng-select (.ng-select.puibe-... .ng-dropdown-panel).
+ * Remove the descendant selectors when Angular 21 is no longer supported.
+ */
+.ng-dropdown-panel.puibe-display-invalid,
+.ng-select.puibe-display-invalid .ng-dropdown-panel {
     @apply border-red;
 }
 .ng-dropdown-panel .ng-dropdown-panel-items {
     @apply max-h-80;
 }
-.ng-dropdown-panel.puibe-loading .ng-dropdown-panel-items {
+.ng-dropdown-panel.puibe-loading .ng-dropdown-panel-items,
+.ng-select.puibe-loading .ng-dropdown-panel .ng-dropdown-panel-items {
     @apply animate-pulse;
 }
 .ng-dropdown-panel.ng-select-top,
-.ng-dropdown-panel.puibe-display-invalid.ng-select-top {
+.ng-dropdown-panel.puibe-display-invalid.ng-select-top,
+.ng-select.puibe-display-invalid .ng-dropdown-panel.ng-select-top {
     @apply bottom-full -mb-[1px] border-b-white;
 }
 .ng-dropdown-panel.ng-select-right,
-.ng-dropdown-panel.puibe-display-invalid.ng-select-right {
+.ng-dropdown-panel.puibe-display-invalid.ng-select-right,
+.ng-select.puibe-display-invalid .ng-dropdown-panel.ng-select-right {
     @apply top-0 left-full -mb-[1px] border-b-white;
 }
 .ng-dropdown-panel.ng-select-bottom,
-.ng-dropdown-panel.puibe-display-invalid.ng-select-bottom {
+.ng-dropdown-panel.puibe-display-invalid.ng-select-bottom,
+.ng-select.puibe-display-invalid .ng-dropdown-panel.ng-select-bottom {
     @apply top-full -mt-[1px] border-t-white;
 }
 .ng-dropdown-panel.ng-select-left,
-.ng-dropdown-panel.puibe-display-invalid.ng-select-left {
+.ng-dropdown-panel.puibe-display-invalid.ng-select-left,
+.ng-select.puibe-display-invalid .ng-dropdown-panel.ng-select-left {
     @apply top-0 -left-full -mb-[1px] border-b-white;
 }
 .ng-dropdown-panel .ng-dropdown-header {
