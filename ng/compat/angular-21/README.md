@@ -8,7 +8,7 @@ The practices libraries are built with Angular 22, but their peer ranges also al
 -   the Angular 21 linker cannot process a partial declaration of the libraries
 -   a library imports an API that does not exist in one of these versions
 -   the bundled `.d.ts` files or a template do not type-check (`skipLibCheck: false`, `strictTemplates`)
--   `src/app/select.spec.ts` fails: it renders a `practices-ui-ktbe` select with a `SelectViewSource` on ng-select 21 (Vitest, jsdom), because the select directives rely on ng-select internals
+-   `src/app/select.spec.ts` fails: it renders `practices-ui-ktbe` selects with a `SelectViewSource` (fixed items and remote search) on ng-select 21 (Vitest, jsdom), because the select directives rely on ng-select internals
 
 Other runtime behaviour on Angular 21 is not covered, and the styles are not checked.
 

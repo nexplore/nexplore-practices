@@ -20,6 +20,11 @@ All `@nexplore/practices-*` Angular packages now declare `>=22.0.0 <23.0.0` as t
 
 > [!NOTE]
 > The releases after 13.0.0 accept Angular `>=21.2.0 <23.0.0` again (and `@ng-select/ng-select` `>=21.0.0 <25.0.0` for `practices-ui-ktbe`). Applications on Angular 21.2 can update without upgrading Angular first. The packages are still built with Angular 22; the CI checks the Angular 21 lower bound with [`ng/compat/angular-21`](../../ng/compat/angular-21/README.md).
+>
+> With ng-select 21, two behaviours of ng-select itself differ from ng-select 24:
+>
+> -   A select with a remote-search select view source (`searchable: true` without `localSearch`) loads its items once more, without filter, after an item is selected, the dropdown is closed or the value is cleared. ng-select 21 emits `null` to the typeahead in these cases, ng-select 24 only emits while typing.
+> -   ng-select 21 always prevents the default of Escape, also when the dropdown is closed. A surrounding dialog therefore does not close on Escape while the select has the focus.
 
 ```jsonc
 // Before (12.x)
