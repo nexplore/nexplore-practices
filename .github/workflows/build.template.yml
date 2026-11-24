@@ -23,6 +23,9 @@ jobs:
           check-latest: true
       - run: chmod +x ./build.sh
       - run: ./build.sh BuildPackAll
+      # Builds an Angular 21.2 app against the packed libraries (lower bound of the peer ranges)
+      - name: Verify packages with Angular 21
+        run: bash ng/compat/angular-21/verify.sh
       - if: always()
         uses: actions/upload-artifact@v7.0.1
         with:

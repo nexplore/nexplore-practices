@@ -18,6 +18,9 @@ Version 13.0.0 builds the Angular packages with Angular 22. It contains no inten
 
 All `@nexplore/practices-*` Angular packages now declare `>=22.0.0 <23.0.0` as their Angular peer range. Angular 18 to 21 are no longer supported. Upgrade your application to Angular 22 first (see the [Angular update guide](https://angular.dev/update-guide)), then update the practices packages.
 
+> [!NOTE]
+> The releases after 13.0.0 accept Angular `>=21.2.0 <23.0.0` again (and `@ng-select/ng-select` `>=21.0.0 <25.0.0` for `practices-ui-ktbe`). Applications on Angular 21.2 can update without upgrading Angular first. The packages are still built with Angular 22; the CI checks the Angular 21 lower bound with [`ng/compat/angular-21`](../../ng/compat/angular-21/README.md).
+
 ```jsonc
 // Before (12.x)
 "@angular/core": ">=18.0.0 <22.0.0"

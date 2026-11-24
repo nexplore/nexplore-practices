@@ -1,0 +1,2 @@
+# Standalone compatibility apps with their own node_modules, not part of the Nx workspace (see compat/angular-21/README.md)
+compat/
