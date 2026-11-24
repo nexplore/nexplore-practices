@@ -31,7 +31,7 @@ In a project that uses Nexplore.Practices, referencing a newer version of Angula
 
 We aim to keep compatibility with the **3 most current** Angular versions ([as defined in their supported versions](https://angular.dev/reference/releases#actively-supported-versions)) as we want to update our projects to have such an Angular version at all time.
 
-The packages are built with the newest supported Angular version. Older versions in the peer range are checked by one compatibility app per version in `ng/compat/` (currently [Angular 21](../ng/compat/angular-21/README.md)), which the CI builds against the packed libraries.
+The peer ranges of the packages define which Angular versions are actually supported (currently Angular 21.2 and 22). The packages are built with the newest supported Angular version. Older versions in the peer range are checked by one compatibility app per version in `ng/compat/` (currently [Angular 21](../ng/compat/angular-21/README.md)), which the CI builds and tests against the packed libraries.
 
 ### .NET
 

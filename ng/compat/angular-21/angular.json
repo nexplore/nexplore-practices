@@ -20,6 +20,15 @@
                         "tsConfig": "tsconfig.json",
                         "outputHashing": "none"
                     }
+                },
+                "test": {
+                    "builder": "@angular/build:unit-test",
+                    "options": {
+                        "tsConfig": "tsconfig.spec.json",
+                        "buildTarget": "compat:build",
+                        "watch": false,
+                        "setupFiles": ["src/test-setup.ts"]
+                    }
                 }
             }
         }
