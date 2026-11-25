@@ -16,7 +16,7 @@ Version 14.0.0 builds `practices-ui-ktbe` with Tailwind CSS 4. The components lo
 -   [Renamed and removed utilities](#renamed-and-removed-utilities)
 -   [Behaviour changes](#behaviour-changes)
 -   [Prettier](#prettier)
--   [`PUIBE_DIALOG_PRESETS.confirmDelete` no longer creates the command](#puibe_dialog_presetsconfirmdelete-no-longer-creates-the-command)
+-   [Action dialog: the actions are no longer converted in place](#action-dialog-the-actions-are-no-longer-converted-in-place)
 
 ### Before you start: create a visual baseline
 
@@ -183,9 +183,11 @@ Tailwind 4 renamed some utilities and removed others. The library's templates we
 }
 ```
 
-### `PUIBE_DIALOG_PRESETS.confirmDelete` no longer creates the command
+### Action dialog: the actions are no longer converted in place
 
-`confirmDelete` can now be called outside of an injection context (e.g. in a click handler). It no longer converts the delete action into a `Command`: `config.actions.DELETE` is the function or command you passed in. The dialog creates the command when it opens, still with the `action-delete` status category. Nothing changes if you pass the preset to `PuibeActionDialogService` directly. If your code reads `config.actions.DELETE` as a `Command` (e.g. `busy$` or `trigger`), create the command yourself with `command.fromInput(...)`.
+`PuibeActionDialogService` no longer replaces the `command` of the action objects you pass in (e.g. a shared constant) with the created `Command`. It works on copies, so `action.command` stays the function or command you passed in. Read the commands from the dialog component if you need their state (e.g. `busy$`).
+
+`PUIBE_DIALOG_PRESETS.confirmDelete` can now be called outside of an injection context (e.g. in a click handler). It no longer converts the delete action into a `Command`: `config.actions.DELETE` is the function or command you passed in, and the `action-delete` status category is in the new `actionCommandOptions` of the configuration. The dialog creates the command when it opens. Nothing changes if you pass the preset to `PuibeActionDialogService`, also when you copy or change its `actions` or `actionTemplates`. If your code reads `config.actions.DELETE` as a `Command` (e.g. `busy$` or `trigger`), create the command yourself with `command.fromInput(...)`.
 
 ## Upgrading to 13.0.0
 

@@ -1,5 +1,4 @@
 // Internal helpers of the action dialog, kept in their own file so that the package index does not export them.
-import type { CommandOptions } from '@nexplore/practices-ng-commands';
 import { AbstractCommand } from '@nexplore/practices-ng-commands';
 import type { CombinedCommandInput } from '@nexplore/practices-ui';
 import { LegacyCommandBase } from '@nexplore/practices-ui';
@@ -15,19 +14,4 @@ export function isActionCommandInput(value: unknown): value is CombinedCommandIn
     // Like `command.fromInput`, also accept legacy commands that do not extend LegacyCommandBase (e.g. from a second
     // copy of the package)
     return typeof value === 'object' && value !== null && 'trigger' in value && 'error$' in value && 'result$' in value;
-}
-
-/** Command options of the actions of a preset, by actions map (the preset does not create the commands itself). */
-const presetActionCommandOptions = new WeakMap<object, Record<string, CommandOptions<any>>>();
-
-export function setPresetActionCommandOptions<TActions extends object>(
-    actions: TActions,
-    options: Partial<Record<keyof TActions, CommandOptions<any>>>
-): TActions {
-    presetActionCommandOptions.set(actions, options as Record<string, CommandOptions<any>>);
-    return actions;
-}
-
-export function getPresetActionCommandOptions(actions: object, key: string): CommandOptions<any> | undefined {
-    return presetActionCommandOptions.get(actions)?.[key];
 }

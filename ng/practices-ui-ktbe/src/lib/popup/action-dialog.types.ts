@@ -2,7 +2,6 @@ import type { TemplateRef, Type } from '@angular/core';
 import type { CommandInput, CommandOptions } from '@nexplore/practices-ng-commands';
 import type { CombinedCommandInput } from '@nexplore/practices-ui';
 import type { Variant } from '../button/button.directive';
-import { setPresetActionCommandOptions } from './action-dialog-action-utils';
 
 export type DialogAction<TAction> = TAction & { command?: CommandInput<void, any> };
 
@@ -139,6 +138,12 @@ export interface PuibeActionDialogConfig<
     actions?: TActions;
 
     /**
+     * Options for the commands that the dialog creates from `actions` (an action map), by action key, e.g. the status
+     * category. They take precedence over the `commandOptions` of the action template.
+     */
+    actionCommandOptions?: { [key in keyof TActionTemplates]?: CommandOptions<TArgs> };
+
+    /**
      * If provided, defines a main command, that is called when any action is triggered, with the action as parameter.
      *
      * Note, will not get called for actions which have a command defined directly on them.
@@ -159,12 +164,9 @@ export const PUIBE_DIALOG_PRESETS = {
         >
     > => ({
         // Not converted to a command here: the preset is often created outside of an injection context (e.g. in a click
-        // handler). The dialog converts the action when it opens, with these options (unless the action template of the
-        // dialog defines its own `commandOptions`).
-        actions: setPresetActionCommandOptions(
-            { DELETE: deleteAction, CANCEL: false as const },
-            { DELETE: { status: { statusCategory: 'action-delete' } } }
-        ),
+        // handler). The dialog converts the action when it opens, with the options of `actionCommandOptions`.
+        actions: { DELETE: deleteAction, CANCEL: false },
+        actionCommandOptions: { DELETE: { status: { statusCategory: 'action-delete' } } },
         titleKey: 'Practices.Labels_Delete',
         contentKey: 'Practices.Labels_DeletePrompt',
         ...overrideConfig,

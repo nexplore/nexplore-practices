@@ -1,6 +1,6 @@
 import { LegacyCommand } from '@nexplore/practices-ui';
 import { of } from 'rxjs';
-import { getPresetActionCommandOptions, isActionCommandInput } from './action-dialog-action-utils';
+import { isActionCommandInput } from './action-dialog-action-utils';
 import { PUIBE_DIALOG_PRESETS } from './action-dialog.types';
 
 describe('isActionCommandInput', () => {
@@ -33,29 +33,18 @@ describe('PUIBE_DIALOG_PRESETS', () => {
         it('uses the delete status category for the delete action', () => {
             const config = PUIBE_DIALOG_PRESETS.confirmDelete(() => of(true));
 
-            expect(getPresetActionCommandOptions(config.actions!, 'DELETE')).toEqual({
-                status: { statusCategory: 'action-delete' },
-            });
-            expect(getPresetActionCommandOptions(config.actions!, 'CANCEL')).toBeUndefined();
+            expect(config.actionCommandOptions).toEqual({ DELETE: { status: { statusCategory: 'action-delete' } } });
         });
 
-        it('keeps the delete status category when the caller sets its own action templates', () => {
+        it('keeps the delete status category when the caller copies the actions or sets its own templates', () => {
+            const preset = PUIBE_DIALOG_PRESETS.confirmDelete(() => of(true));
             const config = {
-                ...PUIBE_DIALOG_PRESETS.confirmDelete(() => of(true)),
+                ...preset,
+                actions: { ...preset.actions },
                 actionTemplates: { DELETE: { labelKey: 'App.Remove', primary: true }, CANCEL: { labelKey: 'App.No' } },
             };
 
-            expect(config.actionTemplates.DELETE).not.toHaveProperty('commandOptions');
-            expect(getPresetActionCommandOptions(config.actions!, 'DELETE')).toEqual({
-                status: { statusCategory: 'action-delete' },
-            });
-        });
-
-        it('does not mark the delete action itself, so it can be reused elsewhere', () => {
-            const deleteAction = () => of(true);
-            PUIBE_DIALOG_PRESETS.confirmDelete(deleteAction);
-
-            expect(getPresetActionCommandOptions({ DELETE: deleteAction }, 'DELETE')).toBeUndefined();
+            expect(config.actionCommandOptions?.DELETE).toEqual({ status: { statusCategory: 'action-delete' } });
         });
     });
 });
