@@ -78,13 +78,20 @@ async function render<T>(host: Type<T>): Promise<{ fixture: ComponentFixture<T>;
     return { fixture, ngSelect };
 }
 
-// The view source debounces its loads by 300 ms, and whenStable does not wait for that timer.
+// Debounce of the view source loads (debounceTime in practices-ng-list-view-source list-view-source.ts).
+const VIEW_SOURCE_DEBOUNCE_MS = 300;
+
+// fixture.whenStable() does not wait for timers, so the tests use fake timers and advance them past the debounce.
+// (whenStable is not used at all: with fake timers it would wait for Angular's own scheduling timers forever.)
 async function settle(fixture: ComponentFixture<unknown>): Promise<void> {
     fixture.detectChanges();
-    await new Promise((resolve) => setTimeout(resolve, 350));
-    await fixture.whenStable();
+    await vi.advanceTimersByTimeAsync(VIEW_SOURCE_DEBOUNCE_MS);
     fixture.detectChanges();
 }
+
+// Installed before render(), because the first load is already debounced during the first detectChanges.
+beforeEach(() => vi.useFakeTimers());
+afterEach(() => vi.useRealTimers());
 
 describe('practices-ui-ktbe select with ng-select 21', () => {
     let fixture: ComponentFixture<SelectHost>;
@@ -102,7 +109,9 @@ describe('practices-ui-ktbe select with ng-select 21', () => {
         expect(ngSelect.bindLabel()).toBe('name');
         expect(ngSelect.bindValue()).toBe('id');
         expect(ngSelect.searchable()).toBe(false);
-        expect(ngSelect.labelForId()).toBeTruthy();
+        const label = fixture.nativeElement.querySelector('label') as HTMLLabelElement;
+        expect(label.htmlFor).toBeTruthy();
+        expect(ngSelect.labelForId()).toBe(label.htmlFor);
     });
 
     it('displays the label of the selected value', () => {
