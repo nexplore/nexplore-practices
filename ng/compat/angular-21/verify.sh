@@ -16,10 +16,12 @@ for lib in "$dist_dir"/practices-*/; do
 done
 
 # Run outside of the repository: inside ng/, Node and the bundler would fall back to ng/node_modules (Angular 22)
-# for every package that is missing here. The workspace .npmrc (ignore-scripts, min-release-age, engine-strict)
-# is copied so that the same npm hardening applies.
+# for every package that is missing here. The workspace .npmrc (ignore-scripts, min-release-age) is copied so that
+# the same npm hardening applies. Only engine-strict is turned off: the workspace runs on Node 26, which Angular 21 and
+# ng-select 21 do not list in their engines (Node ^20 || ^22 || ^24). This check is about the libraries, not Node.
 mkdir "$work_dir/app"
 cp -r "$app_dir/src" "$app_dir"/*.json "$app_dir/../../.npmrc" "$work_dir/app/"
+export npm_config_engine_strict=false
 cd "$work_dir/app"
 
 npm ci --no-audit --no-fund
