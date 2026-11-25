@@ -1,0 +1,36 @@
+{
+    "name": "practices-compat-angular-21",
+    "private": true,
+    "description": "Builds and tests an Angular 21.2 app against the packed practices libraries to verify the lower bound of their peer ranges. See README.md.",
+    "scripts": {
+        "build": "ng build",
+        "test": "ng test"
+    },
+    "dependencies": {
+        "@angular/animations": "21.2.0",
+        "@angular/cdk": "21.2.0",
+        "@angular/common": "21.2.0",
+        "@angular/compiler": "21.2.0",
+        "@angular/core": "21.2.0",
+        "@angular/forms": "21.2.0",
+        "@angular/platform-browser": "21.2.0",
+        "@angular/router": "21.2.0",
+        "@clr/angular": "18.4.0",
+        "@clr/ui": "18.4.0",
+        "@ng-select/ng-select": "21.0.0",
+        "@ngx-translate/core": "17.0.0",
+        "date-fns": "4.1.0",
+        "rxjs": "7.8.2",
+        "tailwindcss": "3.2.4",
+        "tslib": "2.8.1",
+        "zone.js": "0.16.0"
+    },
+    "devDependencies": {
+        "@angular/build": "21.2.0",
+        "@angular/cli": "21.2.0",
+        "@angular/compiler-cli": "21.2.0",
+        "jsdom": "28.1.0",
+        "typescript": "5.9.3",
+        "vitest": "4.1.12"
+    }
+}

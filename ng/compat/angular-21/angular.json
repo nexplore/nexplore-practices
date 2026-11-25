@@ -1,0 +1,36 @@
+{
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "cli": {
+        "packageManager": "npm",
+        "analytics": false
+    },
+    "projects": {
+        "compat": {
+            "projectType": "application",
+            "root": "",
+            "sourceRoot": "src",
+            "architect": {
+                "build": {
+                    "builder": "@angular/build:application",
+                    "options": {
+                        "browser": "src/main.ts",
+                        "index": "src/index.html",
+                        "polyfills": ["zone.js"],
+                        "tsConfig": "tsconfig.json",
+                        "outputHashing": "none"
+                    }
+                },
+                "test": {
+                    "builder": "@angular/build:unit-test",
+                    "options": {
+                        "tsConfig": "tsconfig.spec.json",
+                        "buildTarget": "compat:build",
+                        "watch": false,
+                        "setupFiles": ["src/test-setup.ts"]
+                    }
+                }
+            }
+        }
+    }
+}
