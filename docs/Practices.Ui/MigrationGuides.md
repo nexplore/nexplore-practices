@@ -663,7 +663,7 @@ The component must be instantiated once globally in the application:
     <puibe-expansion-panel
       *ngIf="status.error?.stack ?? status.error?.message"
       caption="Details"
-      class="flex-grow-0 text-black"
+      class="grow-0 text-black"
       [enableContentScroll]="true"
     >
       <code *ngIf="status.error.stack" class="whitespace-pre">
@@ -742,7 +742,7 @@ The `PuiGlobalDirtyGuardDirective` prevents leaving an unsaved form and confront
 The directive must be defined globally in the router outlet:
 
 ```html
-<main class="mt-10 focus:outline-none" tabindex="-1">
+<main class="mt-10 focus:outline-hidden" tabindex="-1">
   <h1 class="sr-only">{{ title$ | async }}</h1>
   <router-outlet puiGlobalDirtyGuard></router-outlet>
 </main>
@@ -845,7 +845,7 @@ Additionally, to display error messages and progress spinners, the `puibe-status
     <puibe-expansion-panel
       *ngIf="status.error?.stack ?? status.error?.message"
       caption="Details"
-      class="flex-grow-0 text-black"
+      class="grow-0 text-black"
       [enableContentScroll]="true"
     >
       <code *ngIf="status.error.stack" class="whitespace-pre">
