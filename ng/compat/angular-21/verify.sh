@@ -3,6 +3,9 @@
 # Run `npm run build-all` in ng/ first (the CI runs it after ./build.sh BuildPackAll).
 set -euo pipefail
 
+# Newest ng-select 21: its inputs are writable signals, while 21.0.0 (package.json) has input signals
+latest_ng_select_21="21.8.2"
+
 app_dir="$(cd "$(dirname "$0")" && pwd)"
 dist_dir="$(cd "$app_dir/../../dist" && pwd)"
 work_dir="$(mktemp -d)"
@@ -13,13 +16,19 @@ for lib in "$dist_dir"/practices-*/; do
 done
 
 # Run outside of the repository: inside ng/, Node and the bundler would fall back to ng/node_modules (Angular 22)
-# for every package that is missing here.
+# for every package that is missing here. The workspace .npmrc (ignore-scripts, min-release-age, engine-strict)
+# is copied so that the same npm hardening applies.
 mkdir "$work_dir/app"
-cp -r "$app_dir/src" "$app_dir"/*.json "$work_dir/app/"
+cp -r "$app_dir/src" "$app_dir"/*.json "$app_dir/../../.npmrc" "$work_dir/app/"
 cd "$work_dir/app"
 
 npm ci --no-audit --no-fund
 # No --legacy-peer-deps: npm has to accept the declared peer ranges with the Angular 21 versions of package.json
 npm install --no-save --no-audit --no-fund "$work_dir"/*.tgz
 npx ng build
+npx ng test
+
+echo "Testing again with @ng-select/ng-select@$latest_ng_select_21"
+# Install the libraries again in the same command: a separate npm install --no-save would remove them
+npm install --no-save --no-audit --no-fund "$work_dir"/*.tgz "@ng-select/ng-select@$latest_ng_select_21"
 npx ng test

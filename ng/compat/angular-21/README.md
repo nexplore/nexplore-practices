@@ -8,7 +8,7 @@ The practices libraries are built with Angular 22, but their peer ranges also al
 -   the Angular 21 linker cannot process a partial declaration of the libraries
 -   a library imports an API that does not exist in one of these versions
 -   the bundled `.d.ts` files or a template do not type-check (`skipLibCheck: false`, `strictTemplates`)
--   `src/app/select.spec.ts` fails: it renders `practices-ui-ktbe` selects with a `SelectViewSource` (fixed items and remote search) on ng-select 21 (Vitest, jsdom), because the select directives rely on ng-select internals
+-   `src/app/select.spec.ts` fails: it renders `practices-ui-ktbe` selects with a `SelectViewSource` (fixed items and remote search) on ng-select 21.0.0 and again on 21.8.2 (Vitest, jsdom), because the select directives rely on ng-select internals
 
 Other runtime behaviour on Angular 21 is not covered, and the styles are not checked.
 
@@ -23,4 +23,4 @@ bash compat/angular-21/verify.sh
 
 ## Drop Angular 21
 
-Remove this folder and the step in `.github/workflows/build.template.yml`, and raise the peer ranges of the libraries to `>=22.0.0`. This is a breaking change.
+Remove this folder and the step in `.github/workflows/build.template.yml`, and raise the Angular peer ranges of the libraries to `>=22.0.0` (and the ng-select range of `practices-ui-ktbe` to `>=24.0.0 <25.0.0`). This is a breaking change.
