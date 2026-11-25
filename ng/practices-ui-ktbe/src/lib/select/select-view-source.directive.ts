@@ -10,10 +10,10 @@ import {
     Self,
 } from '@angular/core';
 import { SIGNAL, signalSetFn } from '@angular/core/primitives/signals';
-import { PuiReadonlyDirective } from '@nexplore/practices-ng-forms';
 import { DestroyService, StatusProgressOptions, StatusService } from '@nexplore/practices-ui';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { BehaviorSubject, combineLatest, filter, map, startWith, Subject, switchMap, takeUntil } from 'rxjs';
+import { PuibeReadonlyDirective } from '../common/readonly.directive';
 import { FormFieldService } from '../form-field/form-field.service';
 import { SelectViewSource } from './select-view-source';
 import { PuibeSelectDirective } from './select.directive';
@@ -31,7 +31,8 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
 
     private _searchInputSubject = new Subject<string>();
 
-    private readonly _readonlyDirective = inject(PuiReadonlyDirective, { optional: true });
+    // The same readonly source as PuibeFormFieldComponent, which renders the readonly value
+    private readonly _readonlyDirective = inject(PuibeReadonlyDirective, { optional: true });
 
     @Input('puibeSelectViewSource')
     set selectViewSource(value: SelectViewSource<any>) {

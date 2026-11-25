@@ -16,6 +16,7 @@ Version 14.0.0 builds `practices-ui-ktbe` with Tailwind CSS 4. The components lo
 -   [Renamed and removed utilities](#renamed-and-removed-utilities)
 -   [Behaviour changes](#behaviour-changes)
 -   [Prettier](#prettier)
+-   [`PUIBE_DIALOG_PRESETS.confirmDelete` no longer creates the command](#puibe_dialog_presetsconfirmdelete-no-longer-creates-the-command)
 
 ### Before you start: create a visual baseline
 
@@ -56,14 +57,14 @@ Screenshots depend on the fonts and the rendering of the operating system. Creat
 
 ### Tailwind CSS 4 is required
 
-`@nexplore/practices-ui-ktbe` now declares `tailwindcss >=4.0.0 <5.0.0` as peer dependency. Tailwind CSS 3 is no longer supported.
+`@nexplore/practices-ui-ktbe` now declares `tailwindcss >=4.1.0 <5.0.0` as peer dependency. Tailwind CSS 3 is no longer supported. Tailwind 4.0.x is not supported either: it ignores the `content` paths of the KTBE preset, so the classes used by the library components would not be generated.
 
 ```jsonc
 // Before (13.x)
 "tailwindcss": ">=3.2.4 <5.0.0"
 
 // After (14.0.0)
-"tailwindcss": ">=4.0.0 <5.0.0"
+"tailwindcss": ">=4.1.0 <5.0.0"
 ```
 
 ### Install Tailwind through PostCSS
@@ -167,7 +168,7 @@ Tailwind 4 renamed some utilities and removed others. The library's templates we
     -   `ul.list-none` and its `li` elements had no margin, even with a margin utility (e.g. `<ul class="list-none mt-4">`). These utilities are applied now, remove them if the margin is not wanted.
 -   **Buttons:** Tailwind 4 no longer sets `cursor: pointer` on buttons. The KTBE preset restores it for enabled buttons.
 -   **Placeholders:** Placeholder text uses the current text color at 50% opacity instead of a fixed gray.
--   **Stacked variants** apply from left to right instead of right to left (e.g. `*:first:pt-0` becomes `first:*:pt-0`).
+-   **Stacked variants** apply from left to right instead of right to left (e.g. `first:*:pt-0` becomes `*:first:pt-0`).
 -   **Default ring:** `ring` is 1px wide and uses `currentColor` (3px blue in Tailwind 3). The library does not use it.
 -   **Hover** styles only apply on devices that support hover.
 
@@ -181,6 +182,10 @@ Tailwind 4 renamed some utilities and removed others. The library's templates we
     "tailwindStylesheet": "./src/styles.css"
 }
 ```
+
+### `PUIBE_DIALOG_PRESETS.confirmDelete` no longer creates the command
+
+`confirmDelete` can now be called outside of an injection context (e.g. in a click handler). It no longer converts the delete action into a `Command`: `config.actions.DELETE` is the function or command you passed in. The dialog creates the command when it opens, still with the `action-delete` status category. Nothing changes if you pass the preset to `PuibeActionDialogService` directly. If your code reads `config.actions.DELETE` as a `Command` (e.g. `busy$` or `trigger`), create the command yourself with `command.fromInput(...)`.
 
 ## Upgrading to 13.0.0
 

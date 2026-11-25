@@ -22,6 +22,7 @@ import {
 } from 'rxjs';
 import { combineDirectiveControlErrors } from '../utils/combine-directive-control-errors';
 import { cloneDtoWith, isDto } from '../utils/dto-nswag-utils';
+import { resolveValueAccessorEntityDto } from './resolve-value-accessor-entity-dto';
 import type { INswagGeneratedType, TypedPartialFormGroup } from '../utils/form.types';
 
 export interface WrapperFormControlAccessor<T = any> {
@@ -87,26 +88,6 @@ export interface WrapperFormControlAccessor<T = any> {
      * If implemented, this method will be called when the form control is disabled or enabled.
      */
     setDisabledState?(isDisabled: boolean): void;
-}
-
-/**
- * Returns the DTO to clone the form value with: the DTO provided by the component, or else the last written value if it
- * is a DTO.
- *
- * @internal Exported for tests.
- */
-export function resolveValueAccessorEntityDto(
-    instance: Pick<
-        WrapperFormControlAccessor,
-        'getValueAccessorEntityDto' | 'getValueAccessorEntityDtoSignalToAutoResetForm'
-    >,
-    currentDtoValue: unknown
-): INswagGeneratedType | null {
-    return (
-        instance.getValueAccessorEntityDto?.() ??
-        instance.getValueAccessorEntityDtoSignalToAutoResetForm?.()() ??
-        (isDto(currentDtoValue) ? (currentDtoValue as INswagGeneratedType) : null)
-    );
 }
 
 /**

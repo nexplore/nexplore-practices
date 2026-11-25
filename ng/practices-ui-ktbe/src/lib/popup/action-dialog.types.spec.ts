@@ -1,11 +1,16 @@
 import { LegacyCommand } from '@nexplore/practices-ui';
 import { of } from 'rxjs';
-import { isActionCommandInput, PUIBE_DIALOG_ACTIONS, PUIBE_DIALOG_PRESETS } from './action-dialog.types';
+import { getPresetActionCommandOptions, isActionCommandInput } from './action-dialog-action-utils';
+import { PUIBE_DIALOG_PRESETS } from './action-dialog.types';
 
 describe('isActionCommandInput', () => {
     it('recognizes functions and legacy commands as something to execute', () => {
         expect(isActionCommandInput(() => of(true))).toBe(true);
         expect(isActionCommandInput(LegacyCommand.create(() => of(true)))).toBe(true);
+    });
+
+    it('recognizes legacy commands that do not extend LegacyCommandBase', () => {
+        expect(isActionCommandInput({ trigger: () => undefined, error$: of(), result$: of() })).toBe(true);
     });
 
     it('treats other values as the result of the action', () => {
@@ -28,16 +33,29 @@ describe('PUIBE_DIALOG_PRESETS', () => {
         it('uses the delete status category for the delete action', () => {
             const config = PUIBE_DIALOG_PRESETS.confirmDelete(() => of(true));
 
-            expect(config.actionTemplates?.DELETE).toEqual({
-                ...PUIBE_DIALOG_ACTIONS.DELETE,
-                commandOptions: { status: { statusCategory: 'action-delete' } },
+            expect(getPresetActionCommandOptions(config.actions!, 'DELETE')).toEqual({
+                status: { statusCategory: 'action-delete' },
+            });
+            expect(getPresetActionCommandOptions(config.actions!, 'CANCEL')).toBeUndefined();
+        });
+
+        it('keeps the delete status category when the caller sets its own action templates', () => {
+            const config = {
+                ...PUIBE_DIALOG_PRESETS.confirmDelete(() => of(true)),
+                actionTemplates: { DELETE: { labelKey: 'App.Remove', primary: true }, CANCEL: { labelKey: 'App.No' } },
+            };
+
+            expect(config.actionTemplates.DELETE).not.toHaveProperty('commandOptions');
+            expect(getPresetActionCommandOptions(config.actions!, 'DELETE')).toEqual({
+                status: { statusCategory: 'action-delete' },
             });
         });
 
-        it('does not change the default action templates', () => {
-            PUIBE_DIALOG_PRESETS.confirmDelete(() => of(true));
+        it('does not mark the delete action itself, so it can be reused elsewhere', () => {
+            const deleteAction = () => of(true);
+            PUIBE_DIALOG_PRESETS.confirmDelete(deleteAction);
 
-            expect('commandOptions' in PUIBE_DIALOG_ACTIONS.DELETE).toBe(false);
+            expect(getPresetActionCommandOptions({ DELETE: deleteAction }, 'DELETE')).toBeUndefined();
         });
     });
 });

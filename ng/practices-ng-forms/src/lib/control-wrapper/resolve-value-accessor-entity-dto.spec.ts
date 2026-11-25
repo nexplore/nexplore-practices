@@ -1,6 +1,6 @@
 import { signal } from '@angular/core';
 import type { INswagGeneratedType } from '../utils/form.types';
-import { resolveValueAccessorEntityDto } from './wrapper-form-control-accessor.provider';
+import { resolveValueAccessorEntityDto } from './resolve-value-accessor-entity-dto';
 
 class PersonDto implements INswagGeneratedType {
     name?: string;

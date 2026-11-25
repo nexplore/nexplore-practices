@@ -4,9 +4,9 @@ import { Command, command, CommandOptions, isCommand } from '@nexplore/practices
 import { tryTriggerCommand } from '@nexplore/practices-ui';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, debounceTime, firstValueFrom, map, merge, Observable, of, takeUntil } from 'rxjs';
+import { getPresetActionCommandOptions, isActionCommandInput } from './action-dialog-action-utils';
 import { ActionDialogComponent } from './action-dialog.component';
 import {
-    isActionCommandInput,
     PUIBE_DIALOG_ACTIONS,
     PuibeActionDialogConfig,
     PuibeActionDialogConfigWithDefaultActions,
@@ -188,9 +188,12 @@ export class PuibeActionDialogService {
             dialogRef.componentInstance.setActions(actionConfig.actions);
         } else if (typeof actionConfig.actions === 'object') {
             const templates = actionConfig.actionTemplates ?? PUIBE_DIALOG_ACTIONS;
+            const actions = actionConfig.actions;
             dialogRef.componentInstance.setActions(
-                Object.entries(actionConfig.actions).map(([key, action]) => ({
+                Object.entries(actions).map(([key, action]) => ({
                     ...templates[key],
+                    // The options of a preset (e.g. the status category of confirmDelete) apply even with custom templates
+                    commandOptions: templates[key]?.commandOptions ?? getPresetActionCommandOptions(actions, key),
                     // Commands (also legacy commands) are converted by the dialog, other values are the action's result.
                     command: isActionCommandInput(action) ? action : () => action,
                 }))

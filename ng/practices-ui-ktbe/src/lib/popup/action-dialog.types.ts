@@ -1,9 +1,8 @@
 import type { TemplateRef, Type } from '@angular/core';
 import type { CommandInput, CommandOptions } from '@nexplore/practices-ng-commands';
-import { AbstractCommand } from '@nexplore/practices-ng-commands';
-import { LegacyCommandBase } from '@nexplore/practices-ui';
 import type { CombinedCommandInput } from '@nexplore/practices-ui';
 import type { Variant } from '../button/button.directive';
+import { setPresetActionCommandOptions } from './action-dialog-action-utils';
 
 export type DialogAction<TAction> = TAction & { command?: CommandInput<void, any> };
 
@@ -147,25 +146,6 @@ export interface PuibeActionDialogConfig<
     command?: CombinedCommandInput<TAction, TResult>;
 }
 
-/**
- * Whether the value of an action is something to execute (a function, a command or a legacy command) rather than the
- * plain result of the action (e.g. `CANCEL: false`).
- *
- * @internal
- */
-export function isActionCommandInput(value: unknown): value is CombinedCommandInput<any, any> {
-    return typeof value === 'function' || value instanceof AbstractCommand || value instanceof LegacyCommandBase;
-}
-
-/** The default action templates, with the status category for the delete action of `PUIBE_DIALOG_PRESETS.confirmDelete`. */
-const CONFIRM_DELETE_ACTION_TEMPLATES: typeof PUIBE_DIALOG_ACTIONS = {
-    ...PUIBE_DIALOG_ACTIONS,
-    DELETE: {
-        ...PUIBE_DIALOG_ACTIONS.DELETE,
-        commandOptions: { status: { statusCategory: 'action-delete' } },
-    } as typeof PUIBE_DIALOG_ACTIONS.DELETE,
-};
-
 export const PUIBE_DIALOG_PRESETS = {
     confirmDelete: <TResult, TArgs = void>(
         deleteAction: CombinedCommandInput<TArgs, TResult>,
@@ -178,13 +158,13 @@ export const PUIBE_DIALOG_PRESETS = {
             TArgs
         >
     > => ({
-        actions: {
-            // Not converted to a command here: the preset is often created outside of an injection context (e.g. in a
-            // click handler). The dialog converts the action when it opens, with the options of the action template.
-            DELETE: deleteAction,
-            CANCEL: false,
-        },
-        actionTemplates: CONFIRM_DELETE_ACTION_TEMPLATES,
+        // Not converted to a command here: the preset is often created outside of an injection context (e.g. in a click
+        // handler). The dialog converts the action when it opens, with these options (unless the action template of the
+        // dialog defines its own `commandOptions`).
+        actions: setPresetActionCommandOptions(
+            { DELETE: deleteAction, CANCEL: false as const },
+            { DELETE: { status: { statusCategory: 'action-delete' } } }
+        ),
         titleKey: 'Practices.Labels_Delete',
         contentKey: 'Practices.Labels_DeletePrompt',
         ...overrideConfig,
