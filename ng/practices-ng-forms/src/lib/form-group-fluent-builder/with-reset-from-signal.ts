@@ -1,4 +1,4 @@
-import {effect, runInInjectionContext, Signal} from "@angular/core";
+import {effect, runInInjectionContext, Signal, untracked} from "@angular/core";
 import {FormGroupEnhancedWithSignals } from "./types";
 import {FormControlValue, FormGroupValues } from "../utils/form.types";
 /**
@@ -31,12 +31,18 @@ export function extendWithResetFromSignal<
 ): TFormGroup {
     runInInjectionContext(this.injector, () => {
         effect(() => {
-            let dto: any = dtoSignal();
-            if (config?.mapValue) {
-                dto = config.mapValue(dto);
-            }
+            const value = dtoSignal();
 
-            this.reset(dto);
+            // Only the DTO signal triggers a reset. Signals read by mapValue, validators or value change
+            // subscribers must not become dependencies, or a change of them would discard the user's edits.
+            untracked(() => {
+                let dto: any = value;
+                if (config?.mapValue) {
+                    dto = config.mapValue(dto);
+                }
+
+                this.reset(dto);
+            });
         });
     });
 

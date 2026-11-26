@@ -96,4 +96,23 @@ describe('withResetFromSignal', () => {
             expect(fg.value.name).toEqual('Lara Croft');
         });
     });
+
+    it('should not reset when a signal read during the reset changes', () => {
+        TestBed.runInInjectionContext(() => {
+            const sourceSignal = signal({ name: 'Lara Croft' });
+            const suffixSignal = signal('');
+            const fg = formGroup.withResetFromSignal(
+                sourceSignal,
+                { name: '' },
+                { mapValue: (dto) => ({ name: dto.name + suffixSignal() }) }
+            );
+            TestBed.tick();
+
+            fg.controls.name.setValue('Indiana Jones');
+            suffixSignal.set('!');
+            TestBed.tick();
+
+            expect(fg.value.name).toEqual('Indiana Jones');
+        });
+    });
 });
