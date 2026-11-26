@@ -44,9 +44,25 @@ import { PuibeModalComponent } from './modal.component';
 export class ActionDialogComponent<TAction extends PuibeDialogActionTemplate<any, TDialogData>, TDialogData = unknown> {
     private readonly _injector = inject(Injector);
 
+    // A signal: puibeHideIfEmptyText reports the change from a MutationObserver, possibly after the view was checked (NG0100)
+    protected readonly isContentEmpty = signal(false);
+
     @Input() title: DialogContent;
     @Input() subtitle: DialogContent;
-    @Input() content: DialogContent;
+    @Input()
+    set content(value: DialogContent) {
+        this._content = value;
+        if (!value) {
+            // The @if removes the content element and its puibeHideIfEmptyText. The directive of new content only
+            // reports changes, so an old `true` would otherwise keep hiding the divider line for non-empty content.
+            this.isContentEmpty.set(false);
+        }
+    }
+    get content(): DialogContent {
+        return this._content;
+    }
+    private _content: DialogContent;
+
     @Input() contentInputs: unknown;
     @Input() busy = false;
     @Input() hideCloseButton: boolean;
@@ -67,9 +83,6 @@ export class ActionDialogComponent<TAction extends PuibeDialogActionTemplate<any
     get command(): Command<TAction, any> {
         return this.commandSignal();
     }
-
-    // A signal: puibeHideIfEmptyText reports the change from a MutationObserver, possibly after the view was checked (NG0100)
-    protected readonly isContentEmpty = signal(false);
 
     setActions(value: TAction[]) {
         runInInjectionContext(this._injector, () => {
