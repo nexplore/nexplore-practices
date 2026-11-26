@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, O
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { PuibeIconArrowBreadcrumbComponent } from '../../icons/icon-arrow-breadcrumb.component';
-import { PuibeIconHomeComponent } from '../../icons/icon-home.component';
 
 @Component({
     standalone: true,
@@ -13,8 +12,6 @@ import { PuibeIconHomeComponent } from '../../icons/icon-home.component';
     imports: [
         NgClass,
         TranslateModule,
-        TranslateModule,
-        PuibeIconHomeComponent,
         PuibeIconArrowBreadcrumbComponent,
         RouterLink,
         RouterLinkActive,
