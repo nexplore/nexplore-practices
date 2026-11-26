@@ -147,34 +147,31 @@ export class PuiAwaitQueryDirective<T> {
             })
         );
 
-        effect(
-            () => {
-                const value = stateDebouncedSignal();
-                if (!value) {
-                    trace('puiAwaitQuery', 'no-value', this.id, value);
-                    return;
+        effect(() => {
+            const value = stateDebouncedSignal();
+            if (!value) {
+                trace('puiAwaitQuery', 'no-value', this.id, value);
+                return;
+            }
+
+            const { state, param } = value;
+            trace('puiAwaitQuery', 'effect', this.id, { state, param });
+            untracked(() => {
+                switch (state) {
+                    case 'loading':
+                        this._handleLoading();
+                        break;
+                    case 'error':
+                        this._handleError(param);
+                        break;
+                    case 'value':
+                        this._handleResult(param as T);
+                        break;
                 }
+            });
 
-                const { state, param } = value;
-                trace('puiAwaitQuery', 'effect', this.id, { state, param });
-                untracked(() => {
-                    switch (state) {
-                        case 'loading':
-                            this._handleLoading();
-                            break;
-                        case 'error':
-                            this._handleError(param);
-                            break;
-                        case 'value':
-                            this._handleResult(param as T);
-                            break;
-                    }
-                });
-
-                this._previousState = state;
-            },
-            { allowSignalWrites: true }
-        );
+            this._previousState = state;
+        });
     }
 
     protected readonly id = counter++;

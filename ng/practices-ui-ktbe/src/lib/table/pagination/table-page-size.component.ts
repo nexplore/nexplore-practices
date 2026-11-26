@@ -33,6 +33,12 @@ export class PuibeTablePageSizeComponent implements OnInit {
         }
     }
 
+    /** The projected content labels the select. Reading the DOM text in a binding would also contain the options. */
+    protected get labelId() {
+        return this.pageSizeOptionsId + '-label';
+    }
+
+    /** @deprecated The projected content is referenced with `aria-labelledby`, this method is no longer used. */
     getLabel() {
         return this._elementRef.nativeElement.innerText;
     }

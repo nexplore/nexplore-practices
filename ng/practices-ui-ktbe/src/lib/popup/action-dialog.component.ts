@@ -6,6 +6,7 @@ import {
     Input,
     model,
     runInInjectionContext,
+    signal,
     ChangeDetectionStrategy,
 } from '@angular/core';
 import type { CommandOptions } from '@nexplore/practices-ng-commands';
@@ -68,7 +69,8 @@ export class ActionDialogComponent<TAction extends PuibeDialogActionTemplate<any
         return this.commandSignal();
     }
 
-    protected isContentEmpty: boolean;
+    // A signal: puibeHideIfEmptyText reports the change from a MutationObserver, possibly after the view was checked (NG0100)
+    protected readonly isContentEmpty = signal(false);
 
     setActions(value: TAction[]) {
         runInInjectionContext(this._injector, () => {
