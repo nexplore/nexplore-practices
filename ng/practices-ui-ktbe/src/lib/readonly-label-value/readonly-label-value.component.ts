@@ -22,12 +22,11 @@ export class PuibeReadonlyLabelValueComponent {
     useSmallLabel: boolean | null = null;
 }
 
-// An alias instead of a second component: two components with the same metadata get the same component ID (NG0912).
-/**
- * @deprecated Deprecated due to typo in name ('Readony' instead of 'Readonly'). Use `PuibeReadonlyLabelValueComponent` instead.
- */
-export const PuibeReadonyLabelValueComponent = PuibeReadonlyLabelValueComponent;
-/**
- * @deprecated Deprecated due to typo in name ('Readony' instead of 'Readonly'). Use `PuibeReadonlyLabelValueComponent` instead.
- */
-export type PuibeReadonyLabelValueComponent = PuibeReadonlyLabelValueComponent;
+// A re-export instead of a second component: two components with the same metadata get the same component ID (NG0912).
+// Unlike a `const` alias, a re-export still resolves to the decorated class in the published typings.
+export {
+    /**
+     * @deprecated Deprecated due to typo in name ('Readony' instead of 'Readonly'). Use `PuibeReadonlyLabelValueComponent` instead.
+     */
+    PuibeReadonlyLabelValueComponent as PuibeReadonyLabelValueComponent,
+};
