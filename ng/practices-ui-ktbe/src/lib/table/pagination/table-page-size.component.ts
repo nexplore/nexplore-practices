@@ -40,6 +40,8 @@ export class PuibeTablePageSizeComponent implements OnInit {
 
     /** @deprecated The projected content is referenced with `aria-labelledby`, this method is no longer used. */
     getLabel() {
-        return this._elementRef.nativeElement.innerText;
+        // Only the projected label, not the texts of the options.
+        const label = Array.from(this._elementRef.nativeElement.children).find((child) => child.id === this.labelId);
+        return (label as HTMLElement | undefined)?.innerText ?? '';
     }
 }
