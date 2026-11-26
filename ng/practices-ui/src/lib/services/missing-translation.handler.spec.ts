@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { describe, expect, it } from '@jest/globals';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import {
@@ -162,3 +163,4 @@ describe('MissingTranslationHandler', () => {
         expect(result).toEqual(mockTranslation.Base.Sample_Fallback);
     });
 });
+

@@ -1,0 +1,149 @@
+import { JsonObject } from '@angular-devkit/core';
+import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
+import { contentHash, HashDb, matchesRecordedHash, readHashDb, writeHashDb } from '../_utils/hash-db';
+import { ImportResolutionContext, mapOriginalToNew, resolveAndRewriteImport } from '../_utils/import-resolver';
+import { loadManifest, resolveSelectedComponents } from '../_utils/manifest';
+import { expandPlan, readPackagedFile } from '../_utils/plan';
+import { isExcluded, isWhitelisted } from '../_utils/whitelist';
+
+type UpdateComponentsOptions = JsonObject & {
+    dest: string;
+    names?: string;
+    all?: boolean;
+    moduleExports?: string;
+    apply: 'auto' | 'conflicts' | 'all';
+    rewriteImports: boolean;
+};
+
+export function updateComponents(options: UpdateComponentsOptions): Rule {
+    return (tree: Tree, context: SchematicContext) => {
+        const runId = Date.now().toString(36);
+        const start = Date.now();
+        const manifest = loadManifest(tree);
+        const hashDb = readHashDb(tree);
+        if (!hashDb.dest) {
+            context.logger.error('[update-components] Hash DB missing dest. Run add-component first.');
+            return tree;
+        }
+        const hasExplicitSelection = !!(options.all || options.names || options.moduleExports);
+        const selected = hasExplicitSelection
+            ? resolveSelectedComponents(manifest, options)
+            : resolveSelectedComponents(manifest, { names: installedComponents(hashDb).join(',') });
+        if (!selected.length) {
+            context.logger.warn('[update-components] No components selected (and none were added before).');
+            return tree;
+        }
+        const destRoot = hashDb.dest;
+        const applyMode = options.apply || 'auto';
+
+        const summary = { updated: 0, skippedConflict: 0, skippedNoRecord: 0 };
+
+        // Build planned set (component + discovered shared whitelisted) similar to add-component
+        const planned = new Set<string>(); // original paths (src/..)
+        const libRoot = 'src/lib';
+        const componentToFiles = new Map<string, string[]>();
+        for (const comp of selected) {
+            const entry = manifest.components[comp];
+            if (!entry) continue;
+            componentToFiles.set(comp, entry.files);
+            entry.files.filter((f) => !isExcluded(f)).forEach((f) => planned.add(f));
+        }
+
+        const ctxResolve: ImportResolutionContext = {
+            libRoot,
+            destRoot,
+            selectedComponents: new Set(selected),
+            mapping: new Map(),
+            ensureFilePlanned: (orig) => {
+                if (planned.has(orig)) return;
+                if (isWhitelisted(orig)) planned.add(orig);
+            },
+        };
+
+        const IMPORT_RE = /import\s+(?:[^'";]+?from\s+)?['"]([^'";]+)['"];?/g;
+        const pkgName = '@nexplore/practices-ui-tailwind';
+        expandPlan(planned, ctxResolve, (rel) => readPackagedFile(tree, rel), pkgName);
+        // The plan is complete, rewriting import specifiers below must not add files to it anymore
+        ctxResolve.ensureFilePlanned = () => undefined;
+
+        // Now iterate all planned originals and perform update logic
+        for (const originalRel of planned) {
+            const compName = originalRel.startsWith('src/lib/') ? originalRel.split('/')[2] : undefined;
+            const isComponentFile = compName ? selected.includes(compName) : false;
+            const packagedBuf = readPackagedFile(tree, originalRel);
+            if (!packagedBuf) {
+                context.logger.warn(`[update-components] Missing planned file ${originalRel}`);
+                continue;
+            }
+            const newAbs = mapOriginalToNew(originalRel, ctxResolve);
+            const destPath = newAbs.startsWith('/') ? newAbs : '/' + newAbs;
+            const packagedContentOriginal = packagedBuf.toString('utf8');
+            let packagedContent = packagedContentOriginal;
+            if (options.rewriteImports && originalRel.endsWith('.ts')) {
+                packagedContent = packagedContentOriginal.replace(IMPORT_RE, (full, spec) => {
+                    const rewritten = resolveAndRewriteImport(originalRel, destPath, spec, ctxResolve, pkgName);
+                    return rewritten ? full.replace(spec, rewritten) : full;
+                });
+            }
+            const packagedHash = contentHash(packagedContent);
+            const dbEntry = hashDb.files[destPath];
+            const exists = tree.exists(destPath);
+            const currentContentBuf = exists ? tree.read(destPath) : undefined;
+            const currentContent = currentContentBuf ? currentContentBuf.toString('utf8') : undefined;
+            let shouldWrite = false;
+            if (!exists) {
+                shouldWrite = true;
+            } else if (!dbEntry) {
+                if (applyMode === 'all' || applyMode === 'conflicts') shouldWrite = true;
+                else summary.skippedNoRecord++;
+            } else {
+                const untouched = currentContent !== undefined && matchesRecordedHash(currentContent, dbEntry.hash);
+                if (applyMode === 'auto') {
+                    if (untouched) shouldWrite = true;
+                    else summary.skippedConflict++;
+                } else if (applyMode === 'conflicts') {
+                    if (!untouched) shouldWrite = true;
+                    else summary.skippedConflict++;
+                } else if (applyMode === 'all') {
+                    shouldWrite = true;
+                }
+            }
+            if (shouldWrite) {
+                if (exists) tree.overwrite(destPath, packagedContent);
+                else tree.create(destPath, packagedContent);
+                hashDb.files[destPath] = {
+                    hash: packagedHash,
+                    component: isComponentFile && compName ? compName : 'shared',
+                    sourceVersion: hashDb.libVersion,
+                    lastUpdatedByRunId: runId,
+                };
+                summary.updated++;
+            }
+        }
+
+        hashDb.runs.push({
+            runId,
+            timestamp: new Date().toISOString(),
+            action: 'update',
+            selection: { selected, apply: applyMode },
+            summary,
+        });
+        writeHashDb(tree, hashDb);
+        context.logger.info(
+            `[update-components] Completed in ${Date.now() - start}ms. Updated=${summary.updated} SkippedConflict=${summary.skippedConflict} SkippedNoRecord=${summary.skippedNoRecord}`,
+        );
+        return tree;
+    };
+}
+
+/** Components that were added before, taken from the hash db (files shared between components are not listed). */
+function installedComponents(hashDb: HashDb): string[] {
+    const names = new Set<string>();
+    Object.values(hashDb.files).forEach((entry) => {
+        if (entry.component && entry.component !== 'shared') names.add(entry.component);
+    });
+    return Array.from(names).sort();
+}
+
+// Removed legacy helpers (rewriteImports path-based update logic now inlined above)
+

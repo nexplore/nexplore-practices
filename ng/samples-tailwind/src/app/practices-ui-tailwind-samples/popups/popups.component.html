@@ -1,0 +1,33 @@
+<div class="grid gap-8 lg:grid-cols-2">
+    <pui-teaser title="Click to open modal" [navigatable]="true" (navigate)="openModal()"></pui-teaser>
+    <pui-teaser title="Click to open flyout" [navigatable]="true" #openFlyoutButton (navigate)="openFlyout()">
+    </pui-teaser>
+    <pui-teaser
+        title="Click to open action UNSAVED CHANGES dialog"
+        [navigatable]="true"
+        [clickCommand]="openConfirmDiscard"
+    ></pui-teaser>
+    <pui-teaser
+        title="Click to open action DELETE dialog"
+        [navigatable]="true"
+        [clickCommand]="openConfirmDelete"
+        [commandArgs]="{ specialNumber: 42 }"
+    >
+    </pui-teaser>
+    <pui-teaser
+        title="Click to open action CUSTOM dialog"
+        [navigatable]="true"
+        [clickCommand]="openConfirmCustom"
+        [commandOptions]="{ silent: true }"
+    >
+    </pui-teaser>
+
+    <pui-teaser
+        title="Click to open action dialog without content"
+        [navigatable]="true"
+        [clickCommand]="openConfirmNoContent"
+        [commandOptions]="{ silent: true }"
+    >
+    </pui-teaser>
+</div>
+<pui-status-hub></pui-status-hub>

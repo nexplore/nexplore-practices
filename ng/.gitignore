@@ -49,6 +49,7 @@ yarn-error.log
 testem.log
 /typings
 practices-ui-ktbe/documentation.json
+practices-ui-tailwind/documentation.json
 
 
 # System Files

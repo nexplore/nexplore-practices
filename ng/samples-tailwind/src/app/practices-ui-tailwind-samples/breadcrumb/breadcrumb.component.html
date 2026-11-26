@@ -1,0 +1,14 @@
+<div class="container mx-auto">
+  <pui-breadcrumb></pui-breadcrumb>
+</div>
+@if (canOpenSubRoute) {
+  <div class="container mx-auto mt-4">
+    <p>
+      <a [routerLink]="['sub1', 'sub2']">Open sub-route</a>
+    </p>
+    <p>
+      <a [routerLink]="['sub1', 'sub2']" [queryParams]="{ someId: '42' }">Open sub-route with query params</a>
+    </p>
+    <div class="mt-96 h-96"></div>
+  </div>
+}

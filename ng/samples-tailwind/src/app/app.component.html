@@ -1,0 +1,91 @@
+<pui-skip-link href="#nav">Direkt zur Navigation</pui-skip-link>
+<pui-skip-link href="#main">Direkt zum Inhalt</pui-skip-link>
+<pui-shell [stickyBreadcrumbs]="true" [autofocusContentOnRouterNavigation]="true">
+  <pui-header
+    puiHeader
+    [(openSideNav)]="openSideNav"
+    logoLink="/"
+    logoImage="/assets/logo.svg"
+    logoCaption="Practices Samples on two rows because it's a very long title"
+    [sidemenuFooterTemplate]="sideNavFooterTemplate"
+    >
+    <a puiHeaderServiceMenuItem>
+      <pui-icon-login class="mr-1 inline-block w-5"></pui-icon-login>
+      Login
+    </a>
+
+    <div puiHeaderServiceMenuItem [withAnimation]="false">
+      <span>Mandat:</span>
+      <select class="cursor-pointer bg-transparent font-bold">
+        <option>Mandat 1</option>
+        <option>Mandat 2</option>
+      </select>
+    </div>
+
+    @for (language of availableLanguages; track language) {
+      <button
+        type="button"
+        puiHeaderLanguageMenuItem
+        (languageChanged)="onLanguageChange($event)"
+        [isActive]="isLanguageActive(language)"
+        >
+        {{ language }}
+      </button>
+    }
+
+    <button id="nav" type="button" puiHeaderMainMenuItem [isSmall]="false" (click)="onClickMainMenu()">
+      Components
+    </button>
+    <a puiHeaderMainMenuItem [isIcon]="true" [isSmall]="false" [withAnimation]="false">
+      <pui-icon-search></pui-icon-search>
+    </a>
+
+    <button type="button" puiHeaderMobileMenuItem class="h-8 w-8">
+      <pui-icon-search-mobile></pui-icon-search-mobile>
+    </button>
+  </pui-header>
+
+  <main id="main" class="mt-10 focus:outline-hidden" tabindex="-1">
+    <h1 class="sr-only">{{ title$ | async }}</h1>
+    <router-outlet puiGlobalDirtyGuard></router-outlet>
+  </main>
+  <pui-footer puiFooter>
+    <span puiFooterCopyright>© 2025 - Nexplore</span>
+    <a puiFooterMenuItem routerLink="/form-elements">Form Elements</a>
+    <a puiFooterMenuItem routerLink="/expansion-panels">Expansion Panels</a>
+  </pui-footer>
+</pui-shell>
+
+<ng-template #sideNavFooterTemplate>
+  <pui-sidenav-footer>
+    <a puiFooterMenuItem>
+      <pui-icon-login class="mr-1 inline-block w-5"></pui-icon-login>
+      Login
+    </a>
+
+    <div puiFooterMenuItem>
+      <span>Mandat:</span>
+      <select class="cursor-pointer font-bold">
+        <option>Mandat 1</option>
+        <option>Mandat 2</option>
+      </select>
+    </div>
+
+    @for (language of availableLanguages; track language) {
+      <button
+        type="button"
+        puiFooterLanguageMenuItem
+        (languageChanged)="onLanguageChange($event)"
+        [isActive]="isLanguageActive(language)"
+        >
+        {{ language }}
+      </button>
+    }
+
+    <span puiFooterCopyright>© 2025 - Nexplore</span>
+  </pui-sidenav-footer>
+</ng-template>
+
+@if (!overrideStatusHub) {
+  <pui-status-hub></pui-status-hub>
+}

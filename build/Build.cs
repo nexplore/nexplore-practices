@@ -28,6 +28,7 @@ partial class Build : NukeBuild
         "practices-ui",
         "practices-ui-clarity",
         "practices-ui-ktbe",
+        "practices-ui-tailwind",
         "practices-ng-status",
         "practices-ng-signals",
         "practices-ng-logging",
@@ -169,6 +170,9 @@ partial class Build : NukeBuild
             {
                 var projectDirectory = NgDistributionDirectory / project;
                 var packagesFile = projectDirectory / "package.json";
+                if (!packagesFile.FileExists())
+                    continue;
+
                 packagesFile.ReplaceContent("0.0.0-VERSION", version);
 
                 var zipFile = npmDirectory / $"{project}.{version}.zip";

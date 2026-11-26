@@ -1,6 +1,7 @@
 import { effect, inject, Injector, runInInjectionContext, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TestBed } from '@angular/core/testing';
+import { describe, expect, it } from '@jest/globals';
 import { tryDestroyInjector } from '@nexplore/practices-ng-common-util';
 import { Observable, Subject } from 'rxjs';
 import { toSignalLazy } from './to-signal-lazy';

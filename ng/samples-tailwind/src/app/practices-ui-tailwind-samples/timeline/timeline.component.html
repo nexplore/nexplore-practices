@@ -1,0 +1,89 @@
+<h1>Timeline</h1>
+<p class="text-h3">
+    Timelines can display any content you like. You might want to use them in a history or process-visualization.
+    Usually you want to hide the line on the last occurence of multiple items, but that is totally up to you
+</p>
+
+<div class="my-10 flex flex-row gap-8">
+    <pui-timeline>
+        <h2>Left aligned timeline</h2>
+        <pui-timeline-item>
+            <p class="">
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores blanditiis deleniti ad fugiat nostrum
+                libero alias porro perferendis ipsam. Reprehenderit autem assumenda voluptas reiciendis eum vitae nisi
+                delectus deserunt voluptatem.
+            </p>
+        </pui-timeline-item>
+        <pui-timeline-item>
+            <pui-expansion-panel heading="Test Highlight" headingLevel="2" [isExpanded]="true" variant="highlight">
+                <p class="">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores blanditiis deleniti ad fugiata
+                    nostrum libero alias porro perferendis ipsam. Reprehenderit autem assumenda voluptas reiciendis eum
+                    vitae nisi delectus deserunt voluptatem.
+                </p>
+            </pui-expansion-panel>
+        </pui-timeline-item>
+        <pui-timeline-item>
+            <pui-expansion-panel heading="Test Highlight" headingLevel="2" variant="highlight">
+                <p class="">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores blanditiis deleniti ad fugiat
+                    nostrum libero alias porro perferendis ipsam. Reprehenderit autem assumenda voluptas reiciendis eum
+                    vitae nisi delectus deserunt voluptatem.
+                </p>
+            </pui-expansion-panel>
+        </pui-timeline-item>
+        <pui-timeline-item>
+            <div class="flex flex-col gap-4">
+                <h3>Lorem ipsum</h3>
+                <p>
+                    dolor, sit amet consectetur adipisicing elit. Maiores blanditiis deleniti ad fugiat nostrum libero
+                    alias porro perferendis ipsam. Reprehenderit autem assumenda voluptas reiciendis eum vitae nisi
+                    delectus deserunt voluptatem.
+                </p>
+                <p class="">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores blanditiis deleniti ad fugiat
+                    nostrum libero alias porro perferendis ipsam. Reprehenderit autem assumenda voluptas reiciendis eum
+                    vitae nisi delectus deserunt voluptatem.
+                </p>
+            </div>
+        </pui-timeline-item>
+    </pui-timeline>
+
+    <pui-timeline [alignment]="'right'">
+        <h2>Right aligned timeline</h2>
+        <pui-timeline-item>
+            <p class="">
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores blanditiis deleniti ad fugiat nostrum
+                libero alias porro perferendis ipsam. Reprehenderit autem assumenda voluptas reiciendis eum vitae nisi
+                delectus deserunt voluptatem.
+            </p>
+        </pui-timeline-item>
+        <pui-timeline-item>
+            <pui-expansion-panel heading="Test Highlight" headingLevel="2" [isExpanded]="true" variant="highlight">
+                <p class="">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores blanditiis deleniti ad fugiat
+                    nostrum libero alias porro perferendis ipsam. Reprehenderit autem assumenda voluptas reiciendis eum
+                    vitae nisi delectus deserunt voluptatem.
+                </p>
+            </pui-expansion-panel>
+        </pui-timeline-item>
+        <pui-timeline-item>
+            <pui-expansion-panel heading="Test Highlight" headingLevel="2" [isExpanded]="true" variant="highlight">
+                <p class="">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores blanditiis deleniti ad fugiat
+                    nostrum libero alias porro perferendis ipsam. Reprehenderit autem assumenda voluptas reiciendis eum
+                    vitae nisi delectus deserunt voluptatem.
+                </p>
+            </pui-expansion-panel>
+        </pui-timeline-item>
+        <pui-timeline-item>
+            <pui-expansion-panel heading="Test Highlight" headingLevel="2" [isExpanded]="true" variant="highlight">
+                <p class="">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores blanditiis deleniti ad fugiat
+                    nostrum libero alias porro perferendis ipsam. Reprehenderit autem assumenda voluptas reiciendis eum
+                    vitae nisi delectus deserunt voluptatem.
+                </p>
+            </pui-expansion-panel>
+        </pui-timeline-item>
+    </pui-timeline>
+</div>

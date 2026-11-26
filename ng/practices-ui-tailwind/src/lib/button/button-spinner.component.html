@@ -1,0 +1,13 @@
+@if (busy$ | async) {
+  <pui-icon-spinner
+    [fillClassName]="fillClassName$ | async"
+    class="block"
+    [ngClass]="{
+        'h-8 w-8': (buttonSize$ | async) === 'large',
+        'w-full': (buttonSize$ | async) === 'small'
+    }"
+  ></pui-icon-spinner>
+}
+@if (!(busy$ | async)) {
+  <ng-content></ng-content>
+}

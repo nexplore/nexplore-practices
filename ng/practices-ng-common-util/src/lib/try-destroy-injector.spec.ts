@@ -1,7 +1,7 @@
+import { effect, inject, Injector, runInInjectionContext, signal } from '@angular/core';
 import { TestBed } from "@angular/core/testing";
 import { describe, expect, it, jest } from '@jest/globals';
 import { tryDestroyInjector } from './try-destroy-injector';
-import { effect, inject, Injector, runInInjectionContext, signal } from '@angular/core';
 
 describe('tryDestroyInjector', () => {
     it('should call destroy method if it exists', () => {

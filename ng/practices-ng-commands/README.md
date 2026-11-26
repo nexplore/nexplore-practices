@@ -8,13 +8,13 @@ Commands encapsulate common logic and state handling, typically required to rend
 
 ## Features
 
--   **State Management** - Track busy, success, and error states for asynchronous operations
--   **Form Integration** - Validate forms before command execution
--   **UI Directives** - Built-in directives for binding commands to buttons and UI elements
--   **Status Notifications** - Automatic integration with StatusHubService for user feedback
--   **Query Management** - Specialized commands for data fetching with automatic triggering
--   **Signal Integration** - Full support for Angular signals for reactive state tracking
--   **Type Safety** - Comprehensive TypeScript type safety across all APIs
+- **State Management** - Track busy, success, and error states for asynchronous operations
+- **Form Integration** - Validate forms before command execution
+- **UI Directives** - Built-in directives for binding commands to buttons and UI elements
+- **Status Notifications** - Automatic integration with StatusHubService for user feedback
+- **Query Management** - Specialized commands for data fetching with automatic triggering
+- **Signal Integration** - Full support for Angular signals for reactive state tracking
+- **Type Safety** - Comprehensive TypeScript type safety across all APIs
 
 ## Installation
 
@@ -296,7 +296,7 @@ const saveCommand = command.action(
             silent: false, // If `true`, the progress will not be shown (eg. no busy spinner), unless an error occurs.
             statusCategory: 'action-save', // Categorize for styling and default messages
         },
-    }
+    },
 );
 ```
 
@@ -331,7 +331,7 @@ const userForm = formGroup
 // Create a save command that validates the form
 const saveCommand = command.actionSaveForm(
     () => userForm,
-    () => saveUser(this.userForm.value)
+    () => saveUser(this.userForm.value),
 );
 ```
 
@@ -370,16 +370,17 @@ export class ItemListComponent {
 
 The service also supports custom dialog configurations with:
 
--   Custom button layouts and behaviors
--   Custom action templates
--   Custom content templates or components
--   Asynchronous actions with advanced return types
+- Custom button layouts and behaviors
+- Custom action templates
+- Custom content templates or components
+- Asynchronous actions with advanced return types
 
 For more advanced examples, see:
 
--   [Action Dialog Storybook Examples](../practices-ui-ktbe/src/lib/popup/action-dialog.stories.ts)
--   [Popups Samples in the KTBE Sample App](../samples-ktbe/src/app/practices-ui-ktbe-samples/popups/popups.component.ts)
+- [Action Dialog Storybook Examples](../practices-ui-ktbe/src/lib/popup/action-dialog.stories.ts)
+- [Popups Samples in the KTBE Sample App](../samples-ktbe/src/app/practices-ui-ktbe-samples/popups/popups.component.ts)
 
 ## Running unit tests
 
 Run `nx test practices-ng-commands` to execute the unit tests.
+

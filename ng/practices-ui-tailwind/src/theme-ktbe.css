@@ -1,0 +1,148 @@
+@theme {
+    /* Colors */
+    --color-brand: #ea161f;
+    --color-black: #000000;
+    --color-very-light-secondary: #fcf8f3;
+    --color-highlight: #faf1e3;
+    --color-dark-highlight: #f7e9d2;
+    --color-surface-hover: #f2e0c3;
+    --color-secondary: #ebd3ae;
+    --color-bglight: var(--color-white);
+    --color-bgdark: rgba(78, 78, 78, 0.95);
+    --color-bgdark-solid: #565656;
+    --color-bgdark-hover: #404040;
+    --color-dark-gray: rgba(112, 112, 112, 1);
+    --color-dark-gray-68: rgba(112, 112, 112, 0.68);
+    --color-dark-gray-50: rgba(112, 112, 112, 0.5);
+    --color-dark-gray-50-solid: #b6b6b6;
+    --color-gray: #dedede;
+    --color-light-gray: #f2f2f2;
+    --color-very-light-gray: #f8f8f8;
+    --color-white: #ffffff;
+    --color-brand-hover: #d01018;
+    --color-red: #ea161f;
+    --color-green: #3d8608;
+    --color-success-green: #dcf7d2;
+    --color-text: var(--color-black);
+    --color-link: var(--color-brand);
+    --color-link-hover: var(--color-brand-hover);
+    --color-on-brand: var(--color-white);
+    --color-on-highlight: var(--color-black);
+
+    --color-bgbutton-primary: var(--color-bgdark);
+    --color-fgbutton-primary: var(--color-white);
+    --color-bgbutton-default: var(--color-bglight);
+    --color-fgbutton-default: var(--color-text);
+
+    --color-bordercontrol: var(--color-black);
+    --color-bordercontrol-placeholdershown: var(--color-black);
+    --color-borderbutton-primary: var(--color-black);
+    --color-borderbutton-default: var(--color-black);
+    --color-controlbutton-inverted: var(--color-dark-gray);
+    --color-controlbutton-inverted-hover: var(--color-bgdark-hover);
+    --color-controlbutton-hover: var(--color-dark-gray-50);
+
+    /* Breakpoints */
+    --breakpoint-xs: 375px;
+    --breakpoint-sm: 600px;
+    --breakpoint-md: 900px;
+    --breakpoint-lg: 1180px;
+    --breakpoint-xl: 1480px;
+
+    /* Font family */
+    --font-sans: 'Roboto', var(--font-system-ui);
+
+    /* Line heights */
+    --leading-pui-extra-small: 1.125rem;
+    --leading-pui-very-small: 1.0625rem;
+    --leading-pui-small: 1.125rem;
+    --leading-pui-logo-caption: 1.0625rem;
+    --leading-pui-base: 1.625rem;
+    --leading-pui-intro-text: 1.75rem;
+    --leading-pui-h6: 1.3125rem;
+    --leading-pui-h5: 1.5625rem;
+    --leading-pui-h4: 1.75rem;
+    --leading-pui-h3: 2rem;
+    --leading-pui-large: 2.25rem;
+    --leading-pui-h2: 2.25rem;
+    --leading-pui-h1: 3.875rem;
+    --leading-pui-very-large: 4.625rem;
+
+    /* Font sizes */
+    --text-extra-small: 0.75rem;
+    --text-very-small: 0.8125rem;
+    --text-small: 0.875rem;
+    --text-logo-caption: 1rem;
+    --text-base: 1rem;
+    --text-intro-text: 1.125rem;
+    --text-h6: 1.125rem;
+    --text-h5: 1.3125rem;
+    --text-h4: 1.5rem;
+    --text-h3: 1.625rem;
+    --text-large: 1.75rem;
+    --text-h2: 1.875rem;
+    --text-h1: 3.375rem;
+    --text-very-large: 4.0625rem;
+    /* Provide line-height counterparts so Tailwind emits text-h* utilities */
+    --text-h1--line-height: var(--leading-pui-h1);
+    --text-h2--line-height: var(--leading-pui-h2);
+    --text-h3--line-height: var(--leading-pui-h3);
+    --text-h4--line-height: var(--leading-pui-h4);
+    --text-h5--line-height: var(--leading-pui-h5);
+    --text-h6--line-height: var(--leading-pui-h6);
+
+    /* Additional spacing tokens */
+    --spacing-pui-4_5: 1.125rem;
+    --spacing-pui-5_5: 1.375rem;
+    --spacing-pui-7_5: 1.875rem;
+    --spacing-pui-controlsize: 3.75rem;
+
+    --spacing-icon-datepicker-padding: 1rem;
+
+    /* Border width */
+    --border-pui-controlinvalidbordersize: 6px;
+    /* Expose as shadow or width if needed later */
+
+    /* Shadows */
+    --shadow-sidepane: rgba(0 0 0 / 0.16) 0px 3px 6px;
+    --shadow-stickyHeader: 0 6px 24px -20px rgba(0 0 0 / 0.5);
+
+    /* Animation */
+    --animate-pop: pop 0.7s linear 1;
+
+    /* Scrollbar customization tokens */
+    --scrollbar-width: 0.8rem;
+    --scrollbar-track: var(--color-light-gray);
+    --scrollbar-thumb: var(--color-dark-gray-68);
+    --scrollbar-thumb-hover: var(--color-dark-gray);
+    --scrollbar-thumb-transition: 1s ease-in-out;
+    --scrollbar-thumb-border: 2px solid transparent;
+    --scrollbar-thumb-border-radius: 2px;
+
+    /* Arrowtip customization tokens */
+    --arrowtip-size: 10px;
+    --arrowtip-offset: 10px;
+    --arrowtip-distance: 20px; /* distance the arrow protrudes */
+    --arrowtip-surface: var(--color-white);
+    --arrowtip-border: var(--color-gray);
+
+    /* Heading spacing tokens */
+    --heading-margin-bottom-h1: 2.75rem;
+    --heading-margin-bottom: 0.75rem;
+
+    /* border radius for theme */
+    --radius-surface-sm: 0;
+    --radius-surface-md: 0;
+    --radius-surface-lg: 0;
+    --radius-button: calc(infinity * 1px);
+}
+
+/* Keyframes (kept outside @theme to always emit) */
+@keyframes pop {
+    50% {
+        transform: scale(1.25);
+    }
+}
+
+/* End of tokens */
+

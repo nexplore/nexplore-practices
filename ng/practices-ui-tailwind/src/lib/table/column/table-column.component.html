@@ -1,0 +1,45 @@
+<button
+  class="flex w-full items-center justify-items-stretch"
+    [ngClass]="{
+        'flex-row-reverse': this.align === 'right',
+        'justify-center': this.align === 'center',
+        'justify-start': this.align === 'right' || this.align === 'left',
+        'cursor-pointer': field.sortable,
+    }"
+  [disabled]="!field.sortable"
+  (click)="toggleDir()"
+  [ariaDescription]="clickToSortLabel$ | async"
+  >
+  <span #contentWrapper>
+    <span #content><ng-content></ng-content></span>
+    @if (content.children.length === 0) {
+      <span
+            [ngClass]="{
+                'text-center': this.align === 'center',
+                'text-right': this.align === 'right',
+                'text-left': this.align === 'left',
+            }"
+        >
+        {{ label$ | async }}</span
+        >
+      }
+    </span>
+    @if (field.sortable) {
+      <div class="relative flex h-5 w-7">
+        @if (!(busy$ | async)) {
+          <pui-icon-arrow
+            class="group-hover:bg-surface-hover absolute ml-1 mr-1 flex h-5 w-5 items-center rounded-full p-1 transition-all duration-150 hover:!opacity-100"
+            [ngClass]="
+                field.sortDir != null ? 'opacity-100 group-hover:opacity-100' : 'opacity-0 group-hover:opacity-50'
+            "
+            [direction]="iconDir$ | async"
+          ></pui-icon-arrow>
+        }
+        @if (field.sortDir != null && (busy$ | async)) {
+          <pui-icon-spinner
+            class="absolute ml-1 mr-1 h-5 w-5 items-center rounded-full p-1 transition-all duration-150 group-hover:flex"
+          ></pui-icon-spinner>
+        }
+      </div>
+    }
+  </button>

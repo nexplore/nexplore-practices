@@ -1,0 +1,7 @@
+/* Aggregator stylesheet: import framework, tokens, then library utilities/base */
+@import 'tailwindcss';
+@import './theme.css';
+@import './tailwind.css';
+
+/* (Optional) Add a @source directive here if this file is ever used standalone in an app build. */
+

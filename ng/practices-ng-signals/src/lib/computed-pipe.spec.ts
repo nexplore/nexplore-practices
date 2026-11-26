@@ -1,7 +1,8 @@
 import { computed, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { delay, filter, map, take, tap } from 'rxjs/operators';
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { of, Subject } from 'rxjs';
+import { delay, filter, map, take, tap } from 'rxjs/operators';
 import { computedPipe } from './computed-pipe';
 
 describe('computedPipe', () => {

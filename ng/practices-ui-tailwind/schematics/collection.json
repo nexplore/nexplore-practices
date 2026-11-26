@@ -1,0 +1,26 @@
+{
+    "$schema": "../../node_modules/@angular-devkit/schematics/collection-schema.json",
+    "schematics": {
+        "add-component": {
+            "description": "Copy component source code into consumer app with hashing.",
+            "factory": "./add-component/index#addComponent",
+            "schema": "./add-component/schema.json"
+        },
+        "add": {
+            "description": "Copy component source code into consumer app with hashing.",
+            "factory": "./add-component/index#addComponent",
+            "schema": "./add-component/schema.json"
+        },
+        "update-components": {
+            "description": "Update previously added component sources with conflict detection.",
+            "factory": "./update-components/index#updateComponents",
+            "schema": "./update-components/schema.json"
+        },
+        "ng-add": {
+            "description": "Install @nexplore/practices-ui-tailwind: provider, shell, theme.",
+            "factory": "./ng-add/index#ngAdd",
+            "schema": "./ng-add/schema.json"
+        }
+    }
+}
+

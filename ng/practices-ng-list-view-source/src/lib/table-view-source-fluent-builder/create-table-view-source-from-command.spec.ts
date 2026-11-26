@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { beforeAll, describe, expect, it, jest } from '@jest/globals';
 import { command } from '@nexplore/practices-ng-commands';
 import { createTableViewSourceFromCommand } from './create-table-view-source-from-command';
 

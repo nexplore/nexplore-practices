@@ -1,3 +1,4 @@
+import { describe, expect, it } from '@jest/globals';
 import { deepMerge } from './deep-merge.util';
 
 describe('deepMerge', () => {

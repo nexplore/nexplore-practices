@@ -1,0 +1,100 @@
+<div class="container mx-auto">
+    <form [formGroup]="mainForm">
+        <pui-checkbox class="w-1/2" label="Checkbox" formControlName="basicWithoutGroup"></pui-checkbox>
+        <pui-checkbox class="w-1/2" label="Checkbox" formControlName="basicWithoutGroupRequired"></pui-checkbox>
+        <pui-checkbox
+            class="w-1/2"
+            label="Checkbox"
+            formControlName="basicWithoutGroupAsyncValidator"
+        ></pui-checkbox>
+    </form>
+</div>
+
+<div class="container mx-auto">
+    <form [formGroup]="mainForm">
+        <pui-checkbox-group legend="Checkboxes" [displayInline]="false" class="w-1/2">
+            <pui-checkbox label="Checkbox" formControlName="basic1"></pui-checkbox>
+            <pui-checkbox label="Checkbox" formControlName="basic2"></pui-checkbox>
+            <pui-checkbox label="Checkbox" formControlName="basic3"></pui-checkbox>
+            <pui-checkbox label="Checkbox" formControlName="basic4"></pui-checkbox>
+            <pui-checkbox label="Checkbox" formControlName="basic5"></pui-checkbox>
+        </pui-checkbox-group>
+    </form>
+</div>
+
+<div class="container mx-auto">
+    <form [formGroup]="mainForm">
+        <pui-checkbox-group legend="Checkboxes" [displayInline]="true" class="w-1/2">
+            <pui-checkbox label="Checkbox" formControlName="basicInline1"></pui-checkbox>
+            <pui-checkbox label="Checkbox" formControlName="basicInline2"></pui-checkbox>
+            <pui-checkbox label="Checkbox" formControlName="basicInline3"></pui-checkbox>
+            <pui-checkbox label="Checkbox" formControlName="basicInline4"></pui-checkbox>
+            <pui-checkbox label="Checkbox" formControlName="basicInline5"></pui-checkbox>
+        </pui-checkbox-group>
+    </form>
+</div>
+
+<div class="container mx-auto mt-5">
+    <form [formGroup]="mainForm">
+        <pui-checkbox-group
+            legend="Checkboxes"
+            hint="Das ist hier ein weiterer optionaler Hinweistext!"
+            [displayInline]="false"
+            class="w-1/2"
+        >
+            <pui-checkbox label="Checkbox" formControlName="basicWithHint"></pui-checkbox>
+        </pui-checkbox-group>
+    </form>
+</div>
+
+<div class="container mx-auto mt-5">
+    <form [formGroup]="mainForm">
+        <pui-checkbox-group
+            legend="Checkboxes"
+            hint="Das ist hier ein weiterer optionaler Hinweistext!"
+            [displayInline]="false"
+            class="w-1/2"
+        >
+            <pui-checkbox label="Checkbox" formControlName="required"></pui-checkbox>
+        </pui-checkbox-group>
+    </form>
+</div>
+
+<div class="container mx-auto mt-5">
+    <form [formGroup]="mainForm">
+        <pui-checkbox-group
+            legend="Checkboxes"
+            hint="Das ist hier ein weiterer optionaler Hinweistext!"
+            [displayInline]="false"
+            class="w-1/2"
+        >
+            <pui-checkbox label="Checkbox" formControlName="requiredInputWithInitialValue"></pui-checkbox>
+        </pui-checkbox-group>
+    </form>
+</div>
+
+<div class="container mx-auto mt-5">
+    <form [formGroup]="mainForm">
+        <pui-checkbox-group
+            legend="Checkboxes"
+            hint="Das ist hier ein weiterer optionaler Hinweistext!"
+            [displayInline]="false"
+            class="w-1/2"
+        >
+            <pui-checkbox label="Checkbox" formControlName="asyncValidator"></pui-checkbox>
+        </pui-checkbox-group>
+    </form>
+</div>
+
+<div class="container mx-auto mt-5">
+    <form [formGroup]="mainForm">
+        <pui-checkbox-group
+            legend="Checkboxes"
+            hint="Das ist hier ein weiterer optionaler Hinweistext!"
+            [displayInline]="false"
+            class="w-1/2"
+        >
+            <pui-checkbox label="Checkbox" formControlName="disabled"></pui-checkbox>
+        </pui-checkbox-group>
+    </form>
+</div>

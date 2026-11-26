@@ -1,0 +1,27 @@
+<span class="sr-only" data-current-month tabindex="-1" aria-live="polite">
+    {{ periodLabelSignal() }}
+</span>
+<pui-calendar-grid-layout>
+    <button slot="left" puiCalendarToolbarItem class="px-2" [clickable]="false" [attr.aria-label]="periodLabelSignal()">
+        {{ periodLabelSignal() }}
+    </button>
+
+    <ng-content select="[slot='left']" ngProjectAs="[slot='left-after']"></ng-content>
+    <ng-content select="[slot='right']" ngProjectAs="[slot='right']"></ng-content>
+
+    @for (row of dateRowsSignal(); track $index) {
+        <div class="flex shrink-0 grow basis-0 gap-1">
+            @for (item of row.items; track trackByShortLabel($index, item)) {
+                <pui-calendar-item
+                    [periodItem]="item"
+                    [selected]="item === selectedItemSignal()"
+                    [focused]="item === focusedItemSignal()"
+                    [today]="item === todayItemSignal()"
+                    [disabled]="isItemDisabled(item)"
+                    (click)="clickItem.emit(item)"
+                ></pui-calendar-item>
+            }
+        </div>
+    }
+</pui-calendar-grid-layout>
+

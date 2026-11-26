@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "$id": "UpdateComponentsSchema",
+    "title": "Update component sources",
+    "type": "object",
+    "properties": {
+        "dest": {
+            "type": "string",
+            "description": "Not used, the folder recorded in .practices-ui/schematics.hashdb.json is updated"
+        },
+        "names": {
+            "type": "string",
+            "description": "Comma separated component names to update. Without names, all and moduleExports, every component that was added before is updated"
+        },
+        "all": {
+            "type": "boolean",
+            "description": "Include all components"
+        },
+        "moduleExports": {
+            "type": "string",
+            "description": "Comma separated Angular Module export group names"
+        },
+        "apply": {
+            "type": "string",
+            "enum": ["auto", "conflicts", "all"],
+            "default": "auto",
+            "description": "Update policy"
+        },
+        "rewriteImports": {
+            "type": "boolean",
+            "description": "Rewrite library imports to relative paths",
+            "default": true
+        }
+    },
+    "additionalProperties": false
+}
+

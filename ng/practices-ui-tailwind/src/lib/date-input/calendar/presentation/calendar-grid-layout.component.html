@@ -1,0 +1,12 @@
+<pui-calendar-toolbar class="col-start-1 row-start-1">
+    <ng-content select="[slot='left']"></ng-content>
+</pui-calendar-toolbar>
+<div class="col-span-3 row-start-2 flex flex-col pt-2">
+    <ng-content></ng-content>
+</div>
+<pui-calendar-toolbar class="col-start-2 row-start-1 justify-self-center">
+    <ng-content select="[slot='left-after']"></ng-content>
+</pui-calendar-toolbar>
+<pui-calendar-toolbar class="col-start-3 row-start-1 justify-self-end">
+    <ng-content select="[slot='right']"></ng-content>
+</pui-calendar-toolbar>

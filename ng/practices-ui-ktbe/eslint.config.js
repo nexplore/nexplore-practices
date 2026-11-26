@@ -5,7 +5,7 @@ module.exports = [
     {
         files: ['**/*.json'],
         rules: {
-            '@nx/dependency-checks': ['error', { ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs}'] }],
+            '@nx/dependency-checks': ['error', { ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs}', '{projectRoot}/.postcssrc.json'] }],
         },
         languageOptions: { parser: require('jsonc-eslint-parser') },
     },

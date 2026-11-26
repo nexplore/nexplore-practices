@@ -1,0 +1,36 @@
+<div class="flex justify-between" part="title-bar">
+  <ng-content select="[puiModalTitle], pui-modal-title"></ng-content>
+  @if (!hideCloseButton) {
+    <button class="hover:animate-pop focus:animate-pop mr-6 mt-6 w-4">
+      <pui-icon-close
+        [colorClass]="'fill-black'"
+        (click)="closeModal()"
+        [attr.aria-label]="'Practices.Labels_Modal_Close' | translate"
+      ></pui-icon-close>
+    </button>
+  }
+</div>
+<ng-content select="[puiModalSubtitle], pui-modal-subtitle"></ng-content>
+<hr class="text-gray my-6" />
+<ng-content select="[puiModalContent]"></ng-content>
+@if (!hideDoubleDividerLine) {
+  <hr class="text-gray mt-6" />
+}
+
+<div
+  class="m-6 flex flex-col items-stretch justify-end gap-4 sm:flex-row sm:items-center"
+    [ngClass]="{
+        'sm:justify-start': buttonsAlignment === 'start',
+        'sm:justify-end': buttonsAlignment === 'end'
+    }"
+  >
+  <ng-content select="[puiModalFooterAction]"></ng-content>
+  <div
+        [ngClass]="{
+        '-order-1 mr-auto': buttonsAlignment === 'end',
+        'ml-auto': buttonsAlignment === 'start',
+    }"
+    >
+    <ng-content select="[puiModalFooterStatus]"></ng-content>
+  </div>
+</div>

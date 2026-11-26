@@ -1,0 +1,14 @@
+<span #scrollingAnchor></span>
+<div class="flex justify-center">
+  @if ((tableNoItems$ | async) === false) {
+    @if ((busyCount$ | async) > 0) {
+      <pui-icon-spinner #busy class="block h-6 w-6"></pui-icon-spinner>
+    } @else {
+      @if (noMoreData$ | async) {
+        <p>
+          {{ 'Practices.Labels_Table_NoMoreDataAvailable' | translate }}
+        </p>
+      }
+    }
+  }
+</div>

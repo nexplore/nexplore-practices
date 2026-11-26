@@ -1,0 +1,26 @@
+@if (!showOptionsMenu) {
+  <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+}
+
+@if (showOptionsMenu) {
+  <div class="hidden">
+    <ng-container #menuItemsSlot></ng-container>
+  </div>
+  <div [cdkMenuTriggerFor]="actionsMenu" class="w-full">
+    <button>
+      <pui-icon-options class="block h-4 w-4"></pui-icon-options>
+    </button>
+  </div>
+  <ng-template #actionsMenu>
+    <div class="bg-white py-3 drop-shadow-lg" cdkMenu>
+      <div class="[&>*:hover]:bg-very-light-secondary flex w-full flex-col [&>*]:px-6 [&>*]:py-4 [&>*]:text-left">
+        <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+      </div>
+    </div>
+  </ng-template>
+}
+
+<ng-template #contentTemplate>
+  <ng-content></ng-content>
+</ng-template>
+

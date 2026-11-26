@@ -1,0 +1,68 @@
+<div role="status" aria-live="polite">
+  @if (busyAndBlocking$ | async; as busyAndBlocking) {
+    <div
+      @slowFadeAnimation
+      class="bg-dark-gray-50-solid fixed left-0 top-0 z-[1002] flex h-screen w-screen items-center justify-center bg-opacity-10 align-middle backdrop-blur-sm"
+    ></div>
+  }
+
+  @if (progressMessage$ | async; as message) {
+    @if (busyAndBlocking$ | async; as busyAndBlocking) {
+      <div
+        class="fixed bottom-10 left-10 right-10 top-10 z-[1002] flex items-center justify-center align-middle"
+        >
+        <ng-container *ngTemplateOutlet="progressMessageTmpl; context: { $implicit: message }"></ng-container>
+      </div>
+    }
+  } @else {
+    @if (busyAndBlocking$ | async) {
+      <span class="sr-only" role="status" translate>Practices.Labels_Pending</span>
+    }
+  }
+</div>
+@if (busyNoMessage$ | async; as busy) {
+  <div
+    @scaleAnimation
+    class="pointer-events-none fixed bottom-0 left-0 z-50 flex w-screen justify-center align-middle"
+    [ngClass]="{ 'h-screen': busyAndBlocking$ | async, 'h-20': !(busyAndBlocking$ | async) }"
+    >
+    <pui-icon-spinner [size]="IconSize.L" class="flex"></pui-icon-spinner>
+  </div>
+}
+<div
+  class="fixed z-[1002] m-auto flex w-fit flex-col justify-start overflow-visible bg-none align-middle md:gap-2"
+  [ngClass]="positionClasses"
+  aria-live="polite"
+  role="status"
+  >
+  @for (status of statusToasts$ | async; track trackByFn($index, status)) {
+    <pui-status-toast
+      [errorTemplate]="statusError?.templateRef"
+      @listEntryAnimation
+      class="drop-shadow-md"
+      [status]="status"
+      (dismissed)="dismissed.emit(status)"
+    ></pui-status-toast>
+  }
+  <ng-content select="pui-status-toast, pui-toast"></ng-content>
+  @if (progressMessage$ | async; as message) {
+    @if (!(busyAndBlocking$ | async)) {
+      <ng-container *ngTemplateOutlet="progressMessageTmpl; context: { $implicit: message }"></ng-container>
+    }
+  }
+</div>
+
+<ng-template #progressMessageTmpl let-message>
+  <pui-toast
+    variant="info"
+    @listEntryAnimation
+    [closeable]="false"
+    class="flex min-w-full max-w-full items-center justify-center overflow-hidden drop-shadow-md max-sm:max-w-full sm:max-w-[660px] md:min-w-[300px]"
+    >
+    <div class="flex items-center justify-between gap-2">
+      <span class="flex-auto whitespace-pre-wrap">{{ message }}</span>
+      <pui-icon-spinner @scaleAnimation [size]="IconSize.M" class="inline-flex"></pui-icon-spinner>
+    </div>
+  </pui-toast>
+</ng-template>
+<ng-content select="[puiIfErrorStatus]"></ng-content>

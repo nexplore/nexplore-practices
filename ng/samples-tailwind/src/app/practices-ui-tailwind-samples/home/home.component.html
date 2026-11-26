@@ -1,0 +1,67 @@
+<header class="mb-6">
+  <h1>Nexplore Practices Tailwind UI Component Library</h1>
+  <pui-panel variant="white">
+    <div class="flex flex-col gap-4">
+      <p>
+        Welcome to the <strong>Nexplore Practices Tailwind UI Component Library</strong> sample application.
+        This library provides a comprehensive set of Angular components, styled using a customizable Tailwind
+        theme.
+      </p>
+
+      <p>
+        The design system has been adapted based on the
+        <a
+          href="https://kantonbern.snowflake.ch/styleguides/1/Kanton-Bern/"
+          target="_blank"
+          class="text-primary hover:underline"
+          >Kanton Bern Design System</a
+          >
+        </p>
+
+        <p>Browse through the examples below to see the components in action.</p>
+      </div>
+    </pui-panel>
+  </header>
+
+  @for (category of categories; track category) {
+    <div class="mb-6">
+      <div class="flex items-center mb-2">
+        <h2>{{ category.name }}</h2>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        @for (component of category.components; track component) {
+          <pui-teaser
+            [teaserLink]="component.route"
+            [title]="component.title"
+            class="h-full"
+            >
+            <p class="text-sm">{{ component.description }}</p>
+          </pui-teaser>
+        }
+      </div>
+    </div>
+  }
+
+  <pui-panel variant="white" class="my-8">
+    <div class="flex flex-col gap-4">
+      <h2>Installation & Requirements</h2>
+      <div>
+        <p class="">Install with npm:</p>
+        <code class="bg-white px-3 py-2 rounded-sm block mb-3 text-sm font-mono"
+          >npm install &#64;nexplore/practices-ui-tailwind</code
+          >
+
+          <p class="mt-4">Requirements:</p>
+          <ul class="list-disc text-sm mt-2">
+            <li>Angular 19+</li>
+            <li>Tailwind CSS 4.x</li>
+          </ul>
+        </div>
+      </div>
+    </pui-panel>
+
+    <hr />
+    <footer class="my-8 text-center text-gray-500 text-xspt-4">
+      <p>Nexplore Practices Tailwind UI Component Library - Sample Application</p>
+    </footer>
+

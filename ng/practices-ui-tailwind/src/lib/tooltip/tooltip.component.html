@@ -1,0 +1,23 @@
+<button
+  cdkOverlayOrigin
+  type="button"
+  class="inline-flex h-5 w-5 items-center justify-center rounded-full border border-borderbutton-default bg-bgbutton-default text-small font-bold leading-none text-fgbutton-default transition-all duration-200 ease-in-out hover:scale-110 focus:scale-110 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-[-webkit-focus-ring-color]"
+  (click)="toggle()"
+  [attr.aria-describedby]="tooltipId"
+  [attr.aria-label]="ariaLabel()"
+  [attr.aria-expanded]="isOpen"
+>
+  ?
+</button>
+
+<ng-template>
+  <div
+    role="tooltip"
+    [id]="tooltipId"
+    class="z-50 border border-gray bg-white p-3 text-small font-normal text-foreground shadow-sidepane"
+    [ngClass]="[overlayMaxWidthClass(), arrowClass]"
+    aria-live="polite"
+  >
+    <ng-content></ng-content>
+  </div>
+</ng-template>

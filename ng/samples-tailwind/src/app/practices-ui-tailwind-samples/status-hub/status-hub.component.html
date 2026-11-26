@@ -1,0 +1,76 @@
+<h4>Using StatusService</h4>
+<div class="mb-8 flex flex-wrap gap-2">
+  <button puiButton (click)="genError()">create error</button>
+  <button puiButton (click)="genSuccess()">create success</button>
+  <button puiButton (click)="toggleBusy()">toggle busy</button>
+  <button puiButton (click)="toggleBusyWithMessage()">toggle busy (with message)</button>
+  <button puiButton (click)="toggleBusyBlocking()">block ui</button>
+</div>
+
+<div class="flex flex-wrap items-center justify-stretch gap-4">
+  <button puiButton (click)="registerQuery()">register query or action</button>
+  <pui-form-field class="max-w-80 flex-auto">
+    <label puiLabel>Status Category</label>
+    <ng-select
+      puiInput
+      [(ngModel)]="statusCategory"
+      [items]="categories"
+      placeholder="Status Category"
+    ></ng-select>
+  </pui-form-field>
+</div>
+<div class="mb-8">
+  <pui-toast
+    ><p>Specifying <code>statusCategory</code> changes the default progress message.</p>
+    <p>
+      This works with <code>registerQuery</code>, <code>registerCommand</code> and all other
+      <code>statusService</code> methods (See options parameter).
+    </p>
+  </pui-toast>
+</div>
+
+<h4>Commands</h4>
+<div class="mb-4 flex flex-wrap gap-2">
+  <button type="button" puiButton [clickCommand]="simpleCommand">Simple Progress</button>
+  <button type="button" puiButton [clickCommand]="successCommand">Success Message</button>
+  <button type="button" puiButton [clickCommand]="blockingCommand">Block ui</button>
+  <button type="button" puiButton [clickCommand]="msgCommand">Progress Message</button>
+  <button type="button" puiButton [clickCommand]="blockingMsgCommand">Progress Message (blocking)</button>
+  <button type="button" puiButton [clickCommand]="errorAsyncCommand">Throw Error Async</button>
+  <button type="button" puiButton [clickCommand]="errorCommand">Throw Error</button>
+  <button type="button" puiButton [clickCommand]="saveCommand" [commandOptions]="{ statusCategory: 'action-save' }">
+    Save
+  </button>
+  <button
+    type="button"
+    puiButton
+    [clickCommand]="deleteCommand"
+    [commandOptions]="{ statusCategory: 'action-save' }"
+    >
+    Delete
+  </button>
+</div>
+
+<h4>Navigation</h4>
+<div class="mb-12 flex flex-wrap gap-2">
+  <a [routerLink]="'long-loading-route'">Open a route that takes a while to load</a>
+</div>
+
+<pui-status-hub>
+  <ng-container *puiIfErrorStatus="let status">
+    Etwas ist schief gelaufen!
+    @if (status.error?.stack ?? status.error?.message) {
+      <pui-expansion-panel
+        caption="Details"
+        class="grow-0 text-black"
+        [enableContentScroll]="true"
+        >
+        @if (status.error.stack) {
+          <code class="whitespace-pre">{{
+            status?.error.stack ?? status.error?.message
+          }}</code>
+        }
+      </pui-expansion-panel>
+    }
+  </ng-container>
+</pui-status-hub>

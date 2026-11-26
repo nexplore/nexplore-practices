@@ -7,13 +7,11 @@
     "generators": {},
     "targets": {
         "build": {
-            "executor": "@angular-devkit/build-angular:browser",
-            "defaultConfiguration": "",
+            "executor": "@angular/build:application",
             "options": {
                 "outputPath": "dist/samples",
                 "index": "samples/src/index.html",
-                "main": "samples/src/main.ts",
-                "polyfills": "samples/src/polyfills.ts",
+                "polyfills": ["samples/src/polyfills.ts"],
                 "tsConfig": "samples/tsconfig.app.json",
                 "assets": ["samples/src/favicon.ico", "samples/src/assets"],
                 "styles": [
@@ -26,12 +24,11 @@
                     "node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js",
                     "node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"
                 ],
-                "vendorChunk": true,
                 "extractLicenses": false,
-                "buildOptimizer": false,
                 "sourceMap": true,
                 "optimization": false,
-                "namedChunks": true
+                "namedChunks": true,
+                "browser": "samples/src/main.ts"
             },
             "configurations": {
                 "production": {
@@ -46,8 +43,6 @@
                     "sourceMap": false,
                     "namedChunks": false,
                     "extractLicenses": true,
-                    "vendorChunk": false,
-                    "buildOptimizer": true,
                     "budgets": [
                         {
                             "type": "initial",
@@ -64,7 +59,7 @@
             }
         },
         "serve": {
-            "executor": "@angular-devkit/build-angular:dev-server",
+            "executor": "@angular/build:dev-server",
             "options": {
                 "buildTarget": "samples:build"
             },
@@ -78,7 +73,7 @@
             }
         },
         "extract-i18n": {
-            "executor": "@angular-devkit/build-angular:extract-i18n",
+            "executor": "@angular/build:extract-i18n",
             "options": {
                 "buildTarget": "samples:build"
             }

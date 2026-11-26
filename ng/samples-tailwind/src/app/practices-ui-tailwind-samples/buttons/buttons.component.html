@@ -1,0 +1,91 @@
+<div class="grid grid-cols-4 gap-4">
+    <button type="button" puiButton variant="primary">PrimaryButton</button>
+    <button type="button" puiButton variant="secondary">SecondaryButton</button>
+    <button type="button" puiButton>NeutralButton</button>
+    <button type="button" puiButton variant="danger">DangerButton</button>
+</div>
+<div class="grid grid-cols-4 gap-4 mt-4">
+    <a href="https://google.com" target="_blank" puiButton variant="primary">PrimaryLinkButton</a>
+    <button type="button" puiButton variant="primary" disabled>DisabledPrimaryButton</button>
+    <button type="button" puiButton>
+        <pui-icon-login class="inline-flex" size="s"></pui-icon-login>
+        ButtonWithIcon
+    </button>
+</div>
+<div class="grid grid-cols-4 gap-4 mt-4">
+    <button type="button" puiButton variant="primary" [scaleOnHover]="false">
+        <pui-button-arrows variant="left-arrow">PrimaryButtonWithLeftArrow</pui-button-arrows>
+    </button>
+    <button type="button" puiButton variant="primary" [busy]="true">
+        <pui-button-spinner>PrimaryButtonBusy</pui-button-spinner>
+    </button>
+    <button type="button" puiButton variant="primary" [busy]="true">PrimaryButtonBusyWithoutSpinner</button>
+</div>
+<div class="grid grid-cols-4 gap-4 mt-4 justify-items-center items-center">
+    <button puiButton size="small">Small button</button>
+    <button puiButton size="default">Default button</button>
+    <button puiButton size="large">Large button</button>
+    <div class="flex gap-4 items-center">
+        <button type="button" puiButton variant="accept-primary" size="large-round">✓</button>
+        <button type="button" puiButton variant="accept-primary" size="small-round">✓</button>
+        <button type="button" puiButton variant="danger" size="large-round">✕</button>
+        <button type="button" puiButton variant="danger" size="small-round">✕</button>
+    </div>
+</div>
+
+<div class="mt-8 flex justify-around">
+    <pui-dropdown-button [options]="options1">Router Links</pui-dropdown-button>
+    <pui-dropdown-button [options]="options1" (menuOpen)="menuOpenHandler()" (menuClose)="menuCloseHandler()"
+        >menuOpen/menuClose => Console output
+    </pui-dropdown-button>
+    <pui-dropdown-button [options]="options2">
+        <pui-icon-login class="inline-flex" size="s"></pui-icon-login>
+        With Icon & onClickHandler auf option => Console output
+    </pui-dropdown-button>
+    <pui-dropdown-button
+        hideArrows="true"
+        size="large-round"
+        menuAlignment="right"
+        [options]="[
+            {
+                iconTemplate: customDropdownOptionIcon,
+                onClickHandler: customDropdownOptionHandler,
+                labelContent: 'Login',
+            },
+        ]"
+    >
+        <pui-icon-login class="inline-flex" size="s"></pui-icon-login>
+    </pui-dropdown-button>
+    <ng-template #customDropdownOptionIcon>
+        <pui-icon-login class="mr-2 inline-flex" size="s"></pui-icon-login>
+    </ng-template>
+</div>
+
+<div class="mt-2 flex">
+    <pui-dropdown-button [options]="options3" menuAlignment="right"> Right aligned Menu</pui-dropdown-button>
+</div>
+
+<div class="mt-2 flex justify-stretch">
+    <button type="button" puiButton class="grow">
+        <pui-button-arrows variant="left-arrow">Button with left arrow</pui-button-arrows>
+    </button>
+    <button type="button" puiButton class="grow">
+        <pui-button-arrows variant="right-arrow">Button with right arrow</pui-button-arrows>
+    </button>
+</div>
+
+<div class="mt-2 flex justify-stretch">
+    <button type="button" puiButton class="grow" disabled="true">
+        <pui-button-arrows variant="left-arrow">Disabled button with left arrow</pui-button-arrows>
+    </button>
+    <button type="button" puiButton class="grow" disabled="true">
+        <pui-button-arrows variant="right-arrow">Disabled button with right arrow</pui-button-arrows>
+    </button>
+</div>
+
+<h4 class="mt-8">Async commands</h4>
+<app-commands />
+
+<h4 class="mt-8">Async commands (Legacy)</h4>
+<app-legacy-commands />
+

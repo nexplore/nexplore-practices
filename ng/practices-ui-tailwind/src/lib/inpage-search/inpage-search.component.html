@@ -1,0 +1,18 @@
+<div class="bg-highlight block p-4">
+  <div class="relative" aria-hidden="true">
+    @if (!pending) {
+      <pui-icon-search class="absolute right-0 block h-10 w-10 p-0.5"></pui-icon-search>
+    }
+    @if (pending) {
+      <pui-icon-spinner class="absolute right-0 block h-10 w-10 p-2"></pui-icon-spinner>
+    }
+  </div>
+  <input
+    [attr.aria-label]="label ?? ('Practices.Labels_Search' | translate)"
+    class="pr-pui-controlsize placeholder:text-dark-gray placeholder-shown:text-dark-gray h-10 w-full bg-white pl-6 text-black"
+    type="text"
+    [placeholder]="placeholder ?? ('Practices.Labels_Search' | translate)"
+    [ngModel]="searchTerm$ | async"
+    (ngModelChange)="onSearchTermChange($event)"
+    />
+</div>

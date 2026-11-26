@@ -1,0 +1,96 @@
+<!-- Fields -->
+<div class="container mx-auto">
+    <form puiForm [formGroup]="mainForm">
+        <pui-form-field class="w-1/4">
+            <label puiLabel>Required Date-Input</label>
+            <input puiInput type="date" placeholder="Required Date-Input" formControlName="requiredDate" />
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Required Combobox</label>
+            <ng-select
+                puiInput
+                [items]="foods"
+                bindLabel="name"
+                bindValue="id"
+                formControlName="requiredCombobox"
+                placeholder="Required Combobox"
+            ></ng-select>
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Required Async Combobox</label>
+            <ng-select
+                puiInput
+                [puiSelectViewSource]="foodSource"
+                formControlName="requiredAsyncCombobox"
+                placeholder="Required Async Combobox"
+            ></ng-select>
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Required Text-Input</label>
+            <input puiInput type="text" placeholder="Required Text-Input" formControlName="requiredText" />
+        </pui-form-field>
+        <pui-form-field class="w-1/4">
+            <label [alwaysVisible]="true" puiLabel>This label is always visible</label>
+            <input puiInput type="number" placeholder="Required Number-Input" formControlName="requiredNumber" />
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Required input with initial value</label>
+            <input
+                puiInput
+                type="text"
+                placeholder="Required input with initial value"
+                formControlName="requiredInputWithInitialValue"
+            />
+        </pui-form-field>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Async Validator</label>
+            <input puiInput type="text" placeholder="Async Validator" formControlName="asyncValidator" />
+        </pui-form-field>
+
+        <pui-checkbox
+            class="w-1/2"
+            label="Required Checkbox Standalone"
+            formControlName="requiredCheckbox"
+        ></pui-checkbox>
+        <pui-form-field class="w-1/2">
+            <label puiLabel>Required FileInput</label>
+            <input puiInput type="file" formControlName="requiredFileInput" />
+        </pui-form-field>
+    </form>
+</div>
+
+<!-- Radio Buttons -->
+<div class="container mx-auto mt-5">
+    <form puiForm [formGroup]="mainForm">
+        <pui-radio-button-group
+            legend="Required Radio Button Group"
+            [displayInline]="false"
+            formControlName="requiredRadioButtonGroup"
+            class="w-1/2"
+        >
+            <pui-radio-button value="1" label="Option 1"></pui-radio-button>
+            <pui-radio-button value="2" label="Option 2"></pui-radio-button>
+            <pui-radio-button value="3" label="Option 3"></pui-radio-button>
+            <pui-radio-button value="4" label="Option 4"></pui-radio-button>
+            <pui-radio-button value="5" label="Option 5"></pui-radio-button>
+            <pui-radio-button value="6" label="Option 6"></pui-radio-button>
+        </pui-radio-button-group>
+    </form>
+</div>
+
+<div class="container mx-auto">
+    <button puiButton (click)="fakeSubmit()" class="my-10">Trigger Submit</button>
+</div>
+
+<!-- Checkboxes -->
+<div class="container mx-auto">
+    <form [formGroup]="cbForm">
+        <pui-checkbox-group legend="Checkboxes" [displayInline]="false" class="w-1/2">
+            <pui-checkbox label="Checkbox 1" formControlName="checkbox1"></pui-checkbox>
+            <pui-checkbox label="Checkbox 2" formControlName="checkbox2"></pui-checkbox>
+            <pui-checkbox label="Checkbox 3" formControlName="checkbox3"></pui-checkbox>
+            <pui-checkbox label="Required Checkbox 4" formControlName="requiredCheckbox4"></pui-checkbox>
+            <pui-checkbox label="Checkbox 5" formControlName="checkbox5"></pui-checkbox>
+        </pui-checkbox-group>
+    </form>
+</div>

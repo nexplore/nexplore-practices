@@ -1,0 +1,40 @@
+<pui-modal
+  [hideCloseButton]="!!dialogRef.disableClose || !!busy || !!hideCloseButton"
+  [hideDoubleDividerLine]="!content || isContentEmpty"
+  >
+  @if (title) {
+    <span puiModalTitle class="flex items-center justify-center">
+      <h1 class="h4 mb-0 ml-1">
+        <pui-dialog-template-content [content]="title" [contentInputs]="contentInputs ?? data"/>
+      </h1>
+    </span>
+  }
+  @if (subtitle) {
+    <div class="mt-1" puiModalSubtitle>
+      <pui-dialog-template-content [content]="subtitle" [contentInputs]="contentInputs ?? data"/>
+    </div>
+  }
+  @if (content) {
+    <div puiModalContent puiHideIfEmptyText (emptyTextChange)="isContentEmpty = $event">
+      <pui-dialog-template-content [content]="content" [contentInputs]="contentInputs ?? data"/>
+    </div>
+  }
+  @for (action of actions; track action) {
+    <button
+      puiButton
+      [variant]="action.variant ?? (action.primary ? 'primary' : 'secondary')"
+      [clickCommand]="action.command ?? command"
+      [commandOptions]="{ status: {silent: isActionSilent(action) } }"
+      [commandArgs]="action.command ? data : action"
+      [disabled]="busy"
+      puiModalFooterAction
+      [shouldClose]="false"
+      >
+      {{ action.label ?? (action.labelKey | translate) }}
+    </button>
+  }
+
+  @if (busy) {
+    <pui-icon-spinner size="m" puiModalFooterStatus></pui-icon-spinner>
+  }
+</pui-modal>
