@@ -1,4 +1,4 @@
-export default {
+module.exports = {
     displayName: 'ng-practices-ng-list-view-source',
     preset: '../jest.preset.js',
     setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],

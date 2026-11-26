@@ -93,7 +93,6 @@ export function formControlChangeEffect<TValue>(
 ): EffectRef {
     const injector = inject(Injector);
     let currentInjector: Injector;
-    let currentValue: TValue;
     let currentFormRef: AbstractControl;
     const INITIAL = {};
     let currentSignal: Signal<TValue | typeof INITIAL>;
@@ -106,7 +105,6 @@ export function formControlChangeEffect<TValue>(
 
             trace('formChangeEffect', 'New form object, creating new proxy', {
                 abstractControl,
-                valuesProxy: currentValue,
                 currentInjector,
                 currentFormRef,
             });

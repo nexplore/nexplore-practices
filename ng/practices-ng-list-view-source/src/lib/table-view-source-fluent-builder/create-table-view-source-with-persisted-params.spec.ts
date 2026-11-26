@@ -23,18 +23,18 @@ describe('createTableViewSourceWithPersistedParams', () => {
         if (ms > 0) {
             jest.advanceTimersByTime(ms);
             await Promise.resolve();
-            TestBed.flushEffects();
+            TestBed.tick();
         }
 
         let guard = 10;
         while (jest.getTimerCount() > 0 && guard-- > 0) {
             jest.runOnlyPendingTimers();
             await Promise.resolve();
-            TestBed.flushEffects();
+            TestBed.tick();
         }
 
         await Promise.resolve();
-        TestBed.flushEffects();
+        TestBed.tick();
     };
 
     it('applies persisted params returned by load()', async () => {

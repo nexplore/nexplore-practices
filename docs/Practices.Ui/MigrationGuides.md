@@ -4,6 +4,90 @@ This file serves as an additional guide to the [changelog](../../CHANGELOG.md), 
 
 Note: The goal would be, with time, to synthesize these guides in their own documentation-files.
 
+## Upgrading to 13.0.0
+
+Version 13.0.0 builds the Angular packages with Angular 22. It contains no intended behaviour changes, but the following breaking changes affect consuming applications.
+
+-   [Angular 22 is required](#angular-22-is-required)
+-   [Updated peer dependencies](#updated-peer-dependencies)
+-   [Deep imports no longer resolve](#deep-imports-no-longer-resolve)
+-   [Declare `practices-ng-common-util` when you import it](#declare-practices-ng-common-util-when-you-import-it)
+-   [`DialogService` constructor (`practices-ui-clarity`)](#dialogservice-constructor-practices-ui-clarity)
+
+### Angular 22 is required
+
+13.0.0 declares `>=22.0.0 <23.0.0` as the Angular peer range of all `@nexplore/practices-*` Angular packages and drops Angular 18 to 21. Upgrade your application to Angular 22 first (see the [Angular update guide](https://angular.dev/update-guide)), then update the practices packages. Later releases accept Angular 21.2 again, see the note below.
+
+```jsonc
+// Before (12.x)
+"@angular/core": ">=18.0.0 <22.0.0"
+
+// After (13.0.0)
+"@angular/core": ">=22.0.0 <23.0.0"
+
+// After (releases after 13.0.0)
+"@angular/core": ">=21.2.0 <23.0.0"
+```
+
+> [!NOTE]
+> The releases after 13.0.0 accept Angular `>=21.2.0 <23.0.0` again (and `@ng-select/ng-select` `>=21.0.0 <22.0.0 || >=24.0.0 <25.0.0` for `practices-ui-ktbe`). Applications on Angular 21.2 can update without upgrading Angular first. The packages are still built with Angular 22; the CI checks the Angular 21 lower bound with [`ng/compat/angular-21`](../../ng/compat/angular-21/README.md), with ng-select 21.0.0 and 21.8.2. ng-select 23 is not supported.
+>
+> With ng-select 21, two behaviours of ng-select itself differ from ng-select 24:
+>
+> -   A select with a remote-search select view source (`searchable: true` without `localSearch`) loads its items once more, without filter, after an item is selected, the dropdown is closed or the value is cleared. ng-select 21 emits `null` to the typeahead in these cases, ng-select 24 only emits while typing.
+> -   ng-select 21 always prevents the default of Escape, also when the dropdown is closed. A surrounding dialog therefore does not close on Escape while the select has the focus.
+
+### Updated peer dependencies
+
+The following third-party peer dependencies changed with Angular 22:
+
+| Package                | Used by                             | 12.x               | 13.0.0             | After 13.0.0                             |
+| ---------------------- | ----------------------------------- | ------------------ | ------------------ | ---------------------------------------- |
+| `@ng-select/ng-select` | `practices-ui-ktbe`                 | `>=13.0.0 <22.0.0` | `>=24.0.0 <25.0.0` | `>=21.0.0 <22.0.0 \|\| >=24.0.0 <25.0.0` |
+| `@clr/angular`         | `practices-ui-clarity`              | `>=15.0.0 <19.0.0` | `>=18.4.0 <19.0.0` | unchanged                                |
+| `@ngx-translate/core`  | `practices-ui`, `practices-ui-ktbe` | `>=15.0.0 <18.0.0` | `>=17.0.0 <18.0.0` | unchanged                                |
+| `@ngx-translate/core`  | `practices-ui-clarity`              | `>=15.0.0 <17.0.0` | `>=17.0.0 <18.0.0` | unchanged                                |
+
+If your application uses one of these packages directly, update it together with the practices.
+
+### Deep imports no longer resolve
+
+The packages are now built with ng-packagr 22, which bundles each library's types into a single file and only exposes the entry point through the `exports` map. Imports from `@nexplore/practices-*/lib/...` fail with "Cannot find module". Import from the package root instead.
+
+```ts
+// Before
+import { TableViewSourceWithSignals } from '@nexplore/practices-ng-list-view-source/lib/table-view-source-fluent-builder/types';
+
+// After
+import { TableViewSourceWithSignals } from '@nexplore/practices-ng-list-view-source';
+```
+
+`TableViewSourceWithSignals`, `SelectViewSourceWithSignals`, `TypedTableViewSourceConfig` and `TypedSelectViewSourceConfig` were added to the public API of `practices-ng-list-view-source` for this. If you deep-import something else that is not exported, please open an issue.
+
+### Declare `practices-ng-common-util` when you import it
+
+`@nexplore/practices-ng-common-util` is a peer dependency of most practices packages, so it is installed anyway. If your application imports from it directly, add it to your own `package.json` with the same version as the other practices packages.
+
+```jsonc
+"dependencies": {
+    "@nexplore/practices-ng-common-util": "13.0.0",
+    "@nexplore/practices-ng-forms": "13.0.0",
+    // ...
+}
+```
+
+### `DialogService` constructor (`practices-ui-clarity`)
+
+`DialogService` no longer injects `ComponentFactoryResolver`, because `DomPortalOutlet` from `@angular/cdk` 22 no longer accepts it. This only affects you if you create `DialogService` with `new` or extend it; injecting it is unchanged.
+
+```ts
+// Before
+new DialogService(componentFactoryResolver, appRef, injector, translateService, document);
+
+// After
+new DialogService(appRef, injector, translateService, document);
+```
+
 ## Migrating to use Signals
 
 ### Inputs and outputs

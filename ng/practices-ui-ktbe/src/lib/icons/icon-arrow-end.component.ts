@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { PuibeIconDirectiveBase } from './icon.directive';
 
 @Component({
     standalone: true,
     selector: 'puibe-icon-arrow-end',
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: ` <svg
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"

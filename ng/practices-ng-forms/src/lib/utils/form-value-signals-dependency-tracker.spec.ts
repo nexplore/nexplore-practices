@@ -21,15 +21,15 @@ describe('createFormValueSignalsProxyWithAutoTrackingDependencies', () => {
                 results.push(value);
             });
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             form.controls.testControl.setValue(true);
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             form.controls.testControl.setValue(false);
 
-            TestBed.flushEffects();
+            TestBed.tick();
         });
 
         expect(results).toEqual([false, true, false]);
@@ -55,16 +55,16 @@ describe('createFormValueSignalsProxyWithAutoTrackingDependencies', () => {
             });
 
             form.controls.aTracked.setValue(true);
-            TestBed.flushEffects();
+            TestBed.tick();
 
             form.controls.bUntracked.setValue(true);
-            TestBed.flushEffects();
+            TestBed.tick();
 
             form.controls.cUntracked.setValue(true);
-            TestBed.flushEffects();
+            TestBed.tick();
 
             form.controls.dTracked.setValue(true);
-            TestBed.flushEffects();
+            TestBed.tick();
         });
 
         expect(results).toEqual([false, true]);
@@ -84,16 +84,16 @@ describe('createFormValueSignalsProxyWithAutoTrackingDependencies', () => {
                 results.push(entries);
             });
 
-            TestBed.flushEffects();
+            TestBed.tick();
 
             form.addControl('b', new FormControl<null | boolean>(false));
-            TestBed.flushEffects();
+            TestBed.tick();
 
             form.addControl('c', new FormControl<null | boolean>(false));
-            TestBed.flushEffects();
+            TestBed.tick();
 
             form.removeControl('b');
-            TestBed.flushEffects();
+            TestBed.tick();
         });
 
         expect(results).toEqual([

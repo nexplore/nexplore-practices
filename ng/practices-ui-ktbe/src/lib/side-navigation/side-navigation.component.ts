@@ -1,6 +1,6 @@
 import { A11yModule, InputModalityDetector } from '@angular/cdk/a11y';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { AsyncPipe, NgClass, NgFor, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -35,14 +35,9 @@ import {
     take,
     takeUntil,
 } from 'rxjs';
-import { PuibeFooterComponent } from '../footer/footer.component';
-import { PuibeHeaderLogoComponent } from '../header/header-logo.component';
 import { RouterUtilService } from '../router-util.service';
 import { PuibeShellService } from '../shell/shell.service';
 import { PUIBE_BREAKPOINT_MAX_W_LG } from '../util/constants';
-import { ObserveScreenPositionDirective } from '../util/observe-screen-position.directive';
-import { ObserveScrollPositionDirective } from '../util/observe-scroll-position.directive';
-import { PuibeObserveSizeDirective } from '../util/observe-size.directive';
 import {
     applyUrlParams,
     collectRouteParams,
@@ -88,20 +83,12 @@ type NavPane = { route: PuibeMetaRouteExt; parents: PuibeMetaRoute[]; comparable
     animations: [panelExpansionAnimation],
     imports: [
         NgClass,
-        NgIf,
-        NgFor,
-        NgForOf,
         NgTemplateOutlet,
         AsyncPipe,
         TranslateModule,
         PuibeSideNavigationPaneComponent,
         PuibeSideNavigationItemComponent,
-        PuibeHeaderLogoComponent,
-        PuibeFooterComponent,
         A11yModule,
-        PuibeObserveSizeDirective,
-        ObserveScreenPositionDirective,
-        ObserveScrollPositionDirective,
     ],
     providers: [DestroyService],
 })

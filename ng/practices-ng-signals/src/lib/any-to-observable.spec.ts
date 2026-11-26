@@ -22,7 +22,7 @@ describe('anyToObservable', () => {
 
       // Update the signal and get the new observable value
       source.set(20);
-      TestBed.flushEffects();
+      TestBed.tick();
       const newValue = await firstValueFrom(result);
       results.push('new-value:' + newValue);
     });

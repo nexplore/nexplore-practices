@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { PuibeIconGoBackComponent } from '../icons/icon-go-back.component';
@@ -16,7 +16,7 @@ const rightArrowClassNames = '-ml-10 -mr-3';
     selector: 'puibe-button-arrows',
     templateUrl: './button-arrows.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [PuibeIconGoBackComponent, PuibeIconGoNextComponent, NgIf, NgClass, AsyncPipe],
+    imports: [PuibeIconGoBackComponent, PuibeIconGoNextComponent, NgClass, AsyncPipe],
 })
 export class PuibeButtonArrowsComponent implements OnInit, OnDestroy {
     private _variantSubject = new BehaviorSubject<Variant>('right-arrow');

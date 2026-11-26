@@ -1,6 +1,6 @@
-import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
-import { Component, ElementRef, Input, Optional, ViewChild } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet, Routes } from '@angular/router';
+import { NgClass } from '@angular/common';
+import { Component, ElementRef, Input, Optional, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { NavigationEnd, Router, Routes } from '@angular/router';
 import { PuibeBreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 
 import { DestroyService } from '@nexplore/practices-ui';
@@ -43,16 +43,13 @@ export type AutofocusContentOnRouterNavigationConfig = {
     selector: 'puibe-shell',
     templateUrl: './shell.component.html',
     imports: [
-        RouterOutlet,
         PuibeContainerDirective,
-        AsyncPipe,
-        NgIf,
         NgClass,
-        NgForOf,
         PuibeBreadcrumbComponent,
         PuibeIconSpinnerComponent,
         PuibeStickyDirective,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [DestroyService],
 })
 export class PuibeShellComponent {

@@ -1,5 +1,5 @@
 import { A11yModule } from '@angular/cdk/a11y';
-import { NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -23,7 +23,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { min } from 'date-fns/min';
 import { max } from 'date-fns/max';
 import { PuibeIconArrowComponent } from '../../icons/icon-arrow.component';
-import { PuibeIconCloseComponent } from '../../icons/icon-close.component';
 import { PuibeIconDatepickerTodayComponent } from '../../icons/icon-datepicker-today.component';
 import { setHostAttr } from '../../util/utils';
 import { PuibeCalendarKeyboardNavigationService } from '../services/calendar-keyboard-navigation.service';
@@ -54,15 +53,9 @@ const defaultViewModes: AllowedViewModesArray = ['date', 'month', 'year'];
         PuibeCalendarMonthViewComponent,
         PuibeCalendarYearViewComponent,
         PuibeCalendarToolbarItemDirective,
-        NgIf,
-        NgSwitch,
-        NgSwitchCase,
-        NgFor,
-        NgClass,
         NgTemplateOutlet,
         TranslateModule,
         PuibeIconArrowComponent,
-        PuibeIconCloseComponent,
         PuibeIconDatepickerTodayComponent,
         A11yModule,
     ],

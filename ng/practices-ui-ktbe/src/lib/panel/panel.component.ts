@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 
 @Component({
@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular
     selector: 'puibe-panel',
     templateUrl: './panel.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, NgIf],
+    imports: [NgClass],
 })
 export class PuibePanelComponent {
     @HostBinding('class')

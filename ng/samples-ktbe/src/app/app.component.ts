@@ -1,6 +1,6 @@
-import { AsyncPipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
-import { Component, Injector } from '@angular/core';
-import { NavigationStart, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { AsyncPipe } from '@angular/common';
+import { Component, Injector, ChangeDetectionStrategy } from '@angular/core';
+import { NavigationStart, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { TitleService } from '@nexplore/practices-ui';
 import {
     PuibeFooterComponent,
@@ -12,20 +12,15 @@ import {
     PuibeHeaderComponent,
     PuibeHeaderDirective,
     PuibeHeaderLanguageMenuItemDirective,
-    PuibeHeaderLogoComponent,
     PuibeHeaderMainMenuItemDirective,
     PuibeHeaderMobileMenuItemDirective,
     PuibeHeaderServiceMenuItemDirective,
-    PuibeIconHamburgerComponent,
     PuibeIconLoginComponent,
     PuibeIconSearchComponent,
     PuibeIconSearchMobileComponent,
     PuibeShellComponent,
     PuibeShellService,
     PuibeSidenavFooterComponent,
-    PuibeSideNavigationComponent,
-    PuibeSideNavigationItemComponent,
-    PuibeSideNavigationPaneComponent,
     PuibeSkipLinkComponent,
     PuibeStatusHubComponent,
     RouterUtilService,
@@ -39,9 +34,9 @@ import { translations } from './translations';
     standalone: true,
     selector: 'app-root',
     templateUrl: './app.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         RouterLink,
-        RouterLinkActive,
         PuibeShellComponent,
         PuibeHeaderDirective,
         PuibeHeaderComponent,
@@ -49,9 +44,7 @@ import { translations } from './translations';
         PuibeHeaderServiceMenuItemDirective,
         PuibeHeaderMainMenuItemDirective,
         PuibeHeaderMobileMenuItemDirective,
-        PuibeHeaderLogoComponent,
         PuibeIconSearchComponent,
-        PuibeIconHamburgerComponent,
         PuibeIconSearchMobileComponent,
         PuibeIconLoginComponent,
         PuibeFooterDirective,
@@ -60,15 +53,9 @@ import { translations } from './translations';
         PuibeFooterCopyrightDirective,
         PuibeFooterMenuItemDirective,
         PuibeFooterLanguageMenuItemDirective,
-        PuibeSideNavigationComponent,
-        PuibeSideNavigationItemComponent,
-        PuibeSideNavigationPaneComponent,
         PuibeSkipLinkComponent,
         AsyncPipe,
-        NgFor,
-        NgIf,
         RouterOutlet,
-        NgTemplateOutlet,
         PuibeGlobalDirtyGuardDirective,
         PuibeStatusHubComponent,
     ],
@@ -98,7 +85,7 @@ export class AppComponent {
         injector: Injector
     ) {
         this._translateService.use(this.languageKeys.en).subscribe();
-        this._translateService.setDefaultLang(this.languageKeys.en);
+        void this._translateService.setFallbackLang(this.languageKeys.en);
         this._translateService.setTranslation(this.languageKeys.en, translations);
 
         this._titleService.title$.subscribe((t) => console.log('🎉Title Updated: ' + t));

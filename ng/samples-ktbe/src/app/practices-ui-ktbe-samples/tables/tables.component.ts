@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { IQueryParamsWithFilter, OrderDirection } from '@nexplore/practices-ui';
 import {
@@ -111,8 +111,6 @@ export const tableSampleLoadFn = <TItem = SampleModel, TFilter = any>(
         TableExampleComponent,
         AsyncPipe,
         DatePipe,
-        NgFor,
-        NgIf,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

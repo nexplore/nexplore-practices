@@ -4,6 +4,9 @@
 /dist
 /tmp
 /out-tsc
+# Visual regression tests (the screenshots in visual-tests/__screenshots__ are committed with Git LFS)
+/visual-tests/test-results
+/visual-tests/report
 *-testresults.xml
 # Only exists if Bazel was run
 /bazel-out
@@ -408,3 +411,7 @@ MigrationBackup/
 .nx/cache
 .nx/workspace-data
 .angular
+
+.nx/polygraph
+.nx/self-healing
+.nx/migrate-runs

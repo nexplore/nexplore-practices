@@ -42,36 +42,36 @@ describe('formGroup', () => {
             }));
             const fg = fg3;
 
-            TestBed.flushEffects();
+            TestBed.tick();
             pushResults();
 
             isRequiredSignal.set(true);
-            TestBed.flushEffects();
+            TestBed.tick();
             pushResults();
 
             sourceSignal.set(new TestDto('John Doe'));
 
-            TestBed.flushEffects();
+            TestBed.tick();
             pushResults();
 
             fg.patchValue({ nickname: 'John' });
 
-            TestBed.flushEffects();
+            TestBed.tick();
             pushResults();
 
             fg.patchValue({ nickname: 'Lisa' });
 
-            TestBed.flushEffects();
+            TestBed.tick();
             pushResults();
 
             fg.patchValue({ nickname: 'Johnny' });
 
-            TestBed.flushEffects();
+            TestBed.tick();
             pushResults();
 
             fg.patchValue({ nickname: 'Jo' });
 
-            TestBed.flushEffects();
+            TestBed.tick();
             pushResults();
 
             expect(results).toEqual([

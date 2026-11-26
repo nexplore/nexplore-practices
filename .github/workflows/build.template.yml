@@ -12,14 +12,20 @@ jobs:
           fetch-tags: true
       - uses: actions/setup-dotnet@v5.4.0
         with:
-          global-json-file: dotnet/global.json
-          dotnet-version: "8.x"
+          global-json-file: global.json
+          # Runtimes for the net8.0/net9.0 test runs (the SDK comes from global.json)
+          dotnet-version: |
+            8.x
+            9.x
       - uses: actions/setup-node@v6.4.0
         with:
-          node-version: "22.14.0"
+          node-version-file: "ng/.nvmrc"
           check-latest: true
       - run: chmod +x ./build.sh
       - run: ./build.sh BuildPackAll
+      # Builds an Angular 21.2 app against the packed libraries (lower bound of the peer ranges)
+      - name: Verify packages with Angular 21
+        run: bash ng/compat/angular-21/verify.sh
       - if: always()
         uses: actions/upload-artifact@v7.0.1
         with:

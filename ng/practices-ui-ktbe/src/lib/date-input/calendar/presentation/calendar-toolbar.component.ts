@@ -1,11 +1,10 @@
-import { NgClass } from '@angular/common';
-import { Component, HostBinding } from '@angular/core';
+import { Component, HostBinding, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'puibe-calendar-toolbar',
     templateUrl: './calendar-toolbar.component.html',
     standalone: true,
-    imports: [NgClass],
+    changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PuibeCalendarToolbarComponent {
     @HostBinding('class')

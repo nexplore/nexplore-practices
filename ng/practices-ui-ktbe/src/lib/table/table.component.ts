@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgComponentOutlet, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgClass, NgComponentOutlet, NgTemplateOutlet } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -40,7 +40,6 @@ export type TableInteractionEvent =
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [PageService, DestroyService],
     imports: [
-        NgIf,
         NgClass,
         AsyncPipe,
         TranslateModule,

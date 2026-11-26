@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgComponentOutlet, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgComponentOutlet, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, HostBinding, Input, forwardRef } from '@angular/core';
 import { PuibeTableComponent } from '../table.component';
 import { ClassNames } from '../constants';
@@ -9,7 +9,7 @@ import { PuibeTableCellComponent } from '../cell/table-cell.component';
     selector: 'puibe-table-row',
     templateUrl: './table-row.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgIf, NgClass, AsyncPipe, NgTemplateOutlet, NgComponentOutlet, forwardRef(() => PuibeTableCellComponent)],
+    imports: [AsyncPipe, NgTemplateOutlet, NgComponentOutlet, forwardRef(() => PuibeTableCellComponent)],
 })
 export class PuibeTableRowComponent {
     @HostBinding('class')

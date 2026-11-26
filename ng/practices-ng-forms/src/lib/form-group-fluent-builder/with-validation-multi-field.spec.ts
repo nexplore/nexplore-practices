@@ -15,7 +15,7 @@ describe('withValidationMultiField', () => {
         .withMultiFieldValidation(({ field1, field2 }) => !field1 && !field2 && { atLeastOneFieldRequired: true });
 
       // Initial state
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after initial state
       results.push({
@@ -25,7 +25,7 @@ describe('withValidationMultiField', () => {
 
       // Set field1 value
       fg.controls.field1.setValue('value');
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after setting field1
       results.push({
@@ -66,7 +66,7 @@ describe('withValidationMultiField', () => {
         .withMultiFieldValidation(({ field1, field2 }) => !field1 && !field2 && { atLeastOneFieldRequired: true });
 
       // Initial state
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after initial state
       results.push({
@@ -76,7 +76,7 @@ describe('withValidationMultiField', () => {
 
       // Set field1 value
       fg.controls.field1.setValue('value');
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after setting field1
       results.push({
@@ -86,7 +86,7 @@ describe('withValidationMultiField', () => {
 
       // Set field2 value
       fg.controls.field2.setValue('value');
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after setting field2
       results.push({
@@ -131,7 +131,7 @@ describe('withValidationMultiField', () => {
         .withMultiFieldValidation(({ field1, field2 }) => !field1 && !field2 && { atLeastOneFieldRequired: true });
 
       // Initial state
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after initial state
       results.push({
@@ -141,7 +141,7 @@ describe('withValidationMultiField', () => {
 
       // Set field1 value
       fg.controls.field1.setValue('value1');
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after setting field1
       results.push({
@@ -151,7 +151,7 @@ describe('withValidationMultiField', () => {
 
       // Set field2 value
       fg.controls.field2.setValue('value2');
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after setting field2
       results.push({
@@ -161,7 +161,7 @@ describe('withValidationMultiField', () => {
       
       // Clear both fields again
       fg.controls.field1.setValue(null);
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after clearing field1
       results.push({
@@ -171,7 +171,7 @@ describe('withValidationMultiField', () => {
       
       // Clear field2
       fg.controls.field2.setValue(null);
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after clearing field2
       results.push({
@@ -224,7 +224,7 @@ describe('withValidationMultiField', () => {
         .withMultiFieldValidation(({ field1, field2 }) => !field1 && !field2 && { atLeastOneFieldRequired: true });
 
       // Initial state
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after initial state
       results.push({
@@ -235,7 +235,7 @@ describe('withValidationMultiField', () => {
       // Set values
       fg.controls.field1.setValue('value1');
       fg.controls.field2.setValue('value2');
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after setting values
       results.push({
@@ -245,7 +245,7 @@ describe('withValidationMultiField', () => {
 
       // Reset form
       fg.reset();
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after reset
       results.push({
@@ -299,7 +299,7 @@ describe('withValidationMultiField', () => {
         });
 
       // Initial state
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after initial state
       results.push({
@@ -308,7 +308,7 @@ describe('withValidationMultiField', () => {
 
       // Set too short value
       fg.controls.field1.setValue('ab');
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after setting short value
       results.push({
@@ -317,7 +317,7 @@ describe('withValidationMultiField', () => {
 
       // Set valid value
       fg.controls.field1.setValue('abcd');
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after setting valid value
       results.push({
@@ -326,7 +326,7 @@ describe('withValidationMultiField', () => {
       
       // Change the min length signal
       minLengthSignal.set(5);
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after changing the min length
       results.push({
@@ -335,7 +335,7 @@ describe('withValidationMultiField', () => {
 
       // Set longer valid value
       fg.controls.field1.setValue('abcdef');
-      TestBed.flushEffects();
+      TestBed.tick();
       
       // Capture errors after setting longer valid value
       results.push({
@@ -394,7 +394,7 @@ describe('withValidationMultiField', () => {
         }, ['preferences']);
 
       // Initial state - no fields set
-      TestBed.flushEffects();
+      TestBed.tick();
       
       results.push({
         email: fg.controls.email.errors,
@@ -404,7 +404,7 @@ describe('withValidationMultiField', () => {
 
       // Set preferences without contact - should fail second validation
       fg.controls.preferences.setValue('email updates');
-      TestBed.flushEffects();
+      TestBed.tick();
       
       results.push({
         email: fg.controls.email.errors,
@@ -414,7 +414,7 @@ describe('withValidationMultiField', () => {
 
       // Add email - should fix both validations
       fg.controls.email.setValue('user@example.com');
-      TestBed.flushEffects();
+      TestBed.tick();
       
       results.push({
         email: fg.controls.email.errors,
@@ -425,7 +425,7 @@ describe('withValidationMultiField', () => {
       // Remove email, add phone - should also fix both validations
       fg.controls.email.setValue(null);
       fg.controls.phone.setValue('123-456-7890');
-      TestBed.flushEffects();
+      TestBed.tick();
       
       results.push({
         email: fg.controls.email.errors,
@@ -436,7 +436,7 @@ describe('withValidationMultiField', () => {
       // Remove both contact methods - should fail first validation
       // and also fail second validation since preferences is still set
       fg.controls.phone.setValue(null);
-      TestBed.flushEffects();
+      TestBed.tick();
       
       results.push({
         email: fg.controls.email.errors,
@@ -447,7 +447,7 @@ describe('withValidationMultiField', () => {
       // Remove preferences - first validation should still fail
       // but second validation should pass
       fg.controls.preferences.setValue(null);
-      TestBed.flushEffects();
+      TestBed.tick();
       
       results.push({
         email: fg.controls.email.errors,
@@ -532,7 +532,7 @@ describe('withValidationMultiField', () => {
         }, ['firstName', 'lastName']); // Only apply errors to name fields, not address
       
       // Initial state - all fields empty
-      TestBed.flushEffects();
+      TestBed.tick();
       
       results.push({
         firstName: fg.controls.firstName.errors,
@@ -542,7 +542,7 @@ describe('withValidationMultiField', () => {
       
       // Set address - should make all fields valid
       fg.controls.address.setValue('123 Main St');
-      TestBed.flushEffects();
+      TestBed.tick();
       
       results.push({
         firstName: fg.controls.firstName.errors,
@@ -554,7 +554,7 @@ describe('withValidationMultiField', () => {
       // since the validation requires both firstName AND lastName to be set when address is empty
       fg.controls.address.setValue(null);
       fg.controls.firstName.setValue('John');
-      TestBed.flushEffects();
+      TestBed.tick();
       
       results.push({
         firstName: fg.controls.firstName.errors,
@@ -564,7 +564,7 @@ describe('withValidationMultiField', () => {
       
       // Set lastName too - all fields should be valid
       fg.controls.lastName.setValue('Doe');
-      TestBed.flushEffects();
+      TestBed.tick();
       
       results.push({
         firstName: fg.controls.firstName.errors,
