@@ -1,6 +1,6 @@
 <puibe-modal
     [hideCloseButton]="!!dialogRef.disableClose || !!busy || !!hideCloseButton"
-    [hideDoubleDividerLine]="!content || isContentEmpty"
+    [hideDoubleDividerLine]="!content || isContentEmpty()"
 >
     @if (title) {
         <span puibeModalTitle class="flex items-center justify-center">
@@ -15,7 +15,7 @@
         </div>
     }
     @if (content) {
-        <div puibeModalContent puibeHideIfEmptyText (emptyTextChange)="isContentEmpty = $event">
+        <div puibeModalContent puibeHideIfEmptyText (emptyTextChange)="isContentEmpty.set($event)">
             <puibe-dialog-template-content [content]="content" [contentInputs]="contentInputs ?? data" />
         </div>
     }
