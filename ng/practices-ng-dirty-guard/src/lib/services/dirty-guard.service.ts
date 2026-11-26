@@ -176,7 +176,12 @@ export class PuiDirtyGuardService implements OnDestroy {
 
         if (!this.disabled) {
             // share one automatic dirty guard across all outlets observing this route.
-            if (!canDeactivateGuards.some((guard) => PuiDirtyGuardService._registeredDirtyGuards.has(guard))) {
+            // Deprecated string tokens can never be one of the registered guards
+            if (
+                !canDeactivateGuards.some(
+                    (guard) => typeof guard !== 'string' && PuiDirtyGuardService._registeredDirtyGuards.has(guard)
+                )
+            ) {
                 trace('PuiDirtyGuardService', 'ensureCanDeactivateGuards', 'registering guard', {
                     routeConfig,
                     canDeactivateGuards,

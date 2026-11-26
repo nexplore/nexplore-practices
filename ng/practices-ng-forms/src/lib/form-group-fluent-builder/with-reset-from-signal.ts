@@ -30,17 +30,14 @@ export function extendWithResetFromSignal<
     config?: ResetWithSignalConfig<TSignalValue, FormGroupValues<TFormGroup>>
 ): TFormGroup {
     runInInjectionContext(this.injector, () => {
-        effect(
-            () => {
-                let dto: any = dtoSignal();
-                if (config?.mapValue) {
-                    dto = config.mapValue(dto);
-                }
+        effect(() => {
+            let dto: any = dtoSignal();
+            if (config?.mapValue) {
+                dto = config.mapValue(dto);
+            }
 
-                this.reset(dto);
-            },
-            { allowSignalWrites: true }
-        );
+            this.reset(dto);
+        });
     });
 
     return this;
