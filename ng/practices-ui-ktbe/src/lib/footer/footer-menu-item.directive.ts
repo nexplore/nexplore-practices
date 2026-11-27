@@ -99,7 +99,7 @@ export class PuibeFooterMenuItemDirective implements OnInit, DoCheck, OnDestroy 
         setHostClassNames(
             {
                 [linkClassNames]: this._isLink(),
-                // before the state classes, so these win for the classes they share with the link animation
+                // before the state classes, which then decide on the classes they share with the link animation
                 [linkAnimationClassNames]: this._isLink() && this.withAnimation,
                 [withoutAnimationClassNames]: !this.withAnimation,
                 [inactiveClassNames]: this._isLink() && this.withAnimation && !isActive,
