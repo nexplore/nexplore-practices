@@ -17,7 +17,7 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { PuibeIconArrowComponent } from '../../icons/icon-arrow.component';
 import { PuibeIconSpinnerComponent } from '../../icons/icon-spinner.component';
 import { setHostAttr, setHostClassNames } from '../../util/utils';
-import { ClassNames } from '../constants';
+import { ClassNames, CssGridSize } from '../constants';
 import { TableColumnItem } from '../table-view-source';
 import { PuibeTableComponent } from '../table.component';
 import {
@@ -101,6 +101,43 @@ export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterVie
 
     @Input() noPadding = false;
 
+    private _size: CssGridSize | undefined;
+
+    /**
+     * The size of the column, e.g. `'auto'`, `'1fr'`, `'8rem'` or `'minmax(8rem, 1fr)'`.
+     *
+     * If the table has `useGridLayout` enabled, it is used as the CSS grid track size of the column,
+     * otherwise it is applied as the width of the column (values that are not valid widths, like `fr`, are ignored by the browser).
+     */
+    @Input()
+    set size(value: CssGridSize | undefined) {
+        this._size = value;
+        this._table?.updateGridLayout();
+    }
+
+    get size() {
+        return this._size;
+    }
+
+    @HostBinding('style.width')
+    protected get widthStyle() {
+        return this._table.useGridLayout ? null : this._size ?? null;
+    }
+
+    @HostBinding('class.table-cell')
+    @HostBinding('class.border-b')
+    protected get isTableLayout() {
+        return !this._table.useGridLayout;
+    }
+
+    /**
+     * The CSS grid track size used for this column, if the table has `useGridLayout` enabled.
+     * @internal
+     */
+    get gridSize(): string {
+        return this._size ?? this._getFallbackGridSize();
+    }
+
     private _column$ = combineLatest([this._table.columns$, this._columnChangeSubject]).pipe(
         map(([_, field]) => this._table.getColumn(field ?? this._column)),
         shareReplay({ refCount: true, bufferSize: 1 })
@@ -123,7 +160,10 @@ export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterVie
         private _destroy$: DestroyService,
         _renderer: Renderer2
     ) {
-        const sortableSignal = computedPipe(this._column$, map((column) => column?.sortable));
+        const sortableSignal = computedPipe(
+            this._column$,
+            map((column) => column?.sortable)
+        );
         subscriptionEffect(() => {
             const sortable = sortableSignal();
             // This is a workaround for accessibility reasons (if a element has a click handler, screen-reader emits "clickable", which we don't want, when its not sortable)
@@ -177,6 +217,34 @@ export class PuibeTableColumnComponent implements TableColumnItem<any>, AfterVie
             this.sortDir = this._column.sortDir === OrderDirection.Desc ? OrderDirection.Asc : OrderDirection.Desc;
             this._table.triggerInteractionEvent({ type: 'sort' });
         }
+    }
+
+    /**
+     * Derives a grid track size from tailwind width classes, to make switching from the table to the grid layout more seamless.
+     * TODO: Decide if we want to keep this, or require the `size` input (or native CSS grid styles) when using the grid layout.
+     */
+    private _getFallbackGridSize(): string {
+        const classList = this._elementRef.nativeElement.classList;
+
+        if (classList.contains('w-full')) {
+            return '1fr';
+        }
+
+        const widthClass = Array.from(classList).find((c) => c.startsWith('w-'));
+
+        if (widthClass?.includes('/')) {
+            const [dividend, divisor] = widthClass.slice(2).split('/');
+            const percentage = Math.floor((+dividend / +divisor) * 100);
+            if (!isNaN(percentage)) {
+                return `minmax(${percentage}%, 100%)`;
+            }
+        }
+
+        if (widthClass) {
+            return 'minmax(min-content, max-content)';
+        }
+
+        return 'auto';
     }
 
     private _translateTableColumnLabel(column: TableColumnItem<any>) {

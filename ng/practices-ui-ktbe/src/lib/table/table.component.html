@@ -1,7 +1,7 @@
-<thead>
-    <tr>
+<thead [ngClass]="{ 'border-dark-gray-68 sticky top-0 z-[1] border-b bg-white': useStickyHeader }">
+    <tr [ngClass]="{ 'border-b': useGridLayout }">
         @if (beforeColumnTemplate$ | async; as tmpl) {
-            <puibe-table-column [ngClass]="headerCellClassName" [noPadding]="tmpl.noPadding">
+            <puibe-table-column [noPadding]="tmpl.noPadding" [size]="tmpl.size ?? 'auto'">
                 @if (!tmpl.hideInHeader && tmpl.template) {
                     <ng-container *ngTemplateOutlet="tmpl.template"></ng-container>
                 }

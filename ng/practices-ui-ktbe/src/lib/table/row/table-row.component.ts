@@ -13,7 +13,9 @@ import { PuibeTableCellComponent } from '../cell/table-cell.component';
 })
 export class PuibeTableRowComponent {
     @HostBinding('class')
-    className = ClassNames.TABLE_ROW;
+    get className() {
+        return this._table.useGridLayout ? ClassNames.TABLE_ROW_GRID : ClassNames.TABLE_ROW;
+    }
 
     @HostBinding('attr.role')
     role = 'row';
@@ -23,6 +25,17 @@ export class PuibeTableRowComponent {
 
     @Input()
     borderTop = false;
+
+    // With the grid layout, the borders are applied to the row (subgrid) instead of the cells
+    @HostBinding('class.border-b')
+    protected get hasGridBorderBottom() {
+        return this._table.useGridLayout && this.borderBottom;
+    }
+
+    @HostBinding('class.border-t')
+    protected get hasGridBorderTop() {
+        return this._table.useGridLayout && this.borderTop;
+    }
 
     readonly beforeColumnTemplate$ = this._table.beforeColumnTemplate$;
 

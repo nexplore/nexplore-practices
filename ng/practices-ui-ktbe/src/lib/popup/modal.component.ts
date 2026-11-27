@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, inject, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { Component, HostBinding, inject, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { PuibeIconCloseComponent } from '../icons/icon-close.component';
 import { PuibeModalService } from './modal.service';
@@ -28,6 +28,10 @@ import { PUIBE_MODAL_CONFIG, PuibeModalConfig } from './types';
             :where([puibeModalContent]) {
                 @apply m-6;
             }
+
+            :where(puibe-modal.puibe-modal-content-scroll > [puibeModalContent]) {
+                @apply m-0 min-h-0 flex-auto overflow-auto px-6;
+            }
         `,
     ],
 })
@@ -39,6 +43,16 @@ export class PuibeModalComponent {
     @Input() hideDoubleDividerLine = false;
 
     @Input() buttonsAlignment: 'start' | 'end' = this.config?.buttonsAlignment ?? 'start';
+
+    /**
+     * Lets the modal take its full (given) height, with only the `puibeModalContent` being scrollable, while the title and the footer stay visible.
+     * The height of the modal has to be constrained, e.g. with `class="h-[80vh]"`.
+     */
+    @HostBinding('class.puibe-modal-content-scroll')
+    @HostBinding('class.flex')
+    @HostBinding('class.flex-col')
+    @Input()
+    enableContentScroll = false;
 
     constructor(private readonly _puibeDialogService: PuibeModalService) {}
 

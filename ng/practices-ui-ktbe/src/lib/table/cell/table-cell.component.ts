@@ -7,7 +7,10 @@ import { PuibeTableCellDirective } from './table-cell.directive';
     selector: 'puibe-table-cell',
     templateUrl: './table-cell.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    hostDirectives: [PuibeAddTitleIfEllipsisDirective, { directive: PuibeTableCellDirective, inputs: ['noPadding'] }],
+    hostDirectives: [
+        PuibeAddTitleIfEllipsisDirective,
+        { directive: PuibeTableCellDirective, inputs: ['noPadding', 'colspan'] },
+    ],
 })
 export class PuibeTableCellComponent {
     @HostBinding('attr.role')

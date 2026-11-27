@@ -19,6 +19,7 @@ import { map, timer } from 'rxjs';
 
 import { AppFlyoutComponent } from './flyout.component';
 import { AppModalComponent } from './modal.component';
+import { AppModalTableComponent } from './modal-table.component';
 
 @Component({
     standalone: true,
@@ -66,6 +67,10 @@ export class AppPopupsComponent {
         });
 
         ref.closed.subscribe((data) => console.log('Closed with data', data));
+    }
+
+    openModalWithTable(): void {
+        this._modalService.open(AppModalTableComponent);
     }
 
     openFlyout(): void {

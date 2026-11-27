@@ -1,0 +1,30 @@
+/*
+ * Styles for the (experimental) grid layout of the table (`useGridLayout`).
+ * The selectors use :where() to keep the specificity low, so they can easily be overridden (e.g. with tailwind `grid-cols-*` classes).
+ */
+:is(puibe-table):where(.grid) {
+    grid-template-columns: var(--puibe-table-cols-template, auto);
+    /* header, body, footer: the footer row takes the remaining space, so it is aligned at the bottom if the table has a fixed height */
+    grid-auto-rows: min-content min-content 1fr;
+}
+
+:is(puibe-table):where(.grid) > :is(thead, tbody, tfoot, puibe-table-footer),
+:is(puibe-table):where(.grid) > :is(thead, tbody, tfoot, puibe-table-footer) > tr,
+:is(puibe-table):where(.grid) :where(puibe-table-row) {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+}
+
+:is(puibe-table):where(.grid) > puibe-table-footer {
+    align-self: end;
+}
+
+:is(puibe-table):where(.grid) > :is(tbody, puibe-table-footer) > tr > td {
+    grid-column: 1 / -1;
+}
+
+:is(puibe-table):where(.grid) :where(puibe-table-cell, [puibeTableCell]) {
+    align-self: center;
+    grid-column: span var(--puibe-colspan, 1) / span var(--puibe-colspan, 1);
+}

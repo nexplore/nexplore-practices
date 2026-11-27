@@ -54,6 +54,7 @@ export * from './lib/table/cell/hover-emphasis.directive';
 export * from './lib/table/cell/table-cell.component';
 export * from './lib/table/cell/table-cell.directive';
 export * from './lib/table/col-actions/table-col-actions.component';
+export type { CssGridSize, CssSizeUnit } from './lib/table/constants';
 export * from './lib/table/column/table-column-translate.directive';
 export * from './lib/table/column/table-column.component';
 export * from './lib/table/footer/table-footer.component';
