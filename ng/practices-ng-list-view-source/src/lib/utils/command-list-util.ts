@@ -3,7 +3,7 @@ import { AbstractCommand } from '@nexplore/practices-ng-commands';
 import { unwrapSignalLike, ValueOrGetter } from '@nexplore/practices-ng-common-util';
 import { trace } from '@nexplore/practices-ng-logging';
 import { subscriptionEffect } from '@nexplore/practices-ng-signals';
-import { combineLatest, from, Observable, of, startWith, takeUntil } from 'rxjs';
+import { combineLatest, from, Observable, startWith, takeUntil } from 'rxjs';
 import { filter, map, take, tap } from 'rxjs/operators';
 import { ListViewSource } from '../implementation/list-view-source';
 import { IListResult, IQueryParamsWithFilter } from '../types';
@@ -12,16 +12,9 @@ import { arrayToInMemorySortedListResult, arrayToListResult } from './list-resul
 export function commandToListResultObservable<TData, TArgs, TFilter = TArgs>(
     abstractCommand: AbstractCommand<TArgs, TData[] | null | undefined>,
     params: IQueryParamsWithFilter<TFilter>,
-    options: { sortInMemory: boolean; triggerQueryCommandWithFilter: boolean; useLatestResult?: boolean }
+    options: { sortInMemory: boolean; triggerQueryCommandWithFilter: boolean }
 ): Observable<IListResult<TData>> {
-    if (options.useLatestResult) {
-        trace('commandToListResultObservable', 'using latest result of command', abstractCommand, params);
-        return of(abstractCommand.result).pipe(
-            options.sortInMemory
-                ? arrayToInMemorySortedListResult<TData, TFilter>(params, { disableFiltering: true })
-                : arrayToListResult()
-        );
-    } else if (options.triggerQueryCommandWithFilter) {
+    if (options.triggerQueryCommandWithFilter) {
         trace('commandToListResultObservable', 'triggering query command with filter', abstractCommand, params);
         return from(
             abstractCommand.triggerAsync(params.filter as unknown as TArgs, {
@@ -64,8 +57,7 @@ export function commandToListResultObservable<TData, TArgs, TFilter = TArgs>(
 export function refreshListViewSourceWhenCommandTriggered(
     viewSource: ListViewSource<any>,
     commandSignal: ValueOrGetter<AbstractCommand<any, any>>,
-    isBeingTriggerredByListViewSourceSignal?: Signal<boolean>,
-    onBeforeRefresh?: () => void
+    isBeingTriggerredByListViewSourceSignal?: Signal<boolean>
 ) {
     subscriptionEffect(() => {
         const commandValue = unwrapSignalLike(commandSignal);
@@ -73,7 +65,6 @@ export function refreshListViewSourceWhenCommandTriggered(
         if (commandValue) {
             return untracked(() =>
                 commandValue.result$.pipe(filter(() => !isBeingTriggerredByListViewSourceSignal?.())).subscribe(() => {
-                    onBeforeRefresh?.();
                     viewSource.refresh();
                 })
             );
