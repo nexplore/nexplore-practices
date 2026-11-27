@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostBinding, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { Directive, DoCheck, ElementRef, HostBinding, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
 import { TranslateService } from '@ngx-translate/core';
 import { takeUntil } from 'rxjs';
@@ -25,7 +25,7 @@ const withoutAnimationClassNames = 'after:border-b-0';
     selector: '[puibeFooterMenuItem]',
     providers: [DestroyService, MenuItemService],
 })
-export class PuibeFooterMenuItemDirective implements OnInit, OnDestroy {
+export class PuibeFooterMenuItemDirective implements OnInit, DoCheck, OnDestroy {
     @HostBinding('class')
     readonly className = className;
 
@@ -80,6 +80,10 @@ export class PuibeFooterMenuItemDirective implements OnInit, OnDestroy {
             setScreenReaderText(isActive, this.screenReaderTextElement, this._translate);
             this.setClassNames(isActive);
         });
+    }
+
+    ngDoCheck(): void {
+        this._menuItemService.checkAngularRouterLink();
     }
 
     ngOnDestroy(): void {

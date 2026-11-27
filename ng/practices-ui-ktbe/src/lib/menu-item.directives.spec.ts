@@ -65,10 +65,10 @@ describe.each(directives)('$name active state', ({ selector, directive }) => {
         return fixture.nativeElement.querySelector('button') as HTMLButtonElement;
     }
 
-    async function setLink(link: string | null) {
+    /** Updates the bound link; the active state must be updated synchronously within change detection. */
+    function setLink(link: string | null) {
         fixture.componentInstance.link.set(link);
         fixture.detectChanges();
-        await fixture.whenStable();
     }
 
     /** Renders the item inside the component of the `admin` route, so relative links resolve against `/admin`. */
@@ -142,14 +142,35 @@ describe.each(directives)('$name active state', ({ selector, directive }) => {
         expect(button.classList).not.toContain(activeClassName);
     });
 
-    it.each(['routerLink=""', `[routerLink]="[]"`, 'navLink=""'])(
-        'treats the empty link %s as no link',
-        async (attributes) => {
-            const button = await renderNestedAt('/admin', attributes);
+    it.each([
+        ['navLink=""', true],
+        ['routerLink=""', false],
+        [`[routerLink]="[]"`, false],
+    ])('treats the empty link %s as no link (with RouterLink: %s)', async (attributes, withRouterLink) => {
+        const button = await renderNestedAt('/admin', attributes, { withRouterLink });
 
-            expect(button.classList).not.toContain(activeClassName);
-        }
-    );
+        expect(button.classList).not.toContain(activeClassName);
+    });
+
+    it('treats routerLink="" with RouterLink as link to the route of the item, like RouterLink does', async () => {
+        const button = await renderNestedAt('/admin', 'routerLink=""');
+
+        expect(button.classList).toContain(activeClassName);
+    });
+
+    it('updates the active state when only the query params of RouterLink change', async () => {
+        const button = await renderAt(
+            '/probe?tab=a',
+            `routerLink="probe" [queryParams]="{ tab: link() }" [routerLinkActiveOptions]="{ exact: true }"`
+        );
+        expect(button.classList).not.toContain(activeClassName);
+
+        setLink('a');
+        expect(button.classList).toContain(activeClassName);
+
+        setLink('b');
+        expect(button.classList).not.toContain(activeClassName);
+    });
 
     it('parses a navLink as absolute URL, as before', async () => {
         const button = await renderNestedAt('/admin/users', 'navLink="admin/users"');
@@ -197,10 +218,10 @@ describe.each(directives)('$name active state', ({ selector, directive }) => {
         const button = await renderAt('/probe', '[routerLink]="link()"');
         expect(button.classList).not.toContain(activeClassName);
 
-        await setLink('probe');
+        setLink('probe');
         expect(button.classList).toContain(activeClassName);
 
-        await setLink('other');
+        setLink('other');
         expect(button.classList).not.toContain(activeClassName);
     });
 
@@ -287,7 +308,7 @@ describe.each(directives)('$name active state', ({ selector, directive }) => {
             const button = await renderAt('/other', '[navLink]="link()"');
             expect(button.classList).not.toContain('hover:text-black');
 
-            await setLink('probe');
+            setLink('probe');
             expect(button.classList).toContain('hover:text-black');
         });
     }
