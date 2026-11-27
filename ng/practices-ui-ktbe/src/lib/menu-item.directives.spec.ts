@@ -143,17 +143,19 @@ describe.each(directives)('$name active state', ({ selector, directive }) => {
     });
 
     it.each([
-        ['navLink=""', true],
+        ['navLink=""', false],
         ['routerLink=""', false],
+        ['routerLink=""', true],
         [`[routerLink]="[]"`, false],
-    ])('treats the empty link %s as no link (with RouterLink: %s)', async (attributes, withRouterLink) => {
+        [`[routerLink]="[]"`, true],
+    ])('treats the empty link %s as no link (RouterLink imported: %s)', async (attributes, withRouterLink) => {
         const button = await renderNestedAt('/admin', attributes, { withRouterLink });
 
         expect(button.classList).not.toContain(activeClassName);
     });
 
-    it('treats routerLink="" with RouterLink as link to the route of the item, like RouterLink does', async () => {
-        const button = await renderNestedAt('/admin', 'routerLink=""');
+    it('falls back to the routerLink of RouterLink when the navLink is empty', async () => {
+        const button = await renderNestedAt('/admin/users', 'routerLink="users" navLink=""');
 
         expect(button.classList).toContain(activeClassName);
     });

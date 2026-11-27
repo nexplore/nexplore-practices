@@ -45,7 +45,10 @@ export class MenuItemService implements OnDestroy {
         this._navLinkActiveOptionsSubject,
         this._isActiveSubject,
         this._routerNavigationEnd$,
-        this._routerLinkChangeSubject.pipe(startWith(null)),
+        // With `RouterLink`, the first evaluation comes from the first `ngDoCheck`, right after `ngOnInit`.
+        this._angularRouterLink
+            ? this._routerLinkChangeSubject
+            : this._routerLinkChangeSubject.pipe(startWith(undefined)),
     ]).pipe(
         map(([navLink, routerLinkActiveOptions, navLinkActiveOptions, isActiveInput]) => {
             if (isActiveInput != null) {
@@ -59,6 +62,7 @@ export class MenuItemService implements OnDestroy {
 
     constructor(private _router: Router) {}
 
+    /** Whether the item is a link, for styling. With `RouterLink`, even an empty link navigates. */
     get hasLink(): boolean {
         const routerLink = this._routerLink;
         const hasRouterLink = this._angularRouterLink ? routerLink != null : !isEmptyLink(routerLink);
@@ -67,7 +71,7 @@ export class MenuItemService implements OnDestroy {
 
     /**
      * Link of the item. When Angular's `RouterLink` is on the same element, its URL (the actual navigation target) is
-     * used for the active state. Otherwise the link is handled like a `navLink`.
+     * used for the active state. Otherwise the link is handled like a `navLink`. `''` and `[]` count as no link.
      */
     setRouterLink(value: MenuItemRouterLink) {
         this._routerLink = value;
@@ -128,10 +132,10 @@ export class MenuItemService implements OnDestroy {
         if (!isEmptyLink(navLink)) {
             return this._toAbsoluteUrlTree(navLink);
         }
-        if (this._angularRouterLink) {
-            return this._angularRouterLink.urlTree;
+        if (isEmptyLink(this._routerLink)) {
+            return null;
         }
-        return isEmptyLink(this._routerLink) ? null : this._toAbsoluteUrlTree(this._routerLink);
+        return this._angularRouterLink?.urlTree ?? this._toAbsoluteUrlTree(this._routerLink);
     }
 
     /** Strings are parsed as absolute URLs and commands are resolved from the root. */
