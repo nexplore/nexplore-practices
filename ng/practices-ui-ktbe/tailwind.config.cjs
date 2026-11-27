@@ -3,7 +3,7 @@
 const path = require('path');
 const plugin = require('tailwindcss/plugin');
 const defaultTheme = require('tailwindcss/defaultTheme');
-const tooltipArrowPlugin = require('./tailwind-tooltip-arrow.plugin');
+const tooltipArrowPlugin = require('./tailwind-tooltip-arrow.plugin.cjs');
 
 // Colors of the KTBE style guide, exposed as `text-*`, `bg-*`, `border-*`, ... utilities.
 const colors = {

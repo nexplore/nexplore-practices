@@ -12,7 +12,17 @@ import {
 import { SIGNAL, signalSetFn } from '@angular/core/primitives/signals';
 import { DestroyService, StatusProgressOptions, StatusService } from '@nexplore/practices-ui';
 import { NgSelectComponent } from '@ng-select/ng-select';
-import { BehaviorSubject, combineLatest, filter, map, startWith, Subject, switchMap, takeUntil } from 'rxjs';
+import {
+    BehaviorSubject,
+    combineLatest,
+    distinctUntilChanged,
+    filter,
+    map,
+    startWith,
+    Subject,
+    switchMap,
+    takeUntil,
+} from 'rxjs';
 import { PuibeReadonlyDirective } from '../common/readonly.directive';
 import { FormFieldService } from '../form-field/form-field.service';
 import { SelectViewSource } from './select-view-source';
@@ -137,6 +147,21 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
             this._ngSelectComponent.ngOnChanges({ items: { currentValue: data, firstChange: isReadonly } } as any);
             this._changeDetectorRef.markForCheck();
         });
+
+        // The items may have been set before the field became readonly. Apply them again, so the readonly value is mapped.
+        this._readonlyDirective?.isReadonly$
+            .pipe(
+                distinctUntilChanged(),
+                filter((isReadonly) => isReadonly),
+                takeUntil(this._destroy$)
+            )
+            .subscribe(() => {
+                const items = this._readComponentProp<unknown[] | null | undefined>('items');
+                if (items) {
+                    this._ngSelectComponent.ngOnChanges({ items: { currentValue: items, firstChange: true } } as any);
+                    this._changeDetectorRef.markForCheck();
+                }
+            });
 
         combineLatest([this._searchInputSubject, this._selectViewSource$])
             .pipe(

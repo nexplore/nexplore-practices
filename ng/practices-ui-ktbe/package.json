@@ -6,8 +6,11 @@
             "style": "./tailwind.css",
             "default": "./tailwind.css"
         },
+        "./tailwind.config.cjs": {
+            "default": "./tailwind.config.cjs"
+        },
         "./tailwind.config.js": {
-            "default": "./tailwind.config.js"
+            "default": "./tailwind.config.cjs"
         }
     },
     "peerDependencies": {

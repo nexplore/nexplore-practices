@@ -64,7 +64,7 @@ export class PuibeFlyoutService {
 
         if (buttonRef) {
             const arrowTipOffsetPx = 8; // The offset is needed as the arrow-tip is not part of the overlay itself. Value is based on the tailwindcss plugin configuration.
-            const offset = (config.showArrowTips ?? DEFAULT_CONFIG?.showArrowTips) ? arrowTipOffsetPx : 0;
+            const offset = (config?.showArrowTips ?? DEFAULT_CONFIG?.showArrowTips) ? arrowTipOffsetPx : 0;
             positionStrategy =
                 config?.positionStrategy ??
                 this._overlay

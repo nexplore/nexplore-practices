@@ -1,6 +1,6 @@
 /**
  * Tailwind plugin providing the `arrowtip-*` utilities (the small triangular arrow tips of the flyout).
- * The arrow tips are configured in the `tooltipArrows` theme section of tailwind.config.js.
+ * The arrow tips are configured in the `tooltipArrows` theme section of tailwind.config.cjs.
  *
  * Note: Tailwind 4 only generates a utility whose class name matches the selector key (e.g. `.arrowtip-top`),
  * so every direction is registered as its own entry instead of the nested `&-top` syntax used with Tailwind 3.
