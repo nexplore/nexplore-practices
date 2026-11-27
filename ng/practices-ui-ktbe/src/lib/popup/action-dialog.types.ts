@@ -2,6 +2,7 @@ import type { TemplateRef, Type } from '@angular/core';
 import type { CommandInput, CommandOptions } from '@nexplore/practices-ng-commands';
 import type { CombinedCommandInput } from '@nexplore/practices-ui';
 import type { Variant } from '../button/button.directive';
+import { registerPresetCommandOptions } from './action-dialog-action-utils';
 
 export type DialogAction<TAction> = TAction & { command?: CommandInput<void, any> };
 
@@ -166,7 +167,11 @@ export const PUIBE_DIALOG_PRESETS = {
         // Not converted to a command here: the preset is often created outside of an injection context (e.g. in a click
         // handler). The dialog converts the action when it opens, with the options of `actionCommandOptions`.
         actions: { DELETE: deleteAction, CANCEL: false },
-        actionCommandOptions: { DELETE: { status: { statusCategory: 'action-delete' } } },
+        // Only for this action: a DELETE action the caller replaces runs without these options, as before.
+        actionCommandOptions: registerPresetCommandOptions(
+            { DELETE: { status: { statusCategory: 'action-delete' } } },
+            { DELETE: deleteAction }
+        ),
         titleKey: 'Practices.Labels_Delete',
         contentKey: 'Practices.Labels_DeletePrompt',
         ...overrideConfig,

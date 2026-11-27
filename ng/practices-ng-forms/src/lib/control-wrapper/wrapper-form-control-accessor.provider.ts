@@ -178,7 +178,9 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                         } else {
                             isInitial = false;
                             trace('WrapperFormControlAccessor', 'writeValue from dto signal', instance, dto);
-                            writeEntityToForm(dto);
+                            // Only the DTO signal triggers a reset. Signals read by writeValue, validators or value
+                            // change subscribers must not become dependencies, or a change of them would discard the user's edits.
+                            untracked(() => writeEntityToForm(dto));
                         }
                     });
                 }

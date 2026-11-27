@@ -4,7 +4,7 @@ import { Command, command, CommandOptions, isCommand } from '@nexplore/practices
 import { tryTriggerCommand } from '@nexplore/practices-ui';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, debounceTime, firstValueFrom, map, merge, Observable, of, takeUntil } from 'rxjs';
-import { isActionCommandInput } from './action-dialog-action-utils';
+import { getActionCommandOptions, isActionCommandInput } from './action-dialog-action-utils';
 import { ActionDialogComponent } from './action-dialog.component';
 import {
     PUIBE_DIALOG_ACTIONS,
@@ -191,7 +191,9 @@ export class PuibeActionDialogService {
             dialogRef.componentInstance.setActions(
                 Object.entries(actionConfig.actions).map(([key, action]) => ({
                     ...templates[key],
-                    commandOptions: actionConfig.actionCommandOptions?.[key] ?? templates[key]?.commandOptions,
+                    commandOptions:
+                        getActionCommandOptions(actionConfig.actionCommandOptions, key, action) ??
+                        templates[key]?.commandOptions,
                     // Commands (also legacy commands) are converted by the dialog, other values are the action's result.
                     command: isActionCommandInput(action) ? action : () => action,
                 }))

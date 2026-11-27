@@ -15,3 +15,32 @@ export function isActionCommandInput(value: unknown): value is CombinedCommandIn
     // copy of the package)
     return typeof value === 'object' && value !== null && 'trigger' in value && 'error$' in value && 'result$' in value;
 }
+
+/**
+ * The actions a preset created its `actionCommandOptions` for, keyed by that options object. The options of a preset
+ * only apply to the action it created: an action the caller replaced (e.g. `actions: { ...preset.actions, DELETE: myCommand }`)
+ * is used as before 14.0.0, without the options of the preset.
+ */
+const presetActionsByCommandOptions = new WeakMap<object, Readonly<Record<string, unknown>>>();
+
+/** Registers the actions a preset created its `actionCommandOptions` for. Returns the options. */
+export function registerPresetCommandOptions<T extends object>(commandOptions: T, actions: Record<string, unknown>): T {
+    presetActionsByCommandOptions.set(commandOptions, actions);
+    return commandOptions;
+}
+
+/** The command options of `actionCommandOptions` for the action, unless a preset created them for another action. */
+export function getActionCommandOptions<T>(
+    actionCommandOptions: Readonly<Record<string, T | undefined>> | undefined,
+    key: string,
+    action: unknown
+): T | undefined {
+    if (!actionCommandOptions) {
+        return undefined;
+    }
+    const presetActions = presetActionsByCommandOptions.get(actionCommandOptions);
+    if (presetActions && key in presetActions && presetActions[key] !== action) {
+        return undefined;
+    }
+    return actionCommandOptions[key];
+}
