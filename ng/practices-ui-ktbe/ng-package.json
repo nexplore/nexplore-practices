@@ -1,7 +1,12 @@
 {
     "$schema": "../node_modules/ng-packagr/ng-package.schema.json",
     "dest": "../dist/practices-ui-ktbe",
-    "assets": ["./tailwind.css", "./tailwind.config.cjs", "./tailwind-tooltip-arrow.plugin.cjs"],
+    "assets": [
+        "./tailwind.css",
+        "./tailwind.config.cjs",
+        "./tailwind.config.js",
+        "./tailwind-tooltip-arrow.plugin.cjs"
+    ],
     "lib": {
         "entryFile": "src/index.ts"
     }

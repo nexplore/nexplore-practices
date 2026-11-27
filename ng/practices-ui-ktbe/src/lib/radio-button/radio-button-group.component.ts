@@ -13,11 +13,10 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
-import { PuiFormFieldDirective, PuiFormFieldService } from '@nexplore/practices-ng-forms';
+import { PuiFormFieldDirective, PuiFormFieldService, PuiReadonlyDirective } from '@nexplore/practices-ng-forms';
 import { DestroyService } from '@nexplore/practices-ui';
 import { TranslatePipe } from '@ngx-translate/core';
 import { combineLatestWith, map, of, skip, takeUntil } from 'rxjs';
-import { PuibeReadonlyDirective } from '../common/readonly.directive';
 import { PuibeIconInvalidComponent } from '../icons/icon-invalid.component';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
 import { PuibeReadonlyLabelValueComponent } from '../readonly-label-value/readonly-label-value.component';
@@ -143,7 +142,7 @@ export class PuibeRadioButtonGroupComponent implements ControlValueAccessor, Aft
         private _destroy$: DestroyService,
         private _injector: Injector,
         private _elementRef: ElementRef<HTMLElement>,
-        @Optional() private readonly _readonlyDirective: PuibeReadonlyDirective
+        @Optional() private readonly _readonlyDirective: PuiReadonlyDirective
     ) {}
 
     ngAfterViewInit(): void {

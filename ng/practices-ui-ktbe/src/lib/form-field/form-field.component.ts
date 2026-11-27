@@ -11,7 +11,7 @@ import {
     viewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { PuiFormFieldDirective } from '@nexplore/practices-ng-forms';
+import { PuiFormFieldDirective, PuiReadonlyDirective } from '@nexplore/practices-ng-forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
     BehaviorSubject,
@@ -26,7 +26,6 @@ import {
     switchMap,
     take,
 } from 'rxjs';
-import { PuibeReadonlyDirective } from '../common/readonly.directive';
 import { PuibeIconCloseComponent } from '../icons/icon-close.component';
 import { PuibeIconInvalidComponent } from '../icons/icon-invalid.component';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
@@ -77,7 +76,7 @@ const overlayTextEmptyClassName = 'text-black/60';
 })
 export class PuibeFormFieldComponent {
     private readonly _formFieldService = inject(FormFieldService);
-    private readonly _readonlyDirective = inject(PuibeReadonlyDirective, { optional: true });
+    private readonly _readonlyDirective = inject(PuiReadonlyDirective, { optional: true });
     private readonly _elementRef = inject(ElementRef<HTMLElement>);
 
     isReadonly$ = this._readonlyDirective?.isReadonly$ ?? of(false);

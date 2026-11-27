@@ -1,9 +1,9 @@
+import { PuiReadonlyDirective } from '@nexplore/practices-ng-forms';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnDestroy, Optional } from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, combineLatest, combineLatestWith, map, of, switchMap, takeUntil } from 'rxjs';
-import { PuibeReadonlyDirective } from '../common/readonly.directive';
 import { MarkControlService } from '../form/mark-control.service';
 import { PuibeIconInvalidComponent } from '../icons/icon-invalid.component';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
@@ -144,7 +144,7 @@ export class PuibeCheckboxGroupComponent implements OnDestroy {
         private readonly _destroy$: DestroyService,
         private readonly _elementRef: ElementRef<HTMLElement>,
         @Optional() private readonly _markControlService: MarkControlService,
-        @Optional() private readonly _readonlyDirective: PuibeReadonlyDirective
+        @Optional() private readonly _readonlyDirective: PuiReadonlyDirective
     ) {
         this._markControlService?.touched$.pipe(takeUntil(this._destroy$)).subscribe(() => {
             this.markAsTouched();

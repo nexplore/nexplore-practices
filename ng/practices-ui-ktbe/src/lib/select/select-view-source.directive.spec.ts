@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { PuiReadonlyDirective } from '@nexplore/practices-ng-forms';
 import { providePractices } from '@nexplore/practices-ui';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { provideTranslateService } from '@ngx-translate/core';
@@ -52,6 +53,34 @@ class HostComponent {
     formGroup = new FormGroup({ value: new FormControl<number | null>(1) });
 }
 
+@Component({
+    imports: [
+        ReactiveFormsModule,
+        NgSelectModule,
+        PuibeFormFieldComponent,
+        PuibeLabelDirective,
+        PuibeSelectDirective,
+        PuibeSelectViewSourceDirective,
+        PuiReadonlyDirective,
+    ],
+    template: `
+        <puibe-form-field [formGroup]="formGroup" [puiReadonly]="true">
+            <label puibeLabel>Food</label>
+            <ng-select
+                puibeInput
+                [puibeSelectViewSource]="itemSource"
+                bindLabel="name"
+                bindValue="id"
+                formControlName="value"
+            ></ng-select>
+        </puibe-form-field>
+    `,
+})
+class PuiReadonlyHostComponent {
+    itemSource = new SelectViewSource<Item>(null, () => of({ data: items, total: items.length }));
+    formGroup = new FormGroup({ value: new FormControl<number | null>(1) });
+}
+
 describe('PuibeSelectViewSourceDirective', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -61,6 +90,17 @@ describe('PuibeSelectViewSourceDirective', () => {
 
     it('shows the label of the selected item in readonly mode once the items are loaded', async () => {
         const fixture = TestBed.createComponent(HostComponent);
+
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+
+        const readonlyValue = fixture.nativeElement.querySelector('puibe-readonly-label-value') as HTMLElement;
+        expect(readonlyValue.textContent).toContain('Pizza');
+    });
+
+    it('shows the label of the selected item with puiReadonly once the items are loaded', async () => {
+        const fixture = TestBed.createComponent(PuiReadonlyHostComponent);
 
         fixture.detectChanges();
         await fixture.whenStable();
