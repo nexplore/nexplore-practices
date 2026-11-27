@@ -1,5 +1,6 @@
 import { isObjShallowEqual } from '@nexplore/practices-ng-common-util';
 import { map, merge, Observable, of, shareReplay, switchMap, timer } from 'rxjs';
+import { isLocalizedMessage } from './localized-message';
 import { StatusEventExt, StatusHubConfig } from './model';
 
 export interface StatusMap {
@@ -7,7 +8,7 @@ export interface StatusMap {
 }
 
 function isStatusSuccessAndContainsMessageOrGenericCategory(s: StatusEventExt): boolean {
-    return !!(s.success && (typeof s.success === 'string' || s.statusCategory?.startsWith('action-')));
+    return !!(s.success && (isLocalizedMessage(s.success) || s.statusCategory?.startsWith('action-')));
 }
 
 export function getLatestStatusEventsList$(aggregatedStatusMap$: Observable<StatusMap>, config: StatusHubConfig) {

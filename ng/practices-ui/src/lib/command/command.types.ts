@@ -1,6 +1,6 @@
 import { CommandAfterExecuteResult, CommandAsyncHandlerResult } from '@nexplore/practices-ng-commands';
 import { Observable } from 'rxjs';
-import { ErrorMessage, StatusCategory, StatusProgressOptions, SuccessMessage } from '../status/model';
+import { ErrorMessage, ProgressMessage, StatusCategory, StatusProgressOptions, SuccessMessage } from '../status/model';
 
 /**
  * @deprecated import `CommandOptions` from `@nexplore/practices-ng-commands` instead
@@ -33,7 +33,7 @@ export type LegacyCommandOptionsWithDeprecations<TArgs> = LegacyCommandOptions<T
     blocking?: boolean;
 
     /** @deprecated Set via `status` */
-    progressMessage?: string | Observable<string>;
+    progressMessage?: ProgressMessage | Observable<ProgressMessage>;
 
     /** @deprecated Set via `status` */
     successMessage?: SuccessMessage;

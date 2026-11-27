@@ -13,9 +13,14 @@
             @if (isFormularInvalidError(status.error)) {
                 <p translate>Practices.Labels_FormularInvalid</p>
             } @else {
-                <ng-container *ngTemplateOutlet="errorTemplate; context: { $implicit: status }"></ng-container>
+                <ng-container
+                    *ngTemplateOutlet="
+                        errorTemplate;
+                        context: { $implicit: status, message: getErrorMessage(status.error) }
+                    "
+                ></ng-container>
                 @if (!errorTemplate) {
-                    {{ status.error?.message ?? status.error }}
+                    {{ getErrorMessage(status.error) }}
                     @if (status.error?.stack) {
                         <puibe-expansion-panel
                             caption="Details"
@@ -40,7 +45,13 @@
             class="min-w-screen max-w-screen flex overflow-hidden md:min-w-40 lg:max-w-[660px]"
             role="status"
         >
-            {{ successMessage }}
+            @if (successTemplate) {
+                <ng-container
+                    *ngTemplateOutlet="successTemplate; context: { $implicit: status, message: successMessage }"
+                ></ng-container>
+            } @else {
+                {{ successMessage }}
+            }
         </puibe-toast>
     }
 }

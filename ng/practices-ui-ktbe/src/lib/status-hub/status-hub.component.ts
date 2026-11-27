@@ -17,7 +17,12 @@ import { IconSize } from '../icons/icon.interface';
 import { PuibeStatusToastComponent } from '../status-toast/status-toast.component';
 import { PuibeToastComponent } from '../toast/toast.component';
 import { listEntryAnimation, scaleAnimation, slowFadeAnimation } from './animations';
+import { resolveLocalizedMessage } from './localized-message.utils';
+import { PuibeBusyStatusDirective } from './status-busy.directive';
 import { PuibeErrorStatusDirective } from './status-error.directive';
+import { PuibeSuccessStatusDirective } from './status-success.directive';
+
+type ProgressMessageData = { message: string; status: AggregatedStatusInfo };
 
 type ToastPosition = 'top-left' | 'top' | 'top-right' | 'bottom-left' | 'bottom' | 'bottom-right';
 
@@ -50,6 +55,8 @@ export class PuibeStatusHubComponent {
     data: any = {};
 
     @ContentChild(PuibeErrorStatusDirective, { static: true }) readonly statusError: PuibeErrorStatusDirective;
+    @ContentChild(PuibeSuccessStatusDirective, { static: true }) readonly statusSuccess: PuibeSuccessStatusDirective;
+    @ContentChild(PuibeBusyStatusDirective, { static: true }) readonly statusBusy: PuibeBusyStatusDirective;
 
     /**
      * Allows to override the default configuration of the status hub service.
@@ -88,13 +95,16 @@ export class PuibeStatusHubComponent {
 
     positionClasses = this._getPositionClasses('bottom-left');
 
-    readonly progressMessage$ = this._statusHub.status$.pipe(
+    readonly progressMessageData$: Observable<ProgressMessageData | null> = this._statusHub.status$.pipe(
         tap((aggregatedStatus) => (this.data.aggregatedStatus = aggregatedStatus)),
-        map((s) => this._getProgressMessage(s)),
-        switchMap((message, i) =>
-            message && i > 0 ? of(message).pipe(delay(this.spinnerThrottleTimeMs)) : of(message)
-        ) // Notice the delay prevents flickering
+        map((status) => {
+            const message = this._getProgressMessage(status);
+            return message ? { message, status } : null;
+        }),
+        switchMap((data, i) => (data && i > 0 ? of(data).pipe(delay(this.spinnerThrottleTimeMs)) : of(data))) // Notice the delay prevents flickering
     );
+
+    readonly progressMessage$ = this.progressMessageData$.pipe(map((data) => data?.message ?? null));
 
     readonly busyNoMessage$ = combineLatest([this._statusHub.status$, this.progressMessage$]).pipe(
         map(([status, message]) => (message ? false : status.busy)),
@@ -127,8 +137,9 @@ export class PuibeStatusHubComponent {
     readonly trackByFn = (i: number, item: StatusEvent): number | undefined => item.timestamp ?? i;
 
     private _getProgressMessage(status: AggregatedStatusInfo): string | null {
-        if (status.progressMessage) {
-            return status.progressMessage;
+        const progressMessage = resolveLocalizedMessage(this._translate, status.progressMessage);
+        if (progressMessage) {
+            return progressMessage;
         }
 
         if (!this.disableDefaultProgressMessage && status.statusCategory) {

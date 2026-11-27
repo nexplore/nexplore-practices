@@ -159,6 +159,8 @@ export * from './lib/popup/providers';
 export * from './lib/side-overlay-panel/side-overlay-panel.service';
 
 export * from './lib/status-hub/status-error.directive';
+export * from './lib/status-hub/status-success.directive';
+export * from './lib/status-hub/status-busy.directive';
 export * from './lib/status-hub/status-hub.component';
 
 export * from './lib/icons/icon-close.component';

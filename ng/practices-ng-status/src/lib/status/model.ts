@@ -1,9 +1,10 @@
 import { Subscription } from 'rxjs';
-import { StatusCategory } from './types';
+import { LocalizedMessage } from './localized-message';
+import { ProgressMessage, StatusCategory } from './types';
 
 export type StatusError = true | string | { [key: string]: any } | undefined | Error;
 
-export type StatusSuccess = boolean | string | undefined;
+export type StatusSuccess = boolean | LocalizedMessage | undefined;
 
 export interface StatusEvent {
     busy: boolean;
@@ -18,7 +19,7 @@ export type AggregatedStatusInfo = StatusEvent & {
     dismissSuccess: () => void;
     numberOfBusyOperations: number;
     blocking?: boolean;
-    progressMessage?: string | null;
+    progressMessage?: ProgressMessage | null;
     statusCategory?: StatusCategory;
 };
 
@@ -70,7 +71,7 @@ export type StatusEventExt<TError = StatusError> = StatusEvent & {
     dismiss: () => void;
     autohide: boolean;
     blocking?: boolean;
-    progressMessage?: string | null;
+    progressMessage?: ProgressMessage | null;
     statusCategory?: StatusCategory;
     _isAlreadyVisible?: boolean;
     _hasBeenPushedAway?: boolean;

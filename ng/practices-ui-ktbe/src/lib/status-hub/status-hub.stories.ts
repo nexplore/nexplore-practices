@@ -7,8 +7,10 @@ import { BehaviorSubject, map, merge, Observable, takeWhile, timer } from 'rxjs'
 import { PuibeFormFieldComponent, PuibeLabelDirective, PuibeSelectDirective } from '../../index';
 import { PuibeButtonDirective } from '../button/button.directive';
 import { PuibeExpansionPanelComponent } from '../expansion-panel/expansion-panel.component';
+import { PuibeBusyStatusDirective } from './status-busy.directive';
 import { PuibeErrorStatusDirective } from './status-error.directive';
 import { PuibeStatusHubComponent } from './status-hub.component';
+import { PuibeSuccessStatusDirective } from './status-success.directive';
 
 type Args = {} & StatusHubConfig;
 
@@ -22,6 +24,7 @@ type Args = {} & StatusHubConfig;
             <button puibeButton (click)="toggleBusyWithMessage()">toggle busy (with message)</button>
             <button puibeButton (click)="toggleBusyBlocking()">block ui</button>
             <button puibeButton [clickCommand]="doubleErrorCommand">create error from command</button>
+            <button puibeButton (click)="genLocalized()">localized messages</button>
         </div>
         <div class="flex items-center justify-stretch gap-2">
             <button puibeButton (click)="registerQuery()">register query or action</button>
@@ -84,6 +87,15 @@ class StatusHubStoryComponent {
             .subscribe();
     }
 
+    genLocalized(): void {
+        this.statusService
+            .registerQuery(timer(4000), {
+                progressMessage: { key: 'Practices.Labels_Status_Action_Save' },
+                successMessage: { key: 'Practices.Labels_Status_Action_Save_Success' },
+            })
+            .subscribe();
+    }
+
     registerQuery(): void {
         this.statusService
             .registerQuery(timer(15000), {
@@ -130,6 +142,8 @@ const meta: Meta<Args> = {
                 PuibeStatusHubComponent,
                 StatusHubStoryComponent,
                 PuibeErrorStatusDirective,
+                PuibeSuccessStatusDirective,
+                PuibeBusyStatusDirective,
                 PuibeExpansionPanelComponent,
             ],
         }),
@@ -159,4 +173,23 @@ type Story = StoryObj<Args>;
 
 export const Default: Story = {
     args: {},
+};
+
+export const CustomTemplates: Story = {
+    args: {},
+    render: (args) => ({
+        props: {
+            ...args,
+            config: args,
+        },
+        template: `<puibe-status-hub-story></puibe-status-hub-story>
+        <puibe-status-hub [statusHubConfig]="config">
+            <ng-container *puibeIfSuccessStatus="let status; message as message">
+                <strong>Done:</strong> {{ message }}
+            </ng-container>
+            <ng-container *puibeIfBusyStatus="let status; message as message">
+                {{ message }} ({{ status.numberOfBusyOperations }} running)
+            </ng-container>
+        </puibe-status-hub>`,
+    }),
 };

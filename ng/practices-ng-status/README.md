@@ -190,6 +190,8 @@ const saveCommand = command.action(() => saveData(), {
 });
 ```
 
+Instead of plain strings, the messages can also be passed as a translation key with optional parameters (`LocalizedMessage`), e.g. `progressMessage: { key: 'MyApp.Labels_Saving' }` or `successMessage: { key: 'MyApp.Labels_Saved', params: { name: 'Report.pdf' } }` (also as return value of a message function). The status hub service passes them on as they are and the UI (e.g. the `puibe-status-hub` of `@nexplore/practices-ui-ktbe`) translates them. Use `isTranslatableMessage` to detect them in a custom status UI.
+
 ### practices-ng-list-view-source
 
 Similarly, [`@nexplore/practices-ng-list-view-source`](../practices-ng-list-view-source/README.md) integrates with StatusHubService for handling loading, filtering, and pagination states:
