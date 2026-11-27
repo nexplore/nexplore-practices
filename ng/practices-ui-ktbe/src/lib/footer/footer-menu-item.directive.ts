@@ -32,7 +32,7 @@ export class PuibeFooterMenuItemDirective implements OnInit, OnDestroy {
     @HostBinding('attr.role')
     readonly role = 'listitem';
 
-    /** Link of Angular's `RouterLink` on the same element, used to show the active state. */
+    /** Link of the item. With Angular's `RouterLink` on the same element, its URL is used for the active state. */
     @Input()
     set routerLink(value: MenuItemRouterLink) {
         this._menuItemService.setRouterLink(value);
@@ -49,10 +49,10 @@ export class PuibeFooterMenuItemDirective implements OnInit, OnDestroy {
         this._menuItemService.setRouterLinkActiveOptions(value);
     }
 
-    /** Alias of `routerLinkActiveOptions`. */
+    /** Options for `navLink`. Takes precedence over `routerLinkActiveOptions`. */
     @Input()
     set navLinkActiveOptions(value: MenuItemRouterLinkActiveOptions) {
-        this._menuItemService.setRouterLinkActiveOptions(value);
+        this._menuItemService.setNavLinkActiveOptions(value);
     }
 
     @Input()
@@ -80,13 +80,6 @@ export class PuibeFooterMenuItemDirective implements OnInit, OnDestroy {
             setScreenReaderText(isActive, this.screenReaderTextElement, this._translate);
             this.setClassNames(isActive);
         });
-
-        setHostClassNames(
-            {
-                [linkClassNames]: this._isLink(),
-            },
-            this._elementRef
-        );
     }
 
     ngOnDestroy(): void {
@@ -100,6 +93,8 @@ export class PuibeFooterMenuItemDirective implements OnInit, OnDestroy {
     private setClassNames(isActive: boolean) {
         setHostClassNames(
             {
+                // first, so the state classes below win for the classes they share with the link classes
+                [linkClassNames]: this._isLink(),
                 [withoutAnimationClassNames]: !this.withAnimation,
                 [inactiveClassNames]: this._isLink() && this.withAnimation && !isActive,
                 [activeClassNames]: this.withAnimation && isActive,

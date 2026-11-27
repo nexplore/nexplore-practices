@@ -33,7 +33,7 @@ export class PuibeHeaderMainMenuItemDirective implements OnInit, OnDestroy {
     @HostBinding('class')
     className: string = classNames;
 
-    /** Link of Angular's `RouterLink` on the same element, used to show the active state. */
+    /** Link of the item. With Angular's `RouterLink` on the same element, its URL is used for the active state. */
     @Input()
     set routerLink(value: MenuItemRouterLink) {
         this._menuItemService.setRouterLink(value);
@@ -50,10 +50,10 @@ export class PuibeHeaderMainMenuItemDirective implements OnInit, OnDestroy {
         this._menuItemService.setRouterLinkActiveOptions(value);
     }
 
-    /** Alias of `routerLinkActiveOptions`. */
+    /** Options for `navLink`. Takes precedence over `routerLinkActiveOptions`. */
     @Input()
     set navLinkActiveOptions(value: MenuItemRouterLinkActiveOptions) {
-        this._menuItemService.setRouterLinkActiveOptions(value);
+        this._menuItemService.setNavLinkActiveOptions(value);
     }
 
     @Input()

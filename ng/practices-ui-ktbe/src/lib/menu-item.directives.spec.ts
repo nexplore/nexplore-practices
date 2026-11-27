@@ -1,6 +1,6 @@
 import '@angular/compiler';
-import { Component, Type } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { Component, signal, Type, WritableSignal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserTestingModule, platformBrowserTesting } from '@angular/platform-browser/testing';
 import { provideRouter, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
@@ -35,13 +35,16 @@ describe.each(directives)('$name active state', ({ selector, directive }) => {
         TestBed.initTestEnvironment(BrowserTestingModule, platformBrowserTesting());
     });
 
-    async function renderAt(url: string, attributes: string) {
+    let fixture: ComponentFixture<{ link: WritableSignal<string | null> }>;
+
+    async function renderAt(url: string, attributes: string, { withRouterLink = true } = {}) {
         @Component({
-            imports: [directive, RouterLink],
+            imports: withRouterLink ? [directive, RouterLink] : [directive],
             template: `<div><button type="button" ${selector} ${attributes}>Item</button></div>`,
         })
         class HostComponent {
             readonly id = 'probe';
+            readonly link = signal<string | null>(null);
         }
 
         TestBed.configureTestingModule({
@@ -54,7 +57,7 @@ describe.each(directives)('$name active state', ({ selector, directive }) => {
             ],
         });
 
-        const fixture = TestBed.createComponent(HostComponent);
+        fixture = TestBed.createComponent(HostComponent);
         await TestBed.inject(Router).navigateByUrl(url);
         fixture.detectChanges();
         await fixture.whenStable();
@@ -62,10 +65,16 @@ describe.each(directives)('$name active state', ({ selector, directive }) => {
         return fixture.nativeElement.querySelector('button') as HTMLButtonElement;
     }
 
+    async function setLink(link: string | null) {
+        fixture.componentInstance.link.set(link);
+        fixture.detectChanges();
+        await fixture.whenStable();
+    }
+
     /** Renders the item inside the component of the `admin` route, so relative links resolve against `/admin`. */
-    async function renderNestedAt(url: string, attributes: string) {
+    async function renderNestedAt(url: string, attributes: string, { withRouterLink = true } = {}) {
         @Component({
-            imports: [directive, RouterLink, RouterOutlet],
+            imports: withRouterLink ? [directive, RouterLink, RouterOutlet] : [directive, RouterOutlet],
             template: `<div><button type="button" ${selector} ${attributes}>Item</button></div>
                 <router-outlet />`,
         })
@@ -169,6 +178,32 @@ describe.each(directives)('$name active state', ({ selector, directive }) => {
         expect(button.classList).toContain(activeClassName);
     });
 
+    it('uses the URL of RouterLink, including its query params', async () => {
+        const button = await renderAt(
+            '/probe?tab=a',
+            `routerLink="probe" [queryParams]="{ tab: 'a' }" [routerLinkActiveOptions]="{ exact: true }"`
+        );
+
+        expect(button.classList).toContain(activeClassName);
+    });
+
+    it('parses a routerLink without RouterLink as absolute URL', async () => {
+        const button = await renderNestedAt('/admin/users', 'routerLink="admin/users"', { withRouterLink: false });
+
+        expect(button.classList).toContain(activeClassName);
+    });
+
+    it('updates the active state when the bound routerLink changes', async () => {
+        const button = await renderAt('/probe', '[routerLink]="link()"');
+        expect(button.classList).not.toContain(activeClassName);
+
+        await setLink('probe');
+        expect(button.classList).toContain(activeClassName);
+
+        await setLink('other');
+        expect(button.classList).not.toContain(activeClassName);
+    });
+
     it('is active when the navLink attribute matches the current route', async () => {
         const button = await renderAt('/probe', 'navLink="probe"');
 
@@ -217,10 +252,42 @@ describe.each(directives)('$name active state', ({ selector, directive }) => {
         expect(button.classList).toContain(activeClassName);
     });
 
+    it('ignores undefined values in the active options', async () => {
+        const button = await renderAt(
+            '/probe?x=1',
+            `routerLink="probe" [routerLinkActiveOptions]="{ paths: 'exact', queryParams: undefined }"`
+        );
+
+        expect(button.classList).toContain(activeClassName);
+    });
+
+    it('prefers navLinkActiveOptions and falls back to routerLinkActiveOptions', async () => {
+        const exact = await renderAt(
+            '/probe?x=1',
+            `routerLink="probe" [routerLinkActiveOptions]="{ exact: true }" [navLinkActiveOptions]="undefined"`
+        );
+        expect(exact.classList).not.toContain(activeClassName);
+
+        TestBed.resetTestingModule();
+        const subset = await renderAt(
+            '/probe?x=1',
+            `routerLink="probe" [routerLinkActiveOptions]="{ exact: true }" [navLinkActiveOptions]="{ exact: false }"`
+        );
+        expect(subset.classList).toContain(activeClassName);
+    });
+
     if (directive === PuibeFooterMenuItemDirective) {
         it('styles a button with a routerLink as link', async () => {
             const button = await renderAt('/other', 'routerLink="probe"');
 
+            expect(button.classList).toContain('hover:text-black');
+        });
+
+        it('styles a button as link once its link is set', async () => {
+            const button = await renderAt('/other', '[navLink]="link()"');
+            expect(button.classList).not.toContain('hover:text-black');
+
+            await setLink('probe');
             expect(button.classList).toContain('hover:text-black');
         });
     }
