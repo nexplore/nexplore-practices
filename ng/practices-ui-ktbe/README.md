@@ -524,6 +524,35 @@ You can provide a custom template for error messages using the `puibeIfErrorStat
 </puibe-status-hub>
 ```
 
+#### Customizing Success and Progress Display
+
+The success toasts and the progress message can be customized in the same way, with the `puibeIfSuccessStatus` and `puibeIfBusyStatus` directives. Their context contains the status (`$implicit`) and the resolved (translated) message (`message`):
+
+```html
+<puibe-status-hub>
+    <ng-container *puibeIfSuccessStatus="let status; message as message">
+        <strong>Done:</strong> {{ message }}
+    </ng-container>
+    <ng-container *puibeIfBusyStatus="let status; message as message">
+        {{ message }} ({{ status.numberOfBusyOperations }} running)
+    </ng-container>
+</puibe-status-hub>
+```
+
+#### Localized Status Messages
+
+Besides plain strings, `progressMessage`, `successMessage` and `errorMessage` accept a translation key with optional interpolation parameters. The status hub translates it with the `TranslateService` of `@ngx-translate/core`:
+
+```typescript
+const saveCommand = command.action(() => saveData(), {
+    status: {
+        progressMessage: { key: 'MyApp.Labels_Saving' },
+        successMessage: { key: 'MyApp.Labels_Saved', params: { name: 'Report.pdf' } },
+        errorMessage: { key: 'MyApp.Labels_SaveFailed' },
+    },
+});
+```
+
 #### Working with the Status Hub Service
 
 The Status Hub integrates seamlessly with commands, queries, and list view sources from the Practices libraries. You should not use the StatusHubService's register method directly - instead, use the higher-level abstractions:

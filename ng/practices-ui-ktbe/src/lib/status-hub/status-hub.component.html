@@ -6,10 +6,12 @@
         ></div>
     }
 
-    @if (progressMessage$ | async; as message) {
+    @if (progressMessageData$ | async; as messageData) {
         @if (busyAndBlocking$ | async; as busyAndBlocking) {
             <div class="fixed bottom-10 left-10 right-10 top-10 z-[1002] flex items-center justify-center align-middle">
-                <ng-container *ngTemplateOutlet="progressMessageTmpl; context: { $implicit: message }"></ng-container>
+                <ng-container
+                    *ngTemplateOutlet="progressMessageTmpl; context: { $implicit: messageData }"
+                ></ng-container>
             </div>
         }
     } @else {
@@ -36,6 +38,7 @@
     @for (status of statusToasts$ | async; track trackByFn($index, status)) {
         <puibe-status-toast
             [errorTemplate]="statusError?.templateRef"
+            [successTemplate]="statusSuccess?.templateRef"
             @listEntryAnimation
             class="drop-shadow-md"
             [status]="status"
@@ -43,14 +46,14 @@
         ></puibe-status-toast>
     }
     <ng-content select="puibe-status-toast, puibe-toast"></ng-content>
-    @if (progressMessage$ | async; as message) {
+    @if (progressMessageData$ | async; as messageData) {
         @if (!(busyAndBlocking$ | async)) {
-            <ng-container *ngTemplateOutlet="progressMessageTmpl; context: { $implicit: message }"></ng-container>
+            <ng-container *ngTemplateOutlet="progressMessageTmpl; context: { $implicit: messageData }"></ng-container>
         }
     }
 </div>
 
-<ng-template #progressMessageTmpl let-message>
+<ng-template #progressMessageTmpl let-messageData>
     <puibe-toast
         variant="info"
         @listEntryAnimation
@@ -58,9 +61,20 @@
         class="flex min-w-full max-w-full items-center justify-center overflow-hidden drop-shadow-md max-sm:max-w-full sm:max-w-[660px] md:min-w-[300px]"
     >
         <div class="flex items-center justify-between gap-2">
-            <span class="flex-auto whitespace-pre-wrap">{{ message }}</span>
+            @if (statusBusy?.templateRef; as busyTemplate) {
+                <span class="flex-auto whitespace-pre-wrap">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            busyTemplate;
+                            context: { $implicit: messageData.status, message: messageData.message }
+                        "
+                    ></ng-container>
+                </span>
+            } @else {
+                <span class="flex-auto whitespace-pre-wrap">{{ messageData.message }}</span>
+            }
             <puibe-icon-spinner @scaleAnimation [size]="IconSize.M" class="inline-flex"></puibe-icon-spinner>
         </div>
     </puibe-toast>
 </ng-template>
-<ng-content select="[puibeIfErrorStatus]"></ng-content>
+<ng-content select="[puibeIfErrorStatus], [puibeIfSuccessStatus], [puibeIfBusyStatus]"></ng-content>

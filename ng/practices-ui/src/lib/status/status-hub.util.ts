@@ -1,5 +1,5 @@
 import { Observable, map, merge, of, shareReplay, switchMap, timer } from 'rxjs';
-import { StatusEventExt, StatusHubConfig } from './model';
+import { isLocalizedMessage, StatusEventExt, StatusHubConfig } from './model';
 import { compareObjShallow } from '../util/util';
 
 export interface StatusMap {
@@ -7,7 +7,7 @@ export interface StatusMap {
 }
 
 function isStatusSuccessAndContainsMessageOrGenericCategory(s: StatusEventExt): boolean {
-    return !!s.success && !!(typeof s.success === 'string' || s.statusCategory?.startsWith('action-'));
+    return !!s.success && !!(isLocalizedMessage(s.success) || s.statusCategory?.startsWith('action-'));
 }
 
 export function getLatestStatusEventsList$(aggregatedStatusMap$: Observable<StatusMap>, config: StatusHubConfig) {

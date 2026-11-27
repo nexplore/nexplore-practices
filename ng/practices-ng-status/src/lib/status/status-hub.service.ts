@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { finalize, map, share, shareReplay, takeUntil } from 'rxjs/operators';
+import { isLocalizedMessage, isTranslatableMessage, LocalizedMessage } from './localized-message';
 import { ErrorMessage, StatusProgressOptions, SuccessMessage } from './types';
 
 import { AggregatedStatusInfo, StatusEvent, StatusEventExt, StatusHubConfig } from './model';
@@ -198,7 +199,7 @@ export class StatusHubService {
                 newEvent.blocking = progressOptions.blocking;
             }
 
-            if (typeof progressOptions?.progressMessage === 'string') {
+            if (isLocalizedMessage(progressOptions?.progressMessage)) {
                 newEvent.progressMessage = progressOptions.progressMessage;
             }
 
@@ -241,13 +242,22 @@ export class StatusHubService {
         this._skipNewEventSubscriptions = skip;
     }
 
-    private unwrapMessage(message: SuccessMessage | ErrorMessage | undefined, result: any): string | undefined {
+    private unwrapMessage(
+        message: SuccessMessage | ErrorMessage | undefined,
+        result: any
+    ): LocalizedMessage | undefined {
         if (typeof message === 'function') {
             try {
-                return message(result);
+                message = message(result);
             } catch (error) {
                 console.error(`Error while unwrapping success message`, { error, message, result });
+                return undefined;
             }
+        }
+
+        if (isTranslatableMessage(message)) {
+            // Copy the message, as the status hub attaches internal markers to errors, which must not leak into a (possibly shared) message object
+            return { ...message };
         }
 
         if (typeof message === 'string') {

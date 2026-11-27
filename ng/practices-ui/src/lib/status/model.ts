@@ -1,12 +1,18 @@
+import type { LocalizedMessage } from '@nexplore/practices-ng-status';
 import { Observable, Subscription } from 'rxjs';
+
+export type { LocalizedMessage, TranslatableMessage } from '@nexplore/practices-ng-status';
+export { isLocalizedMessage, isTranslatableMessage } from '@nexplore/practices-ng-status';
 
 export type StatusError = true | string | { [key: string]: any } | undefined | Error;
 
-export type StatusSuccess = boolean | string | undefined;
+export type StatusSuccess = boolean | LocalizedMessage | undefined;
 
-export type SuccessMessage = string | (<T>(result: T) => string);
+export type SuccessMessage = LocalizedMessage | (<T>(result: T) => LocalizedMessage);
 
-export type ErrorMessage = string | (<T>(error: T) => string);
+export type ErrorMessage = LocalizedMessage | (<T>(error: T) => LocalizedMessage);
+
+export type ProgressMessage = LocalizedMessage;
 
 export interface StatusEvent {
     busy: boolean;
@@ -21,7 +27,7 @@ export type AggregatedStatusInfo = StatusEvent & {
     dismissSuccess: () => void;
     numberOfBusyOperations: number;
     blocking?: boolean;
-    progressMessage?: string;
+    progressMessage?: ProgressMessage | null;
     statusCategory?: StatusCategory;
 };
 
@@ -36,13 +42,13 @@ export interface StatusProgressOptions {
     /** If `true`, the running operation should block the user from interacting */
     blocking?: boolean;
 
-    /** Allows to inform the user with a custom message regarding the progress */
-    progressMessage?: string | Observable<string>;
+    /** Allows to inform the user with a custom message regarding the progress (plain text or a translation key) */
+    progressMessage?: ProgressMessage | Observable<ProgressMessage>;
 
-    /** Set a success message for when the status reports success */
+    /** Set a success message (plain text or a translation key) for when the status reports success */
     successMessage?: SuccessMessage;
 
-    /** Set a custom error message for when the status reports an error */
+    /** Set a custom error message (plain text or a translation key) for when the status reports an error */
     errorMessage?: ErrorMessage;
 
     /** If `true`, the progress will not be shown (eg. no busy spinner), unless an error occurs. */
@@ -71,7 +77,7 @@ export type StatusEventExt<TError = StatusError> = StatusEvent & {
     dismiss: () => void;
     autohide: boolean;
     blocking?: boolean;
-    progressMessage?: string | null;
+    progressMessage?: ProgressMessage | null;
     statusCategory?: StatusCategory;
     _isAlreadyVisible?: boolean;
     _hasBeenPushedAway?: boolean;
