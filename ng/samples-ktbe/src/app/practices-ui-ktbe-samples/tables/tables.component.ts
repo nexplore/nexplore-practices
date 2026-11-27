@@ -1,7 +1,10 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { IQueryParamsWithFilter, OrderDirection } from '@nexplore/practices-ui';
 import {
+    PuibeButtonDirective,
+    PuibeCheckboxComponent,
     PuibeIconArrowComponent,
     PuibeSelectableDirective,
     PuibeSelectionDirective,
@@ -111,10 +114,15 @@ export const tableSampleLoadFn = <TItem = SampleModel, TFilter = any>(
         TableExampleComponent,
         AsyncPipe,
         DatePipe,
+        FormsModule,
+        PuibeCheckboxComponent,
+        PuibeButtonDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TablesComponent {
+    useGridLayout = false;
+
     tableSource1 = new TableViewSource<SampleModel>(
         {
             columns: ['id', 'name', 'created'],
@@ -156,7 +164,7 @@ export class TablesComponent {
         (params) => tableSampleLoadFn(params, 5)
     );
 
-    tableSource6 = new TableViewSource<SampleModel>(
+    tableSource6 = new TableViewSource<any>(
         {
             columns: {
                 id: { sortable: false },
@@ -166,6 +174,14 @@ export class TablesComponent {
         },
         (params) => tableSampleLoadFn(params, 5)
     );
+
+    addColumn() {
+        this.tableSource6.upsertColumn({ fieldName: `field${this.tableSource6.columnsArray.length}`, sortable: true });
+    }
+
+    removeColumn() {
+        this.tableSource6.columns = this.tableSource6.columnsArray.slice(0, -1);
+    }
 
     tableSource7 = new TableViewSource<SampleModel>(
         {

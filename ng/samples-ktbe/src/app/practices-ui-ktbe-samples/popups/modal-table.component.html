@@ -1,0 +1,43 @@
+<puibe-modal class="block h-[80vh] w-[900px] max-w-full" [enableContentScroll]="enableContentScroll">
+    <puibe-modal-title>Modal with table</puibe-modal-title>
+    <puibe-modal-subtitle class="flex gap-6">
+        <puibe-checkbox [(ngModel)]="useGridLayout" label="useGridLayout"></puibe-checkbox>
+        <puibe-checkbox [(ngModel)]="enableContentScroll" label="enableContentScroll"></puibe-checkbox>
+    </puibe-modal-subtitle>
+    <puibe-table
+        puibeModalContent
+        [tableViewSource]="tableSource"
+        [useGridLayout]="useGridLayout"
+        [useStickyHeader]="true"
+        [useStickyFooter]="true"
+        [selectionMode]="'single'"
+        [(selectedItem)]="selectedItem"
+    >
+        <puibe-table-column size="auto" [fieldName]="tableSource.columns.id"></puibe-table-column>
+        <puibe-table-column size="1fr" [fieldName]="tableSource.columns.name" [sortable]="true"></puibe-table-column>
+        <puibe-table-column
+            size="auto"
+            [fieldName]="tableSource.columns.created"
+            [sortable]="true"
+        ></puibe-table-column>
+        <puibe-table-column size="auto">Actions</puibe-table-column>
+
+        @for (item of tableSource.pageData$ | async; track item) {
+            <puibe-table-row [selectable]="item">
+                <puibe-table-cell>{{ item.id }}</puibe-table-cell>
+                <puibe-table-cell>{{ item.name }}</puibe-table-cell>
+                <puibe-table-cell>{{ item.created | date }}</puibe-table-cell>
+                <puibe-table-cell></puibe-table-cell>
+            </puibe-table-row>
+        }
+
+        <puibe-table-footer>
+            <puibe-table-pagination [showFirstAndLastPageButton]="true">
+                <puibe-table-page-size>Items per page </puibe-table-page-size>
+            </puibe-table-pagination>
+        </puibe-table-footer>
+    </puibe-table>
+    <button puibeModalFooterAction puibeButton variant="primary">OK</button>
+    <button puibeModalFooterAction puibeButton>Cancel</button>
+    <p puibeModalFooterStatus>Selected: {{ selectedItem?.name ?? 'None' }}</p>
+</puibe-modal>

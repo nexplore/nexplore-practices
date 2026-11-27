@@ -123,6 +123,31 @@ export const StaticTable: Story = {
     }),
 };
 
+export const StaticTableGridLayout: Story = {
+    render: (_args) => ({
+        template: `
+        <puibe-table [useGridLayout]="true" class="w-full">
+            <puibe-table-column size="64px">H1</puibe-table-column>
+            <puibe-table-column size="1fr">H2</puibe-table-column>
+            <puibe-table-column size="1fr">H3</puibe-table-column>
+            <puibe-table-column size="4rem" align="right">H4</puibe-table-column>
+
+            <puibe-table-row>
+                <puibe-table-cell>A1</puibe-table-cell>
+                <puibe-table-cell>A2</puibe-table-cell>
+                <puibe-table-cell>A3</puibe-table-cell>
+                <puibe-table-cell align="right">A4</puibe-table-cell>
+            </puibe-table-row>
+
+            <puibe-table-row>
+                <puibe-table-cell>B1</puibe-table-cell>
+                <puibe-table-cell colspan="2">B2 + B3 (colspan 2)</puibe-table-cell>
+                <puibe-table-cell align="right">B4</puibe-table-cell>
+            </puibe-table-row>
+        </puibe-table>`,
+    }),
+};
+
 export const StaticTableWithLongCellEntry: Story = {
     render: (_args) => ({
         template: `
@@ -335,6 +360,42 @@ export const TableWithPaging: Story = {
                 </puibe-table-pagination>
             </puibe-table-footer>
 
+        </puibe-table>`,
+    }),
+};
+
+export const TableWithGridLayoutAndStickyHeaderAndFooter: Story = {
+    render: (args) => ({
+        props: {
+            ...args,
+            tableSource: new TableViewSource<SampleModel>(
+                {
+                    columns: ['id', 'name', 'created'],
+                },
+                defaultLoadFn(200)
+            ),
+        },
+        template: `
+        <puibe-table [tableViewSource]="tableSource" [useGridLayout]="true" [useStickyHeader]="true" [useStickyFooter]="true" class="h-[400px] w-full overflow-auto">
+            <puibe-table-column [fieldName]="tableSource.columns.id" size="auto"></puibe-table-column>
+            <puibe-table-column [fieldName]="tableSource.columns.name" [sortable]="true" size="1fr"></puibe-table-column>
+            <puibe-table-column [fieldName]="tableSource.columns.created" [sortable]="true" size="minmax(8rem, auto)"></puibe-table-column>
+            <puibe-table-column size="auto">Actions</puibe-table-column>
+
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row>
+                    <puibe-table-cell>{{item.id}}</puibe-table-cell>
+                    <puibe-table-cell >{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
+                    <puibe-table-cell></puibe-table-cell>
+                </puibe-table-row>
+            }
+
+            <puibe-table-footer>
+                <puibe-table-pagination>
+                    <puibe-table-page-size>Items per page </puibe-table-page-size>
+                </puibe-table-pagination>
+            </puibe-table-footer>
         </puibe-table>`,
     }),
 };
@@ -854,6 +915,28 @@ export const Celspan2WithDirectiveTable: Story = {
             <puibe-table-column >H1</puibe-table-column>
             <puibe-table-column align='right'>H2</puibe-table-column>
             <puibe-table-column >H3</puibe-table-column>
+
+            <puibe-table-row>
+                <td puibeTableCell colspan='2'>A1</td>
+                <td puibeTableCell>A3</td>
+            </puibe-table-row>
+
+            <puibe-table-row>
+                <td puibeTableCell>B1</td>
+                <td puibeTableCell align='right'>B2</td>
+                <td puibeTableCell>B3</td>
+            </puibe-table-row>
+        </puibe-table>`,
+    }),
+};
+
+export const Colspan2WithDirectiveGridLayoutTable: Story = {
+    render: (_args) => ({
+        template: `
+        <puibe-table class="w-full" [useGridLayout]="true">
+            <puibe-table-column size="1fr">H1</puibe-table-column>
+            <puibe-table-column size="1fr" align='right'>H2</puibe-table-column>
+            <puibe-table-column size="1fr">H3</puibe-table-column>
 
             <puibe-table-row>
                 <td puibeTableCell colspan='2'>A1</td>

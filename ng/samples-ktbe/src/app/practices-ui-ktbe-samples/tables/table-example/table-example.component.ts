@@ -1,6 +1,6 @@
 import { DialogModule } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { formGroup } from '@nexplore/practices-ng-forms';
 import { tableViewSource } from '@nexplore/practices-ng-list-view-source';
 import { DestroyService } from '@nexplore/practices-ui';
@@ -55,6 +55,8 @@ interface SampleListFilter {
 })
 export class TableExampleComponent {
     private readonly _modalService = inject(PuibeModalService);
+
+    readonly useGridLayout = input(false);
 
     protected readonly form = formGroup.withType<SampleListFilter>().withConfig({
         name: { nullable: true },

@@ -11,10 +11,10 @@
     }
 </div>
 <ng-content select="[puibeModalSubtitle], puibe-modal-subtitle"></ng-content>
-<hr class="text-gray my-6" />
+<hr class="text-gray mt-6" [class.mb-6]="!enableContentScroll" />
 <ng-content select="[puibeModalContent]"></ng-content>
 @if (!hideDoubleDividerLine) {
-    <hr class="text-gray mt-6" />
+    <hr class="text-gray" [class.mt-6]="!enableContentScroll" />
 }
 
 <div

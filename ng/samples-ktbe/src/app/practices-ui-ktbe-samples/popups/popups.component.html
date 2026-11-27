@@ -29,5 +29,11 @@
         [commandOptions]="{ silent: true }"
     >
     </puibe-teaser>
+
+    <puibe-teaser
+        title="Click to open modal with a scrollable table"
+        [navigatable]="true"
+        (navigate)="openModalWithTable()"
+    ></puibe-teaser>
 </div>
 <puibe-status-hub></puibe-status-hub>

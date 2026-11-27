@@ -28,6 +28,7 @@ type Args = {
     customTitleClass?: string;
     customSubtitleClass?: string;
     controlType: 'modal' | 'flyout';
+    enableContentScroll?: boolean;
 };
 /* example Component for flyout*/
 @Component({
@@ -168,6 +169,7 @@ const meta: Meta<Args> = {
         customTitleClass: { type: 'string' },
         customSubtitleClass: { type: 'string' },
         hideCloseButton: { type: 'boolean', defaultValue: false },
+        enableContentScroll: { type: 'boolean', defaultValue: false },
         buttonsAlignment: {
             type: {
                 name: 'enum',
@@ -216,6 +218,8 @@ const meta: Meta<Args> = {
         <puibe-modal 
             [hideCloseButton]="${args.hideCloseButton}"
             [buttonsAlignment]="'${args.buttonsAlignment}'"
+            [enableContentScroll]="${!!args.enableContentScroll}"
+            ${args.enableContentScroll ? 'style="max-height: 400px"' : ''}
             class="block w-3/4 md:w-1/2">
             <h2 puibeModalTitle ${getCustomClass(args.customTitleClass)}>${args.title}</h2>
             ${
@@ -223,7 +227,7 @@ const meta: Meta<Args> = {
                     ? `<h3 puibeModalSubtitle ${getCustomClass(args.customSubtitleClass)}>${args.subtitle}</h3>`
                     : ''
             }
-            <div puibeModalContent>${args.text}</div>
+            <div puibeModalContent class="whitespace-pre-line">${args.text}</div>
             <button puibeModalFooterAction puibeButton [shouldClose]="false" variant="primary">OK</button>
             <button puibeModalFooterAction puibeButton>Cancel</button>
         </puibe-modal>`,
@@ -258,6 +262,27 @@ export const modal: StoryObj<Args> = {
         subtitle: 'Modal Subtitle',
         text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
         hideCloseButton: false,
+        buttonsAlignment: 'start',
+    },
+};
+
+export const modalWithContentScroll: StoryObj<Args> = {
+    decorators: [
+        moduleMetadata({
+            providers: [...MODAL_PROVIDERS],
+        }),
+    ],
+    args: {
+        controlType: 'modal',
+        title: 'Modal Title',
+        subtitle: 'Only the content scrolls, title and buttons stay visible',
+        text: Array.from(
+            { length: 12 },
+            () =>
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+        ).join('\n\n'),
+        hideCloseButton: false,
+        enableContentScroll: true,
         buttonsAlignment: 'start',
     },
 };
