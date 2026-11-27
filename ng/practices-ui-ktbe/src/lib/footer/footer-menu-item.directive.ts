@@ -13,8 +13,9 @@ import { setHostClassNames } from '../util/utils';
 
 const className =
     'font-sans font-normal text-small leading-normal no-underline inline-block h-5 outline-none mr-9 last-of-type:mr-0 last:mb-0';
-const linkClassNames =
-    'after:block after:border-b-2 w-fit after:scale-x-0 after:transition-transform after:duration-100 after:ease-in-out hover:after:scale-x-100 focus:after:scale-x-100 active:after:scale-x-100 hover:text-black';
+const linkClassNames = 'w-fit hover:text-black';
+const linkAnimationClassNames =
+    'after:block after:border-b-2 after:scale-x-0 after:transition-transform after:duration-100 after:ease-in-out hover:after:scale-x-100 focus:after:scale-x-100 active:after:scale-x-100';
 const activeClassNames = 'after:border-red after:scale-x-100';
 const inactiveClassNames =
     'after:border-black after:scale-x-0 after:transition-transform after:duration-100 after:ease-in-out hover:after:scale-x-100 focus:after:scale-x-100 active:after:scale-x-100';
@@ -97,8 +98,9 @@ export class PuibeFooterMenuItemDirective implements OnInit, DoCheck, OnDestroy 
     private setClassNames(isActive: boolean) {
         setHostClassNames(
             {
-                // first, so the state classes below win for the classes they share with the link classes
                 [linkClassNames]: this._isLink(),
+                // before the state classes, so these win for the classes they share with the link animation
+                [linkAnimationClassNames]: this._isLink() && this.withAnimation,
                 [withoutAnimationClassNames]: !this.withAnimation,
                 [inactiveClassNames]: this._isLink() && this.withAnimation && !isActive,
                 [activeClassNames]: this.withAnimation && isActive,

@@ -315,6 +315,13 @@ describe.each(directives)('$name active state', ({ selector, directive }) => {
             expect(button.classList).toContain('hover:text-black');
         });
 
+        it.each(['/probe', '/other'])('shows no underline on %s without animation', async (url) => {
+            const button = await renderAt(url, 'routerLink="probe" [withAnimation]="false"');
+
+            expect(button.classList).toContain('hover:text-black');
+            expect(button.classList).not.toContain('after:border-b-2');
+        });
+
         it('styles a button as link once its link is set', async () => {
             const button = await renderAt('/other', '[navLink]="link()"');
             expect(button.classList).not.toContain('hover:text-black');

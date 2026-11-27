@@ -5,7 +5,10 @@ import { BehaviorSubject, combineLatest, filter, map, Observable, startWith, Sub
 /** Same value types as accepted by Angular's `RouterLink` input. */
 export type MenuItemRouterLink = readonly unknown[] | string | UrlTree | null | undefined;
 
-/** Same value types as accepted by Angular's `RouterLinkActive.routerLinkActiveOptions` input. */
+/**
+ * Same shapes as accepted by Angular's `RouterLinkActive.routerLinkActiveOptions` input. Unlike `RouterLinkActive`,
+ * `null` and `undefined` both mean the default subset matching, as they did before.
+ */
 export type MenuItemRouterLinkActiveOptions = { exact: boolean } | Partial<IsActiveMatchOptions> | null | undefined;
 
 const subsetMatchOptions: IsActiveMatchOptions = {
@@ -160,7 +163,7 @@ function isEmptyLink(link: MenuItemRouterLink): link is null | undefined | '' | 
     return link == null || link === '' || (Array.isArray(link) && link.length === 0);
 }
 
-/** Interprets the options like Angular's `RouterLinkActive` does. */
+/** Interprets set options like Angular's `RouterLinkActive` does; `null` and `undefined` mean subset matching. */
 function toMatchOptions(options: MenuItemRouterLinkActiveOptions): IsActiveMatchOptions {
     if (!options) {
         return subsetMatchOptions;
