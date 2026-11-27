@@ -1,10 +1,9 @@
-import { Directive, ElementRef, HostBinding, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
-import { IsActiveMatchOptions } from '@angular/router';
+import { Directive, DoCheck, ElementRef, HostBinding, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
 import { TranslateService } from '@ngx-translate/core';
 import { takeUntil } from 'rxjs';
 
-import { MenuItemService } from '../menu-item.service';
+import { MenuItemRouterLink, MenuItemRouterLinkActiveOptions, MenuItemService } from '../menu-item.service';
 import {
     createScreenReaderTextElement,
     removeParentElementFromDom,
@@ -26,20 +25,31 @@ const withAnimationClassNames = 'after:border-b-2';
     selector: '[puibeHeaderServiceMenuItem]',
     providers: [DestroyService, MenuItemService],
 })
-export class PuibeHeaderServiceMenuItemDirective implements OnInit, OnDestroy {
+export class PuibeHeaderServiceMenuItemDirective implements OnInit, DoCheck, OnDestroy {
     @HostBinding('class')
     className = className;
 
-    @Input('navLink')
+    /** Link of the item. With Angular's `RouterLink` on the same element, its URL is used for the active state. */
     @Input()
-    set routerLink(value: string) {
+    set routerLink(value: MenuItemRouterLink) {
         this._menuItemService.setRouterLink(value);
     }
 
-    @Input('navLinkActiveOptions')
+    /** Marks the item as active for this URL, without Angular's `RouterLink`. Takes precedence over `routerLink`. */
     @Input()
-    set routerLinkActiveOptions(value: IsActiveMatchOptions) {
+    set navLink(value: MenuItemRouterLink) {
+        this._menuItemService.setNavLink(value);
+    }
+
+    @Input()
+    set routerLinkActiveOptions(value: MenuItemRouterLinkActiveOptions) {
         this._menuItemService.setRouterLinkActiveOptions(value);
+    }
+
+    /** Options for `navLink`. Takes precedence over `routerLinkActiveOptions`. */
+    @Input()
+    set navLinkActiveOptions(value: MenuItemRouterLinkActiveOptions) {
+        this._menuItemService.setNavLinkActiveOptions(value);
     }
 
     @Input()
@@ -68,6 +78,10 @@ export class PuibeHeaderServiceMenuItemDirective implements OnInit, OnDestroy {
             setScreenReaderText(isActive, this.screenReaderTextElement, this._translate);
             this.setClassNames(isActive);
         });
+    }
+
+    ngDoCheck(): void {
+        this._menuItemService.checkAngularRouterLink();
     }
 
     ngOnDestroy(): void {

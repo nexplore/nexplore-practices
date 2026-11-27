@@ -27,6 +27,7 @@ export * from './lib/footer/footer-language-menu-item.directive';
 export * from './lib/footer/footer-menu-item.directive';
 export * from './lib/footer/footer.component';
 export * from './lib/footer/sidenav-footer.component';
+export type { MenuItemRouterLink, MenuItemRouterLinkActiveOptions } from './lib/menu-item.service';
 
 export * from './lib/expansion-panel/expansion-panel.component';
 export * from './lib/panel/panel.component';
