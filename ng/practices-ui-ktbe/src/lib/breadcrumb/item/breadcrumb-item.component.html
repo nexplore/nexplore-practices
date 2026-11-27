@@ -40,7 +40,7 @@
             tabindex="0"
         >
             @if (isHome) {
-                <puibe-icon-home [class]="classNamesHomeIcon"></puibe-icon-home>
+                <puibe-icon-home [class]="classNamesHomeIcon" size="fit"></puibe-icon-home>
             }
             <ng-container *ngTemplateOutlet="content"></ng-container>
         </a>
@@ -63,6 +63,7 @@
             [title]="'Practices.Labels_Navigation_Home' | translate"
             [attr.aria-label]="'Practices.Labels_Navigation_Home' | translate"
             [class]="classNamesHomeIcon"
+            size="fit"
         ></puibe-icon-home>
     }
 </ng-template>

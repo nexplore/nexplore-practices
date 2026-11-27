@@ -26,7 +26,7 @@ export class PuibeIconDirectiveBase implements OnChanges, AfterViewInit {
      * Allows to customize the size of the icon. By default, no size is applied.
      */
     @Input()
-    size: IconSize = IconSize.NONE;
+    size: IconSize | `${IconSize}` = IconSize.NONE;
 
     constructor(protected _elementRef: ElementRef<HTMLElement>) {}
 
