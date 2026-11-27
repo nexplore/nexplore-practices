@@ -8,7 +8,7 @@
     @apply border-l-0;
 }
 .tabs-component .ng-select .ng-select-container:focus-within {
-    @apply rounded-xs border border-solid border-dark-gray outline-0;
+    @apply rounded-xs border border-solid border-black outline-0;
 }
 /*
  * ng-select >= 24 renders the dropdown panel in an overlay (outside of .tabs-component), it is identified by its panelClass.
