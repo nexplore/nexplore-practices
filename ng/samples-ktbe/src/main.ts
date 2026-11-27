@@ -61,6 +61,10 @@ bootstrapApplication(AppComponent, {
             forms: {
                 behaviors: [removeValidatorsOnReadonlyFieldsBehavior()],
             },
+            selection: {
+                // Compare selected items by their `id` property if available, otherwise by the item itself.
+                defaultSelectionComparisionKey: (item: any) => item?.id ?? item,
+            },
         }),
     ],
 });

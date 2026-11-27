@@ -1,16 +1,22 @@
 @if (!(isReadonly$ | async)) {
     <label
-        class="mr-9 inline-flex align-middle antialiased"
+        class="inline-flex align-middle antialiased"
         [for]="id"
+        [class.mr-9]="!inline"
         [ngClass]="
             ((disabled$ | async) ? 'cursor-default' : 'cursor-pointer') +
             ' ' +
             (alignLabelStart ? 'items-start' : 'items-center')
         "
     >
-        <div class="relative -ml-[0.625rem] box-content inline-block h-7 w-7 p-[0.625rem]">
+        <div
+            class="relative box-content inline-block h-7 w-7"
+            [ngClass]="{ '-ml-[0.625rem] p-[0.625rem]': !inline }"
+            [style.height.px]="size"
+            [style.width.px]="size"
+        >
             <input
-                class="peer absolute bottom-0 left-0 right-0 top-0 m-0 h-12 w-12 p-0 opacity-0"
+                class="peer absolute bottom-0 left-0 right-0 top-0 m-0 h-full w-full p-0 opacity-0"
                 type="checkbox"
                 [id]="id"
                 [name]="id"
@@ -18,10 +24,14 @@
                 [disabled]="disabled$ | async"
                 [checked]="checked$ | async"
                 (change)="onChange()"
-                [attr.aria-describedby]="!isInGroup ? id + '-error' : groupId + '-error'"
+                [attr.aria-describedby]="!isInGroup && !inline ? id + '-error' : isInGroup ? groupId + '-error' : null"
+                [attr.aria-label]="title || null"
+                [attr.tabindex]="tabIndex"
             />
             <div
-                class="relative box-border inline-block h-7 w-7 peer-focus:outline peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-[-webkit-focus-ring-color] peer-checked:[&_.check-target]:opacity-100"
+                class="absolute box-border inline-block h-7 w-7 peer-focus:outline peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-[-webkit-focus-ring-color] peer-checked:[&_.check-target]:opacity-100"
+                [style.height.px]="size"
+                [style.width.px]="size"
             >
                 <div
                     class="absolute left-0 top-0 box-border h-full w-full border"
@@ -32,8 +42,12 @@
                     }"
                 ></div>
                 <div
-                    class="check-target absolute left-2 top-2 box-border h-3 w-3 bg-black opacity-0 transition-all duration-150 ease-in-out"
-                    [ngClass]="{ '!opacity-50': (disabled$ | async) && (checked$ | async) }"
+                    class="check-target absolute box-border bg-black opacity-0 transition-all duration-150 ease-in-out"
+                    [ngClass]="{
+                        'left-2 top-2 h-3 w-3': !size,
+                        'left-1/4 top-1/4 h-1/2 w-1/2': !!size,
+                        '!opacity-50': (disabled$ | async) && (checked$ | async),
+                    }"
                 ></div>
             </div>
         </div>
@@ -44,7 +58,7 @@
             }
         </div>
     </label>
-    @if (!isInGroup) {
+    @if (!isInGroup && !inline) {
         <div
             [attr.id]="id + '-error'"
             class="text-red text-very-small min-h-5 font-medium"

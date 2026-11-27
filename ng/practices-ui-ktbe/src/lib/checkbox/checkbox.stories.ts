@@ -15,6 +15,7 @@ type Args = {
     readonly?: boolean;
     useSmallTextForReadonlyLabel?: boolean;
     alignLabelStart?: boolean;
+    size?: number;
 };
 
 const meta: Meta<Args> = {
@@ -30,6 +31,7 @@ const meta: Meta<Args> = {
         readonly: { type: 'boolean', defaultValue: false },
         useSmallTextForReadonlyLabel: { type: 'boolean', defaultValue: false },
         alignLabelStart: { type: 'boolean', defaultValue: false },
+        size: { type: 'number', defaultValue: null },
     },
     decorators: [
         moduleMetadata({ imports: [PuibeCheckboxComponent, PuibeCheckboxGroupComponent, PuibeReadonlyDirective] }),
@@ -47,7 +49,7 @@ const meta: Meta<Args> = {
         },
         template: `
         <div [formGroup]="formGroup" class="w-full">
-            <puibe-checkbox class="w-full" [label]="label" [puibeReadonly]="readonly" [useSmallTextForReadonlyLabel]="useSmallTextForReadonlyLabel" [alignLabelStart]="alignLabelStart" [description]="description" formControlName="checkbox"></puibe-checkbox>
+            <puibe-checkbox class="w-full" [label]="label" [puibeReadonly]="readonly" [useSmallTextForReadonlyLabel]="useSmallTextForReadonlyLabel" [alignLabelStart]="alignLabelStart" [description]="description" [size]="size" formControlName="checkbox"></puibe-checkbox>
         </div>`,
     }),
 };
@@ -146,5 +148,27 @@ export const AlignLabelStart: Story = {
         required: false,
         disabled: false,
         asyncValidator: false,
+    },
+};
+
+export const CustomSizeLargeCheckbox: Story = {
+    args: {
+        label: 'Ich bin eine grosse Checkbox.',
+        defaultValue: true,
+        required: false,
+        disabled: false,
+        asyncValidator: false,
+        size: 40,
+    },
+};
+
+export const CustomSizeSmallCheckbox: Story = {
+    args: {
+        label: 'Ich bin eine kleine Checkbox.',
+        defaultValue: true,
+        required: false,
+        disabled: false,
+        asyncValidator: false,
+        size: 16,
     },
 };

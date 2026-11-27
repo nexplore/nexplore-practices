@@ -5,6 +5,7 @@ import {
     Component,
     ElementRef,
     forwardRef,
+    HostBinding,
     Inject,
     Injector,
     Input,
@@ -75,6 +76,32 @@ export class PuibeCheckboxComponent implements ControlValueAccessor, AfterViewIn
 
     @Input()
     description: string;
+
+    /**
+     * The title of the checkbox. It is set as `title` attribute of the host element and as `aria-label` of the native checkbox,
+     * which is useful when the checkbox has no visible label (e.g. in a table row).
+     */
+    @HostBinding('attr.title')
+    @Input()
+    title: string;
+
+    /**
+     * If true, the checkbox is rendered without the extra space around it (no outer padding, no right margin and no space reserved for validation messages).
+     */
+    @Input()
+    inline = false;
+
+    /**
+     * The tab index of the native checkbox.
+     */
+    @Input()
+    tabIndex?: number | null;
+
+    /**
+     * The size of the checkbox in pixels. Defaults to the regular checkbox size.
+     */
+    @Input()
+    size?: number | null;
 
     readonly value$ = merge(this._valueChanges$, this._ngControl$.pipe(map((control) => control.value)));
     readonly checked$ = this.value$.pipe(map((value) => value === true));
