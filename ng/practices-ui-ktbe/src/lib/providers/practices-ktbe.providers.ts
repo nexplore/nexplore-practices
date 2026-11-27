@@ -3,6 +3,7 @@ import { provideFormStateConfig } from '@nexplore/practices-ng-forms';
 import { providePuibeDirtyGuard } from '../dirty-guard/dirty-guard.providers';
 import { FORM_CONFIG, FormConfig } from '../form/form.config';
 import { PUIBE_MODAL_CONFIG, PuibeModalConfig } from '../popup/types';
+import { SELECTION_CONFIG, SelectionConfig } from '../selection/selection.config';
 
 type PracticesKtbeConfig = {
     /**
@@ -21,6 +22,11 @@ type PracticesKtbeConfig = {
      * Configure theme and functionality aspects of modal related components and services
      */
     modals?: PuibeModalConfig;
+
+    /**
+     * Configure selection related directives and components (e.g. `puibeSelectionMode` or a `puibe-table` with selection)
+     */
+    selection?: SelectionConfig;
 };
 
 /**
@@ -60,6 +66,13 @@ export const providePracticesKtbe = (config?: PracticesKtbeConfig): Provider[] =
         providers.push({
             provide: PUIBE_MODAL_CONFIG,
             useValue: config.modals,
+        });
+    }
+
+    if (config?.selection) {
+        providers.push({
+            provide: SELECTION_CONFIG,
+            useValue: config.selection,
         });
     }
 

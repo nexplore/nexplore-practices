@@ -1,9 +1,12 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { IQueryParamsWithFilter, OrderDirection } from '@nexplore/practices-ui';
 import {
+    PuibeCheckboxComponent,
     PuibeIconArrowComponent,
     PuibeSelectableDirective,
+    PuibeSelectAllIndeterminateEvent,
     PuibeSelectionDirective,
     PuibeTableCellComponent,
     PuibeTableCellDirective,
@@ -48,7 +51,8 @@ function generateSampleData<TItem = SampleModel>(size: number, generateItemFn = 
 export const tableSampleLoadFn = <TItem = SampleModel, TFilter = any>(
     params: IQueryParamsWithFilter<TFilter>,
     size: number,
-    generateItemFn = generateItem<TItem>
+    generateItemFn = generateItem<TItem>,
+    timeout = 1000
 ) => {
     let data = generateSampleData(size, generateItemFn);
 
@@ -76,7 +80,7 @@ export const tableSampleLoadFn = <TItem = SampleModel, TFilter = any>(
         data = data.slice(params.skip, params.skip + params.take);
     }
 
-    return timer(1000).pipe(
+    return timer(timeout).pipe(
         map((_) => ({
             data: data,
             total: size,
@@ -109,8 +113,10 @@ export const tableSampleLoadFn = <TItem = SampleModel, TFilter = any>(
         PuibeTableCellDirective,
         PuibeTwoColumnNavComponent,
         TableExampleComponent,
+        PuibeCheckboxComponent,
         AsyncPipe,
         DatePipe,
+        FormsModule,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -129,14 +135,21 @@ export class TablesComponent {
         (params) => tableSampleLoadFn(params, 5)
     );
     selectedItem2 = null;
+    selectedItems2 = null;
+    showCheckboxes: boolean | null = null;
+    useClickableRows: boolean | null = null;
+    multiselect = false;
 
     tableSource3 = new TableViewSource<SampleModel>(
         {
             columns: ['id', 'name', 'created'],
         },
-        (params) => tableSampleLoadFn(params, 5)
+        (params) => tableSampleLoadFn(params, 200, undefined, 50)
     );
     selectedItems3 = null;
+    useClickableRows3: boolean | null = null;
+    isAllSelected: boolean | null = null;
+    isAllSelectedIndeterminate: string | null = null;
 
     tableSource4 = new TableViewSource<SampleModel>(
         {
@@ -199,4 +212,13 @@ export class TablesComponent {
         },
         (params) => tableSampleLoadFn(params, 5)
     );
+
+    onSelectAll(value: boolean) {
+        this.isAllSelected = value;
+        this.isAllSelectedIndeterminate = null;
+    }
+
+    onSelectAllIndeterminate(value: PuibeSelectAllIndeterminateEvent) {
+        this.isAllSelectedIndeterminate = JSON.stringify(value);
+    }
 }

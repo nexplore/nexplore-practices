@@ -91,8 +91,12 @@
         <puibe-table
             [tableViewSource]="tableSource2"
             class="w-full"
-            [selectionMode]="'single'"
+            [selectionMode]="multiselect ? 'multi' : 'single'"
             [(selectedItem)]="selectedItem2"
+            [(selectedItems)]="selectedItems2"
+            [showCheckboxes]="showCheckboxes"
+            [useClickableRows]="useClickableRows"
+            [selectionComparisionKey]="'id'"
         >
             <puibe-table-column [fieldName]="tableSource2.columns.id"></puibe-table-column>
             <puibe-table-column
@@ -117,17 +121,30 @@
             }
 
             <puibe-table-footer>
-                <h3>Selected: {{ selectedItem2?.name ?? 'None' }}</h3>
+                @if (multiselect) {
+                    <h3>{{ selectedItems2?.length ?? 0 }} items selected</h3>
+                } @else {
+                    <h3>Selected: {{ selectedItem2?.name ?? 'None' }}</h3>
+                }
+                <div>
+                    <puibe-checkbox label="showCheckboxes" [(ngModel)]="showCheckboxes"></puibe-checkbox>
+                    <puibe-checkbox label="useClickableRows" [(ngModel)]="useClickableRows"></puibe-checkbox>
+                    <puibe-checkbox label="Enable Multi-selection" [(ngModel)]="multiselect"></puibe-checkbox>
+                </div>
             </puibe-table-footer>
         </puibe-table>
 
-        <h2 id="table-with-multiselect" class="mb-4 mt-12">Multi-Select Table</h2>
+        <h2 id="table-with-multiselect" class="mb-4 mt-12">Multi-Select Table (with paging)</h2>
 
         <puibe-table
             [tableViewSource]="tableSource3"
             class="w-full"
             [selectionMode]="'multi'"
+            [useClickableRows]="useClickableRows3"
             [(selectedItems)]="selectedItems3"
+            [selectionComparisionKey]="'id'"
+            (selectAllChange)="onSelectAll($event)"
+            (selectAllIndeterminate)="onSelectAllIndeterminate($event)"
         >
             <puibe-table-column [fieldName]="tableSource3.columns.id"></puibe-table-column>
             <puibe-table-column
@@ -152,7 +169,16 @@
             }
 
             <puibe-table-footer>
-                <h3>{{ selectedItems3?.length }} items selected</h3>
+                <puibe-table-pagination [showFirstAndLastPageButton]="true" [pageSize]="5"></puibe-table-pagination>
+
+                <h3>{{ selectedItems3?.length ?? 0 }} items selected</h3>
+                @if (isAllSelected !== null) {
+                    <h3>All items selected: {{ isAllSelectedIndeterminate ?? isAllSelected }}</h3>
+                }
+
+                <div>
+                    <puibe-checkbox label="useClickableRows" [(ngModel)]="useClickableRows3"></puibe-checkbox>
+                </div>
             </puibe-table-footer>
         </puibe-table>
 
@@ -212,7 +238,6 @@
             @for (columnDef of tableSource6.columnsArray$ | async; track columnDef) {
                 <puibe-table-column [field]="columnDef"></puibe-table-column>
             }
-
             @for (item of tableSource6.pageData$ | async; track item) {
                 <puibe-table-row>
                     <puibe-table-cell>{{ item.id }}</puibe-table-cell>
@@ -229,7 +254,6 @@
             @for (columnDef of tableSource7.columnsArray$ | async; track columnDef) {
                 <puibe-table-column [field]="columnDef"></puibe-table-column>
             }
-
             @for (item of tableSource7.pageData$ | async; track item) {
                 <puibe-table-row>
                     <puibe-table-cell>{{ item.id }}</puibe-table-cell>

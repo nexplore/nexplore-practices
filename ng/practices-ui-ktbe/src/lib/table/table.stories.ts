@@ -267,6 +267,74 @@ export const SelectableTable: Story = {
     }),
 };
 
+export const SingleSelectWithCheckboxTable: Story = {
+    render: (args) => ({
+        props: {
+            ...args,
+            tableSource: new TableViewSource<SampleModel>(
+                {
+                    columns: ['id', 'name', 'created'],
+                },
+                defaultLoadFn(10)
+            ),
+        },
+        template: `
+        <puibe-table [tableViewSource]="tableSource" class="w-full" [showCheckboxes]="true" [(selectedItem)]="selectedItem">
+            <puibe-table-column [fieldName]="tableSource.columns.id"></puibe-table-column>
+            <puibe-table-column [fieldName]="tableSource.columns.name" [sortable]="true" class="w-full"></puibe-table-column>
+            <puibe-table-column [fieldName]="tableSource.columns.created" [sortable]="true" class="min-w-[8rem]"></puibe-table-column>
+            <puibe-table-column>Actions</puibe-table-column>
+
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row [selectable]="item">
+                    <puibe-table-cell>{{item.id}}</puibe-table-cell>
+                    <puibe-table-cell >{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
+                    <puibe-table-cell></puibe-table-cell>
+                </puibe-table-row>
+            }
+
+            <puibe-table-footer>
+                <h3>Selected: {{selectedItem?.name ?? 'None'}}</h3>
+            </puibe-table-footer>
+        </puibe-table>`,
+    }),
+};
+
+export const SingleSelectWithCheckboxClickableRowTable: Story = {
+    render: (args) => ({
+        props: {
+            ...args,
+            tableSource: new TableViewSource<SampleModel>(
+                {
+                    columns: ['id', 'name', 'created'],
+                },
+                defaultLoadFn(10)
+            ),
+        },
+        template: `
+        <puibe-table [tableViewSource]="tableSource" class="w-full" [showCheckboxes]="true" [useClickableRows]="true" [(selectedItem)]="selectedItem">
+            <puibe-table-column [fieldName]="tableSource.columns.id"></puibe-table-column>
+            <puibe-table-column [fieldName]="tableSource.columns.name" [sortable]="true" class="w-full"></puibe-table-column>
+            <puibe-table-column [fieldName]="tableSource.columns.created" [sortable]="true" class="min-w-[8rem]"></puibe-table-column>
+            <puibe-table-column>Actions</puibe-table-column>
+
+            @for (item of tableSource.pageData$ | async; track item) {
+                <puibe-table-row [selectable]="item">
+                    <puibe-table-cell>{{item.id}}</puibe-table-cell>
+                    <puibe-table-cell >{{item.name}}</puibe-table-cell>
+                    <puibe-table-cell>{{item.created | date}}</puibe-table-cell>
+                    <puibe-table-cell></puibe-table-cell>
+                </puibe-table-row>
+            }
+
+            <puibe-table-footer>
+                <h3>Selected: {{selectedItem?.name ?? 'None'}}</h3>
+            </puibe-table-footer>
+        </puibe-table>`,
+    }),
+};
+
 export const TableMultiSelect: Story = {
     render: (args) => ({
         props: {
