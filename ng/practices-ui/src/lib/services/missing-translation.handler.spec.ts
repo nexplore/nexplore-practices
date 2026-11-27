@@ -1,11 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { of } from 'rxjs';
+import type { TranslateLoader } from '@ngx-translate/core';
 import {
-    REWRITE_RESOURCE_CONFIG,
-    RewriteMissingTranslationHandler,
-    RewriteResourceConfig,
-} from './missing-translation.handler';
+    provideMissingTranslationHandler,
+    provideTranslateLoader,
+    provideTranslateService,
+    TranslateService,
+} from '@ngx-translate/core';
+import { of } from 'rxjs';
+import type { RewriteResourceConfig } from './missing-translation.handler';
+import { REWRITE_RESOURCE_CONFIG, RewriteMissingTranslationHandler } from './missing-translation.handler';
 
 const mockTranslation = {
     Base: {
@@ -36,16 +39,11 @@ describe('MissingTranslationHandler', () => {
     const configureTestBed = (rewriteConfig: RewriteResourceConfig) => {
         TestBed.resetTestingModule();
         TestBed.configureTestingModule({
-            imports: [
-                TranslateModule.forRoot({
-                    loader: { provide: TranslateLoader, useClass: FakeLoader },
-                    missingTranslationHandler: {
-                        provide: MissingTranslationHandler,
-                        useClass: RewriteMissingTranslationHandler,
-                    },
-                }),
-            ],
             providers: [
+                provideTranslateService({
+                    loader: provideTranslateLoader(FakeLoader),
+                    missingTranslationHandler: provideMissingTranslationHandler(RewriteMissingTranslationHandler),
+                }),
                 {
                     provide: REWRITE_RESOURCE_CONFIG,
                     useValue: rewriteConfig,

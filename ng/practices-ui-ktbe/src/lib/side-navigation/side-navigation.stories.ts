@@ -1,6 +1,7 @@
-import { Route } from '@angular/router';
+import type { Route } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 import { PuibeHeaderLogoComponent } from '../header/header-logo.component';
 import { PuibeSideNavigationItemComponent } from './item/side-navigation-item.component';
 import { PuibeSideNavigationPaneComponent } from './pane/side-navigation-pane.component';

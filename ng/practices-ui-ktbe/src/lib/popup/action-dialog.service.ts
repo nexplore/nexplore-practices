@@ -4,6 +4,7 @@ import { Command, command, CommandOptions, isCommand } from '@nexplore/practices
 import { tryTriggerCommand } from '@nexplore/practices-ui';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, debounceTime, firstValueFrom, map, merge, Observable, of, takeUntil } from 'rxjs';
+import { getActionCommandOptions, isActionCommandInput } from './action-dialog-action-utils';
 import { ActionDialogComponent } from './action-dialog.component';
 import {
     PUIBE_DIALOG_ACTIONS,
@@ -88,7 +89,7 @@ export class PuibeActionDialogService {
         TArgs,
         TResult,
         TActionTemplates extends PuibeDialogActionsTemplates<TResult, TArgs> = typeof PUIBE_DIALOG_ACTIONS,
-        TAction extends PuibeDialogActionTemplate<TResult, TArgs> = TActionTemplates[keyof TActionTemplates]
+        TAction extends PuibeDialogActionTemplate<TResult, TArgs> = TActionTemplates[keyof TActionTemplates],
     >(
         actionConfig: ValueOrGetter<PuibeActionDialogConfig<TAction, TResult, TActionTemplates, TArgs>, TArgs>,
         commandConfig?: CommandOptions<TArgs>,
@@ -98,7 +99,7 @@ export class PuibeActionDialogService {
         TArgs,
         TResult,
         TActionTemplates extends PuibeDialogActionsTemplates<TResult, TArgs> = typeof PUIBE_DIALOG_ACTIONS,
-        TAction extends PuibeDialogActionTemplate<TResult, TArgs> = TActionTemplates[keyof TActionTemplates]
+        TAction extends PuibeDialogActionTemplate<TResult, TArgs> = TActionTemplates[keyof TActionTemplates],
     >(
         actionConfig: ValueOrGetter<PuibeActionDialogConfig<TAction, TResult, TActionTemplates, TArgs>, TArgs>,
         commandConfig?: CommandOptions<TArgs>,
@@ -154,7 +155,7 @@ export class PuibeActionDialogService {
         TResult,
         TActionTemplates extends PuibeDialogActionsTemplates<TResult, TDialogData> = typeof PUIBE_DIALOG_ACTIONS,
         TAction extends PuibeDialogActionTemplate<TResult, TDialogData> = TActionTemplates[keyof TActionTemplates],
-        TDialogData = unknown
+        TDialogData = unknown,
     >(
         actionConfig: PuibeActionDialogConfig<TAction, TResult, TActionTemplates, TDialogData>,
         dialogConfig?: DialogConfig<TDialogData, TResult>
@@ -164,7 +165,7 @@ export class PuibeActionDialogService {
         TResult,
         TActionTemplates extends PuibeDialogActionsTemplates<TResult, TDialogData> = typeof PUIBE_DIALOG_ACTIONS,
         TAction extends PuibeDialogActionTemplate<TResult, TDialogData> = TActionTemplates[keyof TActionTemplates],
-        TDialogData = unknown
+        TDialogData = unknown,
     >(
         actionConfig: PuibeActionDialogConfig<TAction, TResult, TActionTemplates, TDialogData>,
         dialogConfig?: DialogConfig<TDialogData, TResult>
@@ -190,7 +191,11 @@ export class PuibeActionDialogService {
             dialogRef.componentInstance.setActions(
                 Object.entries(actionConfig.actions).map(([key, action]) => ({
                     ...templates[key],
-                    command: typeof action === 'function' || isCommand(action) ? action : () => action,
+                    commandOptions:
+                        getActionCommandOptions(actionConfig.actionCommandOptions, key, action) ??
+                        templates[key]?.commandOptions,
+                    // Commands (also legacy commands) are converted by the dialog, other values are the action's result.
+                    command: isActionCommandInput(action) ? action : () => action,
                 }))
             );
         }

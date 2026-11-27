@@ -1,5 +1,5 @@
-import { ElementRef, Renderer2 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import type { ElementRef, Renderer2 } from '@angular/core';
+import type { TranslateService } from '@ngx-translate/core';
 
 export function wrapHostWithListItemElement(
     elementRef: ElementRef,

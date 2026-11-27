@@ -1,4 +1,4 @@
-import { Observable, Subscription } from 'rxjs';
+import type { Observable, Subscription } from 'rxjs';
 
 export type StatusError = true | string | { [key: string]: any } | undefined | Error;
 

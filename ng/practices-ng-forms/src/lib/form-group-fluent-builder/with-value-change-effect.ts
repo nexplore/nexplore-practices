@@ -1,7 +1,7 @@
 import { runInInjectionContext } from '@angular/core';
-import { FormControlState } from '@angular/forms';
-import { FormGroupValues } from '../utils/form.types';
-import { FormGroupEnhancedWithSignals } from './types';
+import type { FormControlState } from '@angular/forms';
+import type { FormGroupValues } from '../utils/form.types';
+import type { FormGroupEnhancedWithSignals } from './types';
 import { formFieldsChangeEffect } from '../utils/form-effect-utils';
 
 /**

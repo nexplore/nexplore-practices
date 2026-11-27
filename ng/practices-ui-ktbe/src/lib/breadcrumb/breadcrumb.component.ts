@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { DestroyService, TitleService } from '@nexplore/practices-ui';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { EMPTY, filter, map, of, startWith, takeUntil } from 'rxjs';
 import { RouterUtilService } from '../router-util.service';
 import { PuibeMetaRoute, PuibeMetaRoutes } from '../side-navigation/side-navigation.interface';
@@ -23,7 +23,7 @@ import { PuibeBreadcrumbItemComponent } from './item/breadcrumb-item.component';
     selector: 'puibe-breadcrumb',
     templateUrl: './breadcrumb.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [AsyncPipe, TranslateModule, PuibeBreadcrumbItemComponent],
+    imports: [AsyncPipe, PuibeBreadcrumbItemComponent],
     providers: [DestroyService],
 })
 export class PuibeBreadcrumbComponent implements OnInit {

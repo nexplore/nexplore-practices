@@ -10,7 +10,7 @@ import {
     StatusHubConfig,
     StatusHubService,
 } from '@nexplore/practices-ui';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { combineLatest, debounceTime, defer, delay, map, Observable, of, switchMap, tap } from 'rxjs';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
 import { IconSize } from '../icons/icon.interface';
@@ -32,7 +32,7 @@ type ToastPosition = 'top-left' | 'top' | 'top-right' | 'bottom-left' | 'bottom'
         NgClass,
         NgTemplateOutlet,
         AsyncPipe,
-        TranslateModule,
+        TranslatePipe,
         A11yModule,
     ],
     changeDetection: ChangeDetectionStrategy.Eager,

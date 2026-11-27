@@ -1,9 +1,16 @@
-import { Injector, runInInjectionContext, Signal, untracked } from '@angular/core';
+import type { Injector, Signal } from '@angular/core';
+import { runInInjectionContext, untracked } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, firstValueFrom, Observable, Subject, Unsubscribable } from 'rxjs';
+import type { Unsubscribable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable, Subject } from 'rxjs';
 import { ABORTED, AbstractCommand } from './abstract-command';
-import { CommandWithSignalsAndStatus } from './command-internal.types';
-import { CommandAsyncHandlerArg, CommandAsyncHandlerFn, CommandOptions, CommandTriggerOptions } from './command.types';
+import type { CommandWithSignalsAndStatus } from './command-internal.types';
+import type {
+    CommandAsyncHandlerArg,
+    CommandAsyncHandlerFn,
+    CommandOptions,
+    CommandTriggerOptions,
+} from './command.types';
 
 export class CommandImpl<TArgs, TResult, TOptions extends CommandOptions<TArgs> = CommandOptions<TArgs>>
     extends AbstractCommand<TArgs, TResult, TOptions>

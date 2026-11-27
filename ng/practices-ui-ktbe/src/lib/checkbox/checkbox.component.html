@@ -10,7 +10,7 @@
     >
         <div class="relative -ml-[0.625rem] box-content inline-block h-7 w-7 p-[0.625rem]">
             <input
-                class="peer absolute bottom-0 left-0 right-0 top-0 m-0 h-12 w-12 p-0 opacity-0"
+                class="peer absolute top-0 right-0 bottom-0 left-0 m-0 h-12 w-12 p-0 opacity-0"
                 type="checkbox"
                 [id]="id"
                 [name]="id"
@@ -24,7 +24,7 @@
                 class="relative box-border inline-block h-7 w-7 peer-focus:outline peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-[-webkit-focus-ring-color] peer-checked:[&_.check-target]:opacity-100"
             >
                 <div
-                    class="absolute left-0 top-0 box-border h-full w-full border"
+                    class="absolute top-0 left-0 box-border h-full w-full border"
                     [ngClass]="{
                         'border-red': (displayAsInvalid$ | async),
                         'border-dark-gray': !(displayAsInvalid$ | async),
@@ -32,7 +32,7 @@
                     }"
                 ></div>
                 <div
-                    class="check-target absolute left-2 top-2 box-border h-3 w-3 bg-black opacity-0 transition-all duration-150 ease-in-out"
+                    class="check-target absolute top-2 left-2 box-border h-3 w-3 bg-black opacity-0 transition-all duration-150 ease-in-out"
                     [ngClass]="{ '!opacity-50': (disabled$ | async) && (checked$ | async) }"
                 ></div>
             </div>
@@ -47,7 +47,7 @@
     @if (!isInGroup) {
         <div
             [attr.id]="id + '-error'"
-            class="text-red text-very-small min-h-5 font-medium"
+            class="min-h-5 text-very-small font-medium text-red"
             [attr.aria-live]="(dirty$ | async) ? 'assertive' : 'off'"
             aria-atomic="true"
         >

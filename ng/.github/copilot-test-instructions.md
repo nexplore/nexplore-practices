@@ -1,4 +1,5 @@
-# Typescript Unit-tests 
+# Typescript Unit-tests
+
 - File name should end with `.spec.ts`.
 - When using angular features, use `TestBed.runInInjectionContext(fn)` (import from `@angular/core/testing`).
 - When testing `signal` or `effect` (from `@angular/core`) related code, call `TestBed.tick()` between changing state, and before the first time reading out any result, such as signal values.

@@ -1,6 +1,4 @@
 {
     "extends": "../tsconfig.spec.json",
-    "files": [
-        "src/polyfills.ts"
-    ]
+    "files": ["src/test-setup.ts"]
 }

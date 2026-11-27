@@ -1,6 +1,7 @@
 import { isObjShallowEqual } from '@nexplore/practices-ng-common-util';
-import { map, merge, Observable, of, shareReplay, switchMap, timer } from 'rxjs';
-import { StatusEventExt, StatusHubConfig } from './model';
+import type { Observable } from 'rxjs';
+import { map, merge, of, shareReplay, switchMap, timer } from 'rxjs';
+import type { StatusEventExt, StatusHubConfig } from './model';
 
 export interface StatusMap {
     [key: string]: StatusEventExt;

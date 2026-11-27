@@ -11,8 +11,8 @@ import {
     viewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { PuiFormFieldDirective } from '@nexplore/practices-ng-forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { PuiFormFieldDirective, PuiReadonlyDirective } from '@nexplore/practices-ng-forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import {
     BehaviorSubject,
     combineLatest,
@@ -26,7 +26,6 @@ import {
     switchMap,
     take,
 } from 'rxjs';
-import { PuibeReadonlyDirective } from '../common/readonly.directive';
 import { PuibeIconCloseComponent } from '../icons/icon-close.component';
 import { PuibeIconInvalidComponent } from '../icons/icon-invalid.component';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
@@ -44,13 +43,15 @@ const iconFilledClassName = 'w-ktbe-15 h-ktbe-15 -mr-[2px] mt-0 border-t border-
 const iconInvertedClassName = 'bg-dark-gray fill-white';
 
 const overlayTextDefaultClassName =
-    'pr-ktbe-15 pl-6 h-ktbe-15 border w-full flex items-center pointer-events-none cursor-default absolute top-0 border-black text-black';
+    'pr-ktbe-15 pl-6 h-ktbe-15 border w-full flex items-center pointer-events-none cursor-default absolute top-0';
 const overlayTextInvalidClassName = 'border-red border-l-ktbe-6';
+const overlayTextValidClassName = 'border-black';
+// Tailwind 4 has no separate `border-opacity-*` and `text-opacity-*` utilities anymore, the opacity is part of the color utility.
+const overlayTextEmptyUntouchedAndValidClassName = 'border-black/60';
 const overlayTextDisabledClassName = 'bg-light-gray';
-const overlayTextFocusClassName = 'border-2 rounded';
-const overlayTextEmptyUntouchedAndValidClassName = 'border-opacity-60';
-const overlayTextFilledClassName = 'border-l-ktbe-6';
-const overlayTextEmptyClassName = 'text-opacity-60';
+const overlayTextFocusClassName = 'border-2 rounded-sm';
+const overlayTextFilledClassName = 'border-l-ktbe-6 text-black';
+const overlayTextEmptyClassName = 'text-black/60';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -61,7 +62,7 @@ const overlayTextEmptyClassName = 'text-opacity-60';
         PuibeReadonlyLabelValueComponent,
         NgClass,
         AsyncPipe,
-        TranslateModule,
+        TranslatePipe,
         NgComponentOutlet,
     ],
     hostDirectives: [PuiFormFieldDirective],
@@ -75,7 +76,7 @@ const overlayTextEmptyClassName = 'text-opacity-60';
 })
 export class PuibeFormFieldComponent {
     private readonly _formFieldService = inject(FormFieldService);
-    private readonly _readonlyDirective = inject(PuibeReadonlyDirective, { optional: true });
+    private readonly _readonlyDirective = inject(PuiReadonlyDirective, { optional: true });
     private readonly _elementRef = inject(ElementRef<HTMLElement>);
 
     isReadonly$ = this._readonlyDirective?.isReadonly$ ?? of(false);
@@ -175,11 +176,9 @@ export class PuibeFormFieldComponent {
         )
     );
 
-    iconContainerClassName$ = combineLatest([
-        this.displayAsInvalid$,
-        this.customIconClickable$,
-        this.disabled$,
-    ]).pipe(map(([invalid, clickable, disabled]) => this._getIconContainerClassName(invalid, clickable, disabled)));
+    iconContainerClassName$ = combineLatest([this.displayAsInvalid$, this.customIconClickable$, this.disabled$]).pipe(
+        map(([invalid, clickable, disabled]) => this._getIconContainerClassName(invalid, clickable, disabled))
+    );
 
     errors$ = this._formFieldService.errors$.pipe(
         map((errors) => {
@@ -294,13 +293,15 @@ export class PuibeFormFieldComponent {
         return (
             overlayTextDefaultClassName +
             ' ' +
-            (invalid ? overlayTextInvalidClassName : '') +
+            (invalid
+                ? overlayTextInvalidClassName
+                : !value && !focus
+                  ? overlayTextEmptyUntouchedAndValidClassName
+                  : overlayTextValidClassName) +
             ' ' +
             (disabled ? overlayTextDisabledClassName : '') +
             ' ' +
             (focus ? overlayTextFocusClassName : '') +
-            ' ' +
-            (!value && !focus && !invalid ? overlayTextEmptyUntouchedAndValidClassName : '') +
             ' ' +
             (value ? overlayTextFilledClassName : overlayTextEmptyClassName)
         );

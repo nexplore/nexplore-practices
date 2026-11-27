@@ -1,4 +1,4 @@
-import { Data, Route } from '@angular/router';
+import type { Data, Route } from '@angular/router';
 
 export type LinkRel =
     | 'alternate'

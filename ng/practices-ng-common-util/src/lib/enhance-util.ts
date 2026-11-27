@@ -1,15 +1,20 @@
-import { isSignal, Signal } from '@angular/core';
-import { isObservable, Observable } from 'rxjs';
+import type { Signal } from '@angular/core';
+import { isSignal } from '@angular/core';
+import type { Observable } from 'rxjs';
+import { isObservable } from 'rxjs';
 
 type Enhancements = Record<string, unknown | PropertyDescriptor>;
 type EnhancedObject<T, TE> = T & {
-    [TKey in keyof TE]:
-    TE[TKey] extends Signal<any> ?    TE[TKey] :
-    TE[TKey] extends Observable<any> ? TE[TKey] :
-    TE[TKey] extends (...args: any[]) => infer TValue ?  TValue :
-    TE[TKey] extends TypedPropertyDescriptor<infer TValue> ? TValue :
-    TE[TKey];
-}
+    [TKey in keyof TE]: TE[TKey] extends Signal<any>
+        ? TE[TKey]
+        : TE[TKey] extends Observable<any>
+          ? TE[TKey]
+          : TE[TKey] extends (...args: any[]) => infer TValue
+            ? TValue
+            : TE[TKey] extends TypedPropertyDescriptor<infer TValue>
+              ? TValue
+              : TE[TKey];
+};
 
 /**
  * Enhances the specified object with additional members
@@ -39,20 +44,20 @@ export function enhance<T, TEnhancement extends Enhancements>(
 
             isSignal(value)
                 ? {
-                    get: () => value,
-                    configurable: true,
-                }
+                      get: () => value,
+                      configurable: true,
+                  }
                 : isObservable(value)
-                    ? {
+                  ? {
                         get: () => value,
                         configurable: true,
                     }
-                    : value && typeof value === 'object' && ('get' in value || 'value' in value)
-                        ? (value as PropertyDescriptor)
-                        : {
-                            get: () => value as any,
-                            configurable: true,
-                        }
+                  : value && typeof value === 'object' && ('get' in value || 'value' in value)
+                    ? (value as PropertyDescriptor)
+                    : {
+                          get: () => value as any,
+                          configurable: true,
+                      }
         );
     });
 

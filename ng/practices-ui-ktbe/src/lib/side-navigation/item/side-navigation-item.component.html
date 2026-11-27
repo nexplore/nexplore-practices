@@ -1,3 +1,4 @@
+<!-- eslint-disable @angular-eslint/template/no-autofocus -- The side navigation deliberately focuses its active item when it opens (keyboard and screen reader users start there). -->
 <!-- TODO: For some reason, anchor with href does ignore mouseclick? -->
 @if (href) {
     <a
@@ -17,7 +18,7 @@
         [attr.cdkFocusInitial]="autofocus ? '' : undefined"
         [ariaCurrent]="active || isRouteActive ? 'page' : undefined"
         [attr.aria-expanded]="expanded ? 'true' : 'false'"
-        class="text-h6 group relative flex w-full items-center justify-between py-4 no-underline outline-none"
+        class="group relative flex w-full items-center justify-between py-4 text-h6 no-underline outline-hidden"
         data-nav-btn
     >
         <ng-container *ngTemplateOutlet="linkContent"></ng-container>
@@ -42,7 +43,7 @@
             [attr.cdkFocusInitial]="autofocus ? '' : undefined"
             [ariaCurrent]="active || isRouteActive ? 'page' : undefined"
             [attr.aria-expanded]="expanded ? 'true' : 'false'"
-            class="text-h6 group relative flex w-full items-center justify-between py-4 no-underline outline-none"
+            class="group relative flex w-full items-center justify-between py-4 text-h6 no-underline outline-hidden"
             data-nav-btn
         >
             <ng-container *ngTemplateOutlet="linkContent"></ng-container>
@@ -62,7 +63,7 @@
             [attr.cdkFocusInitial]="autofocus ? '' : undefined"
             [ariaCurrent]="active || isRouteActive ? 'page' : undefined"
             [attr.aria-expanded]="expanded ? 'true' : 'false'"
-            class="text-h6 group relative flex w-full items-center justify-between py-4 text-left no-underline outline-none"
+            class="group relative flex w-full items-center justify-between py-4 text-left text-h6 no-underline outline-hidden"
             data-nav-btn
         >
             <ng-container *ngTemplateOutlet="linkContent"></ng-container>
@@ -72,9 +73,9 @@
 
 <ng-template #linkContent>
     @if (active || isRouteActive) {
-        <div class="bg-red absolute bottom-0 top-0 w-[6px]"></div>
+        <div class="absolute top-0 bottom-0 w-[6px] bg-red"></div>
     }
-    <span class="flex-grow basis-full overflow-hidden text-ellipsis px-10">
+    <span class="grow basis-full overflow-hidden px-10 text-ellipsis">
         <span
             class="inline-block after:block after:scale-x-0 after:border-b after:transition-all after:duration-300 after:ease-in-out group-hover:after:scale-x-100 group-focus:after:scale-x-100 group-active:after:scale-x-100"
             [ngClass]="{
@@ -86,7 +87,7 @@
 
     @if (canExpand) {
         <puibe-icon-arrow-breadcrumb
-            class="duration-400 mr-8 flex h-6 w-6 shrink-0 basis-6 items-center justify-self-end transition-all ease-in-out group-hover:translate-x-2"
+            class="mr-8 flex h-6 w-6 shrink-0 basis-6 items-center justify-self-end transition-all duration-150 ease-in-out group-hover:translate-x-2"
             [ngClass]="{ 'fill-red': expanded }"
         ></puibe-icon-arrow-breadcrumb>
     }

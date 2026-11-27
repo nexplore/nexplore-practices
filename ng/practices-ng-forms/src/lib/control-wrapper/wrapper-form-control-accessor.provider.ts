@@ -1,15 +1,10 @@
-import { DestroyRef, effect, inject, isSignal, Provider, Signal, Type, untracked } from '@angular/core';
+import type { Provider, Signal, Type } from '@angular/core';
+import { DestroyRef, effect, inject, isSignal, untracked } from '@angular/core';
 import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
-import {
-    AbstractControl,
-    ControlValueAccessor,
-    NG_VALIDATORS,
-    NG_VALUE_ACCESSOR,
-    TouchedChangeEvent,
-    ValidationErrors,
-    Validator,
-} from '@angular/forms';
+import type { AbstractControl, ControlValueAccessor, ValidationErrors, Validator } from '@angular/forms';
+import { NG_VALIDATORS, NG_VALUE_ACCESSOR, TouchedChangeEvent } from '@angular/forms';
 import { trace } from '@nexplore/practices-ng-logging';
+import type { MonoTypeOperatorFunction, Observable } from 'rxjs';
 import {
     catchError,
     debounceTime,
@@ -19,9 +14,7 @@ import {
     EMPTY,
     filter,
     map,
-    MonoTypeOperatorFunction,
     NEVER,
-    Observable,
     of,
     pipe,
     switchMap,
@@ -29,7 +22,8 @@ import {
 } from 'rxjs';
 import { combineDirectiveControlErrors } from '../utils/combine-directive-control-errors';
 import { cloneDtoWith, isDto } from '../utils/dto-nswag-utils';
-import { INswagGeneratedType, TypedPartialFormGroup } from '../utils/form.types';
+import { resolveValueAccessorEntityDto } from './resolve-value-accessor-entity-dto';
+import type { INswagGeneratedType, TypedPartialFormGroup } from '../utils/form.types';
 
 export interface WrapperFormControlAccessor<T = any> {
     /**
@@ -184,7 +178,9 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                         } else {
                             isInitial = false;
                             trace('WrapperFormControlAccessor', 'writeValue from dto signal', instance, dto);
-                            writeEntityToForm(dto);
+                            // Only the DTO signal triggers a reset. Signals read by writeValue, validators or value
+                            // change subscribers must not become dependencies, or a change of them would discard the user's edits.
+                            untracked(() => writeEntityToForm(dto));
                         }
                     });
                 }
@@ -225,12 +221,7 @@ export function provideWrappedFormControlAccessors(component: Type<WrapperFormCo
                                             currentDtoValue) &&
                                         !isDto(value)
                                     ) {
-                                        const entity =
-                                            instance.getValueAccessorEntityDto?.() ??
-                                            instance.getValueAccessorEntityDtoSignalToAutoResetForm?.()() ??
-                                            isDto(currentDtoValue)
-                                                ? currentDtoValue
-                                                : null;
+                                        const entity = resolveValueAccessorEntityDto(instance, currentDtoValue);
 
                                         if (entity && value !== null) {
                                             value = cloneDtoWith(entity, value);

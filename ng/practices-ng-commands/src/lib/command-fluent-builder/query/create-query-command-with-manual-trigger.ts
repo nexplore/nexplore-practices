@@ -1,4 +1,4 @@
-import { CommandAsyncHandlerArg, QueryCommand, QueryOptions } from '../../commands/command.types';
+import type { CommandAsyncHandlerArg, QueryCommand, QueryOptions } from '../../commands/command.types';
 import { createQueryCommand } from './command-query-util';
 
 /**

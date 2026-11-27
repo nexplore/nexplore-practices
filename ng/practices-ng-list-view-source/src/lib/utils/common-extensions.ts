@@ -2,9 +2,10 @@ import { effect, signal, untracked } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { enhance } from '@nexplore/practices-ng-common-util';
 import { subscriptionEffect, withEffects } from '@nexplore/practices-ng-signals';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import type { BehaviorSubject, Observable } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { EnhancedListViewSource, IListResult, IListViewSource, WithMutableDataOptions } from '../types';
+import type { EnhancedListViewSource, IListResult, IListViewSource, WithMutableDataOptions } from '../types';
 import { sortArrayByQueryParamsInMemory } from './list-result-util';
 
 export function enhanceWithMutableData<TViewSource extends IListViewSource<any>>(

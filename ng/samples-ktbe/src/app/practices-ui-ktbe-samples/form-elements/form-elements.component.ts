@@ -124,7 +124,11 @@ export class FormElementsComponent implements OnInit {
         }
     });
 
-    constructor(private fb: FormBuilder, private readonly _titleService: TitleService, private router: Router) {}
+    constructor(
+        private fb: FormBuilder,
+        private readonly _titleService: TitleService,
+        private router: Router
+    ) {}
 
     ngOnInit() {
         this._titleService.setBreadcrumbTitle('A very sleek breadcrumb title');

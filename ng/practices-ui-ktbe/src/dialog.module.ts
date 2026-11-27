@@ -1,14 +1,10 @@
 import { NgModule } from '@angular/core';
-import {
-    MODAL_PROVIDERS,
-    PuibeModalComponent,
-    PuibeModalContentDirective,
-    PuibeModalFooterActionDirective,
-    PuibeModalSubtitleComponent,
-    PuibeModalSubtitleDirective,
-    PuibeModalTitleComponent,
-    PuibeModalTitleDirective,
-} from '.';
+import { PuibeModalContentDirective } from './lib/popup/modal-content.directive';
+import { PuibeModalFooterActionDirective } from './lib/popup/modal-footer-action.directive';
+import { PuibeModalSubtitleComponent, PuibeModalSubtitleDirective } from './lib/popup/modal-subtitle.directive';
+import { PuibeModalTitleComponent, PuibeModalTitleDirective } from './lib/popup/modal-title.directive';
+import { PuibeModalComponent } from './lib/popup/modal.component';
+import { MODAL_PROVIDERS } from './lib/popup/providers';
 import { DialogModule } from '@angular/cdk/dialog';
 
 const DEFAULT_DIALOG_COMPONENTS = [

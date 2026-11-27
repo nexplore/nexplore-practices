@@ -1,7 +1,7 @@
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { NgClass } from '@angular/common';
 import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { A11yModule } from '@angular/cdk/a11y';
 import { PuibeIconCloseComponent } from '../icons/icon-close.component';
@@ -50,7 +50,7 @@ export const toastAnimation = trigger('displayToastAnimation', [
     standalone: true,
     selector: 'puibe-toast',
     templateUrl: './toast.component.html',
-    imports: [NgClass, PuibeIconCloseComponent, PuibeIconExplanationMarkComponent, TranslateModule, A11yModule],
+    imports: [NgClass, PuibeIconCloseComponent, PuibeIconExplanationMarkComponent, TranslatePipe, A11yModule],
     changeDetection: ChangeDetectionStrategy.Eager,
     animations: [toastAnimation],
 })

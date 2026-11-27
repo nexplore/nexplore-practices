@@ -1,8 +1,8 @@
-import { MaybeAsync } from '@angular/router';
+import type { MaybeAsync } from '@angular/router';
 import { maybeAsyncToObservable } from '@nexplore/practices-ng-common-util';
 import { map } from 'rxjs/operators';
 import { TableViewSource } from '../implementation/table-view-source';
-import {
+import type {
     IListResult,
     IQueryParamsWithFilter,
     TableColumnDefinitions,
@@ -10,9 +10,11 @@ import {
     TableViewSourceConfig,
 } from '../types';
 import { enhanceListViewSource } from '../utils/internal-util';
+// eslint-disable-next-line import-x/no-cycle -- fluent builder: the view source and its extensions only reference each other inside functions.
 import { extendWithFilterForm } from './create-table-view-source-with-filter-form';
+// eslint-disable-next-line import-x/no-cycle -- fluent builder: the view source and its extensions only reference each other inside functions.
 import { extendWithPersistedParams } from './create-table-view-source-with-persisted-params';
-import { TableViewSourceWithSignals } from './types';
+import type { TableViewSourceWithSignals } from './types';
 
 export const extensions = {
     withFilterForm: extendWithFilterForm,
@@ -23,20 +25,17 @@ export type Extensions = typeof extensions;
 
 export type WithUsedExtensions<
     TTableViewSource extends TableViewSource<any, any> & Partial<Extensions>,
-    TExtensionKey extends string | number | symbol = keyof TTableViewSource
+    TExtensionKey extends string | number | symbol = keyof TTableViewSource,
 > = Omit<TTableViewSource, TExtensionKey>;
 
-export type ExtractFilterTypeFrom<TTableViewSource> = TTableViewSource extends TableViewSource<any, infer TFilter>
-    ? TFilter
-    : never;
+export type ExtractFilterTypeFrom<TTableViewSource> =
+    TTableViewSource extends TableViewSource<any, infer TFilter> ? TFilter : never;
 
-export type ExtractDataTypeFrom<TTableViewSource> = TTableViewSource extends TableViewSource<infer TData, any>
-    ? TData
-    : never;
+export type ExtractDataTypeFrom<TTableViewSource> =
+    TTableViewSource extends TableViewSource<infer TData, any> ? TData : never;
 
-export type ExtractResultTypeFrom<TTableViewSource> = TTableViewSource extends TableViewSource<infer TData, any>
-    ? IListResult<TData>
-    : never;
+export type ExtractResultTypeFrom<TTableViewSource> =
+    TTableViewSource extends TableViewSource<infer TData, any> ? IListResult<TData> : never;
 
 export function createExtendableTableViewSource<TData, TFilter>(
     config: Omit<TableViewSourceConfig<TData>, 'columns'> & {

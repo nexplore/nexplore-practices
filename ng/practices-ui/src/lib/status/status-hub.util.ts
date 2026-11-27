@@ -1,5 +1,6 @@
-import { Observable, map, merge, of, shareReplay, switchMap, timer } from 'rxjs';
-import { StatusEventExt, StatusHubConfig } from './model';
+import type { Observable } from 'rxjs';
+import { map, merge, of, shareReplay, switchMap, timer } from 'rxjs';
+import type { StatusEventExt, StatusHubConfig } from './model';
 import { compareObjShallow } from '../util/util';
 
 export interface StatusMap {

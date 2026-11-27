@@ -1,6 +1,6 @@
-import { Provider } from '@angular/core';
+import type { Provider } from '@angular/core';
 import { DirtyGuardConfig } from './services/types-internal';
-import { PuiDirtyGuardConfig } from './types';
+import type { PuiDirtyGuardConfig } from './types';
 
 /**
  * Provides the dirty guard with specified configuration

@@ -4,6 +4,191 @@ This file serves as an additional guide to the [changelog](../../CHANGELOG.md), 
 
 Note: The goal would be, with time, to synthesize these guides in their own documentation-files.
 
+## Upgrading to 14.0.0
+
+Version 14.0.0 builds `practices-ui-ktbe` with Tailwind CSS 4. The components look and behave the same, but Tailwind 4 changes how it is set up in a consuming application. Follow the steps below after updating the practices packages. The official [Tailwind CSS upgrade guide](https://tailwindcss.com/docs/upgrade-guide) explains the details.
+
+-   [Before you start: create a visual baseline](#before-you-start-create-a-visual-baseline)
+-   [Tailwind CSS 4 is required](#tailwind-css-4-is-required)
+-   [Install Tailwind through PostCSS](#install-tailwind-through-postcss)
+-   [Replace your `tailwind.config.js` with the shipped entry stylesheet](#replace-your-tailwindconfigjs-with-the-shipped-entry-stylesheet)
+-   [`@apply` and `theme()` in component styles need `@reference`](#apply-and-theme-in-component-styles-need-reference)
+-   [Renamed and removed utilities](#renamed-and-removed-utilities)
+-   [Behaviour changes](#behaviour-changes)
+-   [Prettier](#prettier)
+-   [Action dialog: the actions are no longer converted in place](#action-dialog-the-actions-are-no-longer-converted-in-place)
+
+### Before you start: create a visual baseline
+
+Tailwind 4 changes defaults, the cascade and the generated CSS in subtle ways (see [Behaviour changes](#behaviour-changes)). Most of the differences are not visible in a code review and are easily overlooked when clicking through an application. While migrating the library, screenshot comparisons found, for example, doubled spacing in a menu, a calendar with higher rows on small screens and a grey instead of a black focus border.
+
+We therefore recommend to take screenshots of your application with [Playwright](https://playwright.dev) **before** updating, and to compare against them afterwards:
+
+1. On your current version (before the update), install Playwright:
+
+    ```bash
+    npm install --save-dev @playwright/test
+    npx playwright install chromium
+    ```
+
+2. Write a test that opens the important pages and states (open dialogs, dropdowns, forms with validation errors, small and large viewports) and takes a screenshot of each:
+
+    ```ts
+    import { expect, test } from '@playwright/test';
+
+    const pages = ['/', '/orders', '/orders/42', '/settings'];
+
+    for (const path of pages) {
+        test(`page ${path}`, async ({ page }) => {
+            // Fixed time, so dates and calendars render the same in every run
+            await page.clock.setFixedTime(new Date('2025-03-14T10:00:00'));
+            await page.goto(path);
+            await expect(page).toHaveScreenshot({ fullPage: true, animations: 'disabled' });
+        });
+    }
+    ```
+
+    The relative paths need a `baseURL` in `playwright.config.ts`, e.g. `use: { baseURL: 'http://localhost:4200' }`, and a running application (or a [`webServer`](https://playwright.dev/docs/test-webserver) entry that starts it).
+
+3. Create the baseline with `npx playwright test --update-snapshots` and commit the screenshots (with [Git LFS](https://git-lfs.com) to keep the repository small).
+4. Migrate as described below, then run `npx playwright test`. `npx playwright show-report` shows the expected, actual and diff image of every changed screen. Fix unintended changes, then update the screenshots and commit them, so the review shows exactly what changed.
+
+Screenshots depend on the fonts and the rendering of the operating system. Create and compare them on the same platform, ideally in the official Playwright Docker image (`mcr.microsoft.com/playwright`), so they also match on the build server. The visual regression tests of the library ([`ng/visual-tests`](../../ng/visual-tests/README.md)) show a complete setup, including deterministic timers and interaction states.
+
+### Tailwind CSS 4 is required
+
+`@nexplore/practices-ui-ktbe` now declares `tailwindcss >=4.1.0 <5.0.0` as peer dependency. Tailwind CSS 3 is no longer supported. Tailwind 4.0.x is not supported either: it ignores the `content` paths of the KTBE preset, so the classes used by the library components would not be generated.
+
+```jsonc
+// Before (13.x)
+"tailwindcss": ">=3.2.4 <5.0.0"
+
+// After (14.0.0)
+"tailwindcss": ">=4.1.0 <5.0.0"
+```
+
+### Install Tailwind through PostCSS
+
+Tailwind 4 is no longer a PostCSS plugin itself, Angular loads it through `@tailwindcss/postcss`. The Angular CLI (and ng-packagr) pick up a PostCSS configuration file in the project or workspace root.
+
+```bash
+npm install --save-dev tailwindcss@4 @tailwindcss/postcss
+```
+
+Create a `.postcssrc.json` next to your `angular.json` (or in the project root):
+
+```json
+{
+    "plugins": {
+        "@tailwindcss/postcss": {}
+    }
+}
+```
+
+`autoprefixer` and `postcss-import` are handled by Tailwind 4 and can be removed from an existing PostCSS configuration.
+
+### Replace your `tailwind.config.js` with the shipped entry stylesheet
+
+Tailwind 4 is configured in CSS. The library now ships `tailwind.css`, which loads Tailwind, the KTBE preset (`tailwind.config.js`, still shipped) and registers the sources of the library. Replace the `@tailwind` directives in your global stylesheet with a single import and delete the `tailwind.config.js` that was copied from `samples-ktbe`.
+
+```css
+/* Before (13.x) - styles.css, together with a tailwind.config.js that used the KTBE preset */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* After (14.0.0) - styles.css, no tailwind.config.js needed */
+@import '@nexplore/practices-ui-ktbe/tailwind.css';
+```
+
+Tailwind 4 detects the sources of your application automatically (it ignores `node_modules` and everything in `.gitignore`). The sources of the library are registered by the preset, so the `content` entry for `@nexplore/practices-ui-ktbe` is not needed anymore.
+
+If your application has its own Tailwind customizations (theme values, plugins), keep a `tailwind.config.js` that uses the KTBE preset and load it with `@config` instead of importing the shipped stylesheet. Copy the imports from `node_modules/@nexplore/practices-ui-ktbe/tailwind.css` so that the utilities stay un-layered (see [Behaviour changes](#behaviour-changes)):
+
+```css
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/utilities.css';
+@config '../tailwind.config.js';
+```
+
+```js
+// tailwind.config.js
+module.exports = {
+    presets: [require('@nexplore/practices-ui-ktbe/tailwind.config.js')],
+    theme: {
+        extend: {
+            // your customizations
+        },
+    },
+};
+```
+
+### `@apply` and `theme()` in component styles need `@reference`
+
+Tailwind 4 compiles every stylesheet on its own, including the inline `styles` and `styleUrls` of Angular components. A component stylesheet that uses `@apply` or `theme()` has to reference the global stylesheet first, otherwise the build fails with `Cannot apply unknown utility class`. The path is relative to the component file.
+
+```ts
+@Component({
+    styles: `
+        @reference '../../styles.css';
+
+        my-component {
+            @apply flex flex-col gap-2;
+        }
+    `,
+})
+```
+
+`@reference` only loads the theme, it does not duplicate any CSS in the component styles.
+
+### Renamed and removed utilities
+
+Tailwind 4 renamed some utilities and removed others. The library's templates were migrated, the following utilities have to be replaced in your application (the official upgrade tool `npx @tailwindcss/upgrade` does this for you in most projects):
+
+| Tailwind 3                                           | Tailwind 4                                                         |
+| ---------------------------------------------------- | ------------------------------------------------------------------ |
+| `outline-none`                                       | `outline-hidden` (`outline-none` now really removes the outline)   |
+| `rounded`, `rounded-sm`                              | `rounded-sm`, `rounded-xs`                                         |
+| `shadow`, `shadow-sm`, `shadow-inner`                | `shadow-sm`, `shadow-xs`, `inset-shadow-sm`                        |
+| `blur`, `blur-sm`, `backdrop-blur-sm`                | `blur-sm`, `blur-xs`, `backdrop-blur-xs`                           |
+| `ring`                                               | `ring-3`                                                           |
+| `flex-grow`, `flex-shrink`                           | `grow`, `shrink`                                                   |
+| `overflow-ellipsis`                                  | `text-ellipsis`                                                    |
+| `bg-opacity-*`, `text-opacity-*`, `border-opacity-*` | opacity modifier on the color, e.g. `bg-black/10`, `text-black/60` |
+| `!flex` (important prefix)                           | `flex!` (important suffix)                                         |
+| `bg-[--my-var]`                                      | `bg-(--my-var)`                                                    |
+
+### Behaviour changes
+
+-   **Cascade layers:** By default Tailwind 4 puts its utilities into the `utilities` cascade layer, where they lose against every un-layered rule, including Angular component styles. The shipped `tailwind.css` deliberately imports the utilities without a layer, so utility classes on a component's host element keep overriding the component's own styles like in Tailwind 3. If you build your own entry stylesheet, import `tailwindcss/utilities.css` without `layer(utilities)` to keep this behaviour.
+-   **Base styles no longer win against utilities:** The base styles of the KTBE preset are in the `base` layer, so every utility overrides them, regardless of the selector specificity. In Tailwind 3 some base rules won because of their higher specificity:
+    -   `a:hover` turned links red even with a text color utility (e.g. `<a class="text-black">`). Add `hover:text-red` where links should still turn red.
+    -   `ul.list-none` and its `li` elements had no margin, even with a margin utility (e.g. `<ul class="list-none mt-4">`). These utilities are applied now, remove them if the margin is not wanted.
+-   **Buttons:** Tailwind 4 no longer sets `cursor: pointer` on buttons. The KTBE preset restores it for enabled buttons.
+-   **Placeholders:** Placeholder text uses the current text color at 50% opacity instead of a fixed gray.
+-   **Stacked variants** apply from left to right instead of right to left (e.g. `first:*:pt-0` becomes `*:first:pt-0`).
+-   **Default ring:** `ring` is 1px wide and uses `currentColor` (3px blue in Tailwind 3). The library does not use it.
+-   **Hover** styles only apply on devices that support hover.
+
+### Prettier
+
+`prettier-plugin-tailwindcss` supports Tailwind 4 from version 0.6, which requires Prettier 3. Replace the `tailwindConfig` option by `tailwindStylesheet` pointing to your global stylesheet and list the plugin explicitly, because Prettier 3 does not load plugins automatically.
+
+```json
+{
+    "plugins": ["prettier-plugin-tailwindcss"],
+    "tailwindStylesheet": "./src/styles.css"
+}
+```
+
+### Action dialog: the actions are no longer converted in place
+
+`PuibeActionDialogService` no longer replaces the `command` of the action objects you pass in (e.g. a shared constant) with the created `Command`. It works on copies, so `action.command` stays the function or command you passed in. Read the commands from the dialog component if you need their state (e.g. `busy$`).
+
+`PUIBE_DIALOG_PRESETS.confirmDelete` can now be called outside of an injection context (e.g. in a click handler). It no longer converts the delete action into a `Command`: `config.actions.DELETE` is the function or command you passed in, and the `action-delete` status category is in the new `actionCommandOptions` of the configuration. The dialog creates the command when it opens. Nothing changes if you pass the preset to `PuibeActionDialogService`, also when you copy its `actions` or change its `actionTemplates`. As before, a `DELETE` action that you put in place of the one of the preset runs without the `action-delete` status category. If your code reads `config.actions.DELETE` as a `Command` (e.g. `busy$` or `trigger`), create the command yourself with `command.fromInput(...)`.
+
 ## Upgrading to 13.0.0
 
 Version 13.0.0 builds the Angular packages with Angular 22. It contains no intended behaviour changes, but the following breaking changes affect consuming applications.
@@ -13,6 +198,7 @@ Version 13.0.0 builds the Angular packages with Angular 22. It contains no inten
 -   [Deep imports no longer resolve](#deep-imports-no-longer-resolve)
 -   [Declare `practices-ng-common-util` when you import it](#declare-practices-ng-common-util-when-you-import-it)
 -   [`DialogService` constructor (`practices-ui-clarity`)](#dialogservice-constructor-practices-ui-clarity)
+-   [ng-select copies its classes to the dropdown panel](#ng-select-copies-its-classes-to-the-dropdown-panel)
 
 ### Angular 22 is required
 
@@ -87,6 +273,22 @@ new DialogService(componentFactoryResolver, appRef, injector, translateService, 
 // After
 new DialogService(appRef, injector, translateService, document);
 ```
+
+### ng-select copies its classes to the dropdown panel
+
+Since ng-select 24, the dropdown panel is rendered in an overlay outside of the `ng-select` element, and ng-select copies the classes of the `ng-select` element (except Angular's form classes like `ng-invalid`) to the panel. Layout utilities that you put on the select, e.g. a width, margin or padding, therefore also apply to the panel. Put them on a wrapper element instead, and style the panel through `panelClass`:
+
+```html
+<!-- Before: the width and margin also apply to the dropdown panel -->
+<ng-select puibeInput class="mt-4 w-64" ...></ng-select>
+
+<!-- After -->
+<div class="mt-4 w-64">
+    <ng-select puibeInput ...></ng-select>
+</div>
+```
+
+Styles for the panel that used a selector below the `ng-select` (e.g. `.my-select .ng-dropdown-panel`) no longer match either: use `panelClass="my-panel"` and `.ng-dropdown-panel.my-panel` instead.
 
 ## Migrating to use Signals
 
@@ -461,7 +663,7 @@ The component must be instantiated once globally in the application:
     <puibe-expansion-panel
       *ngIf="status.error?.stack ?? status.error?.message"
       caption="Details"
-      class="flex-grow-0 text-black"
+      class="grow-0 text-black"
       [enableContentScroll]="true"
     >
       <code *ngIf="status.error.stack" class="whitespace-pre">
@@ -540,7 +742,7 @@ The `PuiGlobalDirtyGuardDirective` prevents leaving an unsaved form and confront
 The directive must be defined globally in the router outlet:
 
 ```html
-<main class="mt-10 focus:outline-none" tabindex="-1">
+<main class="mt-10 focus:outline-hidden" tabindex="-1">
   <h1 class="sr-only">{{ title$ | async }}</h1>
   <router-outlet puiGlobalDirtyGuard></router-outlet>
 </main>
@@ -643,7 +845,7 @@ Additionally, to display error messages and progress spinners, the `puibe-status
     <puibe-expansion-panel
       *ngIf="status.error?.stack ?? status.error?.message"
       caption="Details"
-      class="flex-grow-0 text-black"
+      class="grow-0 text-black"
       [enableContentScroll]="true"
     >
       <code *ngIf="status.error.stack" class="whitespace-pre">

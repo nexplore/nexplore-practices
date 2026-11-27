@@ -16,6 +16,6 @@
         "enableResourceInlining": true,
         "strictTemplates": false
     },
-    "exclude": ["src/test.ts", "**/*.spec.ts", "**/*.stories.ts"],
+    "exclude": ["src/test.ts", "src/test-setup.ts", "**/*.spec.ts", "**/*.stories.ts"],
     "include": ["**/*.ts"]
 }

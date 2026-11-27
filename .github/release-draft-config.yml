@@ -68,21 +68,9 @@ categories:
   - type: version-resolver
     semver-increment: patch
 
-change-template: >-
-  <ul>
-    <li>
-      $TITLE @$AUTHOR (#$NUMBER)
-      <br>
-      <details>
-        <summary>Change Details</summary>
-        <blockquote>
-          <!-- Non-breaking space to have content if body is empty -->
-          &nbsp; $BODY
-        </blockquote>
-        <hr>
-      </details>
-    </li>
-  </ul>
+# Title and PR number only: a PR with several category labels is listed in each of those
+# categories, so including the PR body repeats the whole description. Authors are not mentioned.
+change-template: '- $TITLE (#$NUMBER)'
 
 change-title-escapes: '\<*_&@' # Note: @ is added to disable mentions
 

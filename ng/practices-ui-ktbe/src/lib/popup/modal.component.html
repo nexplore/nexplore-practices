@@ -1,7 +1,7 @@
 <div class="flex justify-between" part="title-bar">
     <ng-content select="[puibeModalTitle], puibe-modal-title"></ng-content>
     @if (!hideCloseButton) {
-        <button class="hover:animate-pop focus:animate-pop mr-6 mt-6 w-4">
+        <button class="mt-6 mr-6 w-4 hover:animate-pop focus:animate-pop">
             <puibe-icon-close
                 [colorClass]="'fill-black'"
                 (click)="closeModal()"
@@ -11,10 +11,10 @@
     }
 </div>
 <ng-content select="[puibeModalSubtitle], puibe-modal-subtitle"></ng-content>
-<hr class="text-gray my-6" />
+<hr class="my-6 text-gray" />
 <ng-content select="[puibeModalContent]"></ng-content>
 @if (!hideDoubleDividerLine) {
-    <hr class="text-gray mt-6" />
+    <hr class="mt-6 text-gray" />
 }
 
 <div

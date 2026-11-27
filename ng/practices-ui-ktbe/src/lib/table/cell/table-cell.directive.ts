@@ -1,4 +1,5 @@
 import { AfterViewInit, Directive, ElementRef, HostBinding, Input, OnInit, Optional } from '@angular/core';
+// eslint-disable-next-line import-x/no-cycle -- Angular parent/child pattern: the table components inject their parents and query their children at runtime (forwardRef).
 import { PuibeTableRowComponent } from '../row/table-row.component';
 import { PuibeTableFooterComponent } from '../footer/table-footer.component';
 import { ClassNames } from '../constants';

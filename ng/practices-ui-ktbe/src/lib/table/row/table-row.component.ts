@@ -2,6 +2,7 @@ import { AsyncPipe, NgComponentOutlet, NgTemplateOutlet } from '@angular/common'
 import { ChangeDetectionStrategy, Component, HostBinding, Input, forwardRef } from '@angular/core';
 import { PuibeTableComponent } from '../table.component';
 import { ClassNames } from '../constants';
+// eslint-disable-next-line import-x/no-cycle -- Angular parent/child pattern: the table components inject their parents and query their children at runtime (forwardRef).
 import { PuibeTableCellComponent } from '../cell/table-cell.component';
 
 @Component({

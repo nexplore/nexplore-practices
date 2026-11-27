@@ -1,6 +1,6 @@
-import { Observable } from 'rxjs';
-import { AbstractCommandOptions } from './command-internal.types';
-import { CommandAfterExecuteResult, CommandTriggerOptions } from './command.types';
+import type { Observable } from 'rxjs';
+import type { AbstractCommandOptions } from './command-internal.types';
+import type { CommandAfterExecuteResult, CommandTriggerOptions } from './command.types';
 
 export const ABORTED = undefined;
 
@@ -12,7 +12,7 @@ export const ABORTED = undefined;
 export abstract class AbstractCommand<
     TArgs,
     TResult,
-    TOptions extends AbstractCommandOptions<TArgs> = AbstractCommandOptions<TArgs>
+    TOptions extends AbstractCommandOptions<TArgs> = AbstractCommandOptions<TArgs>,
 > {
     /** Observable with the results of the handler function */
     abstract readonly result$: Observable<TResult>;

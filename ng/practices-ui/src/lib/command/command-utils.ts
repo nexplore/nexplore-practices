@@ -1,10 +1,11 @@
-import { AbstractCommand, CommandTriggerOptions } from '@nexplore/practices-ng-commands';
+import type { CommandTriggerOptions } from '@nexplore/practices-ng-commands';
+import { AbstractCommand } from '@nexplore/practices-ng-commands';
 import { firstValueFromMaybeAsync } from '@nexplore/practices-ng-common-util';
 
 import { Subscription, takeUntil } from 'rxjs';
 import { LegacyCommandBase } from './command-base';
-import { CombinedCommandInput } from './command-interface.types';
-import { LegacyCommandTriggerOptions } from './command.types';
+import type { CombinedCommandInput } from './command-interface.types';
+import type { LegacyCommandTriggerOptions } from './command.types';
 
 /**
  * Triggers the command and waits for the result asynchronously. Throws an error if the action fails.

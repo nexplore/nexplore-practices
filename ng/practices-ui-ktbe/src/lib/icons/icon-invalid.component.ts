@@ -6,6 +6,8 @@ import { PuibeIconDirectiveBase } from './icon.directive';
     selector: 'puibe-icon-invalid',
     styles: [
         `
+            @reference '../../../tailwind.css';
+
             .cls-1 {
                 fill: theme('colors.red');
             }

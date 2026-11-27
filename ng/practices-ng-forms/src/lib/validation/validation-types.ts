@@ -1,7 +1,7 @@
-import { AbstractControl, FormGroup, ValidatorFn } from '@angular/forms';
-import { FormGroupValues } from '../utils/form.types';
-import { ConditionalValidatorResult } from './validation-internal.util';
-import { validateAsync, validateAsyncConditional, validateConditional } from './validators';
+import type { AbstractControl, FormGroup, ValidatorFn } from '@angular/forms';
+import type { FormGroupValues } from '../utils/form.types';
+import type { ConditionalValidatorResult } from './validation-internal.util';
+import type { validateAsync, validateAsyncConditional, validateConditional } from './validators';
 
 export type ValidatorDefinition<TControls extends { [K in keyof TControls]: AbstractControl<any, any> }> = {
     [key in keyof TControls]: ValidatorFn | ValidatorFn[];

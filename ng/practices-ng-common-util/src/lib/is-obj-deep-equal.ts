@@ -18,9 +18,9 @@ export function isObjDeepEqual(
     obj1: any,
     obj2: any,
     options?: {
-        maximumDepth?: number,
-        propertyFilter?: (key: string) => boolean,
-        customComparator?: (value1: any, value2: any, key: string) => boolean | undefined
+        maximumDepth?: number;
+        propertyFilter?: (key: string) => boolean;
+        customComparator?: (value1: any, value2: any, key: string) => boolean | undefined;
     },
     visited: Map<any, Set<any>> = new Map()
 ): boolean {
@@ -47,14 +47,14 @@ export function isObjDeepEqual(
                 return true; // Already visited this pair
             }
         }
-        
+
         // Record that we're comparing obj1 with obj2
         if (!visited.has(obj1)) {
             visited.set(obj1, new Set([obj2]));
         } else {
             visited.get(obj1)!.add(obj2);
         }
-        
+
         // Handle Date objects
         if (obj1 instanceof Date && obj2 instanceof Date) {
             return obj1.getTime() === obj2.getTime();
@@ -91,7 +91,12 @@ export function isObjDeepEqual(
 
             if (obj1[key] !== obj2[key]) {
                 // Recursively compare nested objects
-                if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object' && obj1[key] !== null && obj2[key] !== null) {
+                if (
+                    typeof obj1[key] === 'object' &&
+                    typeof obj2[key] === 'object' &&
+                    obj1[key] !== null &&
+                    obj2[key] !== null
+                ) {
                     const nestedEqual = isObjDeepEqual(
                         obj1[key],
                         obj2[key],

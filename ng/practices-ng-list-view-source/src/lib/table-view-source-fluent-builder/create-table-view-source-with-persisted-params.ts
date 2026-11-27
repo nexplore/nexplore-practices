@@ -1,16 +1,22 @@
 import { DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MaybeAsync } from '@angular/router';
+import type { MaybeAsync } from '@angular/router';
 import { firstValueFromMaybeAsync, isObjDeepEqual, subscribeAndForget } from '@nexplore/practices-ng-common-util';
 import { trace } from '@nexplore/practices-ng-logging';
 import { defer, firstValueFrom, skip, timer } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { TableViewSource } from '../implementation/table-view-source';
-import { IListResult, IQueryParams, TypedQueryParamsWithFilter } from '../types';
-import { HasTypedQueryParams } from '../types-internal';
+import type { TableViewSource } from '../implementation/table-view-source';
+import type { IListResult, IQueryParams, TypedQueryParamsWithFilter } from '../types';
+import type { HasTypedQueryParams } from '../types-internal';
 import { getDefaultQueryParams } from '../utils/internal-util';
-import { createExtendableTableViewSource, Extensions, ExtractDataTypeFrom, ExtractFilterTypeFrom } from './extensions';
-import { TableViewSourceWithSignals, TypedTableViewSourceConfig, TypedTableViewSourceConfigPartial } from './types';
+import type { Extensions, ExtractDataTypeFrom, ExtractFilterTypeFrom } from './extensions';
+// eslint-disable-next-line import-x/no-cycle -- fluent builder: the view source and its extensions only reference each other inside functions.
+import { createExtendableTableViewSource } from './extensions';
+import type {
+    TableViewSourceWithSignals,
+    TypedTableViewSourceConfig,
+    TypedTableViewSourceConfigPartial,
+} from './types';
 
 export type PersistParamsConfig<TFilter, TData> = {
     /**
@@ -78,7 +84,7 @@ export function createTableViewSourceWithPersistedParams<
     TData,
     TFilter,
     TResult extends Partial<IListResult<TData>>,
-    TOrdering = TData
+    TOrdering = TData,
 >(
     config: PersistParamsConfig<TFilter, TData> & TypedTableViewSourceConfig<TData, TResult, TFilter, TOrdering>
 ): TableViewSourceWithSignals<TData, TFilter> & Extensions {

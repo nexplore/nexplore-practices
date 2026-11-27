@@ -1,7 +1,9 @@
-import { assertInInjectionContext, computed, isSignal, Signal } from '@angular/core';
+import type { Signal } from '@angular/core';
+import { assertInInjectionContext, computed, isSignal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { isObservable, Observable } from 'rxjs';
-import { SignalOrObservable } from './types';
+import type { Observable } from 'rxjs';
+import { isObservable } from 'rxjs';
+import type { SignalOrObservable } from './types';
 
 /**
  * Converts any signal or observable to a signal.
@@ -17,6 +19,6 @@ export function anyToSignal<T, TDefault = undefined>(
     return isSignal(source)
         ? source
         : isObservable(source)
-        ? toSignal(source as Observable<T>, { initialValue: options?.defaultValue as any })
-        : computed(() => source as T);
+          ? toSignal(source as Observable<T>, { initialValue: options?.defaultValue as any })
+          : computed(() => source as T);
 }

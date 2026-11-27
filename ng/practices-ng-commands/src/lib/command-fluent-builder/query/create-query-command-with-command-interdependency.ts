@@ -3,7 +3,7 @@ import { enhance, firstOrDefaultFromMaybeAsync } from '@nexplore/practices-ng-co
 import { trace } from '@nexplore/practices-ng-logging';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Command, CommandAsyncHandlerArg, QueryCommand, QueryOptions } from '../../commands/command.types';
+import type { Command, CommandAsyncHandlerArg, QueryCommand, QueryOptions } from '../../commands/command.types';
 import { createQueryCommand } from './command-query-util';
 
 /**

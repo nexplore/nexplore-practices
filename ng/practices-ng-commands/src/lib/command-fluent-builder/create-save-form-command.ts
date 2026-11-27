@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import type { FormGroup } from '@angular/forms';
 import { PuiFormStateService } from '@nexplore/practices-ng-forms';
-import { ActionCommand, CommandAsyncHandlerArg, CommandOptions } from '../commands/command.types';
+import type { ActionCommand, CommandAsyncHandlerArg, CommandOptions } from '../commands/command.types';
 import { createCommandWithSignalsAndStatus } from '../commands/create-command-with-signals-and-status-util';
 
 /**

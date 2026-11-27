@@ -4,6 +4,7 @@ import { ActivatedRouteSnapshot, GuardsCheckStart, NavigationEnd, Route, Router 
 import { firstValueFromMaybeAsync } from '@nexplore/practices-ng-common-util';
 import { trace } from '@nexplore/practices-ng-logging';
 import { filter, map, merge, Observable, startWith, take } from 'rxjs';
+// eslint-disable-next-line import-x/no-cycle -- the dirty guard service and its helpers only call each other at runtime (inject() and method calls).
 import { createPuiDirtyGuard, evaluateDirtyGuardCanDeactivate } from '../dirty-guard-util-internal';
 import { PuiDirtyGuardHandler } from '../types';
 import { PuiGlobalRouteGuardService } from './global-route-guard.service';
@@ -176,7 +177,12 @@ export class PuiDirtyGuardService implements OnDestroy {
 
         if (!this.disabled) {
             // share one automatic dirty guard across all outlets observing this route.
-            if (!canDeactivateGuards.some((guard) => PuiDirtyGuardService._registeredDirtyGuards.has(guard))) {
+            // Deprecated string tokens (Angular 22.3 types) can never be one of the registered guards
+            if (
+                !canDeactivateGuards.some(
+                    (guard) => typeof guard !== 'string' && PuiDirtyGuardService._registeredDirtyGuards.has(guard)
+                )
+            ) {
                 trace('PuiDirtyGuardService', 'ensureCanDeactivateGuards', 'registering guard', {
                     routeConfig,
                     canDeactivateGuards,

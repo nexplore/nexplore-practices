@@ -1,5 +1,5 @@
-import { StringKeyOf } from '@nexplore/practices-ng-common-util';
-import { TypedOrdering, TypedQueryParamsWithFilter } from './types';
+import type { StringKeyOf } from '@nexplore/practices-ng-common-util';
+import type { TypedOrdering, TypedQueryParamsWithFilter } from './types';
 
 export type HasTypedQueryParams<TFilter, TQueryParams> =
     | {

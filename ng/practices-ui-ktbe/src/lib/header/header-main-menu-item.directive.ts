@@ -14,7 +14,7 @@ import {
 import { setHostClassNames } from '../util/utils';
 
 const classNames =
-    'cursor-pointer inline-block leading-normal no-underline outline-none hover:text-black after:block after:border-b-2';
+    'cursor-pointer inline-block leading-normal no-underline outline-hidden hover:text-black after:block after:border-b-2';
 const smallClassNames = 'font-normal text-base h-6';
 const bigClassNames = 'font-light text-h4 mb-1 h-9';
 const inactiveClassNames =

@@ -96,7 +96,7 @@ export class PuibeLabelDirective implements OnInit {
     private _observeHeight() {
         const el = this._elementRef.nativeElement;
 
-        const update = () => this._heightSignal.set(el.offsetHeight);;
+        const update = () => this._heightSignal.set(el.offsetHeight);
         update();
 
         const observer = new ResizeObserver(update);

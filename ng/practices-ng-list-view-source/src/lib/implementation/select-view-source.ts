@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs';
-import { IListResult, IQueryParamsWithFilter } from '../types';
+import type { Observable } from 'rxjs';
+import type { IListResult, IQueryParamsWithFilter } from '../types';
 import { FilterableListViewSource } from './list-view-source';
 
 export interface SelectViewSourceConfig<TData> {

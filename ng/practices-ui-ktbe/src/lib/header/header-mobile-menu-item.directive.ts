@@ -11,10 +11,14 @@ export class PuibeHeaderMobileMenuItemDirective implements OnInit, OnDestroy {
     @HostBinding('class')
     className: string = className;
 
-    constructor(private _renderer: Renderer2, private _elementRef: ElementRef) {}
+    constructor(
+        private _renderer: Renderer2,
+        private _elementRef: ElementRef
+    ) {}
 
     ngOnInit(): void {
-        wrapHostWithListItemElement(this._elementRef, this._renderer, 'inline-block', 'mr-6', 'last-of-type:mr-0');
+        // The spacing between the items comes from `gap-x-6` on the surrounding list.
+        wrapHostWithListItemElement(this._elementRef, this._renderer, 'inline-block');
     }
 
     ngOnDestroy(): void {

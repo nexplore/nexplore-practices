@@ -34,7 +34,10 @@ export class PuiGlobalDirtyGuardDirective implements OnInit, OnDestroy {
         this.routeGuardService.setDirtyGuardHandler(value);
     }
 
-    constructor(readonly routeGuardService: PuiDirtyGuardService, r: RouterOutlet) {
+    constructor(
+        readonly routeGuardService: PuiDirtyGuardService,
+        r: RouterOutlet
+    ) {
         r.activateEvents.pipe(takeUntilDestroyed()).subscribe((compInstance) => {
             routeGuardService.activateComponent(compInstance);
             trace('puiGlobalDirtyGuard', 'component-activated', compInstance, this);

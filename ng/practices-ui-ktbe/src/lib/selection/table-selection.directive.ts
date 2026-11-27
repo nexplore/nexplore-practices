@@ -19,7 +19,7 @@ export class PuibeTableSelectionCheckboxComponent {
     constructor(
         @Optional() private _selectableRow: PuibeSelectableDirective,
         private _selectionTable: PuibeSelectionDirective
-    ) { }
+    ) {}
 
     onChange(checked: boolean) {
         if (this._selectableRow) {
@@ -58,7 +58,10 @@ export class PuibeTableSelectableDirective {
         }
     }
 
-    constructor(private _host: PuibeSelectableDirective, private _elementRef: ElementRef) {
+    constructor(
+        private _host: PuibeSelectableDirective,
+        private _elementRef: ElementRef
+    ) {
         combineLatest([this._host.selected$, this._host.selectable$, this._host.selectionMode$]).subscribe(
             ([isSelected, isSelectable, selectionMode]) => {
                 const isSingleSelect = selectionMode === 'single';

@@ -1,8 +1,8 @@
-import { Injector } from '@angular/core';
+import type { Injector } from '@angular/core';
 
 /**
  * Tries to destroy the injector if it has a destroy method.
- * 
+ *
  * @param injector The injector to destroy.
  */
 export function tryDestroyInjector(injector: Injector): void {

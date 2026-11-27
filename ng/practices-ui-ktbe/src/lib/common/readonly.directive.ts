@@ -18,4 +18,6 @@ export class PuibeReadonlyDirective {
     private readonly _puiReadonlyDirective = inject(PuiReadonlyDirective);
 
     readonly isReadonly$ = this._puiReadonlyDirective.isReadonly$;
+
+    readonly isReadonlySignal = this._puiReadonlyDirective.isReadonlySignal;
 }

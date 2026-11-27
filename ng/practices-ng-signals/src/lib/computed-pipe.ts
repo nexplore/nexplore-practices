@@ -1,7 +1,9 @@
-import { assertInInjectionContext, computed, isSignal, Signal } from '@angular/core';
+import type { Signal } from '@angular/core';
+import { assertInInjectionContext, computed, isSignal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { Observable, OperatorFunction } from 'rxjs';
-import { SignalSource } from './types';
+import type { OperatorFunction } from 'rxjs';
+import { Observable } from 'rxjs';
+import type { SignalSource } from './types';
 
 export function computedPipe<T>(signal: SignalSource<T>): Signal<T>;
 export function computedPipe<T, A>(signal: SignalSource<T>, op1: OperatorFunction<T, A>): Signal<A>;
@@ -97,7 +99,7 @@ export function computedPipe<TSource, TResult = unknown>(
     ...operations: OperatorFunction<any, any>[]
 ): Signal<undefined | TResult> {
     assertInInjectionContext(computedPipe);
-    const sourceObservable = 
+    const sourceObservable =
         signalOrObs instanceof Observable
             ? signalOrObs
             : toObservable(isSignal(signalOrObs) ? signalOrObs : computed(signalOrObs));

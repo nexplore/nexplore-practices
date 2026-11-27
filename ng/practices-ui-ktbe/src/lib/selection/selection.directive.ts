@@ -142,7 +142,10 @@ export class PuibeSelectableDirective {
         return this._selection.selectionMode;
     }
 
-    constructor(private _selection: PuibeSelectionDirective, private _destroy$: DestroyService) {
+    constructor(
+        private _selection: PuibeSelectionDirective,
+        private _destroy$: DestroyService
+    ) {
         this._selection.selectAll.pipe(takeUntil(this._destroy$)).subscribe((selectAll) => {
             this.toggle(selectAll);
         });

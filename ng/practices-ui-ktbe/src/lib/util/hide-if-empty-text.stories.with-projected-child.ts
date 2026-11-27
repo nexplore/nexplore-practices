@@ -24,9 +24,11 @@ export class ComponentWrapper {
     template: ` <div
         puibeHideIfEmptyText
         (emptyTextChange)="emptyTextChange.emit($event)"
-        class="bg-cappuchino h3 flex min-h-52 min-w-52 items-center justify-center rounded-3xl shadow-inner"
+        class="h3 flex min-h-52 min-w-52 items-center justify-center rounded-3xl bg-cappuchino inset-shadow-sm"
     >
-        @if (showDelayed()) { I am here }
+        @if (showDelayed()) {
+            I am here
+        }
     </div>`,
     imports: [PuibeHideIfEmptyTextDirective],
     changeDetection: ChangeDetectionStrategy.Eager,

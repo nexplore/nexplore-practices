@@ -18,15 +18,15 @@ import {
     NgControl,
     TouchedChangeEvent,
 } from '@angular/forms';
-import { PuiFormFieldDirective, PuiFormFieldService } from '@nexplore/practices-ng-forms';
+import { PuiFormFieldDirective, PuiFormFieldService, PuiReadonlyDirective } from '@nexplore/practices-ng-forms';
 import { DestroyService } from '@nexplore/practices-ui';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, combineLatest, delay, filter, map, merge, of, shareReplay, startWith, switchMap } from 'rxjs';
-import { PuibeReadonlyDirective } from '../common/readonly.directive';
 import { FormFieldStatus } from '../form-field/form-field.service';
 import { FORM_CONFIG, FormConfig } from '../form/form.config';
 import { PuibeReadonlyLabelValueComponent } from '../readonly-label-value/readonly-label-value.component';
 import { getElementFormStates$ } from '../util/form.utils';
+// eslint-disable-next-line import-x/no-cycle -- Angular parent/child pattern: the checkbox injects its group, the group registers its checkboxes at runtime.
 import { PuibeCheckboxGroupComponent } from './checkbox-group.component';
 
 let nextUniqueId = 0;
@@ -36,7 +36,7 @@ let nextUniqueId = 0;
     selector: 'puibe-checkbox',
     templateUrl: './checkbox.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, AsyncPipe, TranslateModule, PuibeReadonlyLabelValueComponent],
+    imports: [NgClass, AsyncPipe, TranslatePipe, PuibeReadonlyLabelValueComponent],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -143,7 +143,7 @@ export class PuibeCheckboxComponent implements ControlValueAccessor, AfterViewIn
         @Optional() private readonly _parent: PuibeCheckboxGroupComponent,
         @Optional() @Inject(FORM_CONFIG) private readonly _config: FormConfig,
         @Optional() private readonly _destroy$: DestroyService,
-        @Optional() private readonly _readonlyDirective: PuibeReadonlyDirective
+        @Optional() private readonly _readonlyDirective: PuiReadonlyDirective
     ) {
         if (_parent != null) {
             this.isInGroup = true;

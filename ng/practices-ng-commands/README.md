@@ -8,13 +8,13 @@ Commands encapsulate common logic and state handling, typically required to rend
 
 ## Features
 
--   **State Management** - Track busy, success, and error states for asynchronous operations
--   **Form Integration** - Validate forms before command execution
--   **UI Directives** - Built-in directives for binding commands to buttons and UI elements
--   **Status Notifications** - Automatic integration with StatusHubService for user feedback
--   **Query Management** - Specialized commands for data fetching with automatic triggering
--   **Signal Integration** - Full support for Angular signals for reactive state tracking
--   **Type Safety** - Comprehensive TypeScript type safety across all APIs
+- **State Management** - Track busy, success, and error states for asynchronous operations
+- **Form Integration** - Validate forms before command execution
+- **UI Directives** - Built-in directives for binding commands to buttons and UI elements
+- **Status Notifications** - Automatic integration with StatusHubService for user feedback
+- **Query Management** - Specialized commands for data fetching with automatic triggering
+- **Signal Integration** - Full support for Angular signals for reactive state tracking
+- **Type Safety** - Comprehensive TypeScript type safety across all APIs
 
 ## Installation
 
@@ -160,9 +160,7 @@ In the template:
 ```html
 @if (userQuery.busySignal()) {
 <div>Loading user...</div>
-}
-
-@if (userSignal(); as user) {
+} @if (userSignal(); as user) {
 <div class="user-details">
     <h2>{{ user.name }}</h2>
     <p>{{ user.email }}</p>
@@ -370,15 +368,15 @@ export class ItemListComponent {
 
 The service also supports custom dialog configurations with:
 
--   Custom button layouts and behaviors
--   Custom action templates
--   Custom content templates or components
--   Asynchronous actions with advanced return types
+- Custom button layouts and behaviors
+- Custom action templates
+- Custom content templates or components
+- Asynchronous actions with advanced return types
 
 For more advanced examples, see:
 
--   [Action Dialog Storybook Examples](../practices-ui-ktbe/src/lib/popup/action-dialog.stories.ts)
--   [Popups Samples in the KTBE Sample App](../samples-ktbe/src/app/practices-ui-ktbe-samples/popups/popups.component.ts)
+- [Action Dialog Storybook Examples](../practices-ui-ktbe/src/lib/popup/action-dialog.stories.ts)
+- [Popups Samples in the KTBE Sample App](../samples-ktbe/src/app/practices-ui-ktbe-samples/popups/popups.component.ts)
 
 ## Running unit tests
 

@@ -1,12 +1,13 @@
+import { PuiReadonlyDirective } from '@nexplore/practices-ng-forms';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnDestroy, Optional } from '@angular/core';
 import { DestroyService } from '@nexplore/practices-ui';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, combineLatest, combineLatestWith, map, of, switchMap, takeUntil } from 'rxjs';
-import { PuibeReadonlyDirective } from '../common/readonly.directive';
 import { MarkControlService } from '../form/mark-control.service';
 import { PuibeIconInvalidComponent } from '../icons/icon-invalid.component';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
+// eslint-disable-next-line import-x/no-cycle -- Angular parent/child pattern: the checkbox injects its group, the group registers its checkboxes at runtime.
 import { PuibeCheckboxComponent } from './checkbox.component';
 
 let nextUniqueId = 0;
@@ -16,7 +17,7 @@ let nextUniqueId = 0;
     selector: 'puibe-checkbox-group',
     templateUrl: './checkbox-group.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, PuibeIconInvalidComponent, AsyncPipe, TranslateModule, PuibeIconSpinnerComponent],
+    imports: [NgClass, PuibeIconInvalidComponent, AsyncPipe, TranslatePipe, PuibeIconSpinnerComponent],
     providers: [DestroyService],
 })
 export class PuibeCheckboxGroupComponent implements OnDestroy {
@@ -143,7 +144,7 @@ export class PuibeCheckboxGroupComponent implements OnDestroy {
         private readonly _destroy$: DestroyService,
         private readonly _elementRef: ElementRef<HTMLElement>,
         @Optional() private readonly _markControlService: MarkControlService,
-        @Optional() private readonly _readonlyDirective: PuibeReadonlyDirective
+        @Optional() private readonly _readonlyDirective: PuiReadonlyDirective
     ) {
         this._markControlService?.touched$.pipe(takeUntil(this._destroy$)).subscribe(() => {
             this.markAsTouched();

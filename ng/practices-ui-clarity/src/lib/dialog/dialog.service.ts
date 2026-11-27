@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { from, merge, Observable, ObservableInput, of } from 'rxjs';
 import { map, take, tap } from 'rxjs/operators';
 
-import { DialogAction, DialogOptions } from '.';
+import type { DialogAction, DialogOptions } from './model';
 import { LocalizationKeys } from '../localization-keys';
 import { DIALOG_OPTIONS, DialogComponent } from './dialog.component';
 

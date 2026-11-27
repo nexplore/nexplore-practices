@@ -6,11 +6,13 @@ import {
     Input,
     model,
     runInInjectionContext,
+    signal,
     ChangeDetectionStrategy,
 } from '@angular/core';
+import type { CommandOptions } from '@nexplore/practices-ng-commands';
 import { Command, command, isCommand } from '@nexplore/practices-ng-commands';
 import { CombinedCommandInput } from '@nexplore/practices-ui';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PuibeButtonDirective } from '../button/button.directive';
 import { PuibeIconSpinnerComponent } from '../icons/icon-spinner.component';
 import { PuibeHideIfEmptyTextDirective } from '../util/hide-if-empty-text.directive';
@@ -34,7 +36,7 @@ import { PuibeModalComponent } from './modal.component';
         PuibeModalSubtitleDirective,
         PuibeModalFooterActionDirective,
         PuibeButtonDirective,
-        TranslateModule,
+        TranslatePipe,
         PuibeIconSpinnerComponent,
         DialogTemplateContentComponent,
         PuibeHideIfEmptyTextDirective,
@@ -43,9 +45,25 @@ import { PuibeModalComponent } from './modal.component';
 export class ActionDialogComponent<TAction extends PuibeDialogActionTemplate<any, TDialogData>, TDialogData = unknown> {
     private readonly _injector = inject(Injector);
 
+    // A signal: puibeHideIfEmptyText reports the change from a MutationObserver, possibly after the view was checked (NG0100)
+    protected readonly isContentEmpty = signal(false);
+
     @Input() title: DialogContent;
     @Input() subtitle: DialogContent;
-    @Input() content: DialogContent;
+    @Input()
+    set content(value: DialogContent) {
+        this._content = value;
+        if (!value) {
+            // The @if removes the content element and its puibeHideIfEmptyText. The directive of new content only
+            // reports changes, so an old `true` would otherwise keep hiding the divider line for non-empty content.
+            this.isContentEmpty.set(false);
+        }
+    }
+    get content(): DialogContent {
+        return this._content;
+    }
+    private _content: DialogContent;
+
     @Input() contentInputs: unknown;
     @Input() busy = false;
     @Input() hideCloseButton: boolean;
@@ -67,16 +85,22 @@ export class ActionDialogComponent<TAction extends PuibeDialogActionTemplate<any
         return this.commandSignal();
     }
 
-    protected isContentEmpty: boolean;
-
     setActions(value: TAction[]) {
         runInInjectionContext(this._injector, () => {
-            this.actions = value as any;
-            value.forEach((action) => {
-                if (action.command) {
-                    action.command = command.fromInput(action.command);
+            // Copies the actions: they may be reused for several dialogs (e.g. a constant), and the commands created here
+            // belong to this dialog.
+            this.actions = value.map((action) => {
+                if (!action.command) {
+                    return action;
                 }
-            });
+                const commandOptions = (action as { commandOptions?: CommandOptions<any> }).commandOptions;
+                return {
+                    ...action,
+                    command: commandOptions
+                        ? command.fromInput(action.command, commandOptions)
+                        : command.fromInput(action.command),
+                };
+            }) as any;
         });
     }
 

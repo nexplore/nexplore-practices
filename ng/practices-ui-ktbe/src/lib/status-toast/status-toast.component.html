@@ -3,25 +3,21 @@
         variant="error"
         [closeable]="true"
         (dismissed)="onDismiss()"
-        class="min-w-screen max-w-screen flex overflow-hidden md:min-w-96 md:max-w-[660px]"
+        class="flex max-w-screen min-w-screen overflow-hidden md:max-w-[660px] md:min-w-96"
         role="status"
     >
         <div
             part="error-content"
-            class="flex min-w-0 flex-col items-stretch gap-2 text-ellipsis whitespace-pre-wrap pl-2"
+            class="flex min-w-0 flex-col items-stretch gap-2 pl-2 text-ellipsis whitespace-pre-wrap"
         >
             @if (isFormularInvalidError(status.error)) {
-                <p translate>Practices.Labels_FormularInvalid</p>
+                <p>{{ 'Practices.Labels_FormularInvalid' | translate }}</p>
             } @else {
                 <ng-container *ngTemplateOutlet="errorTemplate; context: { $implicit: status }"></ng-container>
                 @if (!errorTemplate) {
                     {{ status.error?.message ?? status.error }}
                     @if (status.error?.stack) {
-                        <puibe-expansion-panel
-                            caption="Details"
-                            class="flex-grow-0 text-black"
-                            [enableContentScroll]="true"
-                        >
+                        <puibe-expansion-panel caption="Details" class="grow-0 text-black" [enableContentScroll]="true">
                             @if (status.error.stack) {
                                 <code class="whitespace-pre">{{ status?.error.stack }}</code>
                             }
@@ -37,7 +33,7 @@
         <puibe-toast
             variant="success"
             [closeable]="true"
-            class="min-w-screen max-w-screen flex overflow-hidden md:min-w-40 lg:max-w-[660px]"
+            class="flex max-w-screen min-w-screen overflow-hidden md:min-w-40 lg:max-w-[660px]"
             role="status"
         >
             {{ successMessage }}

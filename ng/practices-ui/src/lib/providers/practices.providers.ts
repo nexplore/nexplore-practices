@@ -1,13 +1,12 @@
-import { Provider } from '@angular/core';
+import type { Provider } from '@angular/core';
 import { TitleStrategy } from '@angular/router';
 import { MissingTranslationHandler } from '@ngx-translate/core';
+import type { RewriteResourceConfig, TitleServiceConfig } from '../services';
 import {
     REWRITE_RESOURCE_CONFIG,
     RewriteMissingTranslationHandler,
-    RewriteResourceConfig,
     TITLE_SERVICE_CONFIG,
     TitleService,
-    TitleServiceConfig,
 } from '../services';
 
 /**

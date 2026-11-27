@@ -1,6 +1,6 @@
-import { CommandAfterExecuteResult, CommandAsyncHandlerResult } from '@nexplore/practices-ng-commands';
-import { Observable } from 'rxjs';
-import { ErrorMessage, StatusCategory, StatusProgressOptions, SuccessMessage } from '../status/model';
+import type { CommandAfterExecuteResult, CommandAsyncHandlerResult } from '@nexplore/practices-ng-commands';
+import type { Observable } from 'rxjs';
+import type { ErrorMessage, StatusCategory, StatusProgressOptions, SuccessMessage } from '../status/model';
 
 /**
  * @deprecated import `CommandOptions` from `@nexplore/practices-ng-commands` instead
@@ -70,5 +70,4 @@ export type LegacyCommandAsyncHandlerFn<TArgs, TResult> = (args: TArgs) => Legac
  * @deprecated import `CommandAsyncHandlerArg` from `@nexplore/practices-ng-commands` instead
  */
 export type LegacyCommandAsyncHandlerArg<TArgs, TResult> =
-    | LegacyCommandAsyncHandlerFn<TArgs, TResult>
-    | Observable<TResult>;
+    LegacyCommandAsyncHandlerFn<TArgs, TResult> | Observable<TResult>;

@@ -1,7 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
 import { lastValueFrom, of } from 'rxjs';
-import { StatusHubConfig } from './model';
-import { StatusMap, getLatestStatusEventsList$ } from './status-hub.util';
+import type { StatusHubConfig } from './model';
+import type { StatusMap } from './status-hub.util';
+import { getLatestStatusEventsList$ } from './status-hub.util';
 
 describe('getLatestStatusEventsList', () => {
     const config: StatusHubConfig = {

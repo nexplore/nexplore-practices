@@ -1,15 +1,16 @@
-import { inject, Injector, runInInjectionContext, Signal, untracked } from '@angular/core';
+import type { Signal } from '@angular/core';
+import { inject, Injector, runInInjectionContext, untracked } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import type { AbstractControl, FormGroup } from '@angular/forms';
 import { isArrayEqual } from '@nexplore/practices-ng-common-util';
 import { trace } from '@nexplore/practices-ng-logging';
+import type { MonoTypeOperatorFunction } from 'rxjs';
 import {
     BehaviorSubject,
     debounce,
     distinctUntilChanged,
     filter,
     map,
-    MonoTypeOperatorFunction,
     noop,
     of,
     startWith,
@@ -17,7 +18,7 @@ import {
     tap,
     timer,
 } from 'rxjs';
-import { FormGroupValues } from './form.types';
+import type { FormGroupValues } from './form.types';
 
 type TrackedFormControlValueSignal<T = any> = Signal<T>;
 

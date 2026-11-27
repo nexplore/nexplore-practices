@@ -1,8 +1,29 @@
-import { AfterViewInit, ChangeDetectorRef, Directive, Input, OnDestroy, OnInit, Optional, Self } from '@angular/core';
+import { PuiReadonlyDirective } from '@nexplore/practices-ng-forms';
+import {
+    AfterViewInit,
+    ChangeDetectorRef,
+    Directive,
+    inject,
+    Input,
+    OnDestroy,
+    OnInit,
+    Optional,
+    Self,
+} from '@angular/core';
 import { SIGNAL, signalSetFn } from '@angular/core/primitives/signals';
 import { DestroyService, StatusProgressOptions, StatusService } from '@nexplore/practices-ui';
 import { NgSelectComponent } from '@ng-select/ng-select';
-import { BehaviorSubject, combineLatest, filter, map, startWith, Subject, switchMap, takeUntil } from 'rxjs';
+import {
+    BehaviorSubject,
+    combineLatest,
+    distinctUntilChanged,
+    filter,
+    map,
+    startWith,
+    Subject,
+    switchMap,
+    takeUntil,
+} from 'rxjs';
 import { FormFieldService } from '../form-field/form-field.service';
 import { SelectViewSource } from './select-view-source';
 import { PuibeSelectDirective } from './select.directive';
@@ -19,6 +40,9 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
     private _data$ = this._selectViewSource$.pipe(switchMap((viewSource) => viewSource.pageData$));
 
     private _searchInputSubject = new Subject<string>();
+
+    // The same readonly source as PuibeFormFieldComponent, which renders the readonly value
+    private readonly _readonlyDirective = inject(PuiReadonlyDirective, { optional: true });
 
     @Input('puibeSelectViewSource')
     set selectViewSource(value: SelectViewSource<any>) {
@@ -114,11 +138,30 @@ export class PuibeSelectViewSourceDirective implements OnInit, OnDestroy, AfterV
         this._data$.pipe(takeUntil(this._destroy$)).subscribe((data) => {
             this._writeComponentProp('items', data);
 
-            // This is a dangerous hack because it relies on the internals of ng-select
-            // It is necessary because angular does not call ngOnChanges when we set properties manually and ng-select uses this to detect changes of items.
-            this._ngSelectComponent.ngOnChanges({ items: { currentValue: data } } as any);
+            // This is a dangerous hack because it relies on the internals of ng-select.
+            // Since ng-select 24, changes of `items` are applied by an effect, which runs with the next change detection of
+            // the ng-select. While the ng-select is not rendered (readonly mode), that never happens, so the selected value
+            // is not mapped to the new items and the readonly value stays empty. Only the first change is applied
+            // synchronously in `ngOnChanges`, so in readonly mode every change is marked as first change.
+            const isReadonly = this._readonlyDirective?.isReadonlySignal() === true;
+            this._ngSelectComponent.ngOnChanges({ items: { currentValue: data, firstChange: isReadonly } } as any);
             this._changeDetectorRef.markForCheck();
         });
+
+        // The items may have been set before the field became readonly. Apply them again, so the readonly value is mapped.
+        this._readonlyDirective?.isReadonly$
+            .pipe(
+                distinctUntilChanged(),
+                filter((isReadonly) => isReadonly),
+                takeUntil(this._destroy$)
+            )
+            .subscribe(() => {
+                const items = this._readComponentProp<unknown[] | null | undefined>('items');
+                if (items) {
+                    this._ngSelectComponent.ngOnChanges({ items: { currentValue: items, firstChange: true } } as any);
+                    this._changeDetectorRef.markForCheck();
+                }
+            });
 
         combineLatest([this._searchInputSubject, this._selectViewSource$])
             .pipe(

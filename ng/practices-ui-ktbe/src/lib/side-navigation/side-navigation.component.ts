@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { DestroyService, TitleService } from '@nexplore/practices-ui';
-import { TranslateModule } from '@ngx-translate/core';
+
 import {
     BehaviorSubject,
     Observable,
@@ -85,7 +85,6 @@ type NavPane = { route: PuibeMetaRouteExt; parents: PuibeMetaRoute[]; comparable
         NgClass,
         NgTemplateOutlet,
         AsyncPipe,
-        TranslateModule,
         PuibeSideNavigationPaneComponent,
         PuibeSideNavigationItemComponent,
         A11yModule,

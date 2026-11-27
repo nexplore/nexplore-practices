@@ -83,12 +83,14 @@ export class DateService {
     constructor(@Optional() private translateService?: TranslateService) {
         this.translateService?.onLangChange
             .pipe(
-                startWith({ lang: this.translateService.currentLang }),
+                // getCurrentLang() works with ngx-translate 17 and 18 (`currentLang` became a signal in 18).
+                startWith({ lang: this.translateService.getCurrentLang() }),
                 distinctUntilChanged((a, b) => a.lang === b.lang),
-                filter((v) => !!v)
+                filter((v) => !!v?.lang)
             )
             .subscribe((ev) => {
-                switch (ev.lang) {
+                // Languages like 'de-CH' are matched regardless of their casing.
+                switch (ev.lang.toLowerCase()) {
                     case 'de':
                     case 'de-ch':
                         this.locale = de;

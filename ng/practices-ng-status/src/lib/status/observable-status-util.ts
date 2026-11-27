@@ -1,8 +1,8 @@
 import { inject } from '@angular/core';
-import { StatusProgressOptions } from './types';
+import type { StatusProgressOptions } from './types';
 import { BehaviorSubject, Observable, Subscriber } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
-import { StatusEvent } from './model';
+import type { StatusEvent } from './model';
 import { StatusHubService } from './status-hub.service';
 
 export function registerObservableStatusSubscription<T>(

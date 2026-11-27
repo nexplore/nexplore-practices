@@ -1,6 +1,7 @@
 import { lastValueFrom, of } from 'rxjs';
-import { StatusHubConfig } from './model';
-import { getLatestStatusEventsList$, StatusMap } from './status-hub.util-internal';
+import type { StatusHubConfig } from './model';
+import type { StatusMap } from './status-hub.util-internal';
+import { getLatestStatusEventsList$ } from './status-hub.util-internal';
 
 describe('getLatestStatusEventsList', () => {
     const config: StatusHubConfig = {

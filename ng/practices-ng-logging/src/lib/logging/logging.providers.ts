@@ -1,4 +1,5 @@
-import { APP_INITIALIZER, Provider } from '@angular/core';
+import type { Provider } from '@angular/core';
+import { APP_INITIALIZER } from '@angular/core';
 import { configureDebugLogging } from './logging.util';
 
 export function provideConsoleLogging(): Provider {

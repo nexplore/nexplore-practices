@@ -1,13 +1,13 @@
-import { Injector } from '@angular/core';
-import { PartialNullable } from "../utils/form.types";
+import type { Injector } from '@angular/core';
+import type { PartialNullable } from '../utils/form.types';
 
 import { createExtendedFormGroup } from './extensions';
-import {
+import type {
     BuildFromGroupValueFn,
     FormGroupDefinition,
     FormGroupDefinitionRecord,
     FormGroupValueBase,
-    TypedExtendedFormGroup
+    TypedExtendedFormGroup,
 } from './types';
 
 /**
@@ -47,12 +47,10 @@ export function createFormGroup<TDefinition extends FormGroupDefinition<FormGrou
 }
 
 export function createTypedFactory<TValue extends FormGroupValueBase>() {
-    return <
-        TDefinition extends BuildFromGroupValueFn<TValue> | FormGroupDefinitionRecord<PartialNullable<TValue>>
-    >(
+    return <TDefinition extends BuildFromGroupValueFn<TValue> | FormGroupDefinitionRecord<PartialNullable<TValue>>>(
         definition: TDefinition,
         config?: {
             injector?: Injector;
-        }): TypedExtendedFormGroup<TDefinition, TValue> =>
-        createFormGroup<TDefinition>(definition, config);
+        }
+    ): TypedExtendedFormGroup<TDefinition, TValue> => createFormGroup<TDefinition>(definition, config);
 }

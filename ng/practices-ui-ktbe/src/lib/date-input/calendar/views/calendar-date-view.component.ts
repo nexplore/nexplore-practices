@@ -11,7 +11,7 @@ import {
     signal,
 } from '@angular/core';
 import { getSignalsFirstValue } from '@nexplore/practices-ui';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { getWeek } from 'date-fns';
 import { DateFormat, DateService } from '../../../date.service';
 import { PuibeIconArrowComponent } from '../../../icons/icon-arrow.component';
@@ -33,7 +33,7 @@ import { PuibeCalendarToolbarItemDirective } from '../presentation/calendar-tool
         PuibeCalendarGridLayoutComponent,
         PuibeCalendarToolbarItemDirective,
         PuibeIconArrowComponent,
-        TranslateModule,
+        TranslatePipe,
         A11yModule,
     ],
 })

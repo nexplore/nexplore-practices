@@ -1,5 +1,6 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 import { randomAsyncValidator } from '../../stories/util';
 import { PuibeCheckboxGroupComponent } from './checkbox-group.component';
 import { PuibeCheckboxComponent } from './checkbox.component';

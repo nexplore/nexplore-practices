@@ -1,11 +1,16 @@
 import { applicationConfig, componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
 
 import { CommonModule } from '@angular/common';
-import { Injectable, importProvidersFrom } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { providePractices } from '@nexplore/practices-ui';
-import { MissingTranslationHandler, MissingTranslationHandlerParams, TranslateModule } from '@ngx-translate/core';
+import {
+    MissingTranslationHandler,
+    MissingTranslationHandlerParams,
+    provideMissingTranslationHandler,
+    provideTranslateService,
+} from '@ngx-translate/core';
 import type { Decorator, Parameters } from '@storybook/angular';
 import { DateService } from '../src/lib/date.service';
 import { StorybookWrapperComponent } from '../src/stories/storybook-wrapper.component';
@@ -38,14 +43,9 @@ export const decorators: Decorator[] = [
     }),
     applicationConfig({
         providers: [
-            importProvidersFrom(
-                TranslateModule.forRoot({
-                    missingTranslationHandler: {
-                        provide: MissingTranslationHandler,
-                        useClass: PuibeSBMissingTranslationHandler,
-                    },
-                })
-            ),
+            provideTranslateService({
+                missingTranslationHandler: provideMissingTranslationHandler(PuibeSBMissingTranslationHandler),
+            }),
             DateService,
             providePractices(),
         ],

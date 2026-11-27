@@ -24,7 +24,21 @@ interface Interaction {
 
 /** Moves the keyboard focus to the first focusable element, so the focus styles become visible. */
 const focusFirst = (page: Page) => page.keyboard.press('Tab');
-const clickButton = (name: string | RegExp) => (page: Page) => page.getByRole('button', { name }).first().click();
+// Hover first and wait for the hover transition (the buttons scale), so overlays positioned relative to the button
+// (e.g. the flyout) do not measure it in the middle of the transition.
+const clickButton = (name: string | RegExp) => async (page: Page) => {
+    const button = page.getByRole('button', { name }).first();
+    await button.hover();
+    await button.evaluate((element) =>
+        Promise.all(
+            element
+                .getAnimations()
+                .filter((animation) => animation.effect?.getTiming().iterations !== Infinity)
+                .map((animation) => animation.finished)
+        )
+    );
+    await button.click();
+};
 // Click at the start of the select, its center may be covered by the clear button.
 // Open with the keyboard: the button scales on hover (CSS transition), so with the mouse the tooltip would measure its
 // origin in the middle of the transition, depending on timing.
@@ -60,6 +74,18 @@ const INTERACTIONS: Interaction[] = [
     { storyId: 'puibe-select--with-initial-value', name: 'open', act: openSelect },
     { storyId: 'puibe-select--with-metadata-select', name: 'open', act: openSelect },
     { storyId: 'puibe-select--grouped', name: 'open', act: openSelect },
+    {
+        // The required select without value is displayed as invalid (hideInvalidIfUntouched is off by default): open,
+        // close and reopen it, so the panel is shown after an interaction
+        storyId: 'puibe-select--required-select',
+        name: 'open-invalid',
+        act: async (page) => {
+            await openSelect(page);
+            await page.keyboard.press('Escape');
+            await page.mouse.click(5, 5);
+            await openSelect(page);
+        },
+    },
     { storyId: 'puibe-select--multi-select-with-view-source', name: 'open', act: openSelect },
     // On small screens the tabs are rendered as select
     { storyId: 'puibe-tabs--tabs-default-story', name: 'open', viewport: 'mobile', act: openSelect },

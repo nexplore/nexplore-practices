@@ -17,6 +17,7 @@
                         "browser": "src/main.ts",
                         "index": "src/index.html",
                         "polyfills": ["zone.js"],
+                        "styles": ["src/styles.css"],
                         "tsConfig": "tsconfig.json",
                         "outputHashing": "none"
                     }

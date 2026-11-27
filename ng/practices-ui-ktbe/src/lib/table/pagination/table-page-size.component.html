@@ -1,5 +1,5 @@
-<ng-content></ng-content>
-<select [id]="pageSizeOptionsId" [(ngModel)]="page.size" class="border" [ariaLabel]="getLabel()">
+<span [id]="labelId"><ng-content></ng-content></span>
+<select [id]="pageSizeOptionsId" [(ngModel)]="page.size" class="border" [attr.aria-labelledby]="labelId">
     @for (option of pageSizeOptions; track option) {
         <option [ngValue]="option">{{ option }}</option>
     }

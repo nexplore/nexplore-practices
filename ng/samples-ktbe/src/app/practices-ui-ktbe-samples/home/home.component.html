@@ -24,13 +24,13 @@
 
 @for (category of categories; track category) {
     <div class="mb-6">
-        <div class="flex items-center mb-2">
+        <div class="mb-2 flex items-center">
             <h2>{{ category.name }}</h2>
         </div>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             @for (component of category.components; track component) {
                 <puibe-teaser [teaserLink]="component.route" [title]="component.title" class="h-full">
-                    <p class="text-sm">{{ component.description }}</p>
+                    <p class="text-small">{{ component.description }}</p>
                 </puibe-teaser>
             }
         </div>
@@ -42,21 +42,21 @@
         <h2>Installation & Requirements</h2>
         <div>
             <p class="">Install with npm:</p>
-            <code class="bg-white px-3 py-2 rounded block mb-3 text-sm font-mono"
+            <code class="mb-3 block rounded-sm bg-white px-3 py-2 font-mono text-small"
                 >npm install &#64;nexplore/practices-ui-ktbe</code
             >
 
             <p class="mt-4">Requirements:</p>
-            <ul class="list-disc text-sm mt-2">
-                <li>Angular 18+</li>
-                <li>Tailwind CSS 3.x</li>
+            <ul class="mt-2 list-disc text-small">
+                <li>Angular 22</li>
+                <li>Tailwind CSS 4.x</li>
             </ul>
         </div>
     </div>
 </puibe-panel>
 
 <hr />
-<footer class="my-8 text-center text-gray-500 text-xspt-4">
+<footer class="my-8 pt-4 text-center text-extra-small text-dark-gray">
     <p>Kanton Bern UI Component Library - Sample Application</p>
     <p>
         Based on the

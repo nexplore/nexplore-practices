@@ -1,7 +1,8 @@
-import { TemplateRef, Type } from '@angular/core';
-import { CommandInput, command } from '@nexplore/practices-ng-commands';
-import { CombinedCommandInput } from '@nexplore/practices-ui';
-import { Variant } from '../button/button.directive';
+import type { TemplateRef, Type } from '@angular/core';
+import type { CommandInput, CommandOptions } from '@nexplore/practices-ng-commands';
+import type { CombinedCommandInput } from '@nexplore/practices-ui';
+import type { Variant } from '../button/button.directive';
+import { registerPresetCommandOptions } from './action-dialog-action-utils';
 
 export type DialogAction<TAction> = TAction & { command?: CommandInput<void, any> };
 
@@ -13,6 +14,8 @@ export interface PuibeDialogActionTemplate<TResult = any, TArgs = void> {
     primary?: boolean;
     variant?: Variant;
     command?: CombinedCommandInput<TArgs, TResult>;
+    /** Options for the command created from the action (e.g. the status category), applied when the dialog opens. */
+    commandOptions?: CommandOptions<TArgs>;
     representsDialogClose?: boolean;
 }
 
@@ -34,7 +37,7 @@ export const PUIBE_DIALOG_ACTIONS = {
 export type PuibeDialogActionMap<
     TActionTemplates extends PuibeDialogActionsTemplates<TResult, TArgs>,
     TResult,
-    TArgs = void
+    TArgs = void,
 > = {
     [key in keyof TActionTemplates]?: CombinedCommandInput<TArgs, TResult> | TResult | false;
 };
@@ -123,7 +126,7 @@ export interface PuibeActionDialogConfig<
     TResult,
     TActionTemplates extends PuibeDialogActionsTemplates<TResult, TArgs> = typeof PUIBE_DIALOG_ACTIONS,
     TArgs = void,
-    TActions = TAction[] | PuibeDialogActionMap<TActionTemplates, TResult, TArgs>
+    TActions = TAction[] | PuibeDialogActionMap<TActionTemplates, TResult, TArgs>,
 > extends PuibeActionDialogConfigBasics {
     /**
      * Defintion for the button actions visual representation
@@ -134,6 +137,12 @@ export interface PuibeActionDialogConfig<
      * Definition for the button actions and their associated commands or static results
      */
     actions?: TActions;
+
+    /**
+     * Options for the commands that the dialog creates from `actions` (an action map), by action key, e.g. the status
+     * category. They take precedence over the `commandOptions` of the action template.
+     */
+    actionCommandOptions?: { [key in keyof TActionTemplates]?: CommandOptions<TArgs> };
 
     /**
      * If provided, defines a main command, that is called when any action is triggered, with the action as parameter.
@@ -155,10 +164,14 @@ export const PUIBE_DIALOG_PRESETS = {
             TArgs
         >
     > => ({
-        actions: {
-            DELETE: command.fromInput(deleteAction, { status: { statusCategory: 'action-delete' } }),
-            CANCEL: false,
-        },
+        // Not converted to a command here: the preset is often created outside of an injection context (e.g. in a click
+        // handler). The dialog converts the action when it opens, with the options of `actionCommandOptions`.
+        actions: { DELETE: deleteAction, CANCEL: false },
+        // Only for this action: a DELETE action the caller replaces runs without these options, as before.
+        actionCommandOptions: registerPresetCommandOptions(
+            { DELETE: { status: { statusCategory: 'action-delete' } } },
+            { DELETE: deleteAction }
+        ),
         titleKey: 'Practices.Labels_Delete',
         contentKey: 'Practices.Labels_DeletePrompt',
         ...overrideConfig,

@@ -1,12 +1,14 @@
 import { inject, Injector, runInInjectionContext } from '@angular/core';
-import { CanDeactivateFn, RouterStateSnapshot } from '@angular/router';
+import type { CanDeactivateFn, RouterStateSnapshot } from '@angular/router';
 import { firstValueFromMaybeAsync } from '@nexplore/practices-ng-common-util';
 import { trace } from '@nexplore/practices-ng-logging';
 import { distinctUntilChanged, isObservable, of, switchMap } from 'rxjs';
+// eslint-disable-next-line import-x/no-cycle -- the dirty guard service and its helpers only call each other at runtime (inject() and method calls).
 import { PuiDirtyGuardService } from './services/dirty-guard.service';
 import { PuiGlobalRouteGuardService } from './services/global-route-guard.service';
-import { AsyncResult, DirtyGuardConfig, DirtyGuardSupportedComponent, Result } from './services/types-internal';
-import { PuiDirtyGuardHandler, PuiFormState } from './types';
+import type { AsyncResult, DirtyGuardSupportedComponent, Result } from './services/types-internal';
+import { DirtyGuardConfig } from './services/types-internal';
+import type { PuiDirtyGuardHandler, PuiFormState } from './types';
 
 /**
  * Evaluates whether the component can be deactivated when navigating away.

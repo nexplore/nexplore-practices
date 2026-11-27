@@ -19,7 +19,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DestroyService, getSignalsFirstValue } from '@nexplore/practices-ui';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { min } from 'date-fns/min';
 import { max } from 'date-fns/max';
 import { PuibeIconArrowComponent } from '../../icons/icon-arrow.component';
@@ -54,7 +54,7 @@ const defaultViewModes: AllowedViewModesArray = ['date', 'month', 'year'];
         PuibeCalendarYearViewComponent,
         PuibeCalendarToolbarItemDirective,
         NgTemplateOutlet,
-        TranslateModule,
+        TranslatePipe,
         PuibeIconArrowComponent,
         PuibeIconDatepickerTodayComponent,
         A11yModule,

@@ -1,8 +1,8 @@
 export * from './lib/implementation/select-view-source';
 export * from './lib/implementation/table-view-source';
 export * from './lib/implementation/list-view-source';
+// Also exports everything of './lib/types'.
 export * from './lib/api';
-export * from './lib/types';
 export * from './lib/utils/list-result-util';
 export type { PersistParamsConfig } from './lib/table-view-source-fluent-builder/create-table-view-source-with-persisted-params';
 export type {

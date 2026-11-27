@@ -1,10 +1,10 @@
-import { Injector } from '@angular/core';
+import type { Injector } from '@angular/core';
+import type { NavigationStart } from '@angular/router';
 import {
     GuardsCheckStart,
     NavigationCancel,
     NavigationEnd,
     NavigationError,
-    NavigationStart,
     ResolveStart,
     Router,
 } from '@angular/router';

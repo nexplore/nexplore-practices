@@ -1,9 +1,9 @@
-import { Type } from '@angular/core';
-import { MaybeAsync } from '@angular/router';
-import { StringKeyOf } from '@nexplore/practices-ng-common-util';
-import { SelectViewSource } from '../implementation/select-view-source';
-import { EnhancedListViewSource, IListResult, IQueryParamsWithFilter } from '../types';
-import { HasTypedQueryParams } from '../types-internal';
+import type { Type } from '@angular/core';
+import type { MaybeAsync } from '@angular/router';
+import type { StringKeyOf } from '@nexplore/practices-ng-common-util';
+import type { SelectViewSource } from '../implementation/select-view-source';
+import type { EnhancedListViewSource, IListResult, IQueryParamsWithFilter } from '../types';
+import type { HasTypedQueryParams } from '../types-internal';
 
 export type SelectViewSourceDefaultFilter = { label: string };
 
@@ -23,7 +23,7 @@ export type TypedSelectViewSourceConfig<
     TData,
     TLabelKey extends SelectViewSourceLabelKey<TData>,
     TQueryParams = TData,
-    TOrdering = TData
+    TOrdering = TData,
 > = {
     /**
      * The label property to display in the select.

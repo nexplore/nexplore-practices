@@ -41,7 +41,12 @@ const INTERACTIONS: {
     {
         page: 'sidepanel',
         name: 'open-side-overlay-panel',
-        act: (page) => page.getByTitle('Click to open the side overlay panel').click(),
+        act: async (page) => {
+            // Open with the keyboard: with the mouse, it depends on timing in which state of its hover transition the
+            // button is captured.
+            await page.getByTitle('Click to open the side overlay panel').focus();
+            await page.keyboard.press('Enter');
+        },
     },
     {
         page: '',

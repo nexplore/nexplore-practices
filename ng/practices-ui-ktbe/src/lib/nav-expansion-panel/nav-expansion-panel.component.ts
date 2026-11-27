@@ -56,7 +56,10 @@ export class PuibeNavExpansionPanelComponent implements AfterViewInit {
         this.activeIndexChanged.emit(value);
     }
 
-    constructor(private readonly renderer: Renderer2, private readonly cdr: ChangeDetectorRef) {}
+    constructor(
+        private readonly renderer: Renderer2,
+        private readonly cdr: ChangeDetectorRef
+    ) {}
 
     ngAfterViewInit() {
         this.clearActive(); // Reset initially, so the bar has it's height and top set.

@@ -1,8 +1,10 @@
-import { inject, Injector, signal, Signal } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import type { Signal } from '@angular/core';
+import { inject, Injector, signal } from '@angular/core';
+import type { AbstractControl } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import type { BehaviorSubject } from 'rxjs';
 import { formValueSignalsDependencyTracker } from './form-value-signals-dependency-tracker';
-import { FormGroupValues, FormValueSignalsRecord } from './form.types';
+import type { FormGroupValues, FormValueSignalsRecord } from './form.types';
 
 /**
  * @internal - Do not use directly, used for other api functions.
@@ -15,7 +17,7 @@ import { FormGroupValues, FormValueSignalsRecord } from './form.types';
  */
 export function createFormValueSignalsProxyWithAutoTrackingDependencies<
     TForm extends FormGroup,
-    TFormValue extends FormGroupValues<TForm>
+    TFormValue extends FormGroupValues<TForm>,
 >(
     form: TForm,
     options?: {

@@ -5,11 +5,11 @@ describe('isObjShallowEqual', () => {
     it('should ignore functions', () => {
         const a = {
             a: 1,
-            fun: () => { },
+            fun: () => {},
         };
         const b = {
             a: 1,
-            fun: () => { },
+            fun: () => {},
         };
 
         const res1 = isObjShallowEqual(a, b);

@@ -1,9 +1,7 @@
 import { effect } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
-import {
-    createFormValueSignalsProxyWithAutoTrackingDependencies
-} from "./create-form-value-signals-proxy-with-auto-tracking-dependencies";
+import { createFormValueSignalsProxyWithAutoTrackingDependencies } from './create-form-value-signals-proxy-with-auto-tracking-dependencies';
 
 describe('createFormValueSignalsProxyWithAutoTrackingDependencies', () => {
     it('should return a proxy that tracks dependencies', () => {

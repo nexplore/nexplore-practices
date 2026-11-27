@@ -1,6 +1,8 @@
-import { computed, inject, Injector, runInInjectionContext, Signal } from '@angular/core';
-import { unwrapSignalLike, ValueOrGetter } from '@nexplore/practices-ng-common-util';
-import { Command, CommandInput, CommandOptions } from '../commands/command.types';
+import type { Signal } from '@angular/core';
+import { computed, inject, Injector, runInInjectionContext } from '@angular/core';
+import type { ValueOrGetter } from '@nexplore/practices-ng-common-util';
+import { unwrapSignalLike } from '@nexplore/practices-ng-common-util';
+import type { Command, CommandInput, CommandOptions } from '../commands/command.types';
 import { createCommandFromInput } from './create-command-from-input';
 
 /**

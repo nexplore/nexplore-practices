@@ -1,19 +1,21 @@
-import { effect, inject, Injector, runInInjectionContext, Signal, untracked } from '@angular/core';
+import type { Signal } from '@angular/core';
+import { effect, inject, Injector, runInInjectionContext, untracked } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import type { FormControlOptions } from '@angular/forms';
 import {
     AbstractControl,
     FormBuilder,
     FormControl,
-    FormControlOptions,
     FormGroup,
     PristineChangeEvent,
     TouchedChangeEvent,
 } from '@angular/forms';
 import { isObjDeepEqual } from '@nexplore/practices-ng-common-util';
 import { trace } from '@nexplore/practices-ng-logging';
-import { filter, map, Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { filter, map } from 'rxjs';
 import { formValueSignalsDependencyTracker } from '../utils/form-value-signals-dependency-tracker';
-import {
+import type {
     FormControlDefinition,
     FormControlDefinitionValueOmitted,
     FormGroupDefinition,
@@ -61,7 +63,7 @@ function updateFormGroupDefinition(
     Object.entries(controlDefs).forEach(
         ([key, controlDef]: [
             string,
-            AbstractControl<any> | FormControlDefinition<any> | FormControlDefinitionValueOmitted
+            AbstractControl<any> | FormControlDefinition<any> | FormControlDefinitionValueOmitted,
         ]) => {
             if (controlDef instanceof AbstractControl) {
                 formGroup.addControl(key, controlDef, { emitEvent: options.emitChangeEvents });

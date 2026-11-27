@@ -1,13 +1,13 @@
 import { effect, isSignal, untracked } from '@angular/core';
-import { MaybeAsync } from '@angular/router';
-import { ValueOrSignal } from '@nexplore/practices-ng-common-util';
+import type { MaybeAsync } from '@angular/router';
+import type { ValueOrSignal } from '@nexplore/practices-ng-common-util';
 import { of } from 'rxjs';
-import { TableViewSource } from '../implementation/table-view-source';
-import { IListResult, IQueryParamsWithFilter } from '../types';
+import type { TableViewSource } from '../implementation/table-view-source';
+import type { IListResult, IQueryParamsWithFilter } from '../types';
 import { createTypedFactory } from './create-table-view-source';
 import { createTypedWithFilterFormFactory } from './create-table-view-source-with-filter-form';
 import { createdTypedWithPersistedParamsFactory } from './create-table-view-source-with-persisted-params';
-import { Data } from './types';
+import type { Data } from './types';
 
 type LoadFn<TFilter, TResult> = (params: IQueryParamsWithFilter<TFilter>) => MaybeAsync<TResult>;
 
@@ -96,4 +96,3 @@ function createTableViewSourceFactoryFluentApi<TData>(
         ),
     };
 }
-

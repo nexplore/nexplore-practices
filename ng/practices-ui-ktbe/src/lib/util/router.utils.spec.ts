@@ -1,6 +1,6 @@
-import { Routes } from '@angular/router';
+import type { Routes } from '@angular/router';
 import { describe, expect, it } from '@jest/globals';
-import { PuibeMetaRoute } from '../../index';
+import type { PuibeMetaRoute } from '../../index';
 import {
     applyParameterizedUrlSegmentToPathTemplate,
     getHrefRelativePath,

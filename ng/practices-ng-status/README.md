@@ -10,13 +10,13 @@ The [`StatusHubService`](./src/lib/status/status-hub.service.ts) is a foundation
 
 ## Features
 
--   **Centralized Status Management** - Manage all application status states through a single service
--   **Busy State Handling** - Track multiple concurrent operations with automatic aggregation
--   **Error & Success Notifications** - Display and manage error and success messages with auto-dismissal
--   **Blocking UI Support** - Optionally block user interaction during critical operations
--   **Progress Messages** - Display dynamic progress messages during long-running operations
--   **Status Categories** - Categorize operations for consistent visual representation
--   **Configurable Behavior** - Customize timeout duration, visibility rules, and more
+- **Centralized Status Management** - Manage all application status states through a single service
+- **Busy State Handling** - Track multiple concurrent operations with automatic aggregation
+- **Error & Success Notifications** - Display and manage error and success messages with auto-dismissal
+- **Blocking UI Support** - Optionally block user interaction during critical operations
+- **Progress Messages** - Display dynamic progress messages during long-running operations
+- **Status Categories** - Categorize operations for consistent visual representation
+- **Configurable Behavior** - Customize timeout duration, visibility rules, and more
 
 ## Installation
 

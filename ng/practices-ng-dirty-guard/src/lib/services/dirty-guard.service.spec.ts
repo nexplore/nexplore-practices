@@ -253,6 +253,15 @@ describe('PuiDirtyGuardService initial navigation', () => {
         useCustomLazyOutletDialogHandler = useCustomOutletDialogHandler,
         disableLazyOutletGuard = false,
         initialPath = '/test/a',
+    }: {
+        useBlockingInitialNavigation?: boolean;
+        showGuardedOutletInitially?: boolean;
+        pageHasUnsavedChanges?: boolean;
+        userConfirmsDiscardingChanges?: boolean;
+        useCustomOutletDialogHandler?: boolean;
+        useCustomLazyOutletDialogHandler?: boolean;
+        disableLazyOutletGuard?: boolean;
+        initialPath?: string;
     } = {}) {
         const host = document.createElement('pui-test-dirty-guard-app');
         hosts.push(host);
@@ -378,9 +387,9 @@ class TestLazyGuardShellComponent {
     imports: [RouterOutlet, PuiGlobalDirtyGuardDirective],
     template: `
         @if (showGuardedOutlet()) {
-        <router-outlet puiGlobalDirtyGuard [dirtyGuardHandler]="outletDialogHandler" />
+            <router-outlet puiGlobalDirtyGuard [dirtyGuardHandler]="outletDialogHandler" />
         } @else {
-        <router-outlet />
+            <router-outlet />
         }
     `,
 })

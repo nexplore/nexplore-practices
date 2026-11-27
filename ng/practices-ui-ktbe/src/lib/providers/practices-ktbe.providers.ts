@@ -1,8 +1,10 @@
-import { Provider } from '@angular/core';
+import type { Provider } from '@angular/core';
 import { provideFormStateConfig } from '@nexplore/practices-ng-forms';
 import { providePuibeDirtyGuard } from '../dirty-guard/dirty-guard.providers';
-import { FORM_CONFIG, FormConfig } from '../form/form.config';
-import { PUIBE_MODAL_CONFIG, PuibeModalConfig } from '../popup/types';
+import type { FormConfig } from '../form/form.config';
+import { FORM_CONFIG } from '../form/form.config';
+import type { PuibeModalConfig } from '../popup/types';
+import { PUIBE_MODAL_CONFIG } from '../popup/types';
 
 type PracticesKtbeConfig = {
     /**
