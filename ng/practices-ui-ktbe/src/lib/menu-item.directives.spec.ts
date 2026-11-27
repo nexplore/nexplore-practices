@@ -273,6 +273,15 @@ describe.each(directives)('$name active state', ({ selector, directive }) => {
         expect(button.classList).toContain(activeClassName);
     });
 
+    it('interprets mixed active options like RouterLinkActive: match options win over exact', async () => {
+        const button = await renderAt(
+            '/probe?x=1',
+            `routerLink="probe" [routerLinkActiveOptions]="{ exact: true, paths: 'subset' }"`
+        );
+
+        expect(button.classList).toContain(activeClassName);
+    });
+
     it('ignores undefined values in the active options', async () => {
         const button = await renderAt(
             '/probe?x=1',

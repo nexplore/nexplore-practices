@@ -1,5 +1,5 @@
 import { inject, Injectable, OnDestroy } from '@angular/core';
-import { IsActiveMatchOptions, NavigationEnd, Router, RouterLink, UrlTree } from '@angular/router';
+import { isActive, IsActiveMatchOptions, NavigationEnd, Router, RouterLink, UrlTree } from '@angular/router';
 import { BehaviorSubject, combineLatest, filter, map, Observable, startWith, Subject } from 'rxjs';
 
 /** Same value types as accepted by Angular's `RouterLink` input. */
@@ -23,13 +23,13 @@ const exactMatchOptions: IsActiveMatchOptions = {
 
 @Injectable()
 export class MenuItemService implements OnDestroy {
-    private _routerLinkSubject = new BehaviorSubject<MenuItemRouterLink>(null);
+    private _routerLink: MenuItemRouterLink = null;
+    private _routerLinkChangeSubject = new Subject<void>();
+    private _angularRouterLinkState: readonly unknown[] = [];
     private _navLinkSubject = new BehaviorSubject<MenuItemRouterLink>(null);
     private _routerLinkActiveOptionsSubject = new BehaviorSubject<MenuItemRouterLinkActiveOptions>(null);
     private _navLinkActiveOptionsSubject = new BehaviorSubject<MenuItemRouterLinkActiveOptions>(null);
     private _isActiveSubject = new BehaviorSubject<boolean>(null);
-    private _angularRouterLinkChangeSubject = new Subject<void>();
-    private _angularRouterLinkState: readonly unknown[] = [];
 
     /** Angular's `RouterLink` on the same element, if any. Its URL is the actual navigation target. */
     private readonly _angularRouterLink = inject(RouterLink, { self: true, optional: true });
@@ -40,28 +40,27 @@ export class MenuItemService implements OnDestroy {
         startWith(null)
     );
     readonly routerLinkActive$ = combineLatest([
-        this._routerLinkSubject,
         this._navLinkSubject,
         this._routerLinkActiveOptionsSubject,
         this._navLinkActiveOptionsSubject,
         this._isActiveSubject,
         this._routerNavigationEnd$,
-        this._angularRouterLinkChangeSubject.pipe(startWith(null)),
+        this._routerLinkChangeSubject.pipe(startWith(null)),
     ]).pipe(
-        map(([routerLink, navLink, routerLinkActiveOptions, navLinkActiveOptions, isActive]) => {
-            if (isActive != null) {
-                return isActive;
+        map(([navLink, routerLinkActiveOptions, navLinkActiveOptions, isActiveInput]) => {
+            if (isActiveInput != null) {
+                return isActiveInput;
             }
-            const urlTree = this._toUrlTree(navLink, routerLink);
+            const urlTree = this._toUrlTree(navLink);
             const options = toMatchOptions(navLinkActiveOptions ?? routerLinkActiveOptions);
-            return urlTree ? this._router.isActive(urlTree, options) : false;
+            return urlTree ? isActive(urlTree, this._router, options)() : false;
         })
     );
 
     constructor(private _router: Router) {}
 
     get hasLink(): boolean {
-        const routerLink = this._routerLinkSubject.value;
+        const routerLink = this._routerLink;
         const hasRouterLink = this._angularRouterLink ? routerLink != null : !isEmptyLink(routerLink);
         return !isEmptyLink(this._navLinkSubject.value) || hasRouterLink;
     }
@@ -71,7 +70,11 @@ export class MenuItemService implements OnDestroy {
      * used for the active state. Otherwise the link is handled like a `navLink`.
      */
     setRouterLink(value: MenuItemRouterLink) {
-        this._routerLinkSubject.next(value);
+        this._routerLink = value;
+        if (!this._angularRouterLink) {
+            this._routerLinkChangeSubject.next();
+        }
+        // With `RouterLink`, `checkAngularRouterLink` re-evaluates once the `RouterLink` inputs are updated as well.
     }
 
     /**
@@ -101,7 +104,7 @@ export class MenuItemService implements OnDestroy {
             return;
         }
         const state = [
-            this._routerLinkSubject.value,
+            this._routerLink,
             routerLink.queryParams,
             routerLink.fragment,
             routerLink.queryParamsHandling,
@@ -110,7 +113,7 @@ export class MenuItemService implements OnDestroy {
         ];
         if (state.some((value, index) => value !== this._angularRouterLinkState[index])) {
             this._angularRouterLinkState = state;
-            this._angularRouterLinkChangeSubject.next();
+            this._routerLinkChangeSubject.next();
         }
     }
 
@@ -121,14 +124,14 @@ export class MenuItemService implements OnDestroy {
         return this._isActiveSubject.next(value);
     }
 
-    private _toUrlTree(navLink: MenuItemRouterLink, routerLink: MenuItemRouterLink): UrlTree | null {
+    private _toUrlTree(navLink: MenuItemRouterLink): UrlTree | null {
         if (!isEmptyLink(navLink)) {
             return this._toAbsoluteUrlTree(navLink);
         }
         if (this._angularRouterLink) {
             return this._angularRouterLink.urlTree;
         }
-        return isEmptyLink(routerLink) ? null : this._toAbsoluteUrlTree(routerLink);
+        return isEmptyLink(this._routerLink) ? null : this._toAbsoluteUrlTree(this._routerLink);
     }
 
     /** Strings are parsed as absolute URLs and commands are resolved from the root. */
@@ -140,12 +143,11 @@ export class MenuItemService implements OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this._routerLinkSubject.complete();
         this._navLinkSubject.complete();
         this._routerLinkActiveOptionsSubject.complete();
         this._navLinkActiveOptionsSubject.complete();
         this._isActiveSubject.complete();
-        this._angularRouterLinkChangeSubject.complete();
+        this._routerLinkChangeSubject.complete();
     }
 }
 
@@ -154,13 +156,17 @@ function isEmptyLink(link: MenuItemRouterLink): link is null | undefined | '' | 
     return link == null || link === '' || (Array.isArray(link) && link.length === 0);
 }
 
+/** Interprets the options like Angular's `RouterLinkActive` does. */
 function toMatchOptions(options: MenuItemRouterLinkActiveOptions): IsActiveMatchOptions {
     if (!options) {
         return subsetMatchOptions;
     }
-    if ('exact' in options) {
-        return options.exact ? exactMatchOptions : subsetMatchOptions;
+    const matchOptions = options as Partial<IsActiveMatchOptions>;
+    if (matchOptions.paths || matchOptions.matrixParams || matchOptions.queryParams || matchOptions.fragment) {
+        const definedOptions = Object.fromEntries(
+            Object.entries(matchOptions).filter(([, value]) => value !== undefined)
+        );
+        return { ...subsetMatchOptions, ...definedOptions };
     }
-    const definedOptions = Object.fromEntries(Object.entries(options).filter(([, value]) => value !== undefined));
-    return { ...subsetMatchOptions, ...definedOptions };
+    return (options as { exact?: boolean }).exact ? exactMatchOptions : subsetMatchOptions;
 }
