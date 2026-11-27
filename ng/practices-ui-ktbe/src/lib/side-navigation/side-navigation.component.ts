@@ -1,4 +1,4 @@
-import { A11yModule } from '@angular/cdk/a11y';
+import { A11yModule, InputModalityDetector } from '@angular/cdk/a11y';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import {
@@ -207,7 +207,8 @@ export class PuibeSideNavigationComponent implements OnChanges {
         @Optional() private _shellService: PuibeShellService,
         private _breakpointObserver: BreakpointObserver,
         private _routerUtilService: RouterUtilService,
-        private _destroy$: DestroyService
+        private _destroy$: DestroyService,
+        private _inputModality: InputModalityDetector
     ) {
         if (!title) {
             console.warn('<puibe-side-navigation> requested TitleService is not provided.');
@@ -441,7 +442,7 @@ export class PuibeSideNavigationComponent implements OnChanges {
 
             if (sidePaneEl) {
                 // Focus the item that was the parent for the previously opened nav-pane route
-                sidePaneEl.focusFirstItem(`[data-path="${pane.route.path}"]`);
+                sidePaneEl.focusFirstItem(`[data-path="${pane.route.path}"]`, this._focusOptions());
             }
         });
 
@@ -600,13 +601,19 @@ export class PuibeSideNavigationComponent implements OnChanges {
                     navPane.scrollIntoView();
 
                     // Also focus the first item in the scrolled-to nav-pane
-                    navPane.focusFirstItem();
+                    navPane.focusFirstItem(undefined, this._focusOptions());
                     resolve(true);
                 } else {
                     resolve(false);
                 }
             }, 225);
         });
+    }
+
+    /** Safari treats scripted focus after a mouse click as `:focus-visible`, so only show it after keyboard input. */
+    private _focusOptions(): FocusOptions {
+        // `focusVisible` is not yet part of the TypeScript DOM typings.
+        return { focusVisible: this._inputModality.mostRecentModality === 'keyboard' } as FocusOptions;
     }
 
     private _getExpandedPath(): PuibeMetaRoute[] {

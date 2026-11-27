@@ -59,10 +59,10 @@ export class PuibeSideNavigationPaneComponent {
         this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
 
-    focusFirstItem(selector?: string) {
+    focusFirstItem(selector?: string, options?: FocusOptions) {
         this.contentRef?.nativeElement
             .querySelector<HTMLElement>(`${selector ?? 'puibe-side-navigation-item'} > [data-nav-btn]`)
-            ?.focus();
+            ?.focus(options);
     }
 
     onClickFooter(event: PointerEvent) {
