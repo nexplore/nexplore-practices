@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy, Optional } from '@angular/core';
+import { inject, Injectable, OnDestroy } from '@angular/core';
 import { ActivatedRoute, IsActiveMatchOptions, NavigationEnd, Router, UrlTree } from '@angular/router';
 import { BehaviorSubject, combineLatest, filter, map, Observable, startWith } from 'rxjs';
 
@@ -24,6 +24,7 @@ const exactMatchOptions: IsActiveMatchOptions = {
 @Injectable()
 export class MenuItemService implements OnDestroy {
     private _routerLinkSubject = new BehaviorSubject<MenuItemRouterLink>(null);
+    private _navLinkSubject = new BehaviorSubject<MenuItemRouterLink>(null);
     private _routerLinkActiveOptionsSubject = new BehaviorSubject<IsActiveMatchOptions>(subsetMatchOptions);
     private _isActiveSubject = new BehaviorSubject<boolean>(null);
 
@@ -34,29 +35,36 @@ export class MenuItemService implements OnDestroy {
     );
     readonly routerLinkActive$ = combineLatest([
         this._routerLinkSubject,
+        this._navLinkSubject,
         this._routerLinkActiveOptionsSubject,
         this._isActiveSubject,
         this._routerNavigationEnd$,
     ]).pipe(
-        map(
-            ([routerLink, routerLinkActiveOptions, isActive]) =>
-                isActive ??
-                (routerLink != null
-                    ? this._router.isActive(this._toUrlTree(routerLink), routerLinkActiveOptions)
-                    : false)
-        )
+        map(([, , routerLinkActiveOptions, isActive]) => {
+            if (isActive != null) {
+                return isActive;
+            }
+            const urlTree = this._toUrlTree();
+            return urlTree ? this._router.isActive(urlTree, routerLinkActiveOptions) : false;
+        })
     );
 
-    constructor(private _router: Router, @Optional() private _route: ActivatedRoute) {}
+    private readonly _route = inject(ActivatedRoute, { optional: true });
 
-    get routerLink$() {
-        return this._routerLinkSubject.asObservable();
+    constructor(private _router: Router) {}
+
+    get hasLink(): boolean {
+        return !isEmptyLink(this._navLinkSubject.value) || !isEmptyLink(this._routerLinkSubject.value);
     }
-    get routerLink(): MenuItemRouterLink {
-        return this._routerLinkSubject.value;
-    }
+
+    /** Link of the `RouterLink` on the same element. Resolved like `RouterLink` does: relative to the item's route. */
     setRouterLink(value: MenuItemRouterLink) {
         this._routerLinkSubject.next(value);
+    }
+
+    /** Link used only for the active state. Takes precedence over `routerLink`; strings are parsed as absolute URLs. */
+    setNavLink(value: MenuItemRouterLink) {
+        this._navLinkSubject.next(value);
     }
 
     get routerLinkActiveOptions$() {
@@ -73,20 +81,40 @@ export class MenuItemService implements OnDestroy {
         return this._isActiveSubject.next(value);
     }
 
-    /** Resolves the link like Angular's `RouterLink` does, so the active state matches the navigation target. */
-    private _toUrlTree(routerLink: Exclude<MenuItemRouterLink, null | undefined>): UrlTree {
-        if (routerLink instanceof UrlTree) {
-            return routerLink;
+    private _toUrlTree(): UrlTree | null {
+        const navLink = this._navLinkSubject.value;
+        if (!isEmptyLink(navLink)) {
+            if (navLink instanceof UrlTree) {
+                return navLink;
+            }
+            return Array.isArray(navLink)
+                ? this._router.createUrlTree(navLink)
+                : this._router.parseUrl(navLink as string);
         }
-        const commands = Array.isArray(routerLink) ? routerLink : [routerLink];
-        return this._router.createUrlTree(commands, { relativeTo: this._route });
+
+        const routerLink = this._routerLinkSubject.value;
+        if (!isEmptyLink(routerLink)) {
+            if (routerLink instanceof UrlTree) {
+                return routerLink;
+            }
+            const commands = Array.isArray(routerLink) ? routerLink : [routerLink];
+            return this._router.createUrlTree(commands, { relativeTo: this._route });
+        }
+
+        return null;
     }
 
     ngOnDestroy(): void {
         this._routerLinkSubject.complete();
+        this._navLinkSubject.complete();
         this._routerLinkActiveOptionsSubject.complete();
         this._isActiveSubject.complete();
     }
+}
+
+/** `''` and `[]` count as no link, so placeholder links do not mark an item as active on every route. */
+function isEmptyLink(link: MenuItemRouterLink): link is null | undefined | '' | readonly [] {
+    return link == null || link === '' || (Array.isArray(link) && link.length === 0);
 }
 
 function toMatchOptions(options: MenuItemRouterLinkActiveOptions): IsActiveMatchOptions {

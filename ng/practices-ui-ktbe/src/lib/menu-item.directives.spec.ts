@@ -133,8 +133,38 @@ describe.each(directives)('$name active state', ({ selector, directive }) => {
         expect(button.classList).not.toContain(activeClassName);
     });
 
-    it('is active when the routerLink is empty and the route of the item is active', async () => {
-        const button = await renderNestedAt('/admin', 'routerLink=""');
+    it.each(['routerLink=""', `[routerLink]="[]"`, 'navLink=""'])(
+        'treats the empty link %s as no link',
+        async (attributes) => {
+            const button = await renderNestedAt('/admin', attributes);
+
+            expect(button.classList).not.toContain(activeClassName);
+        }
+    );
+
+    it('parses a navLink as absolute URL, as before', async () => {
+        const button = await renderNestedAt('/admin/users', 'navLink="admin/users"');
+
+        expect(button.classList).toContain(activeClassName);
+    });
+
+    it('supports query params in a navLink', async () => {
+        const button = await renderAt(
+            '/probe?tab=a',
+            `navLink="/probe?tab=a" [navLinkActiveOptions]="{ exact: true }"`
+        );
+
+        expect(button.classList).toContain(activeClassName);
+    });
+
+    it('prefers the navLink over the routerLink', async () => {
+        const button = await renderAt('/probe', 'routerLink="other" navLink="probe"');
+
+        expect(button.classList).toContain(activeClassName);
+    });
+
+    it('falls back to the routerLink when the navLink is not set', async () => {
+        const button = await renderAt('/probe', 'routerLink="probe" [navLink]="undefined"');
 
         expect(button.classList).toContain(activeClassName);
     });

@@ -32,16 +32,16 @@ export class PuibeFooterMenuItemDirective implements OnInit, OnDestroy {
     @HostBinding('attr.role')
     readonly role = 'listitem';
 
-    // `routerLink` and `navLink` are separate inputs: one property cannot carry two public input names.
+    /** Link of Angular's `RouterLink` on the same element, used to show the active state. */
     @Input()
     set routerLink(value: MenuItemRouterLink) {
         this._menuItemService.setRouterLink(value);
     }
 
-    /** Alias of `routerLink`, to mark the item as active without using Angular's `RouterLink` navigation. */
+    /** Marks the item as active for this URL, without Angular's `RouterLink`. Takes precedence over `routerLink`. */
     @Input()
     set navLink(value: MenuItemRouterLink) {
-        this._menuItemService.setRouterLink(value);
+        this._menuItemService.setNavLink(value);
     }
 
     @Input()
@@ -94,7 +94,7 @@ export class PuibeFooterMenuItemDirective implements OnInit, OnDestroy {
     }
 
     private _isLink(): boolean {
-        return this._menuItemService.routerLink != null || this._elementRef.nativeElement.matches('a');
+        return this._menuItemService.hasLink || this._elementRef.nativeElement.matches('a');
     }
 
     private setClassNames(isActive: boolean) {

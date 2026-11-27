@@ -29,16 +29,16 @@ export class PuibeHeaderServiceMenuItemDirective implements OnInit, OnDestroy {
     @HostBinding('class')
     className = className;
 
-    // `routerLink` and `navLink` are separate inputs: one property cannot carry two public input names.
+    /** Link of Angular's `RouterLink` on the same element, used to show the active state. */
     @Input()
     set routerLink(value: MenuItemRouterLink) {
         this._menuItemService.setRouterLink(value);
     }
 
-    /** Alias of `routerLink`, to mark the item as active without using Angular's `RouterLink` navigation. */
+    /** Marks the item as active for this URL, without Angular's `RouterLink`. Takes precedence over `routerLink`. */
     @Input()
     set navLink(value: MenuItemRouterLink) {
-        this._menuItemService.setRouterLink(value);
+        this._menuItemService.setNavLink(value);
     }
 
     @Input()
